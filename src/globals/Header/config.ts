@@ -10,7 +10,7 @@ export const Header: GlobalConfig = {
   },
   fields: [
     {
-      name: 'navItems',
+      name: 'navItemsLeft',
       type: 'array',
       fields: [
         link({
@@ -21,7 +21,23 @@ export const Header: GlobalConfig = {
       admin: {
         initCollapsed: true,
         components: {
-          RowLabel: '@/Header/RowLabel#RowLabel',
+          RowLabel: '@/globals/Header/RowLabel#RowLabel',
+        },
+      },
+    },
+    {
+      name: 'navItemsRight',
+      type: 'array',
+      fields: [
+        link({
+          appearances: false,
+        }),
+      ],
+      maxRows: 6,
+      admin: {
+        initCollapsed: true,
+        components: {
+          RowLabel: '@/globals/Header/RowLabel#RowLabel',
         },
       },
     },
