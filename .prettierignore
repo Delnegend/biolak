@@ -11,4 +11,5 @@
 **/temp
 **/docs/**
 tsconfig.json
-
+.next
+pnpm-lock.yaml
