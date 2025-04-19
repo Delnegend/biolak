@@ -11,6 +11,11 @@
   h6 {
     font-size: unset;
     font-weight: unset;
+    @apply font-serif;
+  }
+
+  h2 {
+    @apply !text-[2rem] !font-semibold;
   }
 
   :root {
