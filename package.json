@@ -5,7 +5,8 @@
   "license": "MIT",
   "type": "module",
   "scripts": {
-    "postbuild": "next-sitemap --config next-sitemap.config.cjs"
+    "postbuild": "next-sitemap --config next-sitemap.config.cjs",
+    "dev:prod": "cross-env NODE_ENV=production next build --turbo && next start"
   },
   "dependencies": {
     "@payloadcms/admin-bar": "3.35.0",
