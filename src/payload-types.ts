@@ -106,11 +106,13 @@ export interface Config {
     header: Header;
     footer: Footer;
     promo: Promo;
+    'contact-form': ContactForm;
   };
   globalsSelect: {
     header: HeaderSelect<false> | HeaderSelect<true>;
     footer: FooterSelect<false> | FooterSelect<true>;
     promo: PromoSelect<false> | PromoSelect<true>;
+    'contact-form': ContactFormSelect<false> | ContactFormSelect<true>;
   };
   locale: null;
   user: User & {
@@ -1670,6 +1672,23 @@ export interface Promo {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "contact-form".
+ */
+export interface ContactForm {
+  id: number;
+  title: string;
+  name: string;
+  phoneNumber: string;
+  email: string;
+  question: string;
+  actionSend: string;
+  biolakPhoneNumber?: string | null;
+  actionCall: string;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "header_select".
  */
 export interface HeaderSelect<T extends boolean = true> {
@@ -1743,6 +1762,23 @@ export interface PromoSelect<T extends boolean = true> {
         url?: T;
         label?: T;
       };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "contact-form_select".
+ */
+export interface ContactFormSelect<T extends boolean = true> {
+  title?: T;
+  name?: T;
+  phoneNumber?: T;
+  email?: T;
+  question?: T;
+  actionSend?: T;
+  biolakPhoneNumber?: T;
+  actionCall?: T;
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;

@@ -10,13 +10,14 @@ import { Categories } from './collections/Categories'
 import { Media } from './collections/Media'
 import { Pages } from './collections/Pages'
 import { Posts } from './collections/Posts'
+import { Product as Products } from './collections/Products'
 import { Users } from './collections/Users'
+import { ContactForm } from './globals/ContactForm/config'
 import { Footer } from './globals/Footer/config'
 import { Header } from './globals/Header/config'
+import { Promo } from './globals/Promo/config'
 import { plugins } from './plugins'
 import { getServerSideURL } from './utilities/getURL'
-import { Product as Products } from './collections/Products'
-import { Promo } from './globals/Promo/config'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -67,7 +68,7 @@ export default buildConfig({
   }),
   collections: [Pages, Posts, Media, Categories, Users, Products],
   cors: [getServerSideURL()].filter(Boolean),
-  globals: [Header, Footer, Promo],
+  globals: [Header, Footer, Promo, ContactForm],
   plugins: [
     ...plugins,
     // storage-adapter-placeholder
