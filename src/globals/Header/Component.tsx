@@ -50,8 +50,12 @@ export async function Header() {
           <Link href="/events" className="text-xl">
             VIE/EN
           </Link>
-          <Button variant="default" className="h-14 rounded-full px-6 text-xl">
-            Giỏ hàng
+          <Button
+            variant="default"
+            className="h-14 rounded-full px-6 text-xl font-sans font-medium bg-primary"
+            asChild
+          >
+            <span>Giỏ hàng</span>
           </Button>
         </nav>
       </div>
