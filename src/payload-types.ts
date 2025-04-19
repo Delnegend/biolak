@@ -197,7 +197,7 @@ export interface Page {
       | null;
     media?: (number | null) | Media;
   };
-  layout: (CallToActionBlock | ContentBlock | MediaBlock | ArchiveBlock | FormBlock)[];
+  layout: (CallToActionBlock | ContentBlock | MediaBlock | ArchiveBlock | FormBlock | ThreePhotoBlock)[];
   meta?: {
     title?: string | null;
     /**
@@ -448,6 +448,8 @@ export interface ContentBlock {
   columns?:
     | {
         size?: ('oneThird' | 'half' | 'twoThirds' | 'full') | null;
+        font?: ('default' | 'serif' | 'sans-serif' | 'monospace') | null;
+        customCss?: string | null;
         richText?: {
           root: {
             type: string;
@@ -736,6 +738,18 @@ export interface Form {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ThreePhotoBlock".
+ */
+export interface ThreePhotoBlock {
+  photoLeft: number | Media;
+  photoCenter: number | Media;
+  photoRight: number | Media;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'threePhoto';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "products".
  */
 export interface Product {
@@ -743,7 +757,12 @@ export interface Product {
   title: string;
   description: string;
   price: number;
-  image?: (number | null) | Media;
+  gallery?:
+    | {
+        image: number | Media;
+        id?: string | null;
+      }[]
+    | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -1041,6 +1060,7 @@ export interface PagesSelect<T extends boolean = true> {
         mediaBlock?: T | MediaBlockSelect<T>;
         archive?: T | ArchiveBlockSelect<T>;
         formBlock?: T | FormBlockSelect<T>;
+        threePhoto?: T | ThreePhotoBlockSelect<T>;
       };
   meta?:
     | T
@@ -1089,6 +1109,8 @@ export interface ContentBlockSelect<T extends boolean = true> {
     | T
     | {
         size?: T;
+        font?: T;
+        customCss?: T;
         richText?: T;
         enableLink?: T;
         link?:
@@ -1137,6 +1159,17 @@ export interface FormBlockSelect<T extends boolean = true> {
   form?: T;
   enableIntro?: T;
   introContent?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ThreePhotoBlock_select".
+ */
+export interface ThreePhotoBlockSelect<T extends boolean = true> {
+  photoLeft?: T;
+  photoCenter?: T;
+  photoRight?: T;
   id?: T;
   blockName?: T;
 }
@@ -1309,7 +1342,12 @@ export interface ProductsSelect<T extends boolean = true> {
   title?: T;
   description?: T;
   price?: T;
-  image?: T;
+  gallery?:
+    | T
+    | {
+        image?: T;
+        id?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
 }

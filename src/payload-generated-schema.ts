@@ -43,6 +43,10 @@ export const enum_pages_blocks_content_columns_size = pgEnum(
   'enum_pages_blocks_content_columns_size',
   ['oneThird', 'half', 'twoThirds', 'full'],
 )
+export const enum_pages_blocks_content_columns_font = pgEnum(
+  'enum_pages_blocks_content_columns_font',
+  ['default', 'serif', 'sans-serif', 'monospace'],
+)
 export const enum_pages_blocks_content_columns_link_type = pgEnum(
   'enum_pages_blocks_content_columns_link_type',
   ['reference', 'custom'],
@@ -85,6 +89,10 @@ export const enum__pages_v_blocks_cta_links_link_appearance = pgEnum(
 export const enum__pages_v_blocks_content_columns_size = pgEnum(
   'enum__pages_v_blocks_content_columns_size',
   ['oneThird', 'half', 'twoThirds', 'full'],
+)
+export const enum__pages_v_blocks_content_columns_font = pgEnum(
+  'enum__pages_v_blocks_content_columns_font',
+  ['default', 'serif', 'sans-serif', 'monospace'],
 )
 export const enum__pages_v_blocks_content_columns_link_type = pgEnum(
   'enum__pages_v_blocks_content_columns_link_type',
@@ -135,14 +143,19 @@ export const enum_payload_jobs_task_slug = pgEnum('enum_payload_jobs_task_slug',
   'inline',
   'schedulePublish',
 ])
-export const enum_header_nav_items_link_type = pgEnum('enum_header_nav_items_link_type', [
+export const enum_header_nav_items_left_link_type = pgEnum('enum_header_nav_items_left_link_type', [
   'reference',
   'custom',
 ])
+export const enum_header_nav_items_right_link_type = pgEnum(
+  'enum_header_nav_items_right_link_type',
+  ['reference', 'custom'],
+)
 export const enum_footer_nav_items_link_type = pgEnum('enum_footer_nav_items_link_type', [
   'reference',
   'custom',
 ])
+export const enum_promo_link_type = pgEnum('enum_promo_link_type', ['reference', 'custom'])
 
 export const pages_hero_links = pgTable(
   'pages_hero_links',
@@ -219,7 +232,9 @@ export const pages_blocks_content_columns = pgTable(
     _order: integer('_order').notNull(),
     _parentID: varchar('_parent_id').notNull(),
     id: varchar('id').primaryKey(),
-    size: enum_pages_blocks_content_columns_size('size').default('oneThird'),
+    size: enum_pages_blocks_content_columns_size('size').default('full'),
+    font: enum_pages_blocks_content_columns_font('font').default('sans-serif'),
+    maxWidth: varchar('max_width').default(0),
     richText: jsonb('rich_text'),
     enableLink: boolean('enable_link'),
     link_type: enum_pages_blocks_content_columns_link_type('link_type').default('reference'),
@@ -496,7 +511,9 @@ export const _pages_v_blocks_content_columns = pgTable(
     _order: integer('_order').notNull(),
     _parentID: integer('_parent_id').notNull(),
     id: serial('id').primaryKey(),
-    size: enum__pages_v_blocks_content_columns_size('size').default('oneThird'),
+    size: enum__pages_v_blocks_content_columns_size('size').default('full'),
+    font: enum__pages_v_blocks_content_columns_font('font').default('sans-serif'),
+    maxWidth: varchar('max_width').default(0),
     richText: jsonb('rich_text'),
     enableLink: boolean('enable_link'),
     link_type: enum__pages_v_blocks_content_columns_link_type('link_type').default('reference'),
@@ -1140,6 +1157,50 @@ export const users = pgTable(
   }),
 )
 
+export const products_gallery = pgTable(
+  'products_gallery',
+  {
+    _order: integer('_order').notNull(),
+    _parentID: integer('_parent_id').notNull(),
+    id: varchar('id').primaryKey(),
+    image: integer('image_id')
+      .notNull()
+      .references(() => media.id, {
+        onDelete: 'set null',
+      }),
+  },
+  (columns) => ({
+    _orderIdx: index('products_gallery_order_idx').on(columns._order),
+    _parentIDIdx: index('products_gallery_parent_id_idx').on(columns._parentID),
+    products_gallery_image_idx: index('products_gallery_image_idx').on(columns.image),
+    _parentIDFk: foreignKey({
+      columns: [columns['_parentID']],
+      foreignColumns: [products.id],
+      name: 'products_gallery_parent_id_fk',
+    }).onDelete('cascade'),
+  }),
+)
+
+export const products = pgTable(
+  'products',
+  {
+    id: serial('id').primaryKey(),
+    title: varchar('title').notNull(),
+    description: varchar('description').notNull(),
+    price: numeric('price').notNull(),
+    updatedAt: timestamp('updated_at', { mode: 'string', withTimezone: true, precision: 3 })
+      .defaultNow()
+      .notNull(),
+    createdAt: timestamp('created_at', { mode: 'string', withTimezone: true, precision: 3 })
+      .defaultNow()
+      .notNull(),
+  },
+  (columns) => ({
+    products_updated_at_idx: index('products_updated_at_idx').on(columns.updatedAt),
+    products_created_at_idx: index('products_created_at_idx').on(columns.createdAt),
+  }),
+)
+
 export const redirects = pgTable(
   'redirects',
   {
@@ -1711,6 +1772,7 @@ export const payload_locked_documents_rels = pgTable(
     mediaID: integer('media_id'),
     categoriesID: integer('categories_id'),
     usersID: integer('users_id'),
+    productsID: integer('products_id'),
     redirectsID: integer('redirects_id'),
     formsID: integer('forms_id'),
     'form-submissionsID': integer('form_submissions_id'),
@@ -1736,6 +1798,9 @@ export const payload_locked_documents_rels = pgTable(
     payload_locked_documents_rels_users_id_idx: index(
       'payload_locked_documents_rels_users_id_idx',
     ).on(columns.usersID),
+    payload_locked_documents_rels_products_id_idx: index(
+      'payload_locked_documents_rels_products_id_idx',
+    ).on(columns.productsID),
     payload_locked_documents_rels_redirects_id_idx: index(
       'payload_locked_documents_rels_redirects_id_idx',
     ).on(columns.redirectsID),
@@ -1780,6 +1845,11 @@ export const payload_locked_documents_rels = pgTable(
       columns: [columns['usersID']],
       foreignColumns: [users.id],
       name: 'payload_locked_documents_rels_users_fk',
+    }).onDelete('cascade'),
+    productsIdFk: foreignKey({
+      columns: [columns['productsID']],
+      foreignColumns: [products.id],
+      name: 'payload_locked_documents_rels_products_fk',
     }).onDelete('cascade'),
     redirectsIdFk: foreignKey({
       columns: [columns['redirectsID']],
@@ -1885,24 +1955,46 @@ export const payload_migrations = pgTable(
   }),
 )
 
-export const header_nav_items = pgTable(
-  'header_nav_items',
+export const header_nav_items_left = pgTable(
+  'header_nav_items_left',
   {
     _order: integer('_order').notNull(),
     _parentID: integer('_parent_id').notNull(),
     id: varchar('id').primaryKey(),
-    link_type: enum_header_nav_items_link_type('link_type').default('reference'),
+    link_type: enum_header_nav_items_left_link_type('link_type').default('reference'),
     link_newTab: boolean('link_new_tab'),
     link_url: varchar('link_url'),
     link_label: varchar('link_label').notNull(),
   },
   (columns) => ({
-    _orderIdx: index('header_nav_items_order_idx').on(columns._order),
-    _parentIDIdx: index('header_nav_items_parent_id_idx').on(columns._parentID),
+    _orderIdx: index('header_nav_items_left_order_idx').on(columns._order),
+    _parentIDIdx: index('header_nav_items_left_parent_id_idx').on(columns._parentID),
     _parentIDFk: foreignKey({
       columns: [columns['_parentID']],
       foreignColumns: [header.id],
-      name: 'header_nav_items_parent_id_fk',
+      name: 'header_nav_items_left_parent_id_fk',
+    }).onDelete('cascade'),
+  }),
+)
+
+export const header_nav_items_right = pgTable(
+  'header_nav_items_right',
+  {
+    _order: integer('_order').notNull(),
+    _parentID: integer('_parent_id').notNull(),
+    id: varchar('id').primaryKey(),
+    link_type: enum_header_nav_items_right_link_type('link_type').default('reference'),
+    link_newTab: boolean('link_new_tab'),
+    link_url: varchar('link_url'),
+    link_label: varchar('link_label').notNull(),
+  },
+  (columns) => ({
+    _orderIdx: index('header_nav_items_right_order_idx').on(columns._order),
+    _parentIDIdx: index('header_nav_items_right_parent_id_idx').on(columns._parentID),
+    _parentIDFk: foreignKey({
+      columns: [columns['_parentID']],
+      foreignColumns: [header.id],
+      name: 'header_nav_items_right_parent_id_fk',
     }).onDelete('cascade'),
   }),
 )
@@ -2008,6 +2100,65 @@ export const footer_rels = pgTable(
     }).onDelete('cascade'),
   }),
 )
+
+export const promo = pgTable('promo', {
+  id: serial('id').primaryKey(),
+  message: varchar('message').default(''),
+  link_type: enum_promo_link_type('link_type').default('reference'),
+  link_newTab: boolean('link_new_tab'),
+  link_url: varchar('link_url'),
+  link_label: varchar('link_label').notNull(),
+  updatedAt: timestamp('updated_at', { mode: 'string', withTimezone: true, precision: 3 }),
+  createdAt: timestamp('created_at', { mode: 'string', withTimezone: true, precision: 3 }),
+})
+
+export const promo_rels = pgTable(
+  'promo_rels',
+  {
+    id: serial('id').primaryKey(),
+    order: integer('order'),
+    parent: integer('parent_id').notNull(),
+    path: varchar('path').notNull(),
+    pagesID: integer('pages_id'),
+    postsID: integer('posts_id'),
+  },
+  (columns) => ({
+    order: index('promo_rels_order_idx').on(columns.order),
+    parentIdx: index('promo_rels_parent_idx').on(columns.parent),
+    pathIdx: index('promo_rels_path_idx').on(columns.path),
+    promo_rels_pages_id_idx: index('promo_rels_pages_id_idx').on(columns.pagesID),
+    promo_rels_posts_id_idx: index('promo_rels_posts_id_idx').on(columns.postsID),
+    parentFk: foreignKey({
+      columns: [columns['parent']],
+      foreignColumns: [promo.id],
+      name: 'promo_rels_parent_fk',
+    }).onDelete('cascade'),
+    pagesIdFk: foreignKey({
+      columns: [columns['pagesID']],
+      foreignColumns: [pages.id],
+      name: 'promo_rels_pages_fk',
+    }).onDelete('cascade'),
+    postsIdFk: foreignKey({
+      columns: [columns['postsID']],
+      foreignColumns: [posts.id],
+      name: 'promo_rels_posts_fk',
+    }).onDelete('cascade'),
+  }),
+)
+
+export const contact_form = pgTable('contact_form', {
+  id: serial('id').primaryKey(),
+  title: varchar('title').notNull().default('Liên hệ với BioLAK'),
+  name: varchar('name').notNull().default('Nhập tên của bạn'),
+  phoneNumber: varchar('phone_number').notNull().default('Nhập số điện thoại'),
+  email: varchar('email').notNull().default('Nhập địa chỉ email'),
+  question: varchar('question').notNull().default('Câu hỏi của bạn tới chúng tôi'),
+  actionSend: varchar('action_send').notNull().default('GỬI BIOLAK'),
+  biolakPhoneNumber: varchar('biolak_phone_number').default('0987654321'),
+  actionCall: varchar('action_call').notNull().default('GỌI BIOLAK'),
+  updatedAt: timestamp('updated_at', { mode: 'string', withTimezone: true, precision: 3 }),
+  createdAt: timestamp('created_at', { mode: 'string', withTimezone: true, precision: 3 }),
+})
 
 export const relations_pages_hero_links = relations(pages_hero_links, ({ one }) => ({
   _parentID: one(pages, {
@@ -2418,6 +2569,23 @@ export const relations_categories = relations(categories, ({ one, many }) => ({
   }),
 }))
 export const relations_users = relations(users, () => ({}))
+export const relations_products_gallery = relations(products_gallery, ({ one }) => ({
+  _parentID: one(products, {
+    fields: [products_gallery._parentID],
+    references: [products.id],
+    relationName: 'gallery',
+  }),
+  image: one(media, {
+    fields: [products_gallery.image],
+    references: [media.id],
+    relationName: 'image',
+  }),
+}))
+export const relations_products = relations(products, ({ many }) => ({
+  gallery: many(products_gallery, {
+    relationName: 'gallery',
+  }),
+}))
 export const relations_redirects_rels = relations(redirects_rels, ({ one }) => ({
   parent: one(redirects, {
     fields: [redirects_rels.parent],
@@ -2652,6 +2820,11 @@ export const relations_payload_locked_documents_rels = relations(
       references: [users.id],
       relationName: 'users',
     }),
+    productsID: one(products, {
+      fields: [payload_locked_documents_rels.productsID],
+      references: [products.id],
+      relationName: 'products',
+    }),
     redirectsID: one(redirects, {
       fields: [payload_locked_documents_rels.redirectsID],
       references: [redirects.id],
@@ -2708,11 +2881,18 @@ export const relations_payload_preferences = relations(payload_preferences, ({ m
   }),
 }))
 export const relations_payload_migrations = relations(payload_migrations, () => ({}))
-export const relations_header_nav_items = relations(header_nav_items, ({ one }) => ({
+export const relations_header_nav_items_left = relations(header_nav_items_left, ({ one }) => ({
   _parentID: one(header, {
-    fields: [header_nav_items._parentID],
+    fields: [header_nav_items_left._parentID],
     references: [header.id],
-    relationName: 'navItems',
+    relationName: 'navItemsLeft',
+  }),
+}))
+export const relations_header_nav_items_right = relations(header_nav_items_right, ({ one }) => ({
+  _parentID: one(header, {
+    fields: [header_nav_items_right._parentID],
+    references: [header.id],
+    relationName: 'navItemsRight',
   }),
 }))
 export const relations_header_rels = relations(header_rels, ({ one }) => ({
@@ -2733,8 +2913,11 @@ export const relations_header_rels = relations(header_rels, ({ one }) => ({
   }),
 }))
 export const relations_header = relations(header, ({ many }) => ({
-  navItems: many(header_nav_items, {
-    relationName: 'navItems',
+  navItemsLeft: many(header_nav_items_left, {
+    relationName: 'navItemsLeft',
+  }),
+  navItemsRight: many(header_nav_items_right, {
+    relationName: 'navItemsRight',
   }),
   _rels: many(header_rels, {
     relationName: '_rels',
@@ -2772,6 +2955,29 @@ export const relations_footer = relations(footer, ({ many }) => ({
     relationName: '_rels',
   }),
 }))
+export const relations_promo_rels = relations(promo_rels, ({ one }) => ({
+  parent: one(promo, {
+    fields: [promo_rels.parent],
+    references: [promo.id],
+    relationName: '_rels',
+  }),
+  pagesID: one(pages, {
+    fields: [promo_rels.pagesID],
+    references: [pages.id],
+    relationName: 'pages',
+  }),
+  postsID: one(posts, {
+    fields: [promo_rels.postsID],
+    references: [posts.id],
+    relationName: 'posts',
+  }),
+}))
+export const relations_promo = relations(promo, ({ many }) => ({
+  _rels: many(promo_rels, {
+    relationName: '_rels',
+  }),
+}))
+export const relations_contact_form = relations(contact_form, () => ({}))
 
 type DatabaseSchema = {
   enum_pages_hero_links_link_type: typeof enum_pages_hero_links_link_type
@@ -2779,6 +2985,7 @@ type DatabaseSchema = {
   enum_pages_blocks_cta_links_link_type: typeof enum_pages_blocks_cta_links_link_type
   enum_pages_blocks_cta_links_link_appearance: typeof enum_pages_blocks_cta_links_link_appearance
   enum_pages_blocks_content_columns_size: typeof enum_pages_blocks_content_columns_size
+  enum_pages_blocks_content_columns_font: typeof enum_pages_blocks_content_columns_font
   enum_pages_blocks_content_columns_link_type: typeof enum_pages_blocks_content_columns_link_type
   enum_pages_blocks_content_columns_link_appearance: typeof enum_pages_blocks_content_columns_link_appearance
   enum_pages_blocks_archive_populate_by: typeof enum_pages_blocks_archive_populate_by
@@ -2790,6 +2997,7 @@ type DatabaseSchema = {
   enum__pages_v_blocks_cta_links_link_type: typeof enum__pages_v_blocks_cta_links_link_type
   enum__pages_v_blocks_cta_links_link_appearance: typeof enum__pages_v_blocks_cta_links_link_appearance
   enum__pages_v_blocks_content_columns_size: typeof enum__pages_v_blocks_content_columns_size
+  enum__pages_v_blocks_content_columns_font: typeof enum__pages_v_blocks_content_columns_font
   enum__pages_v_blocks_content_columns_link_type: typeof enum__pages_v_blocks_content_columns_link_type
   enum__pages_v_blocks_content_columns_link_appearance: typeof enum__pages_v_blocks_content_columns_link_appearance
   enum__pages_v_blocks_archive_populate_by: typeof enum__pages_v_blocks_archive_populate_by
@@ -2804,8 +3012,10 @@ type DatabaseSchema = {
   enum_payload_jobs_log_task_slug: typeof enum_payload_jobs_log_task_slug
   enum_payload_jobs_log_state: typeof enum_payload_jobs_log_state
   enum_payload_jobs_task_slug: typeof enum_payload_jobs_task_slug
-  enum_header_nav_items_link_type: typeof enum_header_nav_items_link_type
+  enum_header_nav_items_left_link_type: typeof enum_header_nav_items_left_link_type
+  enum_header_nav_items_right_link_type: typeof enum_header_nav_items_right_link_type
   enum_footer_nav_items_link_type: typeof enum_footer_nav_items_link_type
+  enum_promo_link_type: typeof enum_promo_link_type
   pages_hero_links: typeof pages_hero_links
   pages_blocks_cta_links: typeof pages_blocks_cta_links
   pages_blocks_cta: typeof pages_blocks_cta
@@ -2836,6 +3046,8 @@ type DatabaseSchema = {
   categories_breadcrumbs: typeof categories_breadcrumbs
   categories: typeof categories
   users: typeof users
+  products_gallery: typeof products_gallery
+  products: typeof products
   redirects: typeof redirects
   redirects_rels: typeof redirects_rels
   forms_blocks_checkbox: typeof forms_blocks_checkbox
@@ -2862,12 +3074,16 @@ type DatabaseSchema = {
   payload_preferences: typeof payload_preferences
   payload_preferences_rels: typeof payload_preferences_rels
   payload_migrations: typeof payload_migrations
-  header_nav_items: typeof header_nav_items
+  header_nav_items_left: typeof header_nav_items_left
+  header_nav_items_right: typeof header_nav_items_right
   header: typeof header
   header_rels: typeof header_rels
   footer_nav_items: typeof footer_nav_items
   footer: typeof footer
   footer_rels: typeof footer_rels
+  promo: typeof promo
+  promo_rels: typeof promo_rels
+  contact_form: typeof contact_form
   relations_pages_hero_links: typeof relations_pages_hero_links
   relations_pages_blocks_cta_links: typeof relations_pages_blocks_cta_links
   relations_pages_blocks_cta: typeof relations_pages_blocks_cta
@@ -2898,6 +3114,8 @@ type DatabaseSchema = {
   relations_categories_breadcrumbs: typeof relations_categories_breadcrumbs
   relations_categories: typeof relations_categories
   relations_users: typeof relations_users
+  relations_products_gallery: typeof relations_products_gallery
+  relations_products: typeof relations_products
   relations_redirects_rels: typeof relations_redirects_rels
   relations_redirects: typeof relations_redirects
   relations_forms_blocks_checkbox: typeof relations_forms_blocks_checkbox
@@ -2924,12 +3142,16 @@ type DatabaseSchema = {
   relations_payload_preferences_rels: typeof relations_payload_preferences_rels
   relations_payload_preferences: typeof relations_payload_preferences
   relations_payload_migrations: typeof relations_payload_migrations
-  relations_header_nav_items: typeof relations_header_nav_items
+  relations_header_nav_items_left: typeof relations_header_nav_items_left
+  relations_header_nav_items_right: typeof relations_header_nav_items_right
   relations_header_rels: typeof relations_header_rels
   relations_header: typeof relations_header
   relations_footer_nav_items: typeof relations_footer_nav_items
   relations_footer_rels: typeof relations_footer_rels
   relations_footer: typeof relations_footer
+  relations_promo_rels: typeof relations_promo_rels
+  relations_promo: typeof relations_promo
+  relations_contact_form: typeof relations_contact_form
 }
 
 declare module '@payloadcms/db-postgres' {
