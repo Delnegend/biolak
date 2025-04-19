@@ -34,6 +34,35 @@ const columnFields: Field[] = [
     ],
   },
   {
+    name: 'font',
+    type: 'select',
+    defaultValue: 'default',
+    options: [
+      {
+        label: 'Default',
+        value: 'default',
+      },
+      {
+        label: 'Serif',
+        value: 'serif',
+      },
+      {
+        label: 'Sans-serif',
+        value: 'sans-serif',
+      },
+      {
+        label: 'Monospace',
+        value: 'monospace',
+      },
+    ],
+  },
+  {
+    name: 'customCss',
+    type: 'textarea',
+    defaultValue: '',
+    label: 'Custom CSS',
+  },
+  {
     name: 'richText',
     type: 'richText',
     editor: lexicalEditor({
