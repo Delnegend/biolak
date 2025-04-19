@@ -2,7 +2,7 @@ import { getCachedGlobal } from '@/utilities/getGlobals'
 import Link from 'next/link'
 import { DataFromGlobalSlug } from 'payload'
 
-export async function Promo() {
+export async function Promo(): Promise<React.JSX.Element> {
   const promoData = (await getCachedGlobal('promo', 1)()) as DataFromGlobalSlug<'promo'>
 
   let target = promoData.link.url
@@ -16,6 +16,8 @@ export async function Promo() {
     target = `/${promoData.link.reference.value.slug}`
     internalLink = true
   }
+
+  if (!promoData.message) return <></>
 
   if (target && !internalLink) {
     return (
