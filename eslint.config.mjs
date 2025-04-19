@@ -31,6 +31,6 @@ export default [
     },
   },
   {
-    ignores: ['.next/'],
+    ignores: ['.next/', './src/migrations/'],
   },
 ]
