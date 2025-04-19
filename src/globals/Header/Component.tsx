@@ -37,7 +37,7 @@ export async function Header() {
 
         <nav className="flex gap-9 items-center justify-end">
           <Link href="/login" className="text-xl">
-            Đăng nhập
+            Đăng ký
           </Link>
           <Dialog>
             <DialogTrigger>
