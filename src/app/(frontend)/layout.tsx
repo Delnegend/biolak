@@ -1,8 +1,6 @@
 import type { Metadata } from 'next'
 
 import { cn } from '@/utilities/ui'
-import { GeistMono } from 'geist/font/mono'
-import { GeistSans } from 'geist/font/sans'
 import React from 'react'
 
 import { AdminBar } from '@/components/AdminBar'
@@ -14,13 +12,29 @@ import { draftMode } from 'next/headers'
 import { SetLightMode } from '@/components/SetLightMode'
 import { Promo } from '@/globals/Promo/Component'
 import { getServerSideURL } from '@/utilities/getURL'
+import { Crimson_Pro, Manrope } from 'next/font/google'
 import './globals.css'
+
+const manrope = Manrope({
+  subsets: ['vietnamese'],
+  weight: ['500', '700'],
+  variable: '--font-manrope',
+})
+
+const crimsonPro = Crimson_Pro({
+  subsets: ['vietnamese'],
+  variable: '--font-crimson-pro',
+})
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const { isEnabled } = await draftMode()
 
   return (
-    <html className={cn(GeistSans.variable, GeistMono.variable)} lang="en" suppressHydrationWarning>
+    <html
+      className={cn(manrope.variable, crimsonPro.variable, `font-sans`)}
+      lang="en"
+      suppressHydrationWarning
+    >
       <head>
         <SetLightMode />
         <link href="/favicon.ico" rel="icon" sizes="32x32" />
