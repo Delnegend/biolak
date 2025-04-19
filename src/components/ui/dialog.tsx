@@ -28,7 +28,6 @@ export const DialogOverlay = ({
 DialogOverlay.displayName = DialogPrimitive.Overlay.displayName
 
 export const DialogContent = ({
-  ref,
   className,
   children,
   ...props
