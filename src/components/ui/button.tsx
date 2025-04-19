@@ -20,7 +20,7 @@ const buttonVariants = cva(
         sm: 'h-9 rounded px-3',
       },
       variant: {
-        default: 'bg-primary text-primary-foreground hover:bg-primary/90',
+        default: 'bg-black text-primary-foreground hover:bg-primary/90',
         destructive: 'bg-destructive text-destructive-foreground hover:bg-destructive/90',
         ghost: 'hover:bg-card hover:text-accent-foreground',
         link: 'text-primary items-start justify-start underline-offset-4 hover:underline',
@@ -51,7 +51,7 @@ const Button: React.FC<ButtonProps> = ({
   const Comp = asChild ? Slot : 'button'
   if (asChild) {
     return (
-      <Comp className={cn(buttonVariants({ className, size, variant }))} ref={ref} {...props} />
+      <Comp className={cn(buttonVariants({ size, variant }), className)} ref={ref} {...props} />
     )
   }
 
