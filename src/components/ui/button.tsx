@@ -1,7 +1,8 @@
 import { cn } from '@/utilities/ui'
 import { Slot } from '@radix-ui/react-slot'
 import { type VariantProps, cva } from 'class-variance-authority'
-import * as React from 'react'
+import { ArrowRight } from 'lucide-react'
+import { Phudu } from 'next/font/google'
 
 const buttonVariants = cva(
   'inline-flex items-center justify-center whitespace-nowrap rounded text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50',
@@ -15,7 +16,7 @@ const buttonVariants = cva(
         clear: '',
         default: 'h-10 px-4 py-2',
         icon: 'h-10 w-10',
-        lg: 'h-11 rounded px-8',
+        lg: 'h-[5.25rem] rounded-[10px] px-8 text-[28px]',
         sm: 'h-9 rounded px-3',
       },
       variant: {
@@ -37,6 +38,8 @@ export interface ButtonProps
   ref?: React.Ref<HTMLButtonElement>
 }
 
+const phudu = Phudu({ subsets: ['vietnamese'], weight: '600' })
+
 const Button: React.FC<ButtonProps> = ({
   asChild = false,
   className,
@@ -46,7 +49,28 @@ const Button: React.FC<ButtonProps> = ({
   ...props
 }) => {
   const Comp = asChild ? Slot : 'button'
-  return <Comp className={cn(buttonVariants({ className, size, variant }))} ref={ref} {...props} />
+  if (asChild) {
+    return (
+      <Comp className={cn(buttonVariants({ className, size, variant }))} ref={ref} {...props} />
+    )
+  }
+
+  const { children, ...rest } = props
+
+  return (
+    <button
+      className={cn(
+        buttonVariants({ className, size, variant }),
+        'justify-between font-semibold',
+        phudu.className,
+      )}
+      ref={ref}
+      {...rest}
+    >
+      {children}
+      <ArrowRight />
+    </button>
+  )
 }
 
-export { Button, buttonVariants }
+export { Button, buttonVariants as buttonVariants }
