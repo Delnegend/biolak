@@ -1,9 +1,10 @@
+import RichText from '@/components/RichText'
 import { cn } from '@/utilities/ui'
 import React from 'react'
-import RichText from '@/components/RichText'
 
 import type { ContentBlock as ContentBlockProps } from '@/payload-types'
 
+import { cssStringToStyle } from '@/utilities/cssStringToStyle'
 import { CMSLink } from '../../components/Link'
 
 export const ContentBlock: React.FC<ContentBlockProps> = (props) => {
@@ -22,14 +23,18 @@ export const ContentBlock: React.FC<ContentBlockProps> = (props) => {
         {columns &&
           columns.length > 0 &&
           columns.map((col, index) => {
-            const { enableLink, link, richText, size } = col
+            const { enableLink, link, richText, size, font, customCss } = col
 
             return (
               <div
                 className={cn(`col-span-4 lg:col-span-${colsSpanClasses[size!]}`, {
                   'md:col-span-2': size !== 'full',
+                  'font-serif': font === 'serif',
+                  'font-sans': font === 'sans-serif',
+                  'font-mono': font === 'monospace',
                 })}
                 key={index}
+                style={cssStringToStyle(customCss)}
               >
                 {richText && <RichText data={richText} enableGutter={false} />}
 
