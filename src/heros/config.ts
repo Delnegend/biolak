@@ -7,11 +7,17 @@ import {
   lexicalEditor,
 } from '@payloadcms/richtext-lexical'
 
+import { admin } from '@/access/admin'
 import { linkGroup } from '@/fields/linkGroup'
 
 export const hero: Field = {
   name: 'hero',
   type: 'group',
+  access: {
+    create: admin,
+    read: () => true,
+    update: admin,
+  },
   fields: [
     {
       name: 'type',
@@ -61,9 +67,6 @@ export const hero: Field = {
     {
       name: 'media',
       type: 'upload',
-      admin: {
-        condition: (_, { type } = {}) => ['highImpact', 'mediumImpact'].includes(type),
-      },
       relationTo: 'media',
       required: true,
     },
