@@ -2,7 +2,6 @@
   "recommendations": [
     "dbaeumer.vscode-eslint",
     "esbenp.prettier-vscode",
-    "nefrob.vscode-just-syntax",
     "yoavbls.pretty-ts-errors"
   ]
 }
