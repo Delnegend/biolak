@@ -1,6 +1,11 @@
-import type { User } from '@/payload-types'
-import type { AccessArgs } from 'payload'
+type GenericArgs = {
+  req: {
+    user: {
+      role?: null | 'admin' | 'customer'
+    } | null
+  }
+}
 
-export function admin(args: AccessArgs<User>): boolean {
+export function admin(args: GenericArgs): boolean {
   return args.req.user?.role === 'admin'
 }
