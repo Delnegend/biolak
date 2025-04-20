@@ -18,6 +18,7 @@ const nextConfig = {
           protocol: url.protocol.replace(':', ''),
         }
       }),
+      new URL('https://placehold.co/**'),
     ],
   },
   reactStrictMode: true,
