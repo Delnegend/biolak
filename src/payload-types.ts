@@ -195,7 +195,7 @@ export interface Page {
           id?: string | null;
         }[]
       | null;
-    media?: (number | null) | Media;
+    media: number | Media;
   };
   layout: (CallToActionBlock | ContentBlock | MediaBlock | ArchiveBlock | FormBlock | ThreePhotoBlock)[];
   meta?: {
@@ -1660,26 +1660,20 @@ export interface Header {
  */
 export interface Footer {
   id: number;
-  navItems?:
-    | {
-        link: {
-          type?: ('reference' | 'custom') | null;
-          newTab?: boolean | null;
-          reference?:
-            | ({
-                relationTo: 'pages';
-                value: number | Page;
-              } | null)
-            | ({
-                relationTo: 'posts';
-                value: number | Post;
-              } | null);
-          url?: string | null;
-          label: string;
-        };
-        id?: string | null;
-      }[]
-    | null;
+  image?: {
+    image?: (number | null) | Media;
+  };
+  contactUs: {
+    title: string;
+    emailInputLabel: string;
+    description: string;
+  };
+  legal: {
+    title: string;
+    content: string;
+    stamp: number | Media;
+    copyright: string;
+  };
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -1767,19 +1761,25 @@ export interface HeaderSelect<T extends boolean = true> {
  * via the `definition` "footer_select".
  */
 export interface FooterSelect<T extends boolean = true> {
-  navItems?:
+  image?:
     | T
     | {
-        link?:
-          | T
-          | {
-              type?: T;
-              newTab?: T;
-              reference?: T;
-              url?: T;
-              label?: T;
-            };
-        id?: T;
+        image?: T;
+      };
+  contactUs?:
+    | T
+    | {
+        title?: T;
+        emailInputLabel?: T;
+        description?: T;
+      };
+  legal?:
+    | T
+    | {
+        title?: T;
+        content?: T;
+        stamp?: T;
+        copyright?: T;
       };
   updatedAt?: T;
   createdAt?: T;
