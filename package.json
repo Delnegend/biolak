@@ -12,6 +12,7 @@
     "gen:importmap": "cross-env NODE_OPTIONS=--no-deprecation payload generate:importmap",
     "gen:types": "cross-env NODE_OPTIONS=--no-deprecation payload generate:types",
     "gen:db-schema": "cross-env NODE_OPTIONS=--no-deprecation payload generate:db-schema",
+    "migrate": "cross-env NODE_OPTIONS=--no-deprecation payload migrate",
     "migrate:create": "cross-env NODE_OPTIONS=--no-deprecation payload migrate:create",
     "ii": "cross-env NODE_OPTIONS=--no-deprecation pnpm --ignore-workspace install",
     "lint": "cross-env NODE_OPTIONS=--no-deprecation next lint && prettier --write .",
