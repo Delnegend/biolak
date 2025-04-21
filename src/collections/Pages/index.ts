@@ -13,6 +13,7 @@ import { populatePublishedAt } from '../../hooks/populatePublishedAt'
 import { generatePreviewPath } from '../../utilities/generatePreviewPath'
 import { revalidateDelete, revalidatePage } from './hooks/revalidatePage'
 
+import { ProductsCarousel } from '@/blocks/ProductsCarousel/config'
 import { ThreePhoto } from '@/blocks/ThreePhoto/config'
 import {
   MetaDescriptionField,
@@ -77,7 +78,15 @@ export const Pages: CollectionConfig<'pages'> = {
             {
               name: 'layout',
               type: 'blocks',
-              blocks: [CallToAction, Content, MediaBlock, Archive, FormBlock, ThreePhoto],
+              blocks: [
+                CallToAction,
+                Content,
+                MediaBlock,
+                Archive,
+                FormBlock,
+                ThreePhoto,
+                ProductsCarousel,
+              ],
               required: true,
               admin: {
                 initCollapsed: true,
