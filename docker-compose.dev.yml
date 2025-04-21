@@ -1,0 +1,16 @@
+services:
+  postgres-dev:
+    container_name: postgres-dev
+    image: postgres:17
+    ports:
+      - '5432:5432'
+    volumes:
+      - postgres_dev:/var/lib/postgresql/data
+      - ./postgres-dev-backup:/postgres-dev-backup
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=biolak
+
+volumes:
+  postgres_dev:
