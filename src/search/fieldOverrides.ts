@@ -1,3 +1,4 @@
+import { MEDIA_SLUG } from '@/collections/Media'
 import { Field } from 'payload'
 
 export const searchFields: Field[] = [
@@ -32,7 +33,7 @@ export const searchFields: Field[] = [
         name: 'image',
         label: 'Image',
         type: 'upload',
-        relationTo: 'media',
+        relationTo: MEDIA_SLUG,
       },
     ],
   },

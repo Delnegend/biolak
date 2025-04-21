@@ -2,6 +2,7 @@ import type { GlobalConfig } from 'payload'
 
 import { admin } from '@/access/admin'
 import { anyone } from '@/access/anyone'
+import { MEDIA_SLUG } from '@/collections/Media'
 import { revalidateFooter } from './hooks/revalidateFooter'
 
 export const Footer: GlobalConfig = {
@@ -21,7 +22,7 @@ export const Footer: GlobalConfig = {
             {
               name: 'image',
               type: 'upload',
-              relationTo: 'media',
+              relationTo: MEDIA_SLUG,
               label: 'Image',
             },
           ],
@@ -80,7 +81,7 @@ TP Hà Nội, Việt Nam.
             {
               name: 'stamp',
               type: 'upload',
-              relationTo: 'media',
+              relationTo: MEDIA_SLUG,
               label: 'Stamp',
               required: true,
             },

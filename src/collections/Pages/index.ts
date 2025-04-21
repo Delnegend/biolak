@@ -21,6 +21,7 @@ import {
   OverviewField,
   PreviewField,
 } from '@payloadcms/plugin-seo/fields'
+import { MEDIA_SLUG } from '../Media'
 
 export const Pages: CollectionConfig<'pages'> = {
   slug: 'pages',
@@ -98,7 +99,7 @@ export const Pages: CollectionConfig<'pages'> = {
               hasGenerateFn: true,
             }),
             MetaImageField({
-              relationTo: 'media',
+              relationTo: MEDIA_SLUG,
             }),
 
             MetaDescriptionField({}),
