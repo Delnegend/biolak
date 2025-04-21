@@ -4,7 +4,7 @@ import { type VariantProps, cva } from 'class-variance-authority'
 import { ArrowRight } from 'lucide-react'
 import { Phudu } from 'next/font/google'
 
-const buttonVariants = cva(
+export const buttonVariants = cva(
   'inline-flex items-center justify-center whitespace-nowrap rounded text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50',
   {
     defaultVariants: {
@@ -35,24 +35,22 @@ export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement>,
     VariantProps<typeof buttonVariants> {
   asChild?: boolean
-  ref?: React.Ref<HTMLButtonElement>
+  hideArrow?: boolean
 }
 
 const phudu = Phudu({ subsets: ['vietnamese'], weight: '600' })
 
-const Button: React.FC<ButtonProps> = ({
+export function Button({
   asChild = false,
   className,
   size,
   variant,
-  ref,
+  hideArrow = false,
   ...props
-}) => {
+}: React.ComponentPropsWithRef<'button'> & ButtonProps): React.JSX.Element {
   const Comp = asChild ? Slot : 'button'
   if (asChild) {
-    return (
-      <Comp className={cn(buttonVariants({ size, variant }), className)} ref={ref} {...props} />
-    )
+    return <Comp className={cn(buttonVariants({ size, variant }), className)} {...props} />
   }
 
   const { children, ...rest } = props
@@ -64,13 +62,10 @@ const Button: React.FC<ButtonProps> = ({
         'justify-between font-semibold',
         phudu.className,
       )}
-      ref={ref}
       {...rest}
     >
       {children}
-      <ArrowRight />
+      {!hideArrow && <ArrowRight />}
     </button>
   )
 }
-
-export { Button, buttonVariants as buttonVariants }
