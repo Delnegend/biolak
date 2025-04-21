@@ -11,7 +11,7 @@ export function TextInput({
   inputRef,
   classNames,
   ...props
-}: React.ComponentPropsWithRef<'input'> & {
+}: Omit<React.ComponentPropsWithRef<'input'>, 'placeholder'> & {
   label: string
   inputRef?: React.RefObject<HTMLInputElement>
   classNames?: { container?: string; input?: string; label?: string }
