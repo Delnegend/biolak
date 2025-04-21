@@ -49,9 +49,11 @@ export async function Footer() {
         </div>
 
         {/* legal stuffs */}
-        <div className={cn('bg-[#210E0A] px-24 py-9 text-[#F1DAAE]', phudu.className)}>
-          <div className="text-2xl uppercase mb-6 leading-6 font-bold">{legal.title}</div>
-          <div className={cn('text-base uppercase whitespace-pre font-normal', lato.className)}>
+        <div className={'bg-[#210E0A] px-24 py-9 text-[#F1DAAE]'}>
+          <div className={cn('text-2xl uppercase mb-6 leading-6 font-bold', phudu.className)}>
+            {legal.title}
+          </div>
+          <div className={cn('text-base uppercase whitespace-pre font-normal', phudu.className)}>
             {legal.content}
           </div>
 
