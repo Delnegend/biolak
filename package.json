@@ -7,19 +7,8 @@
   "scripts": {
     "build": "cross-env NODE_OPTIONS=--no-deprecation next build --turbo",
     "postbuild": "next-sitemap --config next-sitemap.config.cjs",
-    "dev": "cross-env NODE_OPTIONS=--no-deprecation next dev --turbo",
-    "dev:prod": "cross-env NODE_OPTIONS=--no-deprecation rm -rf .next && pnpm build && pnpm start",
-    "gen:importmap": "cross-env NODE_OPTIONS=--no-deprecation payload generate:importmap",
-    "gen:types": "cross-env NODE_OPTIONS=--no-deprecation payload generate:types",
-    "gen:db-schema": "cross-env NODE_OPTIONS=--no-deprecation payload generate:db-schema",
-    "migrate": "cross-env NODE_OPTIONS=--no-deprecation payload migrate",
-    "migrate:create": "cross-env NODE_OPTIONS=--no-deprecation payload migrate:create",
-    "ii": "cross-env NODE_OPTIONS=--no-deprecation pnpm --ignore-workspace install",
-    "lint": "cross-env NODE_OPTIONS=--no-deprecation next lint --fix && prettier --write .",
-    "payload": "cross-env NODE_OPTIONS=--no-deprecation payload",
-    "reinstall": "cross-env NODE_OPTIONS=--no-deprecation rm -rf node_modules && rm pnpm-lock.yaml && pnpm --ignore-workspace install",
     "start": "cross-env NODE_OPTIONS=--no-deprecation next start",
-    "pg:dev": "docker compose up -d postgres-dev"
+    "dev:prod": "cross-env NODE_OPTIONS=--no-deprecation rm -rf .next && pnpm build && pnpm start"
   },
   "dependencies": {
     "@payloadcms/admin-bar": "3.35.0",
