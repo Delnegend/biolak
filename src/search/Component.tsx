@@ -1,9 +1,9 @@
 'use client'
-import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import React, { useState, useEffect } from 'react'
+import { TextInput } from '@/components/ui/text-input'
 import { useDebounce } from '@/utilities/useDebounce'
 import { useRouter } from 'next/navigation'
+import React, { useEffect, useState } from 'react'
 
 export const Search: React.FC = () => {
   const [value, setValue] = useState('')
@@ -23,14 +23,14 @@ export const Search: React.FC = () => {
         }}
       >
         <Label htmlFor="search" className="sr-only">
-          Search
+          Tìm kiếm
         </Label>
-        <Input
+        <TextInput
+          label="Nhập từ khóa"
           id="search"
           onChange={(event) => {
             setValue(event.target.value)
           }}
-          placeholder="Search"
         />
         <button type="submit" className="sr-only">
           submit
