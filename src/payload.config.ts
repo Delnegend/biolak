@@ -6,10 +6,11 @@ import sharp from 'sharp' // sharp-import
 import { fileURLToPath } from 'url'
 
 import { defaultLexical } from '@/fields/defaultLexical'
-import { Categories } from './collections/Categories'
 import { Media } from './collections/Media'
 import { Pages } from './collections/Pages'
+import { PostCategories } from './collections/PostCategories'
 import { Posts } from './collections/Posts'
+import { ProductCategories } from './collections/ProductCategories'
 import { Product as Products } from './collections/Products'
 import { Users } from './collections/Users'
 import { ContactForm } from './globals/ContactForm/config'
@@ -65,9 +66,8 @@ export default buildConfig({
     pool: {
       connectionString: process.env.DATABASE_URI,
     },
-    push: false,
   }),
-  collections: [Pages, Posts, Media, Categories, Users, Products],
+  collections: [Pages, Posts, Media, PostCategories, Users, Products, ProductCategories],
   cors: [getServerSideURL()].filter(Boolean),
   globals: [Header, Footer, Promo, ContactForm],
   plugins: [
