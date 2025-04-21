@@ -67,7 +67,16 @@ export default buildConfig({
       connectionString: process.env.DATABASE_URI,
     },
   }),
-  collections: [Pages, Posts, Media, PostCategories, Users, Products, ProductCategories],
+  collections: [
+    Pages,
+    Posts,
+    Media,
+    PostCategories,
+    Users,
+    Products,
+    ProductCategories,
+    ProductSubCategories,
+  ],
   cors: [getServerSideURL()].filter(Boolean),
   globals: [Header, Footer, Promo, ContactForm],
   plugins: [
