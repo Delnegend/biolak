@@ -1,8 +1,9 @@
 import { admin } from '@/access/admin'
 import { anyone } from '@/access/anyone'
 import { CollectionConfig } from 'payload'
-import { MEDIA_SLUG } from '../Media'
-import { PRODUCT_CATEGORIES_SLUG } from '../ProductCategories'
+import { MEDIA_SLUG } from './Media'
+import { PRODUCT_CATEGORIES_SLUG } from './ProductCategories'
+import { PRODUCT_SUB_CATEGORY_SLUG } from './ProductSubCategories'
 
 export const Product: CollectionConfig<'products'> = {
   slug: 'products',
@@ -19,14 +20,23 @@ export const Product: CollectionConfig<'products'> = {
       relationTo: PRODUCT_CATEGORIES_SLUG,
     },
     {
+      name: PRODUCT_SUB_CATEGORY_SLUG,
+      type: 'relationship',
+      relationTo: PRODUCT_SUB_CATEGORY_SLUG,
+    },
+    {
       name: 'title',
       type: 'text',
       required: true,
     },
     {
-      name: 'description',
+      name: 'shortDescription',
       type: 'text',
       required: true,
+    },
+    {
+      name: 'longDescription',
+      type: 'text',
     },
     {
       name: 'price',
@@ -54,4 +64,7 @@ export const Product: CollectionConfig<'products'> = {
       ],
     },
   ],
+  admin: {
+    useAsTitle: 'title',
+  },
 }
