@@ -151,10 +151,6 @@ export const enum_header_nav_items_right_link_type = pgEnum(
   'enum_header_nav_items_right_link_type',
   ['reference', 'custom'],
 )
-export const enum_footer_nav_items_link_type = pgEnum('enum_footer_nav_items_link_type', [
-  'reference',
-  'custom',
-])
 export const enum_promo_link_type = pgEnum('enum_promo_link_type', ['reference', 'custom'])
 
 export const pages_hero_links = pgTable(
@@ -233,8 +229,8 @@ export const pages_blocks_content_columns = pgTable(
     _parentID: varchar('_parent_id').notNull(),
     id: varchar('id').primaryKey(),
     size: enum_pages_blocks_content_columns_size('size').default('full'),
-    font: enum_pages_blocks_content_columns_font('font').default('sans-serif'),
-    maxWidth: varchar('max_width').default(0),
+    font: enum_pages_blocks_content_columns_font('font').default('default'),
+    customCss: varchar('custom_css').default(''),
     richText: jsonb('rich_text'),
     enableLink: boolean('enable_link'),
     link_type: enum_pages_blocks_content_columns_link_type('link_type').default('reference'),
@@ -355,6 +351,92 @@ export const pages_blocks_form_block = pgTable(
   }),
 )
 
+export const pages_blocks_three_photo = pgTable(
+  'pages_blocks_three_photo',
+  {
+    _order: integer('_order').notNull(),
+    _parentID: integer('_parent_id').notNull(),
+    _path: text('_path').notNull(),
+    id: varchar('id').primaryKey(),
+    photoLeft: integer('photo_left_id').references(() => media.id, {
+      onDelete: 'set null',
+    }),
+    photoCenter: integer('photo_center_id').references(() => media.id, {
+      onDelete: 'set null',
+    }),
+    photoRight: integer('photo_right_id').references(() => media.id, {
+      onDelete: 'set null',
+    }),
+    blockName: varchar('block_name'),
+  },
+  (columns) => ({
+    _orderIdx: index('pages_blocks_three_photo_order_idx').on(columns._order),
+    _parentIDIdx: index('pages_blocks_three_photo_parent_id_idx').on(columns._parentID),
+    _pathIdx: index('pages_blocks_three_photo_path_idx').on(columns._path),
+    pages_blocks_three_photo_photo_left_idx: index('pages_blocks_three_photo_photo_left_idx').on(
+      columns.photoLeft,
+    ),
+    pages_blocks_three_photo_photo_center_idx: index(
+      'pages_blocks_three_photo_photo_center_idx',
+    ).on(columns.photoCenter),
+    pages_blocks_three_photo_photo_right_idx: index('pages_blocks_three_photo_photo_right_idx').on(
+      columns.photoRight,
+    ),
+    _parentIdFk: foreignKey({
+      columns: [columns['_parentID']],
+      foreignColumns: [pages.id],
+      name: 'pages_blocks_three_photo_parent_id_fk',
+    }).onDelete('cascade'),
+  }),
+)
+
+export const pages_blocks_products_carousel_products = pgTable(
+  'pages_blocks_products_carousel_products',
+  {
+    _order: integer('_order').notNull(),
+    _parentID: varchar('_parent_id').notNull(),
+    id: varchar('id').primaryKey(),
+    product: integer('product_id').references(() => products.id, {
+      onDelete: 'set null',
+    }),
+  },
+  (columns) => ({
+    _orderIdx: index('pages_blocks_products_carousel_products_order_idx').on(columns._order),
+    _parentIDIdx: index('pages_blocks_products_carousel_products_parent_id_idx').on(
+      columns._parentID,
+    ),
+    pages_blocks_products_carousel_products_product_idx: index(
+      'pages_blocks_products_carousel_products_product_idx',
+    ).on(columns.product),
+    _parentIDFk: foreignKey({
+      columns: [columns['_parentID']],
+      foreignColumns: [pages_blocks_products_carousel.id],
+      name: 'pages_blocks_products_carousel_products_parent_id_fk',
+    }).onDelete('cascade'),
+  }),
+)
+
+export const pages_blocks_products_carousel = pgTable(
+  'pages_blocks_products_carousel',
+  {
+    _order: integer('_order').notNull(),
+    _parentID: integer('_parent_id').notNull(),
+    _path: text('_path').notNull(),
+    id: varchar('id').primaryKey(),
+    blockName: varchar('block_name'),
+  },
+  (columns) => ({
+    _orderIdx: index('pages_blocks_products_carousel_order_idx').on(columns._order),
+    _parentIDIdx: index('pages_blocks_products_carousel_parent_id_idx').on(columns._parentID),
+    _pathIdx: index('pages_blocks_products_carousel_path_idx').on(columns._path),
+    _parentIdFk: foreignKey({
+      columns: [columns['_parentID']],
+      foreignColumns: [pages.id],
+      name: 'pages_blocks_products_carousel_parent_id_fk',
+    }).onDelete('cascade'),
+  }),
+)
+
 export const pages = pgTable(
   'pages',
   {
@@ -400,7 +482,7 @@ export const pages_rels = pgTable(
     path: varchar('path').notNull(),
     pagesID: integer('pages_id'),
     postsID: integer('posts_id'),
-    categoriesID: integer('categories_id'),
+    postCategoriesID: integer('post_categories_id'),
   },
   (columns) => ({
     order: index('pages_rels_order_idx').on(columns.order),
@@ -408,7 +490,9 @@ export const pages_rels = pgTable(
     pathIdx: index('pages_rels_path_idx').on(columns.path),
     pages_rels_pages_id_idx: index('pages_rels_pages_id_idx').on(columns.pagesID),
     pages_rels_posts_id_idx: index('pages_rels_posts_id_idx').on(columns.postsID),
-    pages_rels_categories_id_idx: index('pages_rels_categories_id_idx').on(columns.categoriesID),
+    pages_rels_post_categories_id_idx: index('pages_rels_post_categories_id_idx').on(
+      columns.postCategoriesID,
+    ),
     parentFk: foreignKey({
       columns: [columns['parent']],
       foreignColumns: [pages.id],
@@ -424,10 +508,10 @@ export const pages_rels = pgTable(
       foreignColumns: [posts.id],
       name: 'pages_rels_posts_fk',
     }).onDelete('cascade'),
-    categoriesIdFk: foreignKey({
-      columns: [columns['categoriesID']],
-      foreignColumns: [categories.id],
-      name: 'pages_rels_categories_fk',
+    postCategoriesIdFk: foreignKey({
+      columns: [columns['postCategoriesID']],
+      foreignColumns: [post_categories.id],
+      name: 'pages_rels_post_categories_fk',
     }).onDelete('cascade'),
   }),
 )
@@ -512,8 +596,8 @@ export const _pages_v_blocks_content_columns = pgTable(
     _parentID: integer('_parent_id').notNull(),
     id: serial('id').primaryKey(),
     size: enum__pages_v_blocks_content_columns_size('size').default('full'),
-    font: enum__pages_v_blocks_content_columns_font('font').default('sans-serif'),
-    maxWidth: varchar('max_width').default(0),
+    font: enum__pages_v_blocks_content_columns_font('font').default('default'),
+    customCss: varchar('custom_css').default(''),
     richText: jsonb('rich_text'),
     enableLink: boolean('enable_link'),
     link_type: enum__pages_v_blocks_content_columns_link_type('link_type').default('reference'),
@@ -641,6 +725,95 @@ export const _pages_v_blocks_form_block = pgTable(
   }),
 )
 
+export const _pages_v_blocks_three_photo = pgTable(
+  '_pages_v_blocks_three_photo',
+  {
+    _order: integer('_order').notNull(),
+    _parentID: integer('_parent_id').notNull(),
+    _path: text('_path').notNull(),
+    id: serial('id').primaryKey(),
+    photoLeft: integer('photo_left_id').references(() => media.id, {
+      onDelete: 'set null',
+    }),
+    photoCenter: integer('photo_center_id').references(() => media.id, {
+      onDelete: 'set null',
+    }),
+    photoRight: integer('photo_right_id').references(() => media.id, {
+      onDelete: 'set null',
+    }),
+    _uuid: varchar('_uuid'),
+    blockName: varchar('block_name'),
+  },
+  (columns) => ({
+    _orderIdx: index('_pages_v_blocks_three_photo_order_idx').on(columns._order),
+    _parentIDIdx: index('_pages_v_blocks_three_photo_parent_id_idx').on(columns._parentID),
+    _pathIdx: index('_pages_v_blocks_three_photo_path_idx').on(columns._path),
+    _pages_v_blocks_three_photo_photo_left_idx: index(
+      '_pages_v_blocks_three_photo_photo_left_idx',
+    ).on(columns.photoLeft),
+    _pages_v_blocks_three_photo_photo_center_idx: index(
+      '_pages_v_blocks_three_photo_photo_center_idx',
+    ).on(columns.photoCenter),
+    _pages_v_blocks_three_photo_photo_right_idx: index(
+      '_pages_v_blocks_three_photo_photo_right_idx',
+    ).on(columns.photoRight),
+    _parentIdFk: foreignKey({
+      columns: [columns['_parentID']],
+      foreignColumns: [_pages_v.id],
+      name: '_pages_v_blocks_three_photo_parent_id_fk',
+    }).onDelete('cascade'),
+  }),
+)
+
+export const _pages_v_blocks_products_carousel_products = pgTable(
+  '_pages_v_blocks_products_carousel_products',
+  {
+    _order: integer('_order').notNull(),
+    _parentID: integer('_parent_id').notNull(),
+    id: serial('id').primaryKey(),
+    product: integer('product_id').references(() => products.id, {
+      onDelete: 'set null',
+    }),
+    _uuid: varchar('_uuid'),
+  },
+  (columns) => ({
+    _orderIdx: index('_pages_v_blocks_products_carousel_products_order_idx').on(columns._order),
+    _parentIDIdx: index('_pages_v_blocks_products_carousel_products_parent_id_idx').on(
+      columns._parentID,
+    ),
+    _pages_v_blocks_products_carousel_products_product_idx: index(
+      '_pages_v_blocks_products_carousel_products_product_idx',
+    ).on(columns.product),
+    _parentIDFk: foreignKey({
+      columns: [columns['_parentID']],
+      foreignColumns: [_pages_v_blocks_products_carousel.id],
+      name: '_pages_v_blocks_products_carousel_products_parent_id_fk',
+    }).onDelete('cascade'),
+  }),
+)
+
+export const _pages_v_blocks_products_carousel = pgTable(
+  '_pages_v_blocks_products_carousel',
+  {
+    _order: integer('_order').notNull(),
+    _parentID: integer('_parent_id').notNull(),
+    _path: text('_path').notNull(),
+    id: serial('id').primaryKey(),
+    _uuid: varchar('_uuid'),
+    blockName: varchar('block_name'),
+  },
+  (columns) => ({
+    _orderIdx: index('_pages_v_blocks_products_carousel_order_idx').on(columns._order),
+    _parentIDIdx: index('_pages_v_blocks_products_carousel_parent_id_idx').on(columns._parentID),
+    _pathIdx: index('_pages_v_blocks_products_carousel_path_idx').on(columns._path),
+    _parentIdFk: foreignKey({
+      columns: [columns['_parentID']],
+      foreignColumns: [_pages_v.id],
+      name: '_pages_v_blocks_products_carousel_parent_id_fk',
+    }).onDelete('cascade'),
+  }),
+)
+
 export const _pages_v = pgTable(
   '_pages_v',
   {
@@ -722,7 +895,7 @@ export const _pages_v_rels = pgTable(
     path: varchar('path').notNull(),
     pagesID: integer('pages_id'),
     postsID: integer('posts_id'),
-    categoriesID: integer('categories_id'),
+    postCategoriesID: integer('post_categories_id'),
   },
   (columns) => ({
     order: index('_pages_v_rels_order_idx').on(columns.order),
@@ -730,8 +903,8 @@ export const _pages_v_rels = pgTable(
     pathIdx: index('_pages_v_rels_path_idx').on(columns.path),
     _pages_v_rels_pages_id_idx: index('_pages_v_rels_pages_id_idx').on(columns.pagesID),
     _pages_v_rels_posts_id_idx: index('_pages_v_rels_posts_id_idx').on(columns.postsID),
-    _pages_v_rels_categories_id_idx: index('_pages_v_rels_categories_id_idx').on(
-      columns.categoriesID,
+    _pages_v_rels_post_categories_id_idx: index('_pages_v_rels_post_categories_id_idx').on(
+      columns.postCategoriesID,
     ),
     parentFk: foreignKey({
       columns: [columns['parent']],
@@ -748,10 +921,10 @@ export const _pages_v_rels = pgTable(
       foreignColumns: [posts.id],
       name: '_pages_v_rels_posts_fk',
     }).onDelete('cascade'),
-    categoriesIdFk: foreignKey({
-      columns: [columns['categoriesID']],
-      foreignColumns: [categories.id],
-      name: '_pages_v_rels_categories_fk',
+    postCategoriesIdFk: foreignKey({
+      columns: [columns['postCategoriesID']],
+      foreignColumns: [post_categories.id],
+      name: '_pages_v_rels_post_categories_fk',
     }).onDelete('cascade'),
   }),
 )
@@ -818,7 +991,7 @@ export const posts_rels = pgTable(
     parent: integer('parent_id').notNull(),
     path: varchar('path').notNull(),
     postsID: integer('posts_id'),
-    categoriesID: integer('categories_id'),
+    postCategoriesID: integer('post_categories_id'),
     usersID: integer('users_id'),
   },
   (columns) => ({
@@ -826,7 +999,9 @@ export const posts_rels = pgTable(
     parentIdx: index('posts_rels_parent_idx').on(columns.parent),
     pathIdx: index('posts_rels_path_idx').on(columns.path),
     posts_rels_posts_id_idx: index('posts_rels_posts_id_idx').on(columns.postsID),
-    posts_rels_categories_id_idx: index('posts_rels_categories_id_idx').on(columns.categoriesID),
+    posts_rels_post_categories_id_idx: index('posts_rels_post_categories_id_idx').on(
+      columns.postCategoriesID,
+    ),
     posts_rels_users_id_idx: index('posts_rels_users_id_idx').on(columns.usersID),
     parentFk: foreignKey({
       columns: [columns['parent']],
@@ -838,10 +1013,10 @@ export const posts_rels = pgTable(
       foreignColumns: [posts.id],
       name: 'posts_rels_posts_fk',
     }).onDelete('cascade'),
-    categoriesIdFk: foreignKey({
-      columns: [columns['categoriesID']],
-      foreignColumns: [categories.id],
-      name: 'posts_rels_categories_fk',
+    postCategoriesIdFk: foreignKey({
+      columns: [columns['postCategoriesID']],
+      foreignColumns: [post_categories.id],
+      name: 'posts_rels_post_categories_fk',
     }).onDelete('cascade'),
     usersIdFk: foreignKey({
       columns: [columns['usersID']],
@@ -950,7 +1125,7 @@ export const _posts_v_rels = pgTable(
     parent: integer('parent_id').notNull(),
     path: varchar('path').notNull(),
     postsID: integer('posts_id'),
-    categoriesID: integer('categories_id'),
+    postCategoriesID: integer('post_categories_id'),
     usersID: integer('users_id'),
   },
   (columns) => ({
@@ -958,8 +1133,8 @@ export const _posts_v_rels = pgTable(
     parentIdx: index('_posts_v_rels_parent_idx').on(columns.parent),
     pathIdx: index('_posts_v_rels_path_idx').on(columns.path),
     _posts_v_rels_posts_id_idx: index('_posts_v_rels_posts_id_idx').on(columns.postsID),
-    _posts_v_rels_categories_id_idx: index('_posts_v_rels_categories_id_idx').on(
-      columns.categoriesID,
+    _posts_v_rels_post_categories_id_idx: index('_posts_v_rels_post_categories_id_idx').on(
+      columns.postCategoriesID,
     ),
     _posts_v_rels_users_id_idx: index('_posts_v_rels_users_id_idx').on(columns.usersID),
     parentFk: foreignKey({
@@ -972,10 +1147,10 @@ export const _posts_v_rels = pgTable(
       foreignColumns: [posts.id],
       name: '_posts_v_rels_posts_fk',
     }).onDelete('cascade'),
-    categoriesIdFk: foreignKey({
-      columns: [columns['categoriesID']],
-      foreignColumns: [categories.id],
-      name: '_posts_v_rels_categories_fk',
+    postCategoriesIdFk: foreignKey({
+      columns: [columns['postCategoriesID']],
+      foreignColumns: [post_categories.id],
+      name: '_posts_v_rels_post_categories_fk',
     }).onDelete('cascade'),
     usersIdFk: foreignKey({
       columns: [columns['usersID']],
@@ -1077,38 +1252,40 @@ export const media = pgTable(
   }),
 )
 
-export const categories_breadcrumbs = pgTable(
-  'categories_breadcrumbs',
+export const post_categories_breadcrumbs = pgTable(
+  'post_categories_breadcrumbs',
   {
     _order: integer('_order').notNull(),
     _parentID: integer('_parent_id').notNull(),
     id: varchar('id').primaryKey(),
-    doc: integer('doc_id').references(() => categories.id, {
+    doc: integer('doc_id').references(() => post_categories.id, {
       onDelete: 'set null',
     }),
     url: varchar('url'),
     label: varchar('label'),
   },
   (columns) => ({
-    _orderIdx: index('categories_breadcrumbs_order_idx').on(columns._order),
-    _parentIDIdx: index('categories_breadcrumbs_parent_id_idx').on(columns._parentID),
-    categories_breadcrumbs_doc_idx: index('categories_breadcrumbs_doc_idx').on(columns.doc),
+    _orderIdx: index('post_categories_breadcrumbs_order_idx').on(columns._order),
+    _parentIDIdx: index('post_categories_breadcrumbs_parent_id_idx').on(columns._parentID),
+    post_categories_breadcrumbs_doc_idx: index('post_categories_breadcrumbs_doc_idx').on(
+      columns.doc,
+    ),
     _parentIDFk: foreignKey({
       columns: [columns['_parentID']],
-      foreignColumns: [categories.id],
-      name: 'categories_breadcrumbs_parent_id_fk',
+      foreignColumns: [post_categories.id],
+      name: 'post_categories_breadcrumbs_parent_id_fk',
     }).onDelete('cascade'),
   }),
 )
 
-export const categories = pgTable(
-  'categories',
+export const post_categories = pgTable(
+  'post_categories',
   {
     id: serial('id').primaryKey(),
     title: varchar('title').notNull(),
     slug: varchar('slug'),
     slugLock: boolean('slug_lock').default(true),
-    parent: integer('parent_id').references((): AnyPgColumn => categories.id, {
+    parent: integer('parent_id').references((): AnyPgColumn => post_categories.id, {
       onDelete: 'set null',
     }),
     updatedAt: timestamp('updated_at', { mode: 'string', withTimezone: true, precision: 3 })
@@ -1119,10 +1296,10 @@ export const categories = pgTable(
       .notNull(),
   },
   (columns) => ({
-    categories_slug_idx: index('categories_slug_idx').on(columns.slug),
-    categories_parent_idx: index('categories_parent_idx').on(columns.parent),
-    categories_updated_at_idx: index('categories_updated_at_idx').on(columns.updatedAt),
-    categories_created_at_idx: index('categories_created_at_idx').on(columns.createdAt),
+    post_categories_slug_idx: index('post_categories_slug_idx').on(columns.slug),
+    post_categories_parent_idx: index('post_categories_parent_idx').on(columns.parent),
+    post_categories_updated_at_idx: index('post_categories_updated_at_idx').on(columns.updatedAt),
+    post_categories_created_at_idx: index('post_categories_created_at_idx').on(columns.createdAt),
   }),
 )
 
@@ -1131,7 +1308,7 @@ export const users = pgTable(
   {
     id: serial('id').primaryKey(),
     name: varchar('name'),
-    role: enum_users_role('role'),
+    role: enum_users_role('role').notNull(),
     updatedAt: timestamp('updated_at', { mode: 'string', withTimezone: true, precision: 3 })
       .defaultNow()
       .notNull(),
@@ -1185,8 +1362,18 @@ export const products = pgTable(
   'products',
   {
     id: serial('id').primaryKey(),
+    productCategories: integer('product_categories_id').references(() => product_categories.id, {
+      onDelete: 'set null',
+    }),
+    productSubCategories: integer('product_sub_categories_id').references(
+      () => product_sub_categories.id,
+      {
+        onDelete: 'set null',
+      },
+    ),
     title: varchar('title').notNull(),
-    description: varchar('description').notNull(),
+    shortDescription: varchar('short_description').notNull(),
+    longDescription: varchar('long_description'),
     price: numeric('price').notNull(),
     updatedAt: timestamp('updated_at', { mode: 'string', withTimezone: true, precision: 3 })
       .defaultNow()
@@ -1196,8 +1383,72 @@ export const products = pgTable(
       .notNull(),
   },
   (columns) => ({
+    products_product_categories_idx: index('products_product_categories_idx').on(
+      columns.productCategories,
+    ),
+    products_product_sub_categories_idx: index('products_product_sub_categories_idx').on(
+      columns.productSubCategories,
+    ),
     products_updated_at_idx: index('products_updated_at_idx').on(columns.updatedAt),
     products_created_at_idx: index('products_created_at_idx').on(columns.createdAt),
+  }),
+)
+
+export const product_categories = pgTable(
+  'product_categories',
+  {
+    id: serial('id').primaryKey(),
+    title: varchar('title').notNull(),
+    slug: varchar('slug'),
+    slugLock: boolean('slug_lock').default(true),
+    updatedAt: timestamp('updated_at', { mode: 'string', withTimezone: true, precision: 3 })
+      .defaultNow()
+      .notNull(),
+    createdAt: timestamp('created_at', { mode: 'string', withTimezone: true, precision: 3 })
+      .defaultNow()
+      .notNull(),
+  },
+  (columns) => ({
+    product_categories_slug_idx: index('product_categories_slug_idx').on(columns.slug),
+    product_categories_updated_at_idx: index('product_categories_updated_at_idx').on(
+      columns.updatedAt,
+    ),
+    product_categories_created_at_idx: index('product_categories_created_at_idx').on(
+      columns.createdAt,
+    ),
+  }),
+)
+
+export const product_sub_categories = pgTable(
+  'product_sub_categories',
+  {
+    id: serial('id').primaryKey(),
+    productCategories: integer('product_categories_id')
+      .notNull()
+      .references(() => product_categories.id, {
+        onDelete: 'set null',
+      }),
+    title: varchar('title').notNull(),
+    slug: varchar('slug'),
+    slugLock: boolean('slug_lock').default(true),
+    updatedAt: timestamp('updated_at', { mode: 'string', withTimezone: true, precision: 3 })
+      .defaultNow()
+      .notNull(),
+    createdAt: timestamp('created_at', { mode: 'string', withTimezone: true, precision: 3 })
+      .defaultNow()
+      .notNull(),
+  },
+  (columns) => ({
+    product_sub_categories_product_categories_idx: index(
+      'product_sub_categories_product_categories_idx',
+    ).on(columns.productCategories),
+    product_sub_categories_slug_idx: index('product_sub_categories_slug_idx').on(columns.slug),
+    product_sub_categories_updated_at_idx: index('product_sub_categories_updated_at_idx').on(
+      columns.updatedAt,
+    ),
+    product_sub_categories_created_at_idx: index('product_sub_categories_created_at_idx').on(
+      columns.createdAt,
+    ),
   }),
 )
 
@@ -1770,9 +2021,11 @@ export const payload_locked_documents_rels = pgTable(
     pagesID: integer('pages_id'),
     postsID: integer('posts_id'),
     mediaID: integer('media_id'),
-    categoriesID: integer('categories_id'),
+    postCategoriesID: integer('post_categories_id'),
     usersID: integer('users_id'),
     productsID: integer('products_id'),
+    productCategoriesID: integer('product_categories_id'),
+    productSubCategoriesID: integer('product_sub_categories_id'),
     redirectsID: integer('redirects_id'),
     formsID: integer('forms_id'),
     'form-submissionsID': integer('form_submissions_id'),
@@ -1792,15 +2045,21 @@ export const payload_locked_documents_rels = pgTable(
     payload_locked_documents_rels_media_id_idx: index(
       'payload_locked_documents_rels_media_id_idx',
     ).on(columns.mediaID),
-    payload_locked_documents_rels_categories_id_idx: index(
-      'payload_locked_documents_rels_categories_id_idx',
-    ).on(columns.categoriesID),
+    payload_locked_documents_rels_post_categories_id_idx: index(
+      'payload_locked_documents_rels_post_categories_id_idx',
+    ).on(columns.postCategoriesID),
     payload_locked_documents_rels_users_id_idx: index(
       'payload_locked_documents_rels_users_id_idx',
     ).on(columns.usersID),
     payload_locked_documents_rels_products_id_idx: index(
       'payload_locked_documents_rels_products_id_idx',
     ).on(columns.productsID),
+    payload_locked_documents_rels_product_categories_id_idx: index(
+      'payload_locked_documents_rels_product_categories_id_idx',
+    ).on(columns.productCategoriesID),
+    payload_locked_documents_rels_product_sub_categories_id_idx: index(
+      'payload_locked_documents_rels_product_sub_categories_id_idx',
+    ).on(columns.productSubCategoriesID),
     payload_locked_documents_rels_redirects_id_idx: index(
       'payload_locked_documents_rels_redirects_id_idx',
     ).on(columns.redirectsID),
@@ -1836,10 +2095,10 @@ export const payload_locked_documents_rels = pgTable(
       foreignColumns: [media.id],
       name: 'payload_locked_documents_rels_media_fk',
     }).onDelete('cascade'),
-    categoriesIdFk: foreignKey({
-      columns: [columns['categoriesID']],
-      foreignColumns: [categories.id],
-      name: 'payload_locked_documents_rels_categories_fk',
+    postCategoriesIdFk: foreignKey({
+      columns: [columns['postCategoriesID']],
+      foreignColumns: [post_categories.id],
+      name: 'payload_locked_documents_rels_post_categories_fk',
     }).onDelete('cascade'),
     usersIdFk: foreignKey({
       columns: [columns['usersID']],
@@ -1850,6 +2109,16 @@ export const payload_locked_documents_rels = pgTable(
       columns: [columns['productsID']],
       foreignColumns: [products.id],
       name: 'payload_locked_documents_rels_products_fk',
+    }).onDelete('cascade'),
+    productCategoriesIdFk: foreignKey({
+      columns: [columns['productCategoriesID']],
+      foreignColumns: [product_categories.id],
+      name: 'payload_locked_documents_rels_product_categories_fk',
+    }).onDelete('cascade'),
+    productSubCategoriesIdFk: foreignKey({
+      columns: [columns['productSubCategoriesID']],
+      foreignColumns: [product_sub_categories.id],
+      name: 'payload_locked_documents_rels_product_sub_categories_fk',
     }).onDelete('cascade'),
     redirectsIdFk: foreignKey({
       columns: [columns['redirectsID']],
@@ -2039,65 +2308,46 @@ export const header_rels = pgTable(
   }),
 )
 
-export const footer_nav_items = pgTable(
-  'footer_nav_items',
-  {
-    _order: integer('_order').notNull(),
-    _parentID: integer('_parent_id').notNull(),
-    id: varchar('id').primaryKey(),
-    link_type: enum_footer_nav_items_link_type('link_type').default('reference'),
-    link_newTab: boolean('link_new_tab'),
-    link_url: varchar('link_url'),
-    link_label: varchar('link_label').notNull(),
-  },
-  (columns) => ({
-    _orderIdx: index('footer_nav_items_order_idx').on(columns._order),
-    _parentIDIdx: index('footer_nav_items_parent_id_idx').on(columns._parentID),
-    _parentIDFk: foreignKey({
-      columns: [columns['_parentID']],
-      foreignColumns: [footer.id],
-      name: 'footer_nav_items_parent_id_fk',
-    }).onDelete('cascade'),
-  }),
-)
-
-export const footer = pgTable('footer', {
-  id: serial('id').primaryKey(),
-  updatedAt: timestamp('updated_at', { mode: 'string', withTimezone: true, precision: 3 }),
-  createdAt: timestamp('created_at', { mode: 'string', withTimezone: true, precision: 3 }),
-})
-
-export const footer_rels = pgTable(
-  'footer_rels',
+export const footer = pgTable(
+  'footer',
   {
     id: serial('id').primaryKey(),
-    order: integer('order'),
-    parent: integer('parent_id').notNull(),
-    path: varchar('path').notNull(),
-    pagesID: integer('pages_id'),
-    postsID: integer('posts_id'),
+    image_image: integer('image_image_id').references(() => media.id, {
+      onDelete: 'set null',
+    }),
+    contactUs_title: varchar('contact_us_title')
+      .notNull()
+      .default('Đăng kí để nhận thông tin khuyến mãi sớm nhất từ BioLAK'),
+    contactUs_emailInputLabel: varchar('contact_us_email_input_label')
+      .notNull()
+      .default('Nhập địa chỉ Email'),
+    contactUs_description: varchar('contact_us_description')
+      .notNull()
+      .default(
+        'Đăng kí để nhận thông tin liên lạc về các sản phẩm, dịch vụ, cửa hàng, sự kiện và các vấn đề đáng quan tâm của BioLAK.',
+      ),
+    legal_title: varchar('legal_title')
+      .notNull()
+      .default('Website thuộc quyền của công ty trách nhiệm hữu hạn ELAK'),
+    legal_content: varchar('legal_content')
+      .notNull()
+      .default(
+        'GCNDKKD 0107874681 | Sở kế hoạch và đầu tư TP. Hà Nội\ncấp ngày 05/06/2017,\nđăng ký thay đổi lần 2 ngày 12/01/2024\nĐịa chỉ: Xóm 5 thôn Long Phú, xã Hòa Thạch, huyện Quốc Oai,\nTP Hà Nội, Việt Nam.\nĐiện thoại: 0983335596 - Email: info@biolak.vn',
+      ),
+    legal_stamp: integer('legal_stamp_id')
+      .notNull()
+      .references(() => media.id, {
+        onDelete: 'set null',
+      }),
+    legal_copyright: varchar('legal_copyright')
+      .notNull()
+      .default('© 2025 BioLAK Vietnam. All rights reserved.'),
+    updatedAt: timestamp('updated_at', { mode: 'string', withTimezone: true, precision: 3 }),
+    createdAt: timestamp('created_at', { mode: 'string', withTimezone: true, precision: 3 }),
   },
   (columns) => ({
-    order: index('footer_rels_order_idx').on(columns.order),
-    parentIdx: index('footer_rels_parent_idx').on(columns.parent),
-    pathIdx: index('footer_rels_path_idx').on(columns.path),
-    footer_rels_pages_id_idx: index('footer_rels_pages_id_idx').on(columns.pagesID),
-    footer_rels_posts_id_idx: index('footer_rels_posts_id_idx').on(columns.postsID),
-    parentFk: foreignKey({
-      columns: [columns['parent']],
-      foreignColumns: [footer.id],
-      name: 'footer_rels_parent_fk',
-    }).onDelete('cascade'),
-    pagesIdFk: foreignKey({
-      columns: [columns['pagesID']],
-      foreignColumns: [pages.id],
-      name: 'footer_rels_pages_fk',
-    }).onDelete('cascade'),
-    postsIdFk: foreignKey({
-      columns: [columns['postsID']],
-      foreignColumns: [posts.id],
-      name: 'footer_rels_posts_fk',
-    }).onDelete('cascade'),
+    footer_image_image_image_idx: index('footer_image_image_image_idx').on(columns.image_image),
+    footer_legal_legal_stamp_idx: index('footer_legal_legal_stamp_idx').on(columns.legal_stamp),
   }),
 )
 
@@ -2238,6 +2488,59 @@ export const relations_pages_blocks_form_block = relations(pages_blocks_form_blo
     relationName: 'form',
   }),
 }))
+export const relations_pages_blocks_three_photo = relations(
+  pages_blocks_three_photo,
+  ({ one }) => ({
+    _parentID: one(pages, {
+      fields: [pages_blocks_three_photo._parentID],
+      references: [pages.id],
+      relationName: '_blocks_threePhoto',
+    }),
+    photoLeft: one(media, {
+      fields: [pages_blocks_three_photo.photoLeft],
+      references: [media.id],
+      relationName: 'photoLeft',
+    }),
+    photoCenter: one(media, {
+      fields: [pages_blocks_three_photo.photoCenter],
+      references: [media.id],
+      relationName: 'photoCenter',
+    }),
+    photoRight: one(media, {
+      fields: [pages_blocks_three_photo.photoRight],
+      references: [media.id],
+      relationName: 'photoRight',
+    }),
+  }),
+)
+export const relations_pages_blocks_products_carousel_products = relations(
+  pages_blocks_products_carousel_products,
+  ({ one }) => ({
+    _parentID: one(pages_blocks_products_carousel, {
+      fields: [pages_blocks_products_carousel_products._parentID],
+      references: [pages_blocks_products_carousel.id],
+      relationName: 'products',
+    }),
+    product: one(products, {
+      fields: [pages_blocks_products_carousel_products.product],
+      references: [products.id],
+      relationName: 'product',
+    }),
+  }),
+)
+export const relations_pages_blocks_products_carousel = relations(
+  pages_blocks_products_carousel,
+  ({ one, many }) => ({
+    _parentID: one(pages, {
+      fields: [pages_blocks_products_carousel._parentID],
+      references: [pages.id],
+      relationName: '_blocks_productsCarousel',
+    }),
+    products: many(pages_blocks_products_carousel_products, {
+      relationName: 'products',
+    }),
+  }),
+)
 export const relations_pages_rels = relations(pages_rels, ({ one }) => ({
   parent: one(pages, {
     fields: [pages_rels.parent],
@@ -2254,10 +2557,10 @@ export const relations_pages_rels = relations(pages_rels, ({ one }) => ({
     references: [posts.id],
     relationName: 'posts',
   }),
-  categoriesID: one(categories, {
-    fields: [pages_rels.categoriesID],
-    references: [categories.id],
-    relationName: 'categories',
+  postCategoriesID: one(post_categories, {
+    fields: [pages_rels.postCategoriesID],
+    references: [post_categories.id],
+    relationName: 'postCategories',
   }),
 }))
 export const relations_pages = relations(pages, ({ one, many }) => ({
@@ -2283,6 +2586,12 @@ export const relations_pages = relations(pages, ({ one, many }) => ({
   }),
   _blocks_formBlock: many(pages_blocks_form_block, {
     relationName: '_blocks_formBlock',
+  }),
+  _blocks_threePhoto: many(pages_blocks_three_photo, {
+    relationName: '_blocks_threePhoto',
+  }),
+  _blocks_productsCarousel: many(pages_blocks_products_carousel, {
+    relationName: '_blocks_productsCarousel',
   }),
   meta_image: one(media, {
     fields: [pages.meta_image],
@@ -2383,6 +2692,59 @@ export const relations__pages_v_blocks_form_block = relations(
     }),
   }),
 )
+export const relations__pages_v_blocks_three_photo = relations(
+  _pages_v_blocks_three_photo,
+  ({ one }) => ({
+    _parentID: one(_pages_v, {
+      fields: [_pages_v_blocks_three_photo._parentID],
+      references: [_pages_v.id],
+      relationName: '_blocks_threePhoto',
+    }),
+    photoLeft: one(media, {
+      fields: [_pages_v_blocks_three_photo.photoLeft],
+      references: [media.id],
+      relationName: 'photoLeft',
+    }),
+    photoCenter: one(media, {
+      fields: [_pages_v_blocks_three_photo.photoCenter],
+      references: [media.id],
+      relationName: 'photoCenter',
+    }),
+    photoRight: one(media, {
+      fields: [_pages_v_blocks_three_photo.photoRight],
+      references: [media.id],
+      relationName: 'photoRight',
+    }),
+  }),
+)
+export const relations__pages_v_blocks_products_carousel_products = relations(
+  _pages_v_blocks_products_carousel_products,
+  ({ one }) => ({
+    _parentID: one(_pages_v_blocks_products_carousel, {
+      fields: [_pages_v_blocks_products_carousel_products._parentID],
+      references: [_pages_v_blocks_products_carousel.id],
+      relationName: 'products',
+    }),
+    product: one(products, {
+      fields: [_pages_v_blocks_products_carousel_products.product],
+      references: [products.id],
+      relationName: 'product',
+    }),
+  }),
+)
+export const relations__pages_v_blocks_products_carousel = relations(
+  _pages_v_blocks_products_carousel,
+  ({ one, many }) => ({
+    _parentID: one(_pages_v, {
+      fields: [_pages_v_blocks_products_carousel._parentID],
+      references: [_pages_v.id],
+      relationName: '_blocks_productsCarousel',
+    }),
+    products: many(_pages_v_blocks_products_carousel_products, {
+      relationName: 'products',
+    }),
+  }),
+)
 export const relations__pages_v_rels = relations(_pages_v_rels, ({ one }) => ({
   parent: one(_pages_v, {
     fields: [_pages_v_rels.parent],
@@ -2399,10 +2761,10 @@ export const relations__pages_v_rels = relations(_pages_v_rels, ({ one }) => ({
     references: [posts.id],
     relationName: 'posts',
   }),
-  categoriesID: one(categories, {
-    fields: [_pages_v_rels.categoriesID],
-    references: [categories.id],
-    relationName: 'categories',
+  postCategoriesID: one(post_categories, {
+    fields: [_pages_v_rels.postCategoriesID],
+    references: [post_categories.id],
+    relationName: 'postCategories',
   }),
 }))
 export const relations__pages_v = relations(_pages_v, ({ one, many }) => ({
@@ -2434,6 +2796,12 @@ export const relations__pages_v = relations(_pages_v, ({ one, many }) => ({
   _blocks_formBlock: many(_pages_v_blocks_form_block, {
     relationName: '_blocks_formBlock',
   }),
+  _blocks_threePhoto: many(_pages_v_blocks_three_photo, {
+    relationName: '_blocks_threePhoto',
+  }),
+  _blocks_productsCarousel: many(_pages_v_blocks_products_carousel, {
+    relationName: '_blocks_productsCarousel',
+  }),
   version_meta_image: one(media, {
     fields: [_pages_v.version_meta_image],
     references: [media.id],
@@ -2461,10 +2829,10 @@ export const relations_posts_rels = relations(posts_rels, ({ one }) => ({
     references: [posts.id],
     relationName: 'posts',
   }),
-  categoriesID: one(categories, {
-    fields: [posts_rels.categoriesID],
-    references: [categories.id],
-    relationName: 'categories',
+  postCategoriesID: one(post_categories, {
+    fields: [posts_rels.postCategoriesID],
+    references: [post_categories.id],
+    relationName: 'postCategories',
   }),
   usersID: one(users, {
     fields: [posts_rels.usersID],
@@ -2511,10 +2879,10 @@ export const relations__posts_v_rels = relations(_posts_v_rels, ({ one }) => ({
     references: [posts.id],
     relationName: 'posts',
   }),
-  categoriesID: one(categories, {
-    fields: [_posts_v_rels.categoriesID],
-    references: [categories.id],
-    relationName: 'categories',
+  postCategoriesID: one(post_categories, {
+    fields: [_posts_v_rels.postCategoriesID],
+    references: [post_categories.id],
+    relationName: 'postCategories',
   }),
   usersID: one(users, {
     fields: [_posts_v_rels.usersID],
@@ -2546,25 +2914,28 @@ export const relations__posts_v = relations(_posts_v, ({ one, many }) => ({
   }),
 }))
 export const relations_media = relations(media, () => ({}))
-export const relations_categories_breadcrumbs = relations(categories_breadcrumbs, ({ one }) => ({
-  _parentID: one(categories, {
-    fields: [categories_breadcrumbs._parentID],
-    references: [categories.id],
-    relationName: 'breadcrumbs',
+export const relations_post_categories_breadcrumbs = relations(
+  post_categories_breadcrumbs,
+  ({ one }) => ({
+    _parentID: one(post_categories, {
+      fields: [post_categories_breadcrumbs._parentID],
+      references: [post_categories.id],
+      relationName: 'breadcrumbs',
+    }),
+    doc: one(post_categories, {
+      fields: [post_categories_breadcrumbs.doc],
+      references: [post_categories.id],
+      relationName: 'doc',
+    }),
   }),
-  doc: one(categories, {
-    fields: [categories_breadcrumbs.doc],
-    references: [categories.id],
-    relationName: 'doc',
-  }),
-}))
-export const relations_categories = relations(categories, ({ one, many }) => ({
-  parent: one(categories, {
-    fields: [categories.parent],
-    references: [categories.id],
+)
+export const relations_post_categories = relations(post_categories, ({ one, many }) => ({
+  parent: one(post_categories, {
+    fields: [post_categories.parent],
+    references: [post_categories.id],
     relationName: 'parent',
   }),
-  breadcrumbs: many(categories_breadcrumbs, {
+  breadcrumbs: many(post_categories_breadcrumbs, {
     relationName: 'breadcrumbs',
   }),
 }))
@@ -2581,9 +2952,27 @@ export const relations_products_gallery = relations(products_gallery, ({ one }) 
     relationName: 'image',
   }),
 }))
-export const relations_products = relations(products, ({ many }) => ({
+export const relations_products = relations(products, ({ one, many }) => ({
+  productCategories: one(product_categories, {
+    fields: [products.productCategories],
+    references: [product_categories.id],
+    relationName: 'productCategories',
+  }),
+  productSubCategories: one(product_sub_categories, {
+    fields: [products.productSubCategories],
+    references: [product_sub_categories.id],
+    relationName: 'productSubCategories',
+  }),
   gallery: many(products_gallery, {
     relationName: 'gallery',
+  }),
+}))
+export const relations_product_categories = relations(product_categories, () => ({}))
+export const relations_product_sub_categories = relations(product_sub_categories, ({ one }) => ({
+  productCategories: one(product_categories, {
+    fields: [product_sub_categories.productCategories],
+    references: [product_categories.id],
+    relationName: 'productCategories',
   }),
 }))
 export const relations_redirects_rels = relations(redirects_rels, ({ one }) => ({
@@ -2810,10 +3199,10 @@ export const relations_payload_locked_documents_rels = relations(
       references: [media.id],
       relationName: 'media',
     }),
-    categoriesID: one(categories, {
-      fields: [payload_locked_documents_rels.categoriesID],
-      references: [categories.id],
-      relationName: 'categories',
+    postCategoriesID: one(post_categories, {
+      fields: [payload_locked_documents_rels.postCategoriesID],
+      references: [post_categories.id],
+      relationName: 'postCategories',
     }),
     usersID: one(users, {
       fields: [payload_locked_documents_rels.usersID],
@@ -2824,6 +3213,16 @@ export const relations_payload_locked_documents_rels = relations(
       fields: [payload_locked_documents_rels.productsID],
       references: [products.id],
       relationName: 'products',
+    }),
+    productCategoriesID: one(product_categories, {
+      fields: [payload_locked_documents_rels.productCategoriesID],
+      references: [product_categories.id],
+      relationName: 'productCategories',
+    }),
+    productSubCategoriesID: one(product_sub_categories, {
+      fields: [payload_locked_documents_rels.productSubCategoriesID],
+      references: [product_sub_categories.id],
+      relationName: 'productSubCategories',
     }),
     redirectsID: one(redirects, {
       fields: [payload_locked_documents_rels.redirectsID],
@@ -2923,36 +3322,16 @@ export const relations_header = relations(header, ({ many }) => ({
     relationName: '_rels',
   }),
 }))
-export const relations_footer_nav_items = relations(footer_nav_items, ({ one }) => ({
-  _parentID: one(footer, {
-    fields: [footer_nav_items._parentID],
-    references: [footer.id],
-    relationName: 'navItems',
+export const relations_footer = relations(footer, ({ one }) => ({
+  image_image: one(media, {
+    fields: [footer.image_image],
+    references: [media.id],
+    relationName: 'image_image',
   }),
-}))
-export const relations_footer_rels = relations(footer_rels, ({ one }) => ({
-  parent: one(footer, {
-    fields: [footer_rels.parent],
-    references: [footer.id],
-    relationName: '_rels',
-  }),
-  pagesID: one(pages, {
-    fields: [footer_rels.pagesID],
-    references: [pages.id],
-    relationName: 'pages',
-  }),
-  postsID: one(posts, {
-    fields: [footer_rels.postsID],
-    references: [posts.id],
-    relationName: 'posts',
-  }),
-}))
-export const relations_footer = relations(footer, ({ many }) => ({
-  navItems: many(footer_nav_items, {
-    relationName: 'navItems',
-  }),
-  _rels: many(footer_rels, {
-    relationName: '_rels',
+  legal_stamp: one(media, {
+    fields: [footer.legal_stamp],
+    references: [media.id],
+    relationName: 'legal_stamp',
   }),
 }))
 export const relations_promo_rels = relations(promo_rels, ({ one }) => ({
@@ -3014,7 +3393,6 @@ type DatabaseSchema = {
   enum_payload_jobs_task_slug: typeof enum_payload_jobs_task_slug
   enum_header_nav_items_left_link_type: typeof enum_header_nav_items_left_link_type
   enum_header_nav_items_right_link_type: typeof enum_header_nav_items_right_link_type
-  enum_footer_nav_items_link_type: typeof enum_footer_nav_items_link_type
   enum_promo_link_type: typeof enum_promo_link_type
   pages_hero_links: typeof pages_hero_links
   pages_blocks_cta_links: typeof pages_blocks_cta_links
@@ -3024,6 +3402,9 @@ type DatabaseSchema = {
   pages_blocks_media_block: typeof pages_blocks_media_block
   pages_blocks_archive: typeof pages_blocks_archive
   pages_blocks_form_block: typeof pages_blocks_form_block
+  pages_blocks_three_photo: typeof pages_blocks_three_photo
+  pages_blocks_products_carousel_products: typeof pages_blocks_products_carousel_products
+  pages_blocks_products_carousel: typeof pages_blocks_products_carousel
   pages: typeof pages
   pages_rels: typeof pages_rels
   _pages_v_version_hero_links: typeof _pages_v_version_hero_links
@@ -3034,6 +3415,9 @@ type DatabaseSchema = {
   _pages_v_blocks_media_block: typeof _pages_v_blocks_media_block
   _pages_v_blocks_archive: typeof _pages_v_blocks_archive
   _pages_v_blocks_form_block: typeof _pages_v_blocks_form_block
+  _pages_v_blocks_three_photo: typeof _pages_v_blocks_three_photo
+  _pages_v_blocks_products_carousel_products: typeof _pages_v_blocks_products_carousel_products
+  _pages_v_blocks_products_carousel: typeof _pages_v_blocks_products_carousel
   _pages_v: typeof _pages_v
   _pages_v_rels: typeof _pages_v_rels
   posts_populated_authors: typeof posts_populated_authors
@@ -3043,11 +3427,13 @@ type DatabaseSchema = {
   _posts_v: typeof _posts_v
   _posts_v_rels: typeof _posts_v_rels
   media: typeof media
-  categories_breadcrumbs: typeof categories_breadcrumbs
-  categories: typeof categories
+  post_categories_breadcrumbs: typeof post_categories_breadcrumbs
+  post_categories: typeof post_categories
   users: typeof users
   products_gallery: typeof products_gallery
   products: typeof products
+  product_categories: typeof product_categories
+  product_sub_categories: typeof product_sub_categories
   redirects: typeof redirects
   redirects_rels: typeof redirects_rels
   forms_blocks_checkbox: typeof forms_blocks_checkbox
@@ -3078,9 +3464,7 @@ type DatabaseSchema = {
   header_nav_items_right: typeof header_nav_items_right
   header: typeof header
   header_rels: typeof header_rels
-  footer_nav_items: typeof footer_nav_items
   footer: typeof footer
-  footer_rels: typeof footer_rels
   promo: typeof promo
   promo_rels: typeof promo_rels
   contact_form: typeof contact_form
@@ -3092,6 +3476,9 @@ type DatabaseSchema = {
   relations_pages_blocks_media_block: typeof relations_pages_blocks_media_block
   relations_pages_blocks_archive: typeof relations_pages_blocks_archive
   relations_pages_blocks_form_block: typeof relations_pages_blocks_form_block
+  relations_pages_blocks_three_photo: typeof relations_pages_blocks_three_photo
+  relations_pages_blocks_products_carousel_products: typeof relations_pages_blocks_products_carousel_products
+  relations_pages_blocks_products_carousel: typeof relations_pages_blocks_products_carousel
   relations_pages_rels: typeof relations_pages_rels
   relations_pages: typeof relations_pages
   relations__pages_v_version_hero_links: typeof relations__pages_v_version_hero_links
@@ -3102,6 +3489,9 @@ type DatabaseSchema = {
   relations__pages_v_blocks_media_block: typeof relations__pages_v_blocks_media_block
   relations__pages_v_blocks_archive: typeof relations__pages_v_blocks_archive
   relations__pages_v_blocks_form_block: typeof relations__pages_v_blocks_form_block
+  relations__pages_v_blocks_three_photo: typeof relations__pages_v_blocks_three_photo
+  relations__pages_v_blocks_products_carousel_products: typeof relations__pages_v_blocks_products_carousel_products
+  relations__pages_v_blocks_products_carousel: typeof relations__pages_v_blocks_products_carousel
   relations__pages_v_rels: typeof relations__pages_v_rels
   relations__pages_v: typeof relations__pages_v
   relations_posts_populated_authors: typeof relations_posts_populated_authors
@@ -3111,11 +3501,13 @@ type DatabaseSchema = {
   relations__posts_v_rels: typeof relations__posts_v_rels
   relations__posts_v: typeof relations__posts_v
   relations_media: typeof relations_media
-  relations_categories_breadcrumbs: typeof relations_categories_breadcrumbs
-  relations_categories: typeof relations_categories
+  relations_post_categories_breadcrumbs: typeof relations_post_categories_breadcrumbs
+  relations_post_categories: typeof relations_post_categories
   relations_users: typeof relations_users
   relations_products_gallery: typeof relations_products_gallery
   relations_products: typeof relations_products
+  relations_product_categories: typeof relations_product_categories
+  relations_product_sub_categories: typeof relations_product_sub_categories
   relations_redirects_rels: typeof relations_redirects_rels
   relations_redirects: typeof relations_redirects
   relations_forms_blocks_checkbox: typeof relations_forms_blocks_checkbox
@@ -3146,8 +3538,6 @@ type DatabaseSchema = {
   relations_header_nav_items_right: typeof relations_header_nav_items_right
   relations_header_rels: typeof relations_header_rels
   relations_header: typeof relations_header
-  relations_footer_nav_items: typeof relations_footer_nav_items
-  relations_footer_rels: typeof relations_footer_rels
   relations_footer: typeof relations_footer
   relations_promo_rels: typeof relations_promo_rels
   relations_promo: typeof relations_promo
