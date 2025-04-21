@@ -8,7 +8,7 @@
     "build": "cross-env NODE_OPTIONS=--no-deprecation next build --turbo",
     "postbuild": "next-sitemap --config next-sitemap.config.cjs",
     "start": "cross-env NODE_OPTIONS=--no-deprecation next start",
-    "dev:prod": "cross-env NODE_OPTIONS=--no-deprecation rm -rf .next && pnpm build && pnpm start"
+    "dev:prod": "cross-env NODE_OPTIONS=--no-deprecation pnpm build && pnpm start"
   },
   "dependencies": {
     "@payloadcms/admin-bar": "3.35.0",
