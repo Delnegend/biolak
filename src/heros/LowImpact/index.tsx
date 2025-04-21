@@ -33,7 +33,7 @@ export const LowImpactHero: React.FC<Page['hero']> = (props) => {
   }
 
   return (
-    <div className="container flex items-center flex-col justify-center h-[22.5rem] gap-11">
+    <div className="container flex items-center flex-col justify-center h-[22.5rem] gap-11 my-16">
       {media && <Image src={media.url} alt={media.alt} width={media.width} height={media.height} />}
       <div className="max-w-3xl text-center">
         {richText && <RichText data={richText} enableGutter={false} />}
