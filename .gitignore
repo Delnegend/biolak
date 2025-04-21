@@ -13,3 +13,4 @@ public/robots.txt
 public/sitemap*.xml
 
 docker-compose.yml
+postgres-dev-backup/*.gz
