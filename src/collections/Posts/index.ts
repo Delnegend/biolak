@@ -25,6 +25,8 @@ import {
   OverviewField,
   PreviewField,
 } from '@payloadcms/plugin-seo/fields'
+import { POST_CATEGORIES_SLUG } from '../PostCategories'
+import { MEDIA_SLUG } from '../Media'
 
 export const Posts: CollectionConfig<'posts'> = {
   slug: 'posts',
@@ -40,7 +42,7 @@ export const Posts: CollectionConfig<'posts'> = {
   defaultPopulate: {
     title: true,
     slug: true,
-    categories: true,
+    [POST_CATEGORIES_SLUG]: true,
     meta: {
       image: true,
       description: true,
@@ -81,7 +83,7 @@ export const Posts: CollectionConfig<'posts'> = {
             {
               name: 'heroImage',
               type: 'upload',
-              relationTo: 'media',
+              relationTo: MEDIA_SLUG,
             },
             {
               name: 'content',
@@ -122,13 +124,13 @@ export const Posts: CollectionConfig<'posts'> = {
               relationTo: 'posts',
             },
             {
-              name: 'categories',
+              name: POST_CATEGORIES_SLUG,
               type: 'relationship',
               admin: {
                 position: 'sidebar',
               },
               hasMany: true,
-              relationTo: 'categories',
+              relationTo: POST_CATEGORIES_SLUG,
             },
           ],
           label: 'Meta',
@@ -146,7 +148,7 @@ export const Posts: CollectionConfig<'posts'> = {
               hasGenerateFn: true,
             }),
             MetaImageField({
-              relationTo: 'media',
+              relationTo: MEDIA_SLUG,
             }),
 
             MetaDescriptionField({}),
