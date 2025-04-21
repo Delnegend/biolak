@@ -43,10 +43,8 @@ export const RenderBlocks: React.FC<{
         }
 
         return (
-          <div className="my-16" key={index}>
-            {/* @ts-expect-error there may be some mismatch between the expected types here */}
-            <Block {...block} disableInnerContainer />
-          </div>
+          // @ts-expect-error there may be some mismatch between the expected types here
+          <Block {...block} key={index} disableInnerContainer />
         )
       })}
     </Fragment>
