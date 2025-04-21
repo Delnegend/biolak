@@ -70,9 +70,11 @@ export interface Config {
     pages: Page;
     posts: Post;
     media: Media;
-    categories: Category;
+    postCategories: PostCategory;
     users: User;
     products: Product;
+    productCategories: ProductCategory;
+    productSubCategories: ProductSubCategory;
     redirects: Redirect;
     forms: Form;
     'form-submissions': FormSubmission;
@@ -87,9 +89,11 @@ export interface Config {
     pages: PagesSelect<false> | PagesSelect<true>;
     posts: PostsSelect<false> | PostsSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
-    categories: CategoriesSelect<false> | CategoriesSelect<true>;
+    postCategories: PostCategoriesSelect<false> | PostCategoriesSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
     products: ProductsSelect<false> | ProductsSelect<true>;
+    productCategories: ProductCategoriesSelect<false> | ProductCategoriesSelect<true>;
+    productSubCategories: ProductSubCategoriesSelect<false> | ProductSubCategoriesSelect<true>;
     redirects: RedirectsSelect<false> | RedirectsSelect<true>;
     forms: FormsSelect<false> | FormsSelect<true>;
     'form-submissions': FormSubmissionsSelect<false> | FormSubmissionsSelect<true>;
@@ -195,9 +199,17 @@ export interface Page {
           id?: string | null;
         }[]
       | null;
-    media: number | Media;
+    media?: (number | null) | Media;
   };
-  layout: (CallToActionBlock | ContentBlock | MediaBlock | ArchiveBlock | FormBlock | ThreePhotoBlock)[];
+  layout: (
+    | CallToActionBlock
+    | ContentBlock
+    | MediaBlock
+    | ArchiveBlock
+    | FormBlock
+    | ThreePhotoBlock
+    | ProductsCarouselProps
+  )[];
   meta?: {
     title?: string | null;
     /**
@@ -237,7 +249,7 @@ export interface Post {
     [k: string]: unknown;
   };
   relatedPosts?: (number | Post)[] | null;
-  categories?: (number | Category)[] | null;
+  postCategories?: (number | PostCategory)[] | null;
   meta?: {
     title?: string | null;
     /**
@@ -354,17 +366,17 @@ export interface Media {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "categories".
+ * via the `definition` "postCategories".
  */
-export interface Category {
+export interface PostCategory {
   id: number;
   title: string;
   slug?: string | null;
   slugLock?: boolean | null;
-  parent?: (number | null) | Category;
+  parent?: (number | null) | PostCategory;
   breadcrumbs?:
     | {
-        doc?: (number | null) | Category;
+        doc?: (number | null) | PostCategory;
         url?: string | null;
         label?: string | null;
         id?: string | null;
@@ -380,7 +392,7 @@ export interface Category {
 export interface User {
   id: number;
   name?: string | null;
-  role?: ('admin' | 'customer') | null;
+  role: 'admin' | 'customer';
   updatedAt: string;
   createdAt: string;
   email: string;
@@ -524,7 +536,7 @@ export interface ArchiveBlock {
   } | null;
   populateBy?: ('collection' | 'selection') | null;
   relationTo?: 'posts' | null;
-  categories?: (number | Category)[] | null;
+  postCategories?: (number | PostCategory)[] | null;
   limit?: number | null;
   selectedDocs?:
     | {
@@ -750,12 +762,30 @@ export interface ThreePhotoBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ProductsCarouselProps".
+ */
+export interface ProductsCarouselProps {
+  products?:
+    | {
+        product: number | Product;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'productsCarousel';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "products".
  */
 export interface Product {
   id: number;
+  productCategories?: (number | null) | ProductCategory;
+  productSubCategories?: (number | null) | ProductSubCategory;
   title: string;
-  description: string;
+  shortDescription: string;
+  longDescription?: string | null;
   price: number;
   gallery?:
     | {
@@ -763,6 +793,31 @@ export interface Product {
         id?: string | null;
       }[]
     | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "productCategories".
+ */
+export interface ProductCategory {
+  id: number;
+  title: string;
+  slug?: string | null;
+  slugLock?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "productSubCategories".
+ */
+export interface ProductSubCategory {
+  id: number;
+  productCategories: number | ProductCategory;
+  title: string;
+  slug?: string | null;
+  slugLock?: boolean | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -951,8 +1006,8 @@ export interface PayloadLockedDocument {
         value: number | Media;
       } | null)
     | ({
-        relationTo: 'categories';
-        value: number | Category;
+        relationTo: 'postCategories';
+        value: number | PostCategory;
       } | null)
     | ({
         relationTo: 'users';
@@ -961,6 +1016,14 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'products';
         value: number | Product;
+      } | null)
+    | ({
+        relationTo: 'productCategories';
+        value: number | ProductCategory;
+      } | null)
+    | ({
+        relationTo: 'productSubCategories';
+        value: number | ProductSubCategory;
       } | null)
     | ({
         relationTo: 'redirects';
@@ -1061,6 +1124,7 @@ export interface PagesSelect<T extends boolean = true> {
         archive?: T | ArchiveBlockSelect<T>;
         formBlock?: T | FormBlockSelect<T>;
         threePhoto?: T | ThreePhotoBlockSelect<T>;
+        productsCarousel?: T | ProductsCarouselPropsSelect<T>;
       };
   meta?:
     | T
@@ -1145,7 +1209,7 @@ export interface ArchiveBlockSelect<T extends boolean = true> {
   introContent?: T;
   populateBy?: T;
   relationTo?: T;
-  categories?: T;
+  postCategories?: T;
   limit?: T;
   selectedDocs?: T;
   id?: T;
@@ -1175,6 +1239,20 @@ export interface ThreePhotoBlockSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ProductsCarouselProps_select".
+ */
+export interface ProductsCarouselPropsSelect<T extends boolean = true> {
+  products?:
+    | T
+    | {
+        product?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "posts_select".
  */
 export interface PostsSelect<T extends boolean = true> {
@@ -1182,7 +1260,7 @@ export interface PostsSelect<T extends boolean = true> {
   heroImage?: T;
   content?: T;
   relatedPosts?: T;
-  categories?: T;
+  postCategories?: T;
   meta?:
     | T
     | {
@@ -1299,9 +1377,9 @@ export interface MediaSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "categories_select".
+ * via the `definition` "postCategories_select".
  */
-export interface CategoriesSelect<T extends boolean = true> {
+export interface PostCategoriesSelect<T extends boolean = true> {
   title?: T;
   slug?: T;
   slugLock?: T;
@@ -1339,8 +1417,11 @@ export interface UsersSelect<T extends boolean = true> {
  * via the `definition` "products_select".
  */
 export interface ProductsSelect<T extends boolean = true> {
+  productCategories?: T;
+  productSubCategories?: T;
   title?: T;
-  description?: T;
+  shortDescription?: T;
+  longDescription?: T;
   price?: T;
   gallery?:
     | T
@@ -1348,6 +1429,29 @@ export interface ProductsSelect<T extends boolean = true> {
         image?: T;
         id?: T;
       };
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "productCategories_select".
+ */
+export interface ProductCategoriesSelect<T extends boolean = true> {
+  title?: T;
+  slug?: T;
+  slugLock?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "productSubCategories_select".
+ */
+export interface ProductSubCategoriesSelect<T extends boolean = true> {
+  productCategories?: T;
+  title?: T;
+  slug?: T;
+  slugLock?: T;
   updatedAt?: T;
   createdAt?: T;
 }
