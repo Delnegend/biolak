@@ -69,7 +69,6 @@ export const hero: Field = {
       name: 'media',
       type: 'upload',
       relationTo: MEDIA_SLUG,
-      required: true,
     },
   ],
   label: false,
