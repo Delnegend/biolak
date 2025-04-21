@@ -1,3 +1,4 @@
+import { MEDIA_SLUG } from '@/collections/Media'
 import { Block } from 'payload'
 
 export const ThreePhoto: Block = {
@@ -7,21 +8,21 @@ export const ThreePhoto: Block = {
     {
       name: 'photoLeft',
       type: 'upload',
-      relationTo: 'media',
+      relationTo: MEDIA_SLUG,
       label: 'Photo Left',
       required: true,
     },
     {
       name: 'photoCenter',
       type: 'upload',
-      relationTo: 'media',
+      relationTo: MEDIA_SLUG,
       label: 'Photo Center',
       required: true,
     },
     {
       name: 'photoRight',
       type: 'upload',
-      relationTo: 'media',
+      relationTo: MEDIA_SLUG,
       label: 'Photo Right',
       required: true,
     },

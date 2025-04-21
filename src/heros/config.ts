@@ -9,6 +9,7 @@ import {
 
 import { admin } from '@/access/admin'
 import { linkGroup } from '@/fields/linkGroup'
+import { MEDIA_SLUG } from '@/collections/Media'
 
 export const hero: Field = {
   name: 'hero',
@@ -67,7 +68,7 @@ export const hero: Field = {
     {
       name: 'media',
       type: 'upload',
-      relationTo: 'media',
+      relationTo: MEDIA_SLUG,
       required: true,
     },
   ],

@@ -14,8 +14,9 @@ import { anyone } from '../access/anyone'
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
+export const MEDIA_SLUG = 'media'
 export const Media: CollectionConfig = {
-  slug: 'media',
+  slug: MEDIA_SLUG,
   access: {
     create: admin,
     delete: admin,
