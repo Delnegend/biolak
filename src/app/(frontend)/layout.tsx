@@ -9,7 +9,6 @@ import { Header } from '@/globals/Header/Component'
 import { mergeOpenGraph } from '@/utilities/mergeOpenGraph'
 import { draftMode } from 'next/headers'
 
-import { SetLightMode } from '@/components/SetLightMode'
 import { Promo } from '@/globals/Promo/Component'
 import { getServerSideURL } from '@/utilities/getURL'
 import { Crimson_Pro, Manrope } from 'next/font/google'
@@ -32,11 +31,11 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   return (
     <html
       className={cn(manrope.variable, crimsonPro.variable, `font-sans`)}
-      lang="en"
+      lang="vi-VN"
+      data-theme="light"
       suppressHydrationWarning
     >
       <head>
-        <SetLightMode />
         <link href="/favicon.ico" rel="icon" sizes="32x32" />
         <link href="/favicon.svg" rel="icon" type="image/svg+xml" />
       </head>
