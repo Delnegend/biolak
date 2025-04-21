@@ -1,9 +1,9 @@
-import type { Post, ArchiveBlock as ArchiveBlockProps } from '@/payload-types'
+import type { ArchiveBlock as ArchiveBlockProps, Post } from '@/payload-types'
 
+import RichText from '@/components/RichText'
 import configPromise from '@payload-config'
 import { getPayload } from 'payload'
 import React from 'react'
-import RichText from '@/components/RichText'
 
 import { CollectionArchive } from '@/components/CollectionArchive'
 
@@ -12,7 +12,14 @@ export const ArchiveBlock: React.FC<
     id?: string
   }
 > = async (props) => {
-  const { id, categories, introContent, limit: limitFromProps, populateBy, selectedDocs } = props
+  const {
+    id,
+    postCategories,
+    introContent,
+    limit: limitFromProps,
+    populateBy,
+    selectedDocs,
+  } = props
 
   const limit = limitFromProps || 3
 
@@ -21,7 +28,7 @@ export const ArchiveBlock: React.FC<
   if (populateBy === 'collection') {
     const payload = await getPayload({ config: configPromise })
 
-    const flattenedCategories = categories?.map((category) => {
+    const flattenedCategories = postCategories?.map((category) => {
       if (typeof category === 'object') return category.id
       else return category
     })
