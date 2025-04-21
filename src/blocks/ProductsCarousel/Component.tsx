@@ -39,6 +39,26 @@ export const ProductsCarousel: React.FC<ProductsCarouselProps> = (props) => {
                         XEM THÊM
                       </Button>
                     </Link>
+                    <div className="flex flex-row gap-3 mt-3">
+                      {products.map((pDot, index) => (
+                        <svg
+                          key={`${pDot.id}-${index}`}
+                          width="10"
+                          height="11"
+                          viewBox="0 0 10 11"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <circle
+                            opacity={pDot.id === p.id ? '0.8' : '0.4'}
+                            cx="5"
+                            cy="5.16602"
+                            r="5"
+                            fill="white"
+                          />
+                        </svg>
+                      ))}
+                    </div>
                   </div>
                 </CarouselItem>
               )
