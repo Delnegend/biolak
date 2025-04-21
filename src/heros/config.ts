@@ -8,8 +8,8 @@ import {
 } from '@payloadcms/richtext-lexical'
 
 import { admin } from '@/access/admin'
-import { linkGroup } from '@/fields/linkGroup'
 import { MEDIA_SLUG } from '@/collections/Media'
+import { linkGroup } from '@/fields/linkGroup'
 
 export const hero: Field = {
   name: 'hero',
