@@ -6,7 +6,7 @@ import { ArchiveBlock } from '@/blocks/ArchiveBlock/Component'
 import { CallToActionBlock } from '@/blocks/CallToAction/Component'
 import { ContentBlock } from '@/blocks/Content/Component'
 import { FormBlock } from '@/blocks/Form/Component'
-import { MediaBlock } from '@/blocks/MediaBlock/Component'
+import { MediaBlockComponent } from '@/blocks/MediaBlock/Component'
 import { ArchiveBlockConf } from './ArchiveBlock/config'
 import { CallToActionBlockConf } from './CallToAction/config'
 import { CertificatesBlock } from './Certificates/Component'
@@ -24,7 +24,7 @@ const blockComponents = {
   [ContentBlockConf.slug]: ContentBlock,
   [CallToActionBlockConf.slug]: CallToActionBlock,
   [FormBlockConf.slug]: FormBlock,
-  [MediaBlockConf.slug]: MediaBlock,
+  [MediaBlockConf.slug]: MediaBlockComponent,
   [ThreePhotoBlockConf.slug]: ThreePhotoBlock,
   [ProductsCarouselBlockConf.slug]: ProductsCarouselBlock,
   [CertificatesBlockConfig.slug]: CertificatesBlock,
