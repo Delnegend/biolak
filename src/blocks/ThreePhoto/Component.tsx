@@ -1,7 +1,7 @@
-import type { ThreePhotoBlock as ThreePhotoProps } from '@/payload-types'
+import type { ThreePhotoBlockProps } from '@/payload-types'
 import Image from 'next/image'
 
-export const ThreePhoto: React.FC<ThreePhotoProps> = (props) => {
+export const ThreePhotoBlock: React.FC<ThreePhotoBlockProps> = (props) => {
   const { photoLeft, photoCenter, photoRight } = props
 
   if (
@@ -16,7 +16,7 @@ export const ThreePhoto: React.FC<ThreePhotoProps> = (props) => {
   }
 
   return (
-    <div className="grid grid-cols-[290fr_620fr_290fr] gap-x-10 max-w-7xl mx-auto w-4/5">
+    <div className="mx-auto grid w-4/5 max-w-7xl grid-cols-[290fr_620fr_290fr] gap-x-10">
       <Image
         className="place-self-center"
         src={photoLeft.url}

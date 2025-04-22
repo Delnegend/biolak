@@ -1,28 +1,28 @@
-import { MEDIA_SLUG } from '@/collections/Media'
-import { Block } from 'payload'
+import { Media } from '@/collections/Media'
+import { Block, CollectionSlug } from 'payload'
 
-export const ThreePhoto: Block = {
+export const ThreePhotoBlockConf: Block = {
   slug: 'threePhoto',
-  interfaceName: 'ThreePhotoBlock',
+  interfaceName: 'ThreePhotoBlockProps',
   fields: [
     {
       name: 'photoLeft',
       type: 'upload',
-      relationTo: MEDIA_SLUG,
+      relationTo: Media.slug as CollectionSlug,
       label: 'Photo Left',
       required: true,
     },
     {
       name: 'photoCenter',
       type: 'upload',
-      relationTo: MEDIA_SLUG,
+      relationTo: Media.slug as CollectionSlug,
       label: 'Photo Center',
       required: true,
     },
     {
       name: 'photoRight',
       type: 'upload',
-      relationTo: MEDIA_SLUG,
+      relationTo: Media.slug as CollectionSlug,
       label: 'Photo Right',
       required: true,
     },

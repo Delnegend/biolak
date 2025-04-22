@@ -7,17 +7,27 @@ import { CallToActionBlock } from '@/blocks/CallToAction/Component'
 import { ContentBlock } from '@/blocks/Content/Component'
 import { FormBlock } from '@/blocks/Form/Component'
 import { MediaBlock } from '@/blocks/MediaBlock/Component'
-import { ProductsCarousel } from './ProductsCarousel/Component'
-import { ThreePhoto } from './ThreePhoto/Component'
+import { ArchiveBlockConf } from './ArchiveBlock/config'
+import { CallToActionBlockConf } from './CallToAction/config'
+import { CertificatesBlock } from './Certificates/Component'
+import { CertificatesBlockConfig } from './Certificates/config'
+import { ContentBlockConf } from './Content/config'
+import { FormBlockConf } from './Form/config'
+import { MediaBlockConf } from './MediaBlock/config'
+import { ProductsCarouselBlock } from './ProductsCarousel/Component'
+import { ProductsCarouselBlockConf } from './ProductsCarousel/config'
+import { ThreePhotoBlock } from './ThreePhoto/Component'
+import { ThreePhotoBlockConf } from './ThreePhoto/config'
 
 const blockComponents = {
-  archive: ArchiveBlock,
-  content: ContentBlock,
-  cta: CallToActionBlock,
-  formBlock: FormBlock,
-  mediaBlock: MediaBlock,
-  threePhoto: ThreePhoto,
-  productsCarousel: ProductsCarousel,
+  [ArchiveBlockConf.slug]: ArchiveBlock,
+  [ContentBlockConf.slug]: ContentBlock,
+  [CallToActionBlockConf.slug]: CallToActionBlock,
+  [FormBlockConf.slug]: FormBlock,
+  [MediaBlockConf.slug]: MediaBlock,
+  [ThreePhotoBlockConf.slug]: ThreePhotoBlock,
+  [ProductsCarouselBlockConf.slug]: ProductsCarouselBlock,
+  [CertificatesBlockConfig.slug]: CertificatesBlock,
 }
 
 export const RenderBlocks: React.FC<{

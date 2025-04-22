@@ -16,7 +16,7 @@ export function ProductsCarouselNavButton({
   return (
     <Button
       onClick={direction === 'next' ? scrollNext : scrollPrev}
-      className={cn('grid grid-cols-1 size-16 p-0 mx-auto [&>svg]:place-self-center', className)}
+      className={cn('mx-auto grid size-16 grid-cols-1 p-0 [&>svg]:place-self-center', className)}
       hideArrow
     >
       {direction === 'next' ? <ChevronRight color="white" /> : <ChevronLeft color="white" />}

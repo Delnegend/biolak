@@ -1,4 +1,4 @@
-import type { Field } from 'payload'
+import type { CollectionSlug, Field } from 'payload'
 
 import {
   FixedToolbarFeature,
@@ -8,7 +8,7 @@ import {
 } from '@payloadcms/richtext-lexical'
 
 import { admin } from '@/access/admin'
-import { MEDIA_SLUG } from '@/collections/Media'
+import { Media } from '@/collections/Media'
 import { linkGroup } from '@/fields/linkGroup'
 
 export const hero: Field = {
@@ -68,7 +68,7 @@ export const hero: Field = {
     {
       name: 'media',
       type: 'upload',
-      relationTo: MEDIA_SLUG,
+      relationTo: Media.slug as CollectionSlug,
     },
   ],
   label: false,

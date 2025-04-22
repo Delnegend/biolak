@@ -1,5 +1,5 @@
-import { MEDIA_SLUG } from '@/collections/Media'
-import { Field } from 'payload'
+import { Media } from '@/collections/Media'
+import { CollectionSlug, Field } from 'payload'
 
 export const searchFields: Field[] = [
   {
@@ -33,7 +33,7 @@ export const searchFields: Field[] = [
         name: 'image',
         label: 'Image',
         type: 'upload',
-        relationTo: MEDIA_SLUG,
+        relationTo: Media.slug as CollectionSlug,
       },
     ],
   },

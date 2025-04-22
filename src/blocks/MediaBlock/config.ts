@@ -1,14 +1,14 @@
-import { MEDIA_SLUG } from '@/collections/Media'
-import type { Block } from 'payload'
+import { Media } from '@/collections/Media'
+import type { Block, CollectionSlug } from 'payload'
 
-export const MediaBlock: Block = {
-  slug: 'mediaBlock',
-  interfaceName: 'MediaBlock',
+export const MediaBlockConf: Block = {
+  slug: 'media',
+  interfaceName: 'MediaBlockProps',
   fields: [
     {
       name: 'media',
       type: 'upload',
-      relationTo: MEDIA_SLUG,
+      relationTo: Media.slug as CollectionSlug,
       required: true,
     },
   ],
