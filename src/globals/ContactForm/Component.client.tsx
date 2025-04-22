@@ -19,9 +19,9 @@ export function ContactFormCC({ data }: { data: DataFromGlobalSlug<'contact-form
   const onSubmit: SubmitHandler<IFormInput> = async (data) => console.log(data)
 
   return (
-    <Card className="border-none bg-transparent flex flex-col gap-[4.5rem]">
+    <Card className="flex flex-col gap-[4.5rem] border-none bg-transparent">
       <CardHeader className="p-0">
-        <CardTitle className="text-4xl h-[70px] font-serif">{data.title}</CardTitle>
+        <CardTitle className="h-[70px] font-serif text-4xl">{data.title}</CardTitle>
       </CardHeader>
       <CardContent className="p-0">
         <form onSubmit={handleSubmit(onSubmit)}>

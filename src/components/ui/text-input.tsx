@@ -23,13 +23,13 @@ export function TextInput({
   return (
     <div
       className={cn(
-        'relative h-14 flex items-end border-b-[#6b5a4a] border-b focus-within:border-b-black transition-colors',
+        'relative flex h-14 items-end border-b border-b-[#6b5a4a] transition-colors focus-within:border-b-black',
         classNames?.container,
       )}
     >
       <input
         className={cn(
-          'flex w-full h-10 bg-transparent ring-offset-background text-xl file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50 relative border-none',
+          'relative flex h-10 w-full border-none bg-transparent text-xl ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50',
           classNames?.input,
         )}
         type={type}
@@ -49,7 +49,7 @@ export function TextInput({
       <div
         className={cn(
           'absolute left-0 flex transition-all',
-          elevated ? 'text-lg -top-3' : 'text-2xl top-0',
+          elevated ? '-top-3 text-lg' : 'top-0 text-2xl',
           classNames?.label,
         )}
         onClick={() => ref_.current?.focus?.()}
