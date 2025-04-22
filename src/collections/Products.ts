@@ -1,7 +1,7 @@
 import { admin } from '@/access/admin'
 import { anyone } from '@/access/anyone'
-import { CollectionConfig } from 'payload'
-import { MEDIA_SLUG } from './Media'
+import { CollectionConfig, CollectionSlug } from 'payload'
+import { Media } from './Media'
 import { PRODUCT_CATEGORIES_SLUG } from './ProductCategories'
 import { PRODUCT_SUB_CATEGORY_SLUG } from './ProductSubCategories'
 
@@ -57,7 +57,7 @@ export const Product: CollectionConfig<'products'> = {
         {
           name: 'image',
           type: 'upload',
-          relationTo: MEDIA_SLUG,
+          relationTo: Media.slug as CollectionSlug,
           label: 'Image',
           required: true,
         },

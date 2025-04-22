@@ -6,7 +6,7 @@ import {
   lexicalEditor,
 } from '@payloadcms/richtext-lexical'
 
-export const Banner: Block = {
+export const BannerBlockConf: Block = {
   slug: 'banner',
   fields: [
     {
@@ -33,5 +33,5 @@ export const Banner: Block = {
       required: true,
     },
   ],
-  interfaceName: 'BannerBlock',
+  interfaceName: 'BannerBlockProps',
 }

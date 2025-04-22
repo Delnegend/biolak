@@ -1,16 +1,16 @@
 import type { Block } from 'payload'
 
+import { POST_CATEGORIES_SLUG } from '@/collections/PostCategories'
 import {
   FixedToolbarFeature,
   HeadingFeature,
   InlineToolbarFeature,
   lexicalEditor,
 } from '@payloadcms/richtext-lexical'
-import { POST_CATEGORIES_SLUG } from '@/collections/PostCategories'
 
-export const Archive: Block = {
+export const ArchiveBlockConf: Block = {
   slug: 'archive',
-  interfaceName: 'ArchiveBlock',
+  interfaceName: 'ArchiveBlockProps',
   fields: [
     {
       name: 'introContent',

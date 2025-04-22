@@ -1,8 +1,8 @@
 import { Block } from 'payload'
 
-export const ProductsCarousel: Block = {
+export const ProductsCarouselBlockConf: Block = {
   slug: 'productsCarousel',
-  interfaceName: 'ProductsCarouselProps',
+  interfaceName: 'ProductsCarouselBlockProps',
   fields: [
     {
       name: 'products',

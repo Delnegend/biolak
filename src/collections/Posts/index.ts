@@ -1,4 +1,4 @@
-import type { CollectionConfig } from 'payload'
+import type { CollectionConfig, CollectionSlug } from 'payload'
 
 import {
   BlocksFeature,
@@ -10,9 +10,9 @@ import {
 
 import { admin } from '../../access/admin'
 import { adminOrPublished } from '../../access/adminOrPublished'
-import { Banner } from '../../blocks/Banner/config'
+import { BannerBlockConf } from '../../blocks/Banner/config'
 import { Code } from '../../blocks/Code/config'
-import { MediaBlock } from '../../blocks/MediaBlock/config'
+import { MediaBlockConf } from '../../blocks/MediaBlock/config'
 import { generatePreviewPath } from '../../utilities/generatePreviewPath'
 import { populateAuthors } from './hooks/populateAuthors'
 import { revalidateDelete, revalidatePost } from './hooks/revalidatePost'
@@ -25,8 +25,8 @@ import {
   OverviewField,
   PreviewField,
 } from '@payloadcms/plugin-seo/fields'
+import { Media } from '../Media'
 import { POST_CATEGORIES_SLUG } from '../PostCategories'
-import { MEDIA_SLUG } from '../Media'
 
 export const Posts: CollectionConfig<'posts'> = {
   slug: 'posts',
@@ -83,7 +83,7 @@ export const Posts: CollectionConfig<'posts'> = {
             {
               name: 'heroImage',
               type: 'upload',
-              relationTo: MEDIA_SLUG,
+              relationTo: Media.slug as CollectionSlug,
             },
             {
               name: 'content',
@@ -92,7 +92,7 @@ export const Posts: CollectionConfig<'posts'> = {
                 features: ({ rootFeatures }) => {
                   return [
                     ...rootFeatures,
-                    BlocksFeature({ blocks: [Banner, Code, MediaBlock] }),
+                    BlocksFeature({ blocks: [BannerBlockConf, Code, MediaBlockConf] }),
                     FixedToolbarFeature(),
                     InlineToolbarFeature(),
                     HorizontalRuleFeature(),
@@ -148,7 +148,7 @@ export const Posts: CollectionConfig<'posts'> = {
               hasGenerateFn: true,
             }),
             MetaImageField({
-              relationTo: MEDIA_SLUG,
+              relationTo: Media.slug,
             }),
 
             MetaDescriptionField({}),

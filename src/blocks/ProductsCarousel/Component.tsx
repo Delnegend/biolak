@@ -1,17 +1,17 @@
 import { Button } from '@/components/ui/button'
 import { Carousel, CarouselContent, CarouselItem } from '@/components/ui/carousel'
-import type { ProductsCarouselProps } from '@/payload-types'
+import type { ProductsCarouselBlockProps } from '@/payload-types'
 import Image from 'next/image'
 import Link from 'next/link'
 import { ProductsCarouselNavButton } from './ProductsCarouselNavButton'
 
-export const ProductsCarousel: React.FC<ProductsCarouselProps> = (props) => {
+export const ProductsCarouselBlock: React.FC<ProductsCarouselBlockProps> = (props) => {
   const products = props.products
     ? props.products.map((p) => p.product).filter((p) => typeof p === 'object')
     : undefined
 
   return (
-    <div className="max-h-[55rem] overflow-hidden relative">
+    <div className="relative max-h-[55rem] overflow-hidden">
       {products && products.length > 0 && (
         <Carousel opts={{ loop: true }}>
           <CarouselContent>
@@ -27,11 +27,11 @@ export const ProductsCarousel: React.FC<ProductsCarouselProps> = (props) => {
                     alt={img?.alt ?? 'Product Image'}
                     width={img?.width ?? 720}
                     height={img?.height ?? 880}
-                    className="object-cover size-full max-h-[55rem]"
+                    className="size-full max-h-[55rem] object-cover"
                     unoptimized={img?.url === undefined}
                   />
-                  <div className="flex flex-col gap-3 text-[#F1DAAE] bg-[#210E0A] text-balance px-14 justify-center">
-                    <div className="font-medium text-xl">Sản phẩm bán chạy</div>
+                  <div className="flex flex-col justify-center gap-3 text-balance bg-[#210E0A] px-14 text-[#F1DAAE]">
+                    <div className="text-xl font-medium">Sản phẩm bán chạy</div>
                     <div className="font-serif text-7xl font-bold">{p.title}</div>
                     <div className="my-5">{p.longDescription ?? p.shortDescription}</div>
                     <Link href="/[slug]" as={`/products/${p.id}`}>
@@ -39,7 +39,7 @@ export const ProductsCarousel: React.FC<ProductsCarouselProps> = (props) => {
                         XEM THÊM
                       </Button>
                     </Link>
-                    <div className="flex flex-row gap-3 mt-3">
+                    <div className="mt-3 flex flex-row gap-3">
                       {products.map((pDot, index) => (
                         <svg
                           key={`${pDot.id}-${index}`}
@@ -64,8 +64,8 @@ export const ProductsCarousel: React.FC<ProductsCarouselProps> = (props) => {
               )
             })}
           </CarouselContent>
-          <ProductsCarouselNavButton direction="previous" className="absolute top-1/2 left-0" />
-          <ProductsCarouselNavButton direction="next" className="absolute top-1/2 right-0" />
+          <ProductsCarouselNavButton direction="previous" className="absolute left-0 top-1/2" />
+          <ProductsCarouselNavButton direction="next" className="absolute right-0 top-1/2" />
         </Carousel>
       )}
     </div>
