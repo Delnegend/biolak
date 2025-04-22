@@ -202,13 +202,14 @@ export interface Page {
     media?: (number | null) | Media;
   };
   layout: (
-    | CallToActionBlock
-    | ContentBlock
-    | MediaBlock
-    | ArchiveBlock
-    | FormBlock
-    | ThreePhotoBlock
-    | ProductsCarouselProps
+    | CallToActionBlockProps
+    | ContentBlockProps
+    | MediaBlockProps
+    | ArchiveBlockProps
+    | FormBlockProps
+    | ThreePhotoBlockProps
+    | ProductsCarouselBlockProps
+    | CertificatesBlockProps
   )[];
   meta?: {
     title?: string | null;
@@ -406,10 +407,12 @@ export interface User {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "CallToActionBlock".
+ * via the `definition` "CallToActionBlockProps".
  */
-export interface CallToActionBlock {
-  richText?: {
+export interface CallToActionBlockProps {
+  title: string;
+  'sub-title'?: string | null;
+  description?: {
     root: {
       type: string;
       children: {
@@ -424,39 +427,34 @@ export interface CallToActionBlock {
     };
     [k: string]: unknown;
   } | null;
-  links?:
-    | {
-        link: {
-          type?: ('reference' | 'custom') | null;
-          newTab?: boolean | null;
-          reference?:
-            | ({
-                relationTo: 'pages';
-                value: number | Page;
-              } | null)
-            | ({
-                relationTo: 'posts';
-                value: number | Post;
-              } | null);
-          url?: string | null;
-          label: string;
-          /**
-           * Choose how the link should be rendered.
-           */
-          appearance?: ('default' | 'outline') | null;
-        };
-        id?: string | null;
-      }[]
-    | null;
+  background?: (number | null) | Media;
+  variant?: ('centered' | 'left') | null;
+  button: {
+    text: string;
+    link?: {
+      type?: ('reference' | 'custom') | null;
+      newTab?: boolean | null;
+      reference?:
+        | ({
+            relationTo: 'pages';
+            value: number | Page;
+          } | null)
+        | ({
+            relationTo: 'posts';
+            value: number | Post;
+          } | null);
+      url?: string | null;
+    };
+  };
   id?: string | null;
   blockName?: string | null;
   blockType: 'cta';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "ContentBlock".
+ * via the `definition` "ContentBlockProps".
  */
-export interface ContentBlock {
+export interface ContentBlockProps {
   columns?:
     | {
         size?: ('oneThird' | 'half' | 'twoThirds' | 'full') | null;
@@ -506,19 +504,19 @@ export interface ContentBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "MediaBlock".
+ * via the `definition` "MediaBlockProps".
  */
-export interface MediaBlock {
+export interface MediaBlockProps {
   media: number | Media;
   id?: string | null;
   blockName?: string | null;
-  blockType: 'mediaBlock';
+  blockType: 'media';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "ArchiveBlock".
+ * via the `definition` "ArchiveBlockProps".
  */
-export interface ArchiveBlock {
+export interface ArchiveBlockProps {
   introContent?: {
     root: {
       type: string;
@@ -550,9 +548,9 @@ export interface ArchiveBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "FormBlock".
+ * via the `definition` "FormBlockProps".
  */
-export interface FormBlock {
+export interface FormBlockProps {
   form: number | Form;
   enableIntro?: boolean | null;
   introContent?: {
@@ -750,9 +748,9 @@ export interface Form {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "ThreePhotoBlock".
+ * via the `definition` "ThreePhotoBlockProps".
  */
-export interface ThreePhotoBlock {
+export interface ThreePhotoBlockProps {
   photoLeft: number | Media;
   photoCenter: number | Media;
   photoRight: number | Media;
@@ -762,9 +760,9 @@ export interface ThreePhotoBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "ProductsCarouselProps".
+ * via the `definition` "ProductsCarouselBlockProps".
  */
-export interface ProductsCarouselProps {
+export interface ProductsCarouselBlockProps {
   products?:
     | {
         product: number | Product;
@@ -820,6 +818,24 @@ export interface ProductSubCategory {
   slugLock?: boolean | null;
   updatedAt: string;
   createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "CertificatesBlockProps".
+ */
+export interface CertificatesBlockProps {
+  title: string;
+  organizations?:
+    | {
+        title: string;
+        description: string;
+        logo?: (number | null) | Media;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'certificates';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1118,13 +1134,14 @@ export interface PagesSelect<T extends boolean = true> {
   layout?:
     | T
     | {
-        cta?: T | CallToActionBlockSelect<T>;
-        content?: T | ContentBlockSelect<T>;
-        mediaBlock?: T | MediaBlockSelect<T>;
-        archive?: T | ArchiveBlockSelect<T>;
-        formBlock?: T | FormBlockSelect<T>;
-        threePhoto?: T | ThreePhotoBlockSelect<T>;
-        productsCarousel?: T | ProductsCarouselPropsSelect<T>;
+        cta?: T | CallToActionBlockPropsSelect<T>;
+        content?: T | ContentBlockPropsSelect<T>;
+        media?: T | MediaBlockPropsSelect<T>;
+        archive?: T | ArchiveBlockPropsSelect<T>;
+        formBlock?: T | FormBlockPropsSelect<T>;
+        threePhoto?: T | ThreePhotoBlockPropsSelect<T>;
+        productsCarousel?: T | ProductsCarouselBlockPropsSelect<T>;
+        certificates?: T | CertificatesBlockPropsSelect<T>;
       };
   meta?:
     | T
@@ -1142,13 +1159,18 @@ export interface PagesSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "CallToActionBlock_select".
+ * via the `definition` "CallToActionBlockProps_select".
  */
-export interface CallToActionBlockSelect<T extends boolean = true> {
-  richText?: T;
-  links?:
+export interface CallToActionBlockPropsSelect<T extends boolean = true> {
+  title?: T;
+  'sub-title'?: T;
+  description?: T;
+  background?: T;
+  variant?: T;
+  button?:
     | T
     | {
+        text?: T;
         link?:
           | T
           | {
@@ -1156,19 +1178,16 @@ export interface CallToActionBlockSelect<T extends boolean = true> {
               newTab?: T;
               reference?: T;
               url?: T;
-              label?: T;
-              appearance?: T;
             };
-        id?: T;
       };
   id?: T;
   blockName?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "ContentBlock_select".
+ * via the `definition` "ContentBlockProps_select".
  */
-export interface ContentBlockSelect<T extends boolean = true> {
+export interface ContentBlockPropsSelect<T extends boolean = true> {
   columns?:
     | T
     | {
@@ -1194,18 +1213,18 @@ export interface ContentBlockSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "MediaBlock_select".
+ * via the `definition` "MediaBlockProps_select".
  */
-export interface MediaBlockSelect<T extends boolean = true> {
+export interface MediaBlockPropsSelect<T extends boolean = true> {
   media?: T;
   id?: T;
   blockName?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "ArchiveBlock_select".
+ * via the `definition` "ArchiveBlockProps_select".
  */
-export interface ArchiveBlockSelect<T extends boolean = true> {
+export interface ArchiveBlockPropsSelect<T extends boolean = true> {
   introContent?: T;
   populateBy?: T;
   relationTo?: T;
@@ -1217,9 +1236,9 @@ export interface ArchiveBlockSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "FormBlock_select".
+ * via the `definition` "FormBlockProps_select".
  */
-export interface FormBlockSelect<T extends boolean = true> {
+export interface FormBlockPropsSelect<T extends boolean = true> {
   form?: T;
   enableIntro?: T;
   introContent?: T;
@@ -1228,9 +1247,9 @@ export interface FormBlockSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "ThreePhotoBlock_select".
+ * via the `definition` "ThreePhotoBlockProps_select".
  */
-export interface ThreePhotoBlockSelect<T extends boolean = true> {
+export interface ThreePhotoBlockPropsSelect<T extends boolean = true> {
   photoLeft?: T;
   photoCenter?: T;
   photoRight?: T;
@@ -1239,13 +1258,30 @@ export interface ThreePhotoBlockSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "ProductsCarouselProps_select".
+ * via the `definition` "ProductsCarouselBlockProps_select".
  */
-export interface ProductsCarouselPropsSelect<T extends boolean = true> {
+export interface ProductsCarouselBlockPropsSelect<T extends boolean = true> {
   products?:
     | T
     | {
         product?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "CertificatesBlockProps_select".
+ */
+export interface CertificatesBlockPropsSelect<T extends boolean = true> {
+  title?: T;
+  organizations?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        logo?: T;
         id?: T;
       };
   id?: T;
@@ -1905,9 +1941,9 @@ export interface TaskSchedulePublish {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "BannerBlock".
+ * via the `definition` "BannerBlockProps".
  */
-export interface BannerBlock {
+export interface BannerBlockProps {
   style: 'info' | 'warning' | 'error' | 'success';
   content: {
     root: {
@@ -1930,9 +1966,9 @@ export interface BannerBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "CodeBlock".
+ * via the `definition` "CodeBlockProps".
  */
-export interface CodeBlock {
+export interface CodeBlockProps {
   language?: ('typescript' | 'javascript' | 'css') | null;
   code: string;
   id?: string | null;
