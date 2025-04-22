@@ -21,11 +21,11 @@ export async function Promo(): Promise<React.JSX.Element> {
 
   if (target && !internalLink) {
     return (
-      <div className="h-10 w-full flex items-center justify-center bg-black text-[#FFF9ED]">
+      <div className="flex h-10 w-full items-center justify-center bg-black text-primary-foreground">
         <a
           target={promoData.link.newTab ? '_blank' : '_self'}
           href={target}
-          className="hover:underline underline-offset-2"
+          className="underline-offset-2 hover:underline"
         >
           {promoData.message}
         </a>
@@ -35,8 +35,8 @@ export async function Promo(): Promise<React.JSX.Element> {
 
   if (target && internalLink) {
     return (
-      <div className="h-10 w-full flex items-center justify-center bg-black text-[#FFF9ED]">
-        <Link href="#" className="hover:underline underline-offset-2">
+      <div className="flex h-10 w-full items-center justify-center bg-black text-primary-foreground">
+        <Link href="#" className="underline-offset-2 hover:underline">
           {promoData.message}
         </Link>
       </div>
@@ -44,7 +44,7 @@ export async function Promo(): Promise<React.JSX.Element> {
   }
 
   return (
-    <div className="h-10 w-full flex items-center justify-center bg-black text-[#FFF9ED]">
+    <div className="flex h-10 w-full items-center justify-center bg-black text-primary-foreground">
       {promoData.message}
     </div>
   )

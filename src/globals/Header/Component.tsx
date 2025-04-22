@@ -53,7 +53,7 @@ export async function Header() {
         <DialogTrigger>
           <div className="text-xl">Liên hệ</div>
         </DialogTrigger>
-        <DialogContent className="min-w-[932px] bg-[#fff9ed] p-12 !rounded-2xl overflow-hidden">
+        <DialogContent className="min-w-[932px] overflow-hidden !rounded-2xl bg-primary-foreground p-12">
           <ContactForm inDialog={true} />
         </DialogContent>
       </Dialog>
@@ -66,7 +66,7 @@ export async function Header() {
     cart: (
       <Button
         variant="default"
-        className="h-14 rounded-full px-6 text-xl font-sans font-medium bg-primary"
+        className="h-14 rounded-full bg-primary px-6 font-sans text-xl font-medium"
         asChild
       >
         <span>Giỏ hàng</span>
