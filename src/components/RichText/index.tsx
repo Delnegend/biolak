@@ -1,4 +1,4 @@
-import { MediaBlock } from '@/blocks/MediaBlock/Component'
+import { MediaBlockComponent } from '@/blocks/MediaBlock/Component'
 import {
   DefaultNodeTypes,
   SerializedBlockNode,
@@ -15,16 +15,14 @@ import { CodeBlock, CodeBlockProps } from '@/blocks/Code/Component'
 
 import { BannerBlockComponent } from '@/blocks/Banner/Component'
 import { CallToActionBlock } from '@/blocks/CallToAction/Component'
-import type {
-  BannerBlock as BannerBlockProps,
-  CallToActionBlock as CTABlockProps,
-  MediaBlock as MediaBlockProps,
-} from '@/payload-types'
+import type { BannerBlockProps, CallToActionBlockProps, MediaBlockProps } from '@/payload-types'
 import { cn } from '@/utilities/ui'
 
 type NodeTypes =
   | DefaultNodeTypes
-  | SerializedBlockNode<CTABlockProps | MediaBlockProps | BannerBlockProps | CodeBlockProps>
+  | SerializedBlockNode<
+      CallToActionBlockProps | MediaBlockProps | BannerBlockProps | CodeBlockProps
+    >
 
 const internalDocToHref = ({ linkNode }: { linkNode: SerializedLinkNode }) => {
   const { value, relationTo } = linkNode.fields.doc!
@@ -40,8 +38,8 @@ const jsxConverters: JSXConvertersFunction<NodeTypes> = ({ defaultConverters }) 
   ...LinkJSXConverter({ internalDocToHref }),
   blocks: {
     banner: ({ node }) => <BannerBlockComponent className="col-start-2 mb-4" {...node.fields} />,
-    mediaBlock: ({ node }) => (
-      <MediaBlock
+    mediaBlock: ({ node }: { node: SerializedBlockNode<MediaBlockProps> }) => (
+      <MediaBlockComponent
         className="col-span-3 col-start-1"
         imgClassName="m-0"
         {...node.fields}
