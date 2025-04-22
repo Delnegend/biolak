@@ -1717,41 +1717,13 @@ export interface Header {
   id: number;
   navItemsLeft?:
     | {
-        link: {
-          type?: ('reference' | 'custom') | null;
-          newTab?: boolean | null;
-          reference?:
-            | ({
-                relationTo: 'pages';
-                value: number | Page;
-              } | null)
-            | ({
-                relationTo: 'posts';
-                value: number | Post;
-              } | null);
-          url?: string | null;
-          label: string;
-        };
+        item?: ('search' | 'products' | 'about' | 'events' | 'contact' | 'vie-en' | 'cart') | null;
         id?: string | null;
       }[]
     | null;
   navItemsRight?:
     | {
-        link: {
-          type?: ('reference' | 'custom') | null;
-          newTab?: boolean | null;
-          reference?:
-            | ({
-                relationTo: 'pages';
-                value: number | Page;
-              } | null)
-            | ({
-                relationTo: 'posts';
-                value: number | Post;
-              } | null);
-          url?: string | null;
-          label: string;
-        };
+        item?: ('search' | 'products' | 'about' | 'events' | 'contact' | 'vie-en' | 'cart') | null;
         id?: string | null;
       }[]
     | null;
@@ -1831,29 +1803,13 @@ export interface HeaderSelect<T extends boolean = true> {
   navItemsLeft?:
     | T
     | {
-        link?:
-          | T
-          | {
-              type?: T;
-              newTab?: T;
-              reference?: T;
-              url?: T;
-              label?: T;
-            };
+        item?: T;
         id?: T;
       };
   navItemsRight?:
     | T
     | {
-        link?:
-          | T
-          | {
-              type?: T;
-              newTab?: T;
-              reference?: T;
-              url?: T;
-              label?: T;
-            };
+        item?: T;
         id?: T;
       };
   updatedAt?: T;
