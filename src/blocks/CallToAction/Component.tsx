@@ -1,22 +1,101 @@
 import React from 'react'
 
-import type { CallToActionBlock as CTABlockProps } from '@/payload-types'
+import type { CallToActionBlockProps } from '@/payload-types'
 
 import RichText from '@/components/RichText'
-import { CMSLink } from '@/components/Link'
+import { Button } from '@/components/ui/button'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { cn } from '@/utilities/ui'
+import { Lato } from 'next/font/google'
+import Link from 'next/link'
 
-export const CallToActionBlock: React.FC<CTABlockProps> = ({ links, richText }) => {
+const lato = Lato({
+  subsets: ['latin'],
+  weight: ['400'],
+})
+
+export function CallToActionBlock(props: CallToActionBlockProps): React.JSX.Element {
+  const bgUrl =
+    props.background && typeof props.background === 'object' && props.background.url
+      ? props.background.url
+      : 'https://placehold.co/1920x1080'
+
+  const variant = props.variant ?? 'centered'
+
+  if (variant === 'centered')
+    return (
+      <div
+        className="flex h-[60rem] items-center justify-center"
+        style={{
+          backgroundImage: `url(${bgUrl})`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat',
+        }}
+      >
+        <Card className="flex w-5/6 max-w-[46rem] flex-col justify-center rounded-[0.5rem] border-none bg-primary-foreground p-12">
+          <CardHeader>
+            {props['sub-title'] && (
+              <div className="text-center text-[2rem] font-bold text-primary">
+                {props['sub-title']}
+              </div>
+            )}
+            <CardTitle className="whitespace-pre-wrap text-center text-7xl font-bold leading-[4.5rem] text-primary">
+              {props.title}
+            </CardTitle>
+            {props.description && (
+              <CardDescription>
+                <RichText
+                  data={props.description}
+                  enableGutter={false}
+                  className={cn('text-balance text-center text-2xl text-[#834621]', lato.className)}
+                />
+              </CardDescription>
+            )}
+          </CardHeader>
+          <CardContent className="grid max-w-[38.5rem]">
+            <Link
+              href={props.button.link?.url ?? '#'}
+              target={props.button.link?.newTab ? '_blank' : '_self'}
+              className="grid"
+            >
+              <Button size="lg" className="w-full max-w-[28rem] place-self-center">
+                {props.button.text}
+              </Button>
+            </Link>
+          </CardContent>
+        </Card>
+      </div>
+    )
+
   return (
-    <div className="container">
-      <div className="bg-card rounded border-border border p-4 flex flex-col gap-8 md:flex-row md:justify-between md:items-center">
-        <div className="max-w-[48rem] flex items-center">
-          {richText && <RichText className="mb-0" data={richText} enableGutter={false} />}
+    <div
+      style={{
+        backgroundImage: `url(${bgUrl})`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat',
+      }}
+    >
+      <div className="box-content flex w-5/6 max-w-[28rem] flex-col gap-6 p-24">
+        <div className="leading whitespace-pre-wrap font-serif text-8xl font-bold leading-[5rem] text-white">
+          {props.title}
         </div>
-        <div className="flex flex-col gap-8">
-          {(links || []).map(({ link }, i) => {
-            return <CMSLink key={i} size="lg" {...link} />
-          })}
-        </div>
+        {props.description && (
+          <RichText
+            data={props.description}
+            enableGutter={false}
+            className="text-balance text-xl leading-8 text-white"
+          />
+        )}
+        <Link
+          href={props.button.link?.url ?? '#'}
+          target={props.button.link?.newTab ? '_blank' : '_self'}
+        >
+          <Button className="w-full" size="lg">
+            {props.button.text}
+          </Button>
+        </Link>
       </div>
     </div>
   )
