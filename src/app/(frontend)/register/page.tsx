@@ -1,14 +1,15 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import Image from 'next/image'
 import Link from 'next/link'
-import loginBanner from '../../../../public/login-banner.png'
 import { RegisterFormCC } from './register-form.client'
 
 export default async function Login() {
   return (
     <div className="mx-auto my-[88px] flex max-w-4xl overflow-hidden rounded-3xl">
       <Image
-        src={loginBanner}
+        src="https://placehold.co/1000x2320"
+        width={1000}
+        height={2320}
         alt="Login Banner"
         className="h-full max-h-[652px] w-[339px] object-cover"
       />
