@@ -3,6 +3,7 @@ import { Block, CollectionSlug } from 'payload'
 
 export const InfiniteScrollBlockConf: Block = {
   slug: 'infiniteScroll',
+  imageURL: '/thumbs/infinite-scroll.avif',
   labels: {
     singular: 'Infinite Scroll',
     plural: 'Infinite Scroll',
