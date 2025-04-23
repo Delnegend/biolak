@@ -14,6 +14,7 @@ import { generatePreviewPath } from '../../utilities/generatePreviewPath'
 import { revalidateDelete, revalidatePage } from './hooks/revalidatePage'
 
 import { CertificatesBlockConfig as CertificatesBlockConf } from '@/blocks/Certificates/config'
+import { InfiniteScrollBlockConf } from '@/blocks/InfiniteScroll/config'
 import { ProductsCarouselBlockConf } from '@/blocks/ProductsCarousel/config'
 import { ThreePhotoBlockConf } from '@/blocks/ThreePhoto/config'
 import {
@@ -88,6 +89,7 @@ export const Pages: CollectionConfig<'pages'> = {
                 ThreePhotoBlockConf,
                 ProductsCarouselBlockConf,
                 CertificatesBlockConf,
+                InfiniteScrollBlockConf,
               ],
               required: true,
               admin: {

@@ -1,0 +1,9 @@
+#infinite-scroll-block > div {
+  animation: infinite-scroll-block-animation var(--animation-duration) linear infinite;
+}
+
+@keyframes infinite-scroll-block-animation {
+  to {
+    transform: translateX(var(--banner-proportion));
+  }
+}
