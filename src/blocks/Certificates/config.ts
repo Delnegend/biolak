@@ -4,6 +4,7 @@ import { Block, CollectionSlug } from 'payload'
 export const CertificatesBlockConfig: Block = {
   slug: 'certificates',
   interfaceName: 'CertificatesBlockProps',
+  imageURL: '/thumbs/certificates.avif',
   fields: [
     {
       name: 'title',

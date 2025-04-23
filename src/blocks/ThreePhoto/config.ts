@@ -4,6 +4,7 @@ import { Block, CollectionSlug } from 'payload'
 export const ThreePhotoBlockConf: Block = {
   slug: 'threePhoto',
   interfaceName: 'ThreePhotoBlockProps',
+  imageURL: '/thumbs/three-photo.avif',
   fields: [
     {
       name: 'photoLeft',

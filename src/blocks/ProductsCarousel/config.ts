@@ -3,6 +3,7 @@ import { Block } from 'payload'
 export const ProductsCarouselBlockConf: Block = {
   slug: 'productsCarousel',
   interfaceName: 'ProductsCarouselBlockProps',
+  imageURL: '/thumbs/products-carousel.avif',
   fields: [
     {
       name: 'products',
