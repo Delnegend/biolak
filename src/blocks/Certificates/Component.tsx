@@ -10,7 +10,7 @@ const dmsans = DM_Sans({
 
 export function CertificatesBlock(props: CertificatesBlockProps): React.JSX.Element {
   return (
-    <div className="flex w-full flex-col items-center justify-center py-16">
+    <div className="flex w-full flex-col items-center justify-center border-t border-black py-16">
       <div className="mb-16 text-balance text-center font-serif text-5xl font-bold text-primary">
         {props.title}
       </div>
