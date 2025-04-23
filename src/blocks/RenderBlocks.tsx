@@ -13,6 +13,8 @@ import { CertificatesBlock } from './Certificates/Component'
 import { CertificatesBlockConfig } from './Certificates/config'
 import { ContentBlockConf } from './Content/config'
 import { FormBlockConf } from './Form/config'
+import { InfiniteScrollBlock } from './InfiniteScroll/Component'
+import { InfiniteScrollBlockConf } from './InfiniteScroll/config'
 import { MediaBlockConf } from './MediaBlock/config'
 import { ProductsCarouselBlock } from './ProductsCarousel/Component'
 import { ProductsCarouselBlockConf } from './ProductsCarousel/config'
@@ -28,6 +30,7 @@ const blockComponents = {
   [ThreePhotoBlockConf.slug]: ThreePhotoBlock,
   [ProductsCarouselBlockConf.slug]: ProductsCarouselBlock,
   [CertificatesBlockConfig.slug]: CertificatesBlock,
+  [InfiniteScrollBlockConf.slug]: InfiniteScrollBlock,
 }
 
 export const RenderBlocks: React.FC<{
