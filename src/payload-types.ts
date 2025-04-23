@@ -210,6 +210,7 @@ export interface Page {
     | ThreePhotoBlockProps
     | ProductsCarouselBlockProps
     | CertificatesBlockProps
+    | InfiniteScrollBlockProps
   )[];
   meta?: {
     title?: string | null;
@@ -839,6 +840,17 @@ export interface CertificatesBlockProps {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "InfiniteScrollBlockProps".
+ */
+export interface InfiniteScrollBlockProps {
+  graphic: number | Media;
+  animationDuration?: number | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'infiniteScroll';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "redirects".
  */
 export interface Redirect {
@@ -1142,6 +1154,7 @@ export interface PagesSelect<T extends boolean = true> {
         threePhoto?: T | ThreePhotoBlockPropsSelect<T>;
         productsCarousel?: T | ProductsCarouselBlockPropsSelect<T>;
         certificates?: T | CertificatesBlockPropsSelect<T>;
+        infiniteScroll?: T | InfiniteScrollBlockPropsSelect<T>;
       };
   meta?:
     | T
@@ -1284,6 +1297,16 @@ export interface CertificatesBlockPropsSelect<T extends boolean = true> {
         logo?: T;
         id?: T;
       };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "InfiniteScrollBlockProps_select".
+ */
+export interface InfiniteScrollBlockPropsSelect<T extends boolean = true> {
+  graphic?: T;
+  animationDuration?: T;
   id?: T;
   blockName?: T;
 }
