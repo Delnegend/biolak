@@ -44,13 +44,11 @@ export function CallToActionBlock(props: CallToActionBlockProps): React.JSX.Elem
               {props.title}
             </CardTitle>
             {props.description && (
-              <CardDescription>
-                <RichText
-                  data={props.description}
-                  enableGutter={false}
-                  className={cn('text-balance text-center text-2xl text-[#834621]', lato.className)}
-                />
-              </CardDescription>
+              <RichText
+                data={props.description}
+                enableGutter={false}
+                className={cn('text-balance text-center text-2xl text-[#834621]', lato.className)}
+              />
             )}
           </CardHeader>
           <CardContent className="grid max-w-[38.5rem]">
