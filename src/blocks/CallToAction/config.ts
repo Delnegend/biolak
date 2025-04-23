@@ -5,6 +5,7 @@ import type { Block, CollectionSlug } from 'payload'
 export const CallToActionBlockConf: Block = {
   slug: 'cta',
   interfaceName: 'CallToActionBlockProps',
+  imageURL: '/thumbs/call-to-action.avif',
   fields: [
     {
       name: 'title',
