@@ -20,17 +20,20 @@ import { ProductsCarouselBlock } from './ProductsCarousel/Component'
 import { ProductsCarouselBlockConf } from './ProductsCarousel/config'
 import { ThreePhotoBlock } from './ThreePhoto/Component'
 import { ThreePhotoBlockConf } from './ThreePhoto/config'
+import { BestSellerBlockConf } from './BestSeller/config'
+import { BestSellerBlock } from './BestSeller/Component'
 
 const blockComponents = {
   [ArchiveBlockConf.slug]: ArchiveBlock,
-  [ContentBlockConf.slug]: ContentBlock,
+  [BestSellerBlockConf.slug]: BestSellerBlock,
   [CallToActionBlockConf.slug]: CallToActionBlock,
-  [FormBlockConf.slug]: FormBlock,
-  [MediaBlockConf.slug]: MediaBlockComponent,
-  [ThreePhotoBlockConf.slug]: ThreePhotoBlock,
-  [ProductsCarouselBlockConf.slug]: ProductsCarouselBlock,
   [CertificatesBlockConfig.slug]: CertificatesBlock,
+  [ContentBlockConf.slug]: ContentBlock,
+  [FormBlockConf.slug]: FormBlock,
   [InfiniteScrollBlockConf.slug]: InfiniteScrollBlock,
+  [MediaBlockConf.slug]: MediaBlockComponent,
+  [ProductsCarouselBlockConf.slug]: ProductsCarouselBlock,
+  [ThreePhotoBlockConf.slug]: ThreePhotoBlock,
 }
 
 export const RenderBlocks: React.FC<{

@@ -13,6 +13,7 @@ import { populatePublishedAt } from '../../hooks/populatePublishedAt'
 import { generatePreviewPath } from '../../utilities/generatePreviewPath'
 import { revalidateDelete, revalidatePage } from './hooks/revalidatePage'
 
+import { BestSellerBlockConf } from '@/blocks/BestSeller/config'
 import { CertificatesBlockConfig as CertificatesBlockConf } from '@/blocks/Certificates/config'
 import { InfiniteScrollBlockConf } from '@/blocks/InfiniteScroll/config'
 import { ProductsCarouselBlockConf } from '@/blocks/ProductsCarousel/config'
@@ -81,15 +82,16 @@ export const Pages: CollectionConfig<'pages'> = {
               name: 'layout',
               type: 'blocks',
               blocks: [
-                CallToActionBlockConf,
-                ContentBlockConf,
-                MediaBlockConf,
                 ArchiveBlockConf,
-                FormBlockConf,
-                ThreePhotoBlockConf,
-                ProductsCarouselBlockConf,
+                BestSellerBlockConf,
+                CallToActionBlockConf,
                 CertificatesBlockConf,
+                ContentBlockConf,
+                FormBlockConf,
                 InfiniteScrollBlockConf,
+                MediaBlockConf,
+                ProductsCarouselBlockConf,
+                ThreePhotoBlockConf,
               ],
               required: true,
               admin: {
