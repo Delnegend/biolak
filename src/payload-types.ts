@@ -202,15 +202,16 @@ export interface Page {
     media?: (number | null) | Media;
   };
   layout: (
-    | CallToActionBlockProps
-    | ContentBlockProps
-    | MediaBlockProps
     | ArchiveBlockProps
-    | FormBlockProps
-    | ThreePhotoBlockProps
-    | ProductsCarouselBlockProps
+    | BestSellerBlockProps
+    | CallToActionBlockProps
     | CertificatesBlockProps
+    | ContentBlockProps
+    | FormBlockProps
     | InfiniteScrollBlockProps
+    | MediaBlockProps
+    | ProductsCarouselBlockProps
+    | ThreePhotoBlockProps
   )[];
   meta?: {
     title?: string | null;
@@ -408,6 +409,103 @@ export interface User {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ArchiveBlockProps".
+ */
+export interface ArchiveBlockProps {
+  introContent?: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  populateBy?: ('collection' | 'selection') | null;
+  relationTo?: 'posts' | null;
+  postCategories?: (number | PostCategory)[] | null;
+  limit?: number | null;
+  selectedDocs?:
+    | {
+        relationTo: 'posts';
+        value: number | Post;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'archive';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "BestSellerBlockProps".
+ */
+export interface BestSellerBlockProps {
+  title: string;
+  description?: string | null;
+  products?:
+    | {
+        product?: (number | null) | Product;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'bestSeller';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "products".
+ */
+export interface Product {
+  id: number;
+  productCategories?: (number | null) | ProductCategory;
+  productSubCategories?: (number | null) | ProductSubCategory;
+  title: string;
+  shortDescription: string;
+  longDescription?: string | null;
+  price: number;
+  gallery?:
+    | {
+        image: number | Media;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "productCategories".
+ */
+export interface ProductCategory {
+  id: number;
+  title: string;
+  slug?: string | null;
+  slugLock?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "productSubCategories".
+ */
+export interface ProductSubCategory {
+  id: number;
+  productCategories: number | ProductCategory;
+  title: string;
+  slug?: string | null;
+  slugLock?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "CallToActionBlockProps".
  */
 export interface CallToActionBlockProps {
@@ -450,6 +548,24 @@ export interface CallToActionBlockProps {
   id?: string | null;
   blockName?: string | null;
   blockType: 'cta';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "CertificatesBlockProps".
+ */
+export interface CertificatesBlockProps {
+  title: string;
+  organizations?:
+    | {
+        title: string;
+        description: string;
+        logo?: (number | null) | Media;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'certificates';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -502,50 +618,6 @@ export interface ContentBlockProps {
   id?: string | null;
   blockName?: string | null;
   blockType: 'content';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "MediaBlockProps".
- */
-export interface MediaBlockProps {
-  media: number | Media;
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'media';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "ArchiveBlockProps".
- */
-export interface ArchiveBlockProps {
-  introContent?: {
-    root: {
-      type: string;
-      children: {
-        type: string;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  } | null;
-  populateBy?: ('collection' | 'selection') | null;
-  relationTo?: 'posts' | null;
-  postCategories?: (number | PostCategory)[] | null;
-  limit?: number | null;
-  selectedDocs?:
-    | {
-        relationTo: 'posts';
-        value: number | Post;
-      }[]
-    | null;
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'archive';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -749,15 +821,24 @@ export interface Form {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "ThreePhotoBlockProps".
+ * via the `definition` "InfiniteScrollBlockProps".
  */
-export interface ThreePhotoBlockProps {
-  photoLeft: number | Media;
-  photoCenter: number | Media;
-  photoRight: number | Media;
+export interface InfiniteScrollBlockProps {
+  graphic: number | Media;
+  animationDuration?: number | null;
   id?: string | null;
   blockName?: string | null;
-  blockType: 'threePhoto';
+  blockType: 'infiniteScroll';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "MediaBlockProps".
+ */
+export interface MediaBlockProps {
+  media: number | Media;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'media';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -776,78 +857,15 @@ export interface ProductsCarouselBlockProps {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "products".
+ * via the `definition` "ThreePhotoBlockProps".
  */
-export interface Product {
-  id: number;
-  productCategories?: (number | null) | ProductCategory;
-  productSubCategories?: (number | null) | ProductSubCategory;
-  title: string;
-  shortDescription: string;
-  longDescription?: string | null;
-  price: number;
-  gallery?:
-    | {
-        image: number | Media;
-        id?: string | null;
-      }[]
-    | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "productCategories".
- */
-export interface ProductCategory {
-  id: number;
-  title: string;
-  slug?: string | null;
-  slugLock?: boolean | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "productSubCategories".
- */
-export interface ProductSubCategory {
-  id: number;
-  productCategories: number | ProductCategory;
-  title: string;
-  slug?: string | null;
-  slugLock?: boolean | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "CertificatesBlockProps".
- */
-export interface CertificatesBlockProps {
-  title: string;
-  organizations?:
-    | {
-        title: string;
-        description: string;
-        logo?: (number | null) | Media;
-        id?: string | null;
-      }[]
-    | null;
+export interface ThreePhotoBlockProps {
+  photoLeft: number | Media;
+  photoCenter: number | Media;
+  photoRight: number | Media;
   id?: string | null;
   blockName?: string | null;
-  blockType: 'certificates';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "InfiniteScrollBlockProps".
- */
-export interface InfiniteScrollBlockProps {
-  graphic: number | Media;
-  animationDuration?: number | null;
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'infiniteScroll';
+  blockType: 'threePhoto';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1146,15 +1164,16 @@ export interface PagesSelect<T extends boolean = true> {
   layout?:
     | T
     | {
-        cta?: T | CallToActionBlockPropsSelect<T>;
-        content?: T | ContentBlockPropsSelect<T>;
-        media?: T | MediaBlockPropsSelect<T>;
         archive?: T | ArchiveBlockPropsSelect<T>;
-        formBlock?: T | FormBlockPropsSelect<T>;
-        threePhoto?: T | ThreePhotoBlockPropsSelect<T>;
-        productsCarousel?: T | ProductsCarouselBlockPropsSelect<T>;
+        bestSeller?: T | BestSellerBlockPropsSelect<T>;
+        cta?: T | CallToActionBlockPropsSelect<T>;
         certificates?: T | CertificatesBlockPropsSelect<T>;
+        content?: T | ContentBlockPropsSelect<T>;
+        formBlock?: T | FormBlockPropsSelect<T>;
         infiniteScroll?: T | InfiniteScrollBlockPropsSelect<T>;
+        media?: T | MediaBlockPropsSelect<T>;
+        productsCarousel?: T | ProductsCarouselBlockPropsSelect<T>;
+        threePhoto?: T | ThreePhotoBlockPropsSelect<T>;
       };
   meta?:
     | T
@@ -1169,6 +1188,36 @@ export interface PagesSelect<T extends boolean = true> {
   updatedAt?: T;
   createdAt?: T;
   _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ArchiveBlockProps_select".
+ */
+export interface ArchiveBlockPropsSelect<T extends boolean = true> {
+  introContent?: T;
+  populateBy?: T;
+  relationTo?: T;
+  postCategories?: T;
+  limit?: T;
+  selectedDocs?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "BestSellerBlockProps_select".
+ */
+export interface BestSellerBlockPropsSelect<T extends boolean = true> {
+  title?: T;
+  description?: T;
+  products?:
+    | T
+    | {
+        product?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1192,6 +1241,23 @@ export interface CallToActionBlockPropsSelect<T extends boolean = true> {
               reference?: T;
               url?: T;
             };
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "CertificatesBlockProps_select".
+ */
+export interface CertificatesBlockPropsSelect<T extends boolean = true> {
+  title?: T;
+  organizations?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        logo?: T;
+        id?: T;
       };
   id?: T;
   blockName?: T;
@@ -1226,29 +1292,6 @@ export interface ContentBlockPropsSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "MediaBlockProps_select".
- */
-export interface MediaBlockPropsSelect<T extends boolean = true> {
-  media?: T;
-  id?: T;
-  blockName?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "ArchiveBlockProps_select".
- */
-export interface ArchiveBlockPropsSelect<T extends boolean = true> {
-  introContent?: T;
-  populateBy?: T;
-  relationTo?: T;
-  postCategories?: T;
-  limit?: T;
-  selectedDocs?: T;
-  id?: T;
-  blockName?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "FormBlockProps_select".
  */
 export interface FormBlockPropsSelect<T extends boolean = true> {
@@ -1260,12 +1303,20 @@ export interface FormBlockPropsSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "ThreePhotoBlockProps_select".
+ * via the `definition` "InfiniteScrollBlockProps_select".
  */
-export interface ThreePhotoBlockPropsSelect<T extends boolean = true> {
-  photoLeft?: T;
-  photoCenter?: T;
-  photoRight?: T;
+export interface InfiniteScrollBlockPropsSelect<T extends boolean = true> {
+  graphic?: T;
+  animationDuration?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "MediaBlockProps_select".
+ */
+export interface MediaBlockPropsSelect<T extends boolean = true> {
+  media?: T;
   id?: T;
   blockName?: T;
 }
@@ -1285,28 +1336,12 @@ export interface ProductsCarouselBlockPropsSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "CertificatesBlockProps_select".
+ * via the `definition` "ThreePhotoBlockProps_select".
  */
-export interface CertificatesBlockPropsSelect<T extends boolean = true> {
-  title?: T;
-  organizations?:
-    | T
-    | {
-        title?: T;
-        description?: T;
-        logo?: T;
-        id?: T;
-      };
-  id?: T;
-  blockName?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "InfiniteScrollBlockProps_select".
- */
-export interface InfiniteScrollBlockPropsSelect<T extends boolean = true> {
-  graphic?: T;
-  animationDuration?: T;
+export interface ThreePhotoBlockPropsSelect<T extends boolean = true> {
+  photoLeft?: T;
+  photoCenter?: T;
+  photoRight?: T;
   id?: T;
   blockName?: T;
 }
