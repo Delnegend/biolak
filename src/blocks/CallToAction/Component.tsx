@@ -4,7 +4,7 @@ import type { CallToActionBlockProps } from '@/payload-types'
 
 import RichText from '@/components/RichText'
 import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { cn } from '@/utilities/ui'
 import { Lato } from 'next/font/google'
 import Link from 'next/link'
