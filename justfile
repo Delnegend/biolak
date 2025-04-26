@@ -30,6 +30,7 @@ db-start-migrate:
   pnpm payload migrate
 db-create-migrate:
   pnpm payload migrate:create
+  just minify-json
 db-dev-pg-start:
   docker compose up -d postgres-dev
 db-dev-pg-backup:
