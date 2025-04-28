@@ -5,7 +5,7 @@ import { hero } from '@/heros/config'
 import { admin } from '../../access/admin'
 import { adminOrPublished } from '../../access/adminOrPublished'
 import { ArchiveBlockConf } from '../../blocks/ArchiveBlock/config'
-import { CallToActionBlockConf } from '../../blocks/CallToAction/config'
+import { CallToActionCenterBlockConf } from '../../blocks/CallToActionCenter/config'
 import { ContentBlockConf } from '../../blocks/Content/config'
 import { FormBlockConf } from '../../blocks/Form/config'
 import { MediaBlockConf } from '../../blocks/MediaBlock/config'
@@ -26,6 +26,8 @@ import {
   PreviewField,
 } from '@payloadcms/plugin-seo/fields'
 import { Media } from '../Media'
+import { CallToActionLeftBlockConf } from '@/blocks/CallToActionLeft/config'
+import { CallToActionRightBlockConf } from '@/blocks/CallToActionRight/config'
 
 export const Pages: CollectionConfig<'pages'> = {
   slug: 'pages',
@@ -84,7 +86,9 @@ export const Pages: CollectionConfig<'pages'> = {
               blocks: [
                 ArchiveBlockConf,
                 BestSellerBlockConf,
-                CallToActionBlockConf,
+                CallToActionCenterBlockConf,
+                CallToActionLeftBlockConf,
+                CallToActionRightBlockConf,
                 CertificatesBlockConf,
                 ContentBlockConf,
                 FormBlockConf,
