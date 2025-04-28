@@ -49,7 +49,7 @@ export function InfiniteScrollBlockCC({
       className="flex h-48 items-center overflow-hidden"
       id="infinite-scroll-block"
       style={{
-        // @ts-expect-error
+        // @ts-expect-error idc
         '--animation-duration': `${animationDuration}s`,
         '--banner-proportion': `-${bannerProportion}%`,
       }}
