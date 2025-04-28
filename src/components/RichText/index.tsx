@@ -14,14 +14,18 @@ import {
 import { CodeBlock, CodeBlockProps } from '@/blocks/Code/Component'
 
 import { BannerBlockComponent } from '@/blocks/Banner/Component'
-import { CallToActionBlock } from '@/blocks/CallToAction/Component'
-import type { BannerBlockProps, CallToActionBlockProps, MediaBlockProps } from '@/payload-types'
+import { CallToActionCenterBlock } from '@/blocks/CallToActionCenter/Component'
+import type {
+  BannerBlockProps,
+  CallToActionCenterBlockProps,
+  MediaBlockProps,
+} from '@/payload-types'
 import { cn } from '@/utilities/ui'
 
 type NodeTypes =
   | DefaultNodeTypes
   | SerializedBlockNode<
-      CallToActionBlockProps | MediaBlockProps | BannerBlockProps | CodeBlockProps
+      CallToActionCenterBlockProps | MediaBlockProps | BannerBlockProps | CodeBlockProps
     >
 
 const internalDocToHref = ({ linkNode }: { linkNode: SerializedLinkNode }) => {
@@ -49,7 +53,7 @@ const jsxConverters: JSXConvertersFunction<NodeTypes> = ({ defaultConverters }) 
       />
     ),
     code: ({ node }) => <CodeBlock className="col-start-2" {...node.fields} />,
-    cta: ({ node }) => <CallToActionBlock {...node.fields} />,
+    cta: ({ node }) => <CallToActionCenterBlock {...node.fields} />,
   },
 })
 
