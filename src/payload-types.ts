@@ -204,7 +204,9 @@ export interface Page {
   layout: (
     | ArchiveBlockProps
     | BestSellerBlockProps
-    | CallToActionBlockProps
+    | CallToActionCenterBlockProps
+    | CallToActionLeftBlockProps
+    | CallToActionRightBlockProps
     | CertificatesBlockProps
     | ContentBlockProps
     | FormBlockProps
@@ -506,9 +508,9 @@ export interface ProductSubCategory {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "CallToActionBlockProps".
+ * via the `definition` "CallToActionCenterBlockProps".
  */
-export interface CallToActionBlockProps {
+export interface CallToActionCenterBlockProps {
   title: string;
   'sub-title'?: string | null;
   description?: {
@@ -527,7 +529,6 @@ export interface CallToActionBlockProps {
     [k: string]: unknown;
   } | null;
   background?: (number | null) | Media;
-  variant?: ('centered' | 'left') | null;
   button: {
     text: string;
     link?: {
@@ -547,7 +548,101 @@ export interface CallToActionBlockProps {
   };
   id?: string | null;
   blockName?: string | null;
-  blockType: 'cta';
+  blockType: 'cta-center';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "CallToActionLeftBlockProps".
+ */
+export interface CallToActionLeftBlockProps {
+  title: string;
+  'sub-title'?: string | null;
+  description?: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  background?: (number | null) | Media;
+  button: {
+    text: string;
+    link?: {
+      type?: ('reference' | 'custom') | null;
+      newTab?: boolean | null;
+      reference?:
+        | ({
+            relationTo: 'pages';
+            value: number | Page;
+          } | null)
+        | ({
+            relationTo: 'posts';
+            value: number | Post;
+          } | null);
+      url?: string | null;
+    };
+  };
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'cta-left';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "CallToActionRightBlockProps".
+ */
+export interface CallToActionRightBlockProps {
+  title: string;
+  'sub-title'?: string | null;
+  description?: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  gallery?:
+    | {
+        title: string;
+        image?: (number | null) | Media;
+        id?: string | null;
+      }[]
+    | null;
+  button: {
+    text: string;
+    link?: {
+      type?: ('reference' | 'custom') | null;
+      newTab?: boolean | null;
+      reference?:
+        | ({
+            relationTo: 'pages';
+            value: number | Page;
+          } | null)
+        | ({
+            relationTo: 'posts';
+            value: number | Post;
+          } | null);
+      url?: string | null;
+    };
+  };
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'cta-right';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1166,7 +1261,9 @@ export interface PagesSelect<T extends boolean = true> {
     | {
         archive?: T | ArchiveBlockPropsSelect<T>;
         bestSeller?: T | BestSellerBlockPropsSelect<T>;
-        cta?: T | CallToActionBlockPropsSelect<T>;
+        'cta-center'?: T | CallToActionCenterBlockPropsSelect<T>;
+        'cta-left'?: T | CallToActionLeftBlockPropsSelect<T>;
+        'cta-right'?: T | CallToActionRightBlockPropsSelect<T>;
         certificates?: T | CertificatesBlockPropsSelect<T>;
         content?: T | ContentBlockPropsSelect<T>;
         formBlock?: T | FormBlockPropsSelect<T>;
@@ -1221,14 +1318,69 @@ export interface BestSellerBlockPropsSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "CallToActionBlockProps_select".
+ * via the `definition` "CallToActionCenterBlockProps_select".
  */
-export interface CallToActionBlockPropsSelect<T extends boolean = true> {
+export interface CallToActionCenterBlockPropsSelect<T extends boolean = true> {
   title?: T;
   'sub-title'?: T;
   description?: T;
   background?: T;
-  variant?: T;
+  button?:
+    | T
+    | {
+        text?: T;
+        link?:
+          | T
+          | {
+              type?: T;
+              newTab?: T;
+              reference?: T;
+              url?: T;
+            };
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "CallToActionLeftBlockProps_select".
+ */
+export interface CallToActionLeftBlockPropsSelect<T extends boolean = true> {
+  title?: T;
+  'sub-title'?: T;
+  description?: T;
+  background?: T;
+  button?:
+    | T
+    | {
+        text?: T;
+        link?:
+          | T
+          | {
+              type?: T;
+              newTab?: T;
+              reference?: T;
+              url?: T;
+            };
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "CallToActionRightBlockProps_select".
+ */
+export interface CallToActionRightBlockPropsSelect<T extends boolean = true> {
+  title?: T;
+  'sub-title'?: T;
+  description?: T;
+  gallery?:
+    | T
+    | {
+        title?: T;
+        image?: T;
+        id?: T;
+      };
   button?:
     | T
     | {
