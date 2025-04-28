@@ -2,10 +2,10 @@ import { Media } from '@/collections/Media'
 import { link } from '@/fields/link'
 import type { Block, CollectionSlug } from 'payload'
 
-export const CallToActionBlockConf: Block = {
-  slug: 'cta',
-  interfaceName: 'CallToActionBlockProps',
-  imageURL: '/thumbs/call-to-action.avif',
+export const CallToActionLeftBlockConf: Block = {
+  slug: 'cta-left',
+  interfaceName: 'CallToActionLeftBlockProps',
+  imageURL: '/thumbs/call-to-action-left.avif',
   fields: [
     {
       name: 'title',
@@ -26,21 +26,6 @@ export const CallToActionBlockConf: Block = {
       relationTo: Media.slug as CollectionSlug,
     },
     {
-      name: 'variant',
-      type: 'select',
-      defaultValue: 'centered',
-      options: [
-        {
-          label: 'Centered',
-          value: 'centered',
-        },
-        {
-          label: 'Left',
-          value: 'left',
-        },
-      ],
-    },
-    {
       name: 'button',
       type: 'group',
       fields: [
@@ -54,7 +39,7 @@ export const CallToActionBlockConf: Block = {
     },
   ],
   labels: {
-    plural: 'Calls to Action',
-    singular: 'Call to Action',
+    plural: 'Calls to Action Left',
+    singular: 'Call to Action Left',
   },
 }
