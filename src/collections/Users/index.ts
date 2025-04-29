@@ -29,6 +29,9 @@ export const Users: CollectionConfig = {
         { label: 'Admin', value: 'admin' },
         { label: 'Customer', value: 'customer' },
       ],
+      access: {
+        update: () => false,
+      },
     },
   ],
   timestamps: true,
