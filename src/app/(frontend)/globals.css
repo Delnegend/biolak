@@ -110,3 +110,7 @@ html[data-theme='dark'],
 html[data-theme='light'] {
   opacity: initial;
 }
+
+.safe-width {
+  @apply mx-auto w-5/6 max-w-[90rem];
+}
