@@ -4,7 +4,8 @@ import path from 'path'
 import { buildConfig, PayloadRequest } from 'payload'
 import sharp from 'sharp' // sharp-import
 import { fileURLToPath } from 'url'
-
+import { en } from '@payloadcms/translations/languages/en'
+import { vi } from '@payloadcms/translations/languages/vi'
 import { defaultLexical } from '@/fields/defaultLexical'
 import { Media } from './collections/Media'
 import { Pages } from './collections/Pages'
@@ -103,5 +104,9 @@ export default buildConfig({
       },
     },
     tasks: [],
+  },
+  i18n: {
+    supportedLanguages: { en, vi },
+    fallbackLanguage: 'en',
   },
 })
