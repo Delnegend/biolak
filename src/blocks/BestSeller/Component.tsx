@@ -20,7 +20,7 @@ export function BestSellerBlock(props: BestSellerBlockProps): React.JSX.Element 
       .filter((p) => typeof p === 'object' && p !== null) || []
 
   return (
-    <div className="flex h-[48rem]">
+    <div className="safe-width flex h-[48rem]">
       <div className="flex h-full w-[40rem] flex-col justify-end gap-9 px-16 py-24">
         <div
           className={cn('font-serif text-7xl font-semibold italic leading-[3.5rem] text-primary')}
