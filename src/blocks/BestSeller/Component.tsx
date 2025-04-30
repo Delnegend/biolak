@@ -46,9 +46,9 @@ export function BestSellerBlock(props: BestSellerBlockProps): React.JSX.Element 
                 className="grid max-w-96 grid-cols-[1fr_auto] grid-rows-[auto]"
                 style={{
                   gridTemplateAreas: `"img img"
-                                    "title add-to-cart"
-                                    "desc add-to-cart"
-                                    "price add-to-cart"`,
+                                      "title add-to-cart"
+                                      "desc add-to-cart"
+                                      "price add-to-cart"`,
                 }}
               >
                 <Image
