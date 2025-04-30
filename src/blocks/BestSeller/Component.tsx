@@ -29,7 +29,8 @@ export function BestSellerBlock(props: BestSellerBlockProps): React.JSX.Element 
         </div>
         {props.description && <div className={cn('text-balance')}>{props.description}</div>}
       </div>
-      <Carousel opts={{ dragFree: true }} className="w-full py-24">
+
+      <Carousel opts={{ dragFree: true }} className="py-24">
         <CarouselContent>
           {products.map((p) => {
             const img =
