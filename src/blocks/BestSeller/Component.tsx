@@ -73,10 +73,10 @@ export function BestSellerBlock(props: BestSellerBlockProps): React.JSX.Element 
                 <div style={{ gridArea: 'add-to-cart' }}>
                   <Button
                     hideArrow={true}
-                    className="flex size-12 items-center justify-center rounded-[0.5rem] bg-[#E7B27E] p-0 hover:bg-[#ca9c6e]"
+                    className="group flex size-12 items-center justify-center rounded-[0.5rem] border-[#E7B27E] bg-[#E7B27E] p-0 transition-all hover:border hover:bg-transparent"
                     title="Thêm vào giỏ hàng"
                   >
-                    <CirclePlus className="w-full" />
+                    <CirclePlus className="w-full transition-colors group-hover:text-[#E7B27E]" />
                   </Button>
                 </div>
               </CarouselItem>
