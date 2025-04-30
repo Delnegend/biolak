@@ -11,6 +11,10 @@ export const BestSellerBlockConf: Block = {
       type: 'text',
       required: true,
       defaultValue: 'Sản phẩm bán chạy',
+      label: {
+        vi: 'Tiêu đề',
+        en: 'Title',
+      },
     },
     {
       name: 'description',
