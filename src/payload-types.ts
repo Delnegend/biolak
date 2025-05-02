@@ -211,6 +211,7 @@ export interface Page {
     | ContentBlockProps
     | FormBlockProps
     | InfiniteScrollBlockProps
+    | LatestPostsBlockProps
     | MediaBlockProps
     | ProductsCarouselBlockProps
     | ThreePhotoBlockProps
@@ -927,6 +928,23 @@ export interface InfiniteScrollBlockProps {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "LatestPostsBlockProps".
+ */
+export interface LatestPostsBlockProps {
+  title: string;
+  buttonLabel: string;
+  posts?:
+    | {
+        post: number | Post;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'latestPosts';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "MediaBlockProps".
  */
 export interface MediaBlockProps {
@@ -1268,6 +1286,7 @@ export interface PagesSelect<T extends boolean = true> {
         content?: T | ContentBlockPropsSelect<T>;
         formBlock?: T | FormBlockPropsSelect<T>;
         infiniteScroll?: T | InfiniteScrollBlockPropsSelect<T>;
+        latestPosts?: T | LatestPostsBlockPropsSelect<T>;
         media?: T | MediaBlockPropsSelect<T>;
         productsCarousel?: T | ProductsCarouselBlockPropsSelect<T>;
         threePhoto?: T | ThreePhotoBlockPropsSelect<T>;
@@ -1460,6 +1479,22 @@ export interface FormBlockPropsSelect<T extends boolean = true> {
 export interface InfiniteScrollBlockPropsSelect<T extends boolean = true> {
   graphic?: T;
   animationDuration?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "LatestPostsBlockProps_select".
+ */
+export interface LatestPostsBlockPropsSelect<T extends boolean = true> {
+  title?: T;
+  buttonLabel?: T;
+  posts?:
+    | T
+    | {
+        post?: T;
+        id?: T;
+      };
   id?: T;
   blockName?: T;
 }
