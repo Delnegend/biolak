@@ -28,6 +28,7 @@ import {
 import { Media } from '../Media'
 import { CallToActionLeftBlockConf } from '@/blocks/CallToActionLeft/config'
 import { CallToActionRightBlockConf } from '@/blocks/CallToActionRight/config'
+import { LatestPostsBlockConf } from '@/blocks/LatestPosts/config'
 
 export const Pages: CollectionConfig<'pages'> = {
   slug: 'pages',
@@ -93,6 +94,7 @@ export const Pages: CollectionConfig<'pages'> = {
                 ContentBlockConf,
                 FormBlockConf,
                 InfiniteScrollBlockConf,
+                LatestPostsBlockConf,
                 MediaBlockConf,
                 ProductsCarouselBlockConf,
                 ThreePhotoBlockConf,
