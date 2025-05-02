@@ -2,94 +2,94 @@ import type { Block } from 'payload'
 
 import { POST_CATEGORIES_SLUG } from '@/collections/PostCategories'
 import {
-  FixedToolbarFeature,
-  HeadingFeature,
-  InlineToolbarFeature,
-  lexicalEditor,
+	FixedToolbarFeature,
+	HeadingFeature,
+	InlineToolbarFeature,
+	lexicalEditor,
 } from '@payloadcms/richtext-lexical'
 
 export const ArchiveBlockConf: Block = {
-  slug: 'archive',
-  interfaceName: 'ArchiveBlockProps',
-  fields: [
-    {
-      name: 'introContent',
-      type: 'richText',
-      editor: lexicalEditor({
-        features: ({ rootFeatures }) => {
-          return [
-            ...rootFeatures,
-            HeadingFeature({ enabledHeadingSizes: ['h1', 'h2', 'h3', 'h4'] }),
-            FixedToolbarFeature(),
-            InlineToolbarFeature(),
-          ]
-        },
-      }),
-      label: 'Intro Content',
-    },
-    {
-      name: 'populateBy',
-      type: 'select',
-      defaultValue: 'collection',
-      options: [
-        {
-          label: 'Collection',
-          value: 'collection',
-        },
-        {
-          label: 'Individual Selection',
-          value: 'selection',
-        },
-      ],
-    },
-    {
-      name: 'relationTo',
-      type: 'select',
-      admin: {
-        condition: (_, siblingData) => siblingData.populateBy === 'collection',
-      },
-      defaultValue: 'posts',
-      label: 'Collections To Show',
-      options: [
-        {
-          label: 'Posts',
-          value: 'posts',
-        },
-      ],
-    },
-    {
-      name: POST_CATEGORIES_SLUG,
-      type: 'relationship',
-      admin: {
-        condition: (_, siblingData) => siblingData.populateBy === 'collection',
-      },
-      hasMany: true,
-      label: 'Categories To Show',
-      relationTo: POST_CATEGORIES_SLUG,
-    },
-    {
-      name: 'limit',
-      type: 'number',
-      admin: {
-        condition: (_, siblingData) => siblingData.populateBy === 'collection',
-        step: 1,
-      },
-      defaultValue: 10,
-      label: 'Limit',
-    },
-    {
-      name: 'selectedDocs',
-      type: 'relationship',
-      admin: {
-        condition: (_, siblingData) => siblingData.populateBy === 'selection',
-      },
-      hasMany: true,
-      label: 'Selection',
-      relationTo: ['posts'],
-    },
-  ],
-  labels: {
-    plural: 'Archives',
-    singular: 'Archive',
-  },
+	slug: 'archive',
+	interfaceName: 'ArchiveBlockProps',
+	fields: [
+		{
+			name: 'introContent',
+			type: 'richText',
+			editor: lexicalEditor({
+				features: ({ rootFeatures }) => {
+					return [
+						...rootFeatures,
+						HeadingFeature({ enabledHeadingSizes: ['h1', 'h2', 'h3', 'h4'] }),
+						FixedToolbarFeature(),
+						InlineToolbarFeature(),
+					]
+				},
+			}),
+			label: 'Intro Content',
+		},
+		{
+			name: 'populateBy',
+			type: 'select',
+			defaultValue: 'collection',
+			options: [
+				{
+					label: 'Collection',
+					value: 'collection',
+				},
+				{
+					label: 'Individual Selection',
+					value: 'selection',
+				},
+			],
+		},
+		{
+			name: 'relationTo',
+			type: 'select',
+			admin: {
+				condition: (_, siblingData) => siblingData.populateBy === 'collection',
+			},
+			defaultValue: 'posts',
+			label: 'Collections To Show',
+			options: [
+				{
+					label: 'Posts',
+					value: 'posts',
+				},
+			],
+		},
+		{
+			name: POST_CATEGORIES_SLUG,
+			type: 'relationship',
+			admin: {
+				condition: (_, siblingData) => siblingData.populateBy === 'collection',
+			},
+			hasMany: true,
+			label: 'Categories To Show',
+			relationTo: POST_CATEGORIES_SLUG,
+		},
+		{
+			name: 'limit',
+			type: 'number',
+			admin: {
+				condition: (_, siblingData) => siblingData.populateBy === 'collection',
+				step: 1,
+			},
+			defaultValue: 10,
+			label: 'Limit',
+		},
+		{
+			name: 'selectedDocs',
+			type: 'relationship',
+			admin: {
+				condition: (_, siblingData) => siblingData.populateBy === 'selection',
+			},
+			hasMany: true,
+			label: 'Selection',
+			relationTo: ['posts'],
+		},
+	],
+	labels: {
+		plural: 'Archives',
+		singular: 'Archive',
+	},
 }

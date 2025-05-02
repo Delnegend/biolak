@@ -12,74 +12,79 @@ import { POST_CATEGORIES_SLUG } from '@/collections/PostCategories'
 export type CardPostData = Pick<Post, 'slug' | typeof POST_CATEGORIES_SLUG | 'meta' | 'title'>
 
 export const Card: React.FC<{
-  alignItems?: 'center'
-  className?: string
-  doc?: CardPostData
-  relationTo?: 'posts'
-  showCategories?: boolean
-  title?: string
+	alignItems?: 'center'
+	className?: string
+	doc?: CardPostData
+	relationTo?: 'posts'
+	showCategories?: boolean
+	title?: string
 }> = (props) => {
-  const { card, link } = useClickableCard({})
-  const { className, doc, relationTo, showCategories, title: titleFromProps } = props
+	const { card, link } = useClickableCard({})
+	const { className, doc, relationTo, showCategories, title: titleFromProps } = props
 
-  const { slug, postCategories, meta, title } = doc || {}
-  const { description, image: metaImage } = meta || {}
+	const { slug, postCategories, meta, title } = doc || {}
+	const { description, image: metaImage } = meta || {}
 
-  const hasCategories = postCategories && Array.isArray(postCategories) && postCategories.length > 0
-  const titleToUse = titleFromProps || title
-  const sanitizedDescription = description?.replace(/\s/g, ' ') // replace non-breaking space with white space
-  const href = `/${relationTo}/${slug}`
+	const hasCategories =
+		postCategories && Array.isArray(postCategories) && postCategories.length > 0
+	const titleToUse = titleFromProps || title
+	const sanitizedDescription = description?.replace(/\s/g, ' ') // replace non-breaking space with white space
+	const href = `/${relationTo}/${slug}`
 
-  return (
-    <article
-      className={cn(
-        'overflow-hidden rounded-lg border border-border bg-card hover:cursor-pointer',
-        className,
-      )}
-      ref={card.ref}
-    >
-      <div className="relative w-full">
-        {!metaImage && <div className="">No image</div>}
-        {metaImage && typeof metaImage !== 'string' && <Media resource={metaImage} size="33vw" />}
-      </div>
-      <div className="p-4">
-        {showCategories && hasCategories && (
-          <div className="mb-4 text-sm uppercase">
-            {showCategories && hasCategories && (
-              <div>
-                {postCategories?.map((category, index) => {
-                  if (typeof category === 'object') {
-                    const { title: titleFromCategory } = category
+	return (
+		<article
+			className={cn(
+				'overflow-hidden rounded-lg border border-border bg-card hover:cursor-pointer',
+				className,
+			)}
+			ref={card.ref}
+		>
+			<div className="relative w-full">
+				{!metaImage && <div className="">No image</div>}
+				{metaImage && typeof metaImage !== 'string' && (
+					<Media resource={metaImage} size="33vw" />
+				)}
+			</div>
+			<div className="p-4">
+				{showCategories && hasCategories && (
+					<div className="mb-4 text-sm uppercase">
+						{showCategories && hasCategories && (
+							<div>
+								{postCategories?.map((category, index) => {
+									if (typeof category === 'object') {
+										const { title: titleFromCategory } = category
 
-                    const categoryTitle = titleFromCategory || 'Untitled category'
+										const categoryTitle = titleFromCategory || 'Untitled category'
 
-                    const isLast = index === postCategories.length - 1
+										const isLast = index === postCategories.length - 1
 
-                    return (
-                      <Fragment key={index}>
-                        {categoryTitle}
-                        {!isLast && <Fragment>, &nbsp;</Fragment>}
-                      </Fragment>
-                    )
-                  }
+										return (
+											<Fragment key={index}>
+												{categoryTitle}
+												{!isLast && <Fragment>, &nbsp;</Fragment>}
+											</Fragment>
+										)
+									}
 
-                  return null
-                })}
-              </div>
-            )}
-          </div>
-        )}
-        {titleToUse && (
-          <div className="prose">
-            <h3>
-              <Link className="not-prose" href={href} ref={link.ref}>
-                {titleToUse}
-              </Link>
-            </h3>
-          </div>
-        )}
-        {description && <div className="mt-2">{description && <p>{sanitizedDescription}</p>}</div>}
-      </div>
-    </article>
-  )
+									return null
+								})}
+							</div>
+						)}
+					</div>
+				)}
+				{titleToUse && (
+					<div className="prose">
+						<h3>
+							<Link className="not-prose" href={href} ref={link.ref}>
+								{titleToUse}
+							</Link>
+						</h3>
+					</div>
+				)}
+				{description && (
+					<div className="mt-2">{description && <p>{sanitizedDescription}</p>}</div>
+				)}
+			</div>
+		</article>
+	)
 }

@@ -2,7 +2,7 @@
 import React from 'react'
 
 const PageClient: React.FC = () => {
-  return <React.Fragment />
+	return <React.Fragment />
 }
 
 export default PageClient
