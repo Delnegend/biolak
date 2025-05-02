@@ -26,6 +26,8 @@ import { ThreePhotoBlock } from './ThreePhoto/Component'
 import { ThreePhotoBlockConf } from './ThreePhoto/config'
 import { CallToActionRightBlockConf } from './CallToActionRight/config'
 import { CallToActionRightBlock } from './CallToActionRight/Component'
+import { LatestPostsBlockConf } from './LatestPosts/config'
+import { LatestPostsBlock } from './LatestPosts/Component'
 
 const blockComponents = {
   [ArchiveBlockConf.slug]: ArchiveBlock,
@@ -37,6 +39,7 @@ const blockComponents = {
   [ContentBlockConf.slug]: ContentBlock,
   [FormBlockConf.slug]: FormBlock,
   [InfiniteScrollBlockConf.slug]: InfiniteScrollBlock,
+  [LatestPostsBlockConf.slug]: LatestPostsBlock,
   [MediaBlockConf.slug]: MediaBlockComponent,
   [ProductsCarouselBlockConf.slug]: ProductsCarouselBlock,
   [ThreePhotoBlockConf.slug]: ThreePhotoBlock,
