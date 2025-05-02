@@ -3,12 +3,12 @@ import { Block, CollectionSlug } from 'payload'
 
 export const InfiniteScrollBlockConf: Block = {
   slug: 'infiniteScroll',
+  interfaceName: 'InfiniteScrollBlockProps',
   imageURL: '/thumbs/infinite-scroll.avif',
   labels: {
     singular: 'Infinite Scroll',
     plural: 'Infinite Scroll',
   },
-  interfaceName: 'InfiniteScrollBlockProps',
   fields: [
     {
       name: 'graphic',
