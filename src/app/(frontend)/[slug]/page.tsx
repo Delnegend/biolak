@@ -13,90 +13,90 @@ import { generateMeta } from '@/utilities/generateMeta'
 import PageClient from './page.client'
 
 export async function generateStaticParams() {
-  const payload = await getPayload({ config: configPromise })
-  const pages = await payload.find({
-    collection: 'pages',
-    draft: false,
-    limit: 1000,
-    overrideAccess: false,
-    pagination: false,
-    select: {
-      slug: true,
-    },
-  })
+	const payload = await getPayload({ config: configPromise })
+	const pages = await payload.find({
+		collection: 'pages',
+		draft: false,
+		limit: 1000,
+		overrideAccess: false,
+		pagination: false,
+		select: {
+			slug: true,
+		},
+	})
 
-  const params = pages.docs
-    ?.filter((doc) => {
-      return doc.slug !== 'home'
-    })
-    .map(({ slug }) => {
-      return { slug }
-    })
+	const params = pages.docs
+		?.filter((doc) => {
+			return doc.slug !== 'home'
+		})
+		.map(({ slug }) => {
+			return { slug }
+		})
 
-  return params
+	return params
 }
 
 type Args = {
-  params: Promise<{
-    slug?: string
-  }>
+	params: Promise<{
+		slug?: string
+	}>
 }
 
 export default async function Page({ params: paramsPromise }: Args) {
-  const { isEnabled: draft } = await draftMode()
-  const { slug = 'home' } = await paramsPromise
-  const url = '/' + slug
+	const { isEnabled: draft } = await draftMode()
+	const { slug = 'home' } = await paramsPromise
+	const url = '/' + slug
 
-  const page = await queryPageBySlug({
-    slug,
-  })
+	const page = await queryPageBySlug({
+		slug,
+	})
 
-  if (!page) {
-    return <PayloadRedirects url={url} />
-  }
+	if (!page) {
+		return <PayloadRedirects url={url} />
+	}
 
-  const { hero, layout } = page
+	const { hero, layout } = page
 
-  return (
-    <article>
-      <PageClient />
-      {/* Allows redirects for valid pages too */}
-      <PayloadRedirects disableNotFound url={url} />
+	return (
+		<article>
+			<PageClient />
+			{/* Allows redirects for valid pages too */}
+			<PayloadRedirects disableNotFound url={url} />
 
-      {draft && <LivePreviewListener />}
+			{draft && <LivePreviewListener />}
 
-      <RenderHero {...hero} />
-      <RenderBlocks blocks={layout} />
-    </article>
-  )
+			<RenderHero {...hero} />
+			<RenderBlocks blocks={layout} />
+		</article>
+	)
 }
 
 export async function generateMetadata({ params: paramsPromise }: Args): Promise<Metadata> {
-  const { slug = 'home' } = await paramsPromise
-  const page = await queryPageBySlug({
-    slug,
-  })
+	const { slug = 'home' } = await paramsPromise
+	const page = await queryPageBySlug({
+		slug,
+	})
 
-  return generateMeta({ doc: page })
+	return generateMeta({ doc: page })
 }
 
 const queryPageBySlug = cache(async ({ slug }: { slug: string }) => {
-  const { isEnabled: draft } = await draftMode()
+	const { isEnabled: draft } = await draftMode()
 
-  const payload = await getPayload({ config: configPromise })
+	const payload = await getPayload({ config: configPromise })
 
-  const result = await payload.find({
-    collection: 'pages',
-    draft,
-    limit: 1,
-    pagination: false,
-    overrideAccess: draft,
-    where: {
-      slug: {
-        equals: slug,
-      },
-    },
-  })
+	const result = await payload.find({
+		collection: 'pages',
+		draft,
+		limit: 1,
+		pagination: false,
+		overrideAccess: draft,
+		where: {
+			slug: {
+				equals: slug,
+			},
+		},
+	})
 
-  return result.docs?.[0] || null
+	return result.docs?.[0] || null
 })

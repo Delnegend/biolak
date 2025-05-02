@@ -1,28 +1,28 @@
 {
-  "$schema": "http://json-schema.org/draft-07/schema",
-  "name": "Biolak",
-  "build": {
-    "dockerfile": "Dockerfile"
-  },
-  "features": {
-    "ghcr.io/devcontainers/features/docker-in-docker:2": {}
-  },
-  "mounts": [
-    {
-      "source": "global-pnpm-store",
-      "target": "/home/vscode/.pnpm-store",
-      "type": "volume"
-    }
-  ],
-  "runArgs": ["--hostname=devcontainer", "-p", "3000:3000", "-p", "5432:5432"],
-  "postCreateCommand": "zsh .devcontainer/postinstall.sh",
-  "customizations": {
-    "vscode": {
-      "extensions": [
-        "esbenp.prettier-vscode",
-        "YoavBls.pretty-ts-errors",
-        "bradlc.vscode-tailwindcss"
-      ]
-    }
-  }
+	"$schema": "http://json-schema.org/draft-07/schema",
+	"name": "Biolak",
+	"build": {
+		"dockerfile": "Dockerfile"
+	},
+	"features": {
+		"ghcr.io/devcontainers/features/docker-in-docker:2": {}
+	},
+	"mounts": [
+		{
+			"source": "global-pnpm-store",
+			"target": "/home/vscode/.pnpm-store",
+			"type": "volume"
+		}
+	],
+	"runArgs": ["--hostname=devcontainer", "-p", "3000:3000", "-p", "5432:5432"],
+	"postCreateCommand": "zsh .devcontainer/postinstall.sh",
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"esbenp.prettier-vscode",
+				"YoavBls.pretty-ts-errors",
+				"bradlc.vscode-tailwindcss"
+			]
+		}
+	}
 }

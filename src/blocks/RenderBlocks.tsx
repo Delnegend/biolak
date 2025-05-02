@@ -30,48 +30,48 @@ import { LatestPostsBlockConf } from './LatestPosts/config'
 import { LatestPostsBlock } from './LatestPosts/Component'
 
 const blockComponents = {
-  [ArchiveBlockConf.slug]: ArchiveBlock,
-  [BestSellerBlockConf.slug]: BestSellerBlock,
-  [CallToActionCenterBlockConf.slug]: CallToActionCenterBlock,
-  [CallToActionLeftBlockConf.slug]: CallToActionLeftBlock,
-  [CallToActionRightBlockConf.slug]: CallToActionRightBlock,
-  [CertificatesBlockConfig.slug]: CertificatesBlock,
-  [ContentBlockConf.slug]: ContentBlock,
-  [FormBlockConf.slug]: FormBlock,
-  [InfiniteScrollBlockConf.slug]: InfiniteScrollBlock,
-  [LatestPostsBlockConf.slug]: LatestPostsBlock,
-  [MediaBlockConf.slug]: MediaBlockComponent,
-  [ProductsCarouselBlockConf.slug]: ProductsCarouselBlock,
-  [ThreePhotoBlockConf.slug]: ThreePhotoBlock,
+	[ArchiveBlockConf.slug]: ArchiveBlock,
+	[BestSellerBlockConf.slug]: BestSellerBlock,
+	[CallToActionCenterBlockConf.slug]: CallToActionCenterBlock,
+	[CallToActionLeftBlockConf.slug]: CallToActionLeftBlock,
+	[CallToActionRightBlockConf.slug]: CallToActionRightBlock,
+	[CertificatesBlockConfig.slug]: CertificatesBlock,
+	[ContentBlockConf.slug]: ContentBlock,
+	[FormBlockConf.slug]: FormBlock,
+	[InfiniteScrollBlockConf.slug]: InfiniteScrollBlock,
+	[LatestPostsBlockConf.slug]: LatestPostsBlock,
+	[MediaBlockConf.slug]: MediaBlockComponent,
+	[ProductsCarouselBlockConf.slug]: ProductsCarouselBlock,
+	[ThreePhotoBlockConf.slug]: ThreePhotoBlock,
 }
 
 export const RenderBlocks: React.FC<{
-  blocks: Page['layout'][0][]
+	blocks: Page['layout'][0][]
 }> = (props) => {
-  const { blocks } = props
+	const { blocks } = props
 
-  if (!(blocks && Array.isArray(blocks) && blocks.length > 0)) {
-    return null
-  }
+	if (!(blocks && Array.isArray(blocks) && blocks.length > 0)) {
+		return null
+	}
 
-  return (
-    <Fragment>
-      {blocks.map((block, index) => {
-        const { blockType } = block
-        if (!(blockType && blockType in blockComponents)) {
-          return null
-        }
+	return (
+		<Fragment>
+			{blocks.map((block, index) => {
+				const { blockType } = block
+				if (!(blockType && blockType in blockComponents)) {
+					return null
+				}
 
-        const Block = blockComponents[blockType]
-        if (!Block) {
-          return null
-        }
+				const Block = blockComponents[blockType]
+				if (!Block) {
+					return null
+				}
 
-        return (
-          // @ts-expect-error there may be some mismatch between the expected types here
-          <Block {...block} key={index} disableInnerContainer />
-        )
-      })}
-    </Fragment>
-  )
+				return (
+					// @ts-expect-error there may be some mismatch between the expected types here
+					<Block {...block} key={index} disableInnerContainer />
+				)
+			})}
+		</Fragment>
+	)
 }

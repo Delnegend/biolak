@@ -1,40 +1,40 @@
 services:
-  biolak-postgres:
-    container_name: biolak-postgres
-    image: postgres:17-alpine
-    ports:
-      - '5432:5432'
-    volumes:
-      - biolak-postgres-data:/var/lib/postgresql/data
-    environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
-      - POSTGRES_DB=biolak
+   biolak-postgres:
+      container_name: biolak-postgres
+      image: postgres:17-alpine
+      ports:
+         - '5432:5432'
+      volumes:
+         - biolak-postgres-data:/var/lib/postgresql/data
+      environment:
+         - POSTGRES_USER=postgres
+         - POSTGRES_PASSWORD=postgres
+         - POSTGRES_DB=biolak
 
-  biolak-payload:
-    container_name: biolak-payload
-    image: node:23-alpine
-    ports:
-      - '3000:3000'
-    depends_on:
-      postgres:
-        condition: service_started
-    environment:
-      DATABASE_URI: postgres://postgres:postgres@biolak-postgres:5432/biolak
-      PAYLOAD_SECRET: YOUR_PAYLOAD_SECRET_HERE
-      NEXT_PUBLIC_SERVER_URL: https://YOUR_DOMAIN_HERE.com
-      CRON_SECRET: YOUR_CRON_SECRET_HERE
-      PREVIEW_SECRET: YOUR_SECRET_HERE
-    volumes:
-      - .:/home/node/app
-      - biolak-nextjs:/home/node/app/.next
-      - biolak-pnpm-store:/home/node/.pnpm-store
-      - biolak-node_modules:/home/node/app/node_modules
-    working_dir: /home/node/app/
-    command: sh -c "npm i -g pnpm && pnpm i --frozen-lockfile && pnpm payload migrate && pnpm dev:prod"
+   biolak-payload:
+      container_name: biolak-payload
+      image: node:23-alpine
+      ports:
+         - '3000:3000'
+      depends_on:
+         postgres:
+            condition: service_started
+      environment:
+         DATABASE_URI: postgres://postgres:postgres@biolak-postgres:5432/biolak
+         PAYLOAD_SECRET: YOUR_PAYLOAD_SECRET_HERE
+         NEXT_PUBLIC_SERVER_URL: https://YOUR_DOMAIN_HERE.com
+         CRON_SECRET: YOUR_CRON_SECRET_HERE
+         PREVIEW_SECRET: YOUR_SECRET_HERE
+      volumes:
+         - .:/home/node/app
+         - biolak-nextjs:/home/node/app/.next
+         - biolak-pnpm-store:/home/node/.pnpm-store
+         - biolak-node_modules:/home/node/app/node_modules
+      working_dir: /home/node/app/
+      command: sh -c "npm i -g pnpm && pnpm i --frozen-lockfile && pnpm payload migrate && pnpm dev:prod"
 
 volumes:
-  biolak-postgres-data:
-  biolak-nextjs:
-  biolak-pnpm-store:
-  biolak-node_modules:
+   biolak-postgres-data:
+   biolak-nextjs:
+   biolak-pnpm-store:
+   biolak-node_modules:

@@ -5,22 +5,22 @@ import { CollectionConfig } from 'payload'
 
 export const PRODUCT_CATEGORIES_SLUG = 'productCategories'
 export const ProductCategories: CollectionConfig = {
-  slug: PRODUCT_CATEGORIES_SLUG,
-  access: {
-    create: admin,
-    delete: admin,
-    read: anyone,
-    update: admin,
-  },
-  fields: [
-    {
-      name: 'title',
-      type: 'text',
-      required: true,
-    },
-    ...slugField(),
-  ],
-  admin: {
-    useAsTitle: 'title',
-  },
+	slug: PRODUCT_CATEGORIES_SLUG,
+	access: {
+		create: admin,
+		delete: admin,
+		read: anyone,
+		update: admin,
+	},
+	fields: [
+		{
+			name: 'title',
+			type: 'text',
+			required: true,
+		},
+		...slugField(),
+	],
+	admin: {
+		useAsTitle: 'title',
+	},
 }

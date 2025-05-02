@@ -4,20 +4,20 @@ import { type GlobalConfig } from 'payload'
 import { revalidatePromo } from './hooks/revalidatePromo'
 
 export const Promo: GlobalConfig = {
-  slug: 'promo',
-  access: {
-    read: () => true,
-    update: admin,
-  },
-  fields: [
-    {
-      name: 'message',
-      type: 'text',
-      defaultValue: '',
-    },
-    link({ appearances: false }),
-  ],
-  hooks: {
-    afterChange: [revalidatePromo],
-  },
+	slug: 'promo',
+	access: {
+		read: () => true,
+		update: admin,
+	},
+	fields: [
+		{
+			name: 'message',
+			type: 'text',
+			defaultValue: '',
+		},
+		link({ appearances: false }),
+	],
+	hooks: {
+		afterChange: [revalidatePromo],
+	},
 }
