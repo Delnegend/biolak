@@ -40,6 +40,7 @@ export function BestSellerBlock(props: BestSellerBlockProps): React.JSX.Element 
               p.gallery[0]?.image !== null
                 ? p.gallery[0]?.image
                 : null
+
             return (
               <CarouselItem
                 key={p.id}
