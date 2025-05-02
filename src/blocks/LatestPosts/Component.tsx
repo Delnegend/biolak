@@ -30,31 +30,33 @@ export function LatestPostsBlock(props: LatestPostsBlockProps): React.JSX.Elemen
 							const lastModifiedStr = `${lastModified.getDate().toString().padStart(2, '0')}.${lastModified.getMonth().toString().padStart(2, '0')}.${lastModified.getFullYear().toString().slice(2)}`
 
 							return (
-								<CarouselItem key={index} className="max-w-[25rem]">
-									<Image
-										src={img?.url || 'https://placehold.co/460x400'}
-										alt={img?.alt || ''}
-										width={img?.width || 0}
-										height={img?.height || 0}
-										className="h-[25rem] w-[28.75rem] rounded-[0.5rem] object-cover"
-										unoptimized={img === null}
-									/>
+								<Link href={`/posts/${post.slug}`} key={index}>
+									<CarouselItem key={index} className="max-w-[25rem]">
+										<Image
+											src={img?.url || 'https://placehold.co/460x400'}
+											alt={img?.alt || ''}
+											width={img?.width || 0}
+											height={img?.height || 0}
+											className="h-[25rem] w-[28.75rem] rounded-[0.5rem] object-cover"
+											unoptimized={img === null}
+										/>
 
-									<div className="my-6 text-primary">
-										<div className="text-[0.625rem] font-medium">
-											{author?.name ?? 'BioLAK'}
-											&nbsp;|&nbsp;
-											<span className="text-[#e7b27e]">{lastModifiedStr}</span>
+										<div className="my-6 text-primary">
+											<div className="text-[0.625rem] font-medium">
+												{author?.name ?? 'BioLAK'}
+												&nbsp;|&nbsp;
+												<span className="text-[#e7b27e]">{lastModifiedStr}</span>
+											</div>
+											<div className="font-serif text-2xl font-bold">
+												{post.title}&nbsp;→
+											</div>
+											<div className="text-xs">
+												{post.meta?.description ??
+													'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam in nisl aliquam, pharetra diam consequat, tincidunt nibh.'}
+											</div>
 										</div>
-										<div className="font-serif text-2xl font-bold">
-											{post.title}&nbsp;→
-										</div>
-										<div className="text-xs">
-											{post.meta?.description ??
-												'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam in nisl aliquam, pharetra diam consequat, tincidunt nibh.'}
-										</div>
-									</div>
-								</CarouselItem>
+									</CarouselItem>
+								</Link>
 							)
 						})}
 					</CarouselContent>
