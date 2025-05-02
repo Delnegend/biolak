@@ -14,7 +14,7 @@ const phudu = Phudu({ subsets: ['vietnamese'], weight: ['400', '600'] })
 
 export function CallToActionRightBlock(props: CallToActionRightBlockProps): React.JSX.Element {
   return (
-    <div className="safe-width grid h-[48rem] grid-cols-[1fr_auto] bg-background">
+    <div className="safe-width flex h-[48rem] justify-between bg-background">
       <Carousel opts={{ dragFree: true }} className="place-self-center">
         <CarouselContent>
           {props.gallery?.map((item, idx) => {
