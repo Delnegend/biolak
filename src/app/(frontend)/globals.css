@@ -112,5 +112,5 @@ html[data-theme='light'] {
 }
 
 .safe-width {
-  @apply mx-auto w-5/6 max-w-[90rem];
+  @apply mx-auto w-[95%] max-w-[80rem];
 }
