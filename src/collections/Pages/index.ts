@@ -14,8 +14,11 @@ import { generatePreviewPath } from '../../utilities/generatePreviewPath'
 import { revalidateDelete, revalidatePage } from './hooks/revalidatePage'
 
 import { BestSellerBlockConf } from '@/blocks/BestSeller/config'
+import { CallToActionLeftBlockConf } from '@/blocks/CallToActionLeft/config'
+import { CallToActionRightBlockConf } from '@/blocks/CallToActionRight/config'
 import { CertificatesBlockConf } from '@/blocks/Certificates/config'
 import { InfiniteScrollBlockConf } from '@/blocks/InfiniteScroll/config'
+import { LatestPostsBlockConf } from '@/blocks/LatestPosts/config'
 import { ProductsCarouselBlockConf } from '@/blocks/ProductsCarousel/config'
 import { ThreePhotoBlockConf } from '@/blocks/ThreePhoto/config'
 import {
@@ -26,9 +29,6 @@ import {
 	PreviewField,
 } from '@payloadcms/plugin-seo/fields'
 import { Media } from '../Media'
-import { CallToActionLeftBlockConf } from '@/blocks/CallToActionLeft/config'
-import { CallToActionRightBlockConf } from '@/blocks/CallToActionRight/config'
-import { LatestPostsBlockConf } from '@/blocks/LatestPosts/config'
 
 export const Pages: CollectionConfig<'pages'> = {
 	slug: 'pages',
