@@ -14,7 +14,7 @@ import { generatePreviewPath } from '../../utilities/generatePreviewPath'
 import { revalidateDelete, revalidatePage } from './hooks/revalidatePage'
 
 import { BestSellerBlockConf } from '@/blocks/BestSeller/config'
-import { CertificatesBlockConfig as CertificatesBlockConf } from '@/blocks/Certificates/config'
+import { CertificatesBlockConf } from '@/blocks/Certificates/config'
 import { InfiniteScrollBlockConf } from '@/blocks/InfiniteScroll/config'
 import { ProductsCarouselBlockConf } from '@/blocks/ProductsCarousel/config'
 import { ThreePhotoBlockConf } from '@/blocks/ThreePhoto/config'
