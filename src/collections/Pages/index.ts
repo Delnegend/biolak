@@ -32,6 +32,16 @@ import { LatestPostsBlockConf } from '@/blocks/LatestPosts/config'
 
 export const Pages: CollectionConfig<'pages'> = {
 	slug: 'pages',
+	labels: {
+		singular: {
+			en: 'Page',
+			vi: 'Trang',
+		},
+		plural: {
+			en: 'Pages',
+			vi: 'Trang',
+		},
+	},
 	access: {
 		create: admin,
 		delete: admin,
@@ -71,6 +81,10 @@ export const Pages: CollectionConfig<'pages'> = {
 			name: 'title',
 			type: 'text',
 			required: true,
+			label: {
+				en: 'Title',
+				vi: 'Tiêu đề',
+			},
 		},
 		{
 			type: 'tabs',
@@ -102,6 +116,16 @@ export const Pages: CollectionConfig<'pages'> = {
 							required: true,
 							admin: {
 								initCollapsed: true,
+							},
+							labels: {
+								singular: {
+									en: 'Block',
+									vi: 'Khối',
+								},
+								plural: {
+									en: 'Blocks',
+									vi: 'Các khối',
+								},
 							},
 						},
 					],
@@ -141,6 +165,10 @@ export const Pages: CollectionConfig<'pages'> = {
 			type: 'date',
 			admin: {
 				position: 'sidebar',
+			},
+			label: {
+				en: 'Published At',
+				vi: 'Ngày xuất bản',
 			},
 		},
 		...slugField(),

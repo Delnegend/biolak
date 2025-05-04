@@ -30,6 +30,10 @@ const columnFields: Field[] = [
 				value: 'full',
 			},
 		],
+		label: {
+			en: 'Size',
+			vi: 'Kích thước',
+		},
 	},
 	{
 		name: 'font',
@@ -53,12 +57,19 @@ const columnFields: Field[] = [
 				value: 'monospace',
 			},
 		],
+		label: {
+			en: 'Font',
+			vi: 'Phông chữ',
+		},
 	},
 	{
 		name: 'customCss',
 		type: 'textarea',
 		defaultValue: '',
-		label: 'Custom CSS',
+		label: {
+			en: 'Custom CSS',
+			vi: 'CSS tùy chỉnh',
+		},
 	},
 	{
 		name: 'richText',
@@ -75,6 +86,10 @@ const columnFields: Field[] = [
 	{
 		name: 'enableLink',
 		type: 'checkbox',
+		label: {
+			en: 'Enable Link',
+			vi: 'Kích hoạt liên kết',
+		},
 	},
 	link({
 		overrides: {

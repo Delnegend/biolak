@@ -4,14 +4,29 @@ import deepMerge from '@/utilities/deepMerge'
 
 export type LinkAppearances = 'default' | 'outline'
 
-export const appearanceOptions: Record<LinkAppearances, { label: string; value: string }> = {
+export const appearanceOptions: Record<
+	LinkAppearances,
+	{
+		label: {
+			en: string
+			vi: string
+		}
+		value: string
+	}
+> = {
 	default: {
-		label: 'Default',
 		value: 'default',
+		label: {
+			en: 'Default',
+			vi: 'Mặc định',
+		},
 	},
 	outline: {
-		label: 'Outline',
 		value: 'outline',
+		label: {
+			en: 'Outline',
+			vi: 'Viền ngoài',
+		},
 	},
 }
 
@@ -35,6 +50,10 @@ export const link: LinkType = ({ appearances, disableLabel = false, overrides = 
 					{
 						name: 'type',
 						type: 'radio',
+						label: {
+							en: 'Link type',
+							vi: 'Loại liên kết',
+						},
 						admin: {
 							layout: 'horizontal',
 							width: '50%',
@@ -42,29 +61,42 @@ export const link: LinkType = ({ appearances, disableLabel = false, overrides = 
 						defaultValue: 'reference',
 						options: [
 							{
-								label: 'Internal link',
 								value: 'reference',
+								label: {
+									en: 'Internal link',
+									vi: 'Liên kết nội bộ',
+								},
 							},
 							{
-								label: 'Custom URL',
 								value: 'custom',
+								label: {
+									en: 'Custom URL',
+									vi: 'Liên kết tùy chỉnh',
+								},
 							},
 						],
 					},
 					{
 						name: 'newTab',
 						type: 'checkbox',
+						label: {
+							en: 'Open in new tab',
+							vi: 'Mở trong tab mới',
+						},
 						admin: {
 							style: {
 								alignSelf: 'flex-end',
 							},
 							width: '50%',
 						},
-						label: 'Open in new tab',
 					},
 				],
 			},
 		],
+		label: {
+			en: 'Link',
+			vi: 'Liên kết',
+		},
 	}
 
 	const linkTypes: Field[] = [
@@ -74,7 +106,10 @@ export const link: LinkType = ({ appearances, disableLabel = false, overrides = 
 			admin: {
 				condition: (_, siblingData) => siblingData?.type === 'reference',
 			},
-			label: 'Document to link to',
+			label: {
+				en: 'Document to link to',
+				vi: 'Tài liệu liên kết đến',
+			},
 			relationTo: ['pages', 'posts'],
 			required: true,
 		},
@@ -84,7 +119,10 @@ export const link: LinkType = ({ appearances, disableLabel = false, overrides = 
 			admin: {
 				condition: (_, siblingData) => siblingData?.type === 'custom',
 			},
-			label: 'Custom URL',
+			label: {
+				en: 'Custom URL',
+				vi: 'Liên kết tùy chỉnh',
+			},
 			required: true,
 		},
 	]
@@ -108,7 +146,10 @@ export const link: LinkType = ({ appearances, disableLabel = false, overrides = 
 					admin: {
 						width: '50%',
 					},
-					label: 'Label',
+					label: {
+						en: 'Label',
+						vi: 'Nhãn',
+					},
 					required: true,
 				},
 			],
@@ -128,10 +169,17 @@ export const link: LinkType = ({ appearances, disableLabel = false, overrides = 
 			name: 'appearance',
 			type: 'select',
 			admin: {
-				description: 'Choose how the link should be rendered.',
+				description: {
+					en: 'Choose how the link should be rendered.',
+					vi: 'Chọn cách liên kết sẽ được hiển thị.',
+				},
 			},
 			defaultValue: 'default',
 			options: appearanceOptionsToUse,
+			label: {
+				en: 'Appearance',
+				vi: 'Kiểu dáng',
+			},
 		})
 	}
 

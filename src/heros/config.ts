@@ -24,7 +24,10 @@ export const hero: Field = {
 			name: 'type',
 			type: 'select',
 			defaultValue: 'lowImpact',
-			label: 'Type',
+			label: {
+				en: 'Type',
+				vi: 'Kiểu',
+			},
 			options: [
 				{
 					label: 'None',
@@ -68,6 +71,10 @@ export const hero: Field = {
 		{
 			name: 'media',
 			type: 'upload',
+			label: {
+				en: 'Media',
+				vi: 'Phương tiện',
+			},
 			relationTo: Media.slug as CollectionSlug,
 		},
 	],

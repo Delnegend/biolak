@@ -30,6 +30,16 @@ import { POST_CATEGORIES_SLUG } from '../PostCategories'
 
 export const Posts: CollectionConfig<'posts'> = {
 	slug: 'posts',
+	labels: {
+		singular: {
+			en: 'Post',
+			vi: 'Bài viết',
+		},
+		plural: {
+			en: 'Posts',
+			vi: 'Bài viết',
+		},
+	},
 	access: {
 		create: admin,
 		delete: admin,
@@ -74,6 +84,10 @@ export const Posts: CollectionConfig<'posts'> = {
 			name: 'title',
 			type: 'text',
 			required: true,
+			label: {
+				en: 'Title',
+				vi: 'Tiêu đề',
+			},
 		},
 		{
 			type: 'tabs',
@@ -103,7 +117,10 @@ export const Posts: CollectionConfig<'posts'> = {
 							required: true,
 						},
 					],
-					label: 'Content',
+					label: {
+						en: 'Content',
+						vi: 'Nội dung',
+					},
 				},
 				{
 					fields: [
@@ -122,6 +139,10 @@ export const Posts: CollectionConfig<'posts'> = {
 							},
 							hasMany: true,
 							relationTo: 'posts',
+							label: {
+								en: 'Related Posts',
+								vi: 'Bài viết liên quan',
+							},
 						},
 						{
 							name: POST_CATEGORIES_SLUG,
@@ -131,6 +152,10 @@ export const Posts: CollectionConfig<'posts'> = {
 							},
 							hasMany: true,
 							relationTo: POST_CATEGORIES_SLUG,
+							label: {
+								en: 'Post Categories',
+								vi: 'Danh mục bài viết',
+							},
 						},
 					],
 					label: 'Meta',
@@ -183,6 +208,10 @@ export const Posts: CollectionConfig<'posts'> = {
 					},
 				],
 			},
+			label: {
+				en: 'Published At',
+				vi: 'Ngày xuất bản',
+			},
 		},
 		{
 			name: 'authors',
@@ -192,6 +221,10 @@ export const Posts: CollectionConfig<'posts'> = {
 			},
 			hasMany: true,
 			relationTo: 'users',
+			label: {
+				en: 'Authors',
+				vi: 'Tác giả',
+			},
 		},
 		// This field is only used to populate the user data via the `populateAuthors` hook
 		// This is because the `user` collection has access control locked to protect user privacy
@@ -216,6 +249,10 @@ export const Posts: CollectionConfig<'posts'> = {
 					type: 'text',
 				},
 			],
+			label: {
+				en: 'Populated Authors',
+				vi: 'Tác giả đã được phân bổ',
+			},
 		},
 		...slugField(),
 	],

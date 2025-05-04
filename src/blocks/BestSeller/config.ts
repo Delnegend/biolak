@@ -5,6 +5,16 @@ export const BestSellerBlockConf: Block = {
 	slug: 'bestSeller',
 	interfaceName: 'BestSellerBlockProps',
 	imageURL: '/thumbs/bestseller.avif',
+	labels: {
+		plural: {
+			en: 'Best Sellers',
+			vi: 'Sản phẩm bán chạy',
+		},
+		singular: {
+			en: 'Best Seller',
+			vi: 'Sản phẩm bán chạy',
+		},
+	},
 	fields: [
 		{
 			name: 'title',

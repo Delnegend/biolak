@@ -6,6 +6,16 @@ export const CallToActionCenterBlockConf: Block = {
 	slug: 'cta-center',
 	interfaceName: 'CallToActionCenterBlockProps',
 	imageURL: '/thumbs/call-to-action-center.avif',
+	labels: {
+		plural: {
+			en: 'Call to Action (Center)',
+			vi: 'Kêu gọi hành động (Trung tâm)',
+		},
+		singular: {
+			en: 'Call to Action (Center)',
+			vi: 'Kêu gọi hành động (Trung tâm)',
+		},
+	},
 	fields: [
 		{
 			name: 'title',
@@ -38,8 +48,4 @@ export const CallToActionCenterBlockConf: Block = {
 			],
 		},
 	],
-	labels: {
-		plural: 'Calls to Action Center',
-		singular: 'Call to Action Center',
-	},
 }
