@@ -4,6 +4,16 @@ export const ProductsCarouselBlockConf: Block = {
 	slug: 'productsCarousel',
 	interfaceName: 'ProductsCarouselBlockProps',
 	imageURL: '/thumbs/products-carousel.avif',
+	labels: {
+		plural: {
+			en: 'Products Carousel',
+			vi: 'Sản phẩm trượt',
+		},
+		singular: {
+			en: 'Product Carousel',
+			vi: 'Sản phẩm trượt',
+		},
+	},
 	fields: [
 		{
 			name: 'products',
@@ -21,6 +31,16 @@ export const ProductsCarouselBlockConf: Block = {
 					},
 				},
 			],
+			labels: {
+				plural: {
+					en: 'Products',
+					vi: 'Sản phẩm',
+				},
+				singular: {
+					en: 'Product',
+					vi: 'Sản phẩm',
+				},
+			},
 		},
 	],
 }

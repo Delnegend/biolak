@@ -8,6 +8,17 @@ import {
 
 export const BannerBlockConf: Block = {
 	slug: 'banner',
+	interfaceName: 'BannerBlockProps',
+	labels: {
+		plural: {
+			en: 'Banners',
+			vi: 'Biểu ngữ',
+		},
+		singular: {
+			en: 'Banner',
+			vi: 'Biểu ngữ',
+		},
+	},
 	fields: [
 		{
 			name: 'style',
@@ -33,5 +44,4 @@ export const BannerBlockConf: Block = {
 			required: true,
 		},
 	],
-	interfaceName: 'BannerBlockProps',
 }

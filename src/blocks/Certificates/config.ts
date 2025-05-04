@@ -5,6 +5,16 @@ export const CertificatesBlockConfig: Block = {
 	slug: 'certificates',
 	interfaceName: 'CertificatesBlockProps',
 	imageURL: '/thumbs/certificates.avif',
+	labels: {
+		plural: {
+			en: 'Certificates',
+			vi: 'Chứng nhận',
+		},
+		singular: {
+			en: 'Certificate',
+			vi: 'Chứng nhận',
+		},
+	},
 	fields: [
 		{
 			name: 'title',

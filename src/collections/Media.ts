@@ -16,6 +16,16 @@ const dirname = path.dirname(filename)
 
 export const Media: CollectionConfig = {
 	slug: 'media',
+	labels: {
+		singular: {
+			en: 'Media',
+			vi: 'Ảnh và video',
+		},
+		plural: {
+			en: 'Media',
+			vi: 'Ảnh và video',
+		},
+	},
 	access: {
 		create: admin,
 		delete: admin,
@@ -27,6 +37,10 @@ export const Media: CollectionConfig = {
 			name: 'alt',
 			type: 'text',
 			//required: true,
+			label: {
+				en: 'Alt Text',
+				vi: 'Văn bản thay thế',
+			},
 		},
 		{
 			name: 'caption',
@@ -36,6 +50,10 @@ export const Media: CollectionConfig = {
 					return [...rootFeatures, FixedToolbarFeature(), InlineToolbarFeature()]
 				},
 			}),
+			label: {
+				en: 'Caption',
+				vi: 'Chú thích',
+			},
 		},
 	],
 	upload: {

@@ -11,6 +11,16 @@ import {
 export const ArchiveBlockConf: Block = {
 	slug: 'archive',
 	interfaceName: 'ArchiveBlockProps',
+	labels: {
+		plural: {
+			en: 'Archives',
+			vi: 'Danh sách bài viết',
+		},
+		singular: {
+			en: 'Archive',
+			vi: 'Danh sách bài viết',
+		},
+	},
 	fields: [
 		{
 			name: 'introContent',
@@ -88,8 +98,5 @@ export const ArchiveBlockConf: Block = {
 			relationTo: ['posts'],
 		},
 	],
-	labels: {
-		plural: 'Archives',
-		singular: 'Archive',
 	},
 }

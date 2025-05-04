@@ -6,6 +6,16 @@ export const CallToActionLeftBlockConf: Block = {
 	slug: 'cta-left',
 	interfaceName: 'CallToActionLeftBlockProps',
 	imageURL: '/thumbs/call-to-action-left.avif',
+	labels: {
+		plural: {
+			en: 'Call to Action (Left)',
+			vi: 'Kêu gọi hành động (Trái)',
+		},
+		singular: {
+			en: 'Call to Action (Left)',
+			vi: 'Kêu gọi hành động (Trái)',
+		},
+	},
 	fields: [
 		{
 			name: 'title',
@@ -38,8 +48,4 @@ export const CallToActionLeftBlockConf: Block = {
 			],
 		},
 	],
-	labels: {
-		plural: 'Calls to Action Left',
-		singular: 'Call to Action Left',
-	},
 }
