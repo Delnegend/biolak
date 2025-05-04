@@ -1,7 +1,7 @@
 import { Media } from '@/collections/Media'
 import { Block, CollectionSlug } from 'payload'
 
-export const CertificatesBlockConfig: Block = {
+export const CertificatesBlockConf: Block = {
 	slug: 'certificates',
 	interfaceName: 'CertificatesBlockProps',
 	imageURL: '/thumbs/certificates.avif',

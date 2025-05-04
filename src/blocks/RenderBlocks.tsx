@@ -13,21 +13,21 @@ import { BestSellerBlockConf } from './BestSeller/config'
 import { CallToActionCenterBlockConf } from './CallToActionCenter/config'
 import { CallToActionLeftBlock } from './CallToActionLeft/Component'
 import { CallToActionLeftBlockConf } from './CallToActionLeft/config'
+import { CallToActionRightBlock } from './CallToActionRight/Component'
+import { CallToActionRightBlockConf } from './CallToActionRight/config'
 import { CertificatesBlock } from './Certificates/Component'
-import { CertificatesBlockConfig } from './Certificates/config'
+import { CertificatesBlockConf } from './Certificates/config'
 import { ContentBlockConf } from './Content/config'
 import { FormBlockConf } from './Form/config'
 import { InfiniteScrollBlock } from './InfiniteScroll/Component'
 import { InfiniteScrollBlockConf } from './InfiniteScroll/config'
+import { LatestPostsBlock } from './LatestPosts/Component'
+import { LatestPostsBlockConf } from './LatestPosts/config'
 import { MediaBlockConf } from './MediaBlock/config'
 import { ProductsCarouselBlock } from './ProductsCarousel/Component'
 import { ProductsCarouselBlockConf } from './ProductsCarousel/config'
 import { ThreePhotoBlock } from './ThreePhoto/Component'
 import { ThreePhotoBlockConf } from './ThreePhoto/config'
-import { CallToActionRightBlockConf } from './CallToActionRight/config'
-import { CallToActionRightBlock } from './CallToActionRight/Component'
-import { LatestPostsBlockConf } from './LatestPosts/config'
-import { LatestPostsBlock } from './LatestPosts/Component'
 
 const blockComponents = {
 	[ArchiveBlockConf.slug]: ArchiveBlock,
@@ -35,7 +35,7 @@ const blockComponents = {
 	[CallToActionCenterBlockConf.slug]: CallToActionCenterBlock,
 	[CallToActionLeftBlockConf.slug]: CallToActionLeftBlock,
 	[CallToActionRightBlockConf.slug]: CallToActionRightBlock,
-	[CertificatesBlockConfig.slug]: CertificatesBlock,
+	[CertificatesBlockConf.slug]: CertificatesBlock,
 	[ContentBlockConf.slug]: ContentBlock,
 	[FormBlockConf.slug]: FormBlock,
 	[InfiniteScrollBlockConf.slug]: InfiniteScrollBlock,
