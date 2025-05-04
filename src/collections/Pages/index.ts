@@ -1,7 +1,7 @@
 import type { CollectionConfig } from 'payload'
 
 import { slugField } from '@/fields/slug'
-import { hero } from '@/heros/config'
+import { HeroFieldConf } from '@/heros/config'
 import { admin } from '../../access/admin'
 import { adminOrPublished } from '../../access/adminOrPublished'
 import { ArchiveBlockConf } from '../../blocks/ArchiveBlock/config'
@@ -29,6 +29,7 @@ import {
 	PreviewField,
 } from '@payloadcms/plugin-seo/fields'
 import { Media } from '../Media'
+import { SeoFieldConf } from '@/fields/seo'
 
 export const Pages: CollectionConfig<'pages'> = {
 	slug: 'pages',
@@ -90,7 +91,7 @@ export const Pages: CollectionConfig<'pages'> = {
 			type: 'tabs',
 			tabs: [
 				{
-					fields: [hero],
+					fields: [HeroFieldConf],
 					label: 'Hero',
 				},
 				{
@@ -137,29 +138,7 @@ export const Pages: CollectionConfig<'pages'> = {
 				{
 					name: 'meta',
 					label: 'SEO',
-					fields: [
-						OverviewField({
-							titlePath: 'meta.title',
-							descriptionPath: 'meta.description',
-							imagePath: 'meta.image',
-						}),
-						MetaTitleField({
-							hasGenerateFn: true,
-						}),
-						MetaImageField({
-							relationTo: Media.slug,
-						}),
-
-						MetaDescriptionField({}),
-						PreviewField({
-							// if the `generateUrl` function is configured
-							hasGenerateFn: true,
-
-							// field paths to match the target field for data
-							titlePath: 'meta.title',
-							descriptionPath: 'meta.description',
-						}),
-					],
+					fields: [SeoFieldConf],
 				},
 			],
 		},
