@@ -11,7 +11,7 @@ import { admin } from '@/access/admin'
 import { Media } from '@/collections/Media'
 import { linkGroup } from '@/fields/linkGroup'
 
-export const hero: Field = {
+export const HeroFieldConf: Field = {
 	name: 'hero',
 	type: 'group',
 	access: {
@@ -30,20 +30,32 @@ export const hero: Field = {
 			},
 			options: [
 				{
-					label: 'None',
 					value: 'none',
+					label: {
+						en: 'None',
+						vi: 'Không có',
+					},
 				},
 				{
-					label: 'High Impact',
 					value: 'highImpact',
+					label: {
+						en: 'High Impact',
+						vi: 'Tác động lớn',
+					},
 				},
 				{
-					label: 'Medium Impact',
 					value: 'mediumImpact',
+					label: {
+						en: 'Medium Impact',
+						vi: 'Tác động vừa phải',
+					},
 				},
 				{
-					label: 'Low Impact',
 					value: 'lowImpact',
+					label: {
+						en: 'Low Impact',
+						vi: 'Tác động thấp',
+					},
 				},
 			],
 			required: true,
