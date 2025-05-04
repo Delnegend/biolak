@@ -94,6 +94,10 @@ export const Pages: CollectionConfig<'pages'> = {
 					label: 'Hero',
 				},
 				{
+					label: {
+						en: 'Content',
+						vi: 'Nội dung',
+					},
 					fields: [
 						{
 							name: 'layout',
@@ -129,7 +133,6 @@ export const Pages: CollectionConfig<'pages'> = {
 							},
 						},
 					],
-					label: 'Content',
 				},
 				{
 					name: 'meta',
