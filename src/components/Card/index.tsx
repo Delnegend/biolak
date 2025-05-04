@@ -7,9 +7,8 @@ import React, { Fragment } from 'react'
 import type { Post } from '@/payload-types'
 
 import { Media } from '@/components/Media'
-import { POST_CATEGORIES_SLUG } from '@/collections/PostCategories'
 
-export type CardPostData = Pick<Post, 'slug' | typeof POST_CATEGORIES_SLUG | 'meta' | 'title'>
+export type CardPostData = Pick<Post, 'slug' | 'postCategories' | 'meta' | 'title'>
 
 export const Card: React.FC<{
 	alignItems?: 'center'

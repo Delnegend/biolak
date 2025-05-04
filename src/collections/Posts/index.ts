@@ -26,7 +26,7 @@ import {
 	PreviewField,
 } from '@payloadcms/plugin-seo/fields'
 import { Media } from '../Media'
-import { POST_CATEGORIES_SLUG } from '../PostCategories'
+import { PostCategories } from '../PostCategories'
 
 export const Posts: CollectionConfig<'posts'> = {
 	slug: 'posts',
@@ -52,7 +52,7 @@ export const Posts: CollectionConfig<'posts'> = {
 	defaultPopulate: {
 		title: true,
 		slug: true,
-		[POST_CATEGORIES_SLUG]: true,
+		[PostCategories.slug]: true,
 		meta: {
 			image: true,
 			description: true,
@@ -145,13 +145,13 @@ export const Posts: CollectionConfig<'posts'> = {
 							},
 						},
 						{
-							name: POST_CATEGORIES_SLUG,
+							name: PostCategories.slug,
 							type: 'relationship',
 							admin: {
 								position: 'sidebar',
 							},
 							hasMany: true,
-							relationTo: POST_CATEGORIES_SLUG,
+							relationTo: PostCategories.slug as CollectionSlug,
 							label: {
 								en: 'Post Categories',
 								vi: 'Danh mục bài viết',

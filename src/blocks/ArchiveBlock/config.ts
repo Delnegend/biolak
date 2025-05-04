@@ -1,6 +1,6 @@
-import type { Block } from 'payload'
+import type { Block, CollectionSlug } from 'payload'
 
-import { POST_CATEGORIES_SLUG } from '@/collections/PostCategories'
+import { PostCategories } from '@/collections/PostCategories'
 import {
 	FixedToolbarFeature,
 	HeadingFeature,
@@ -68,14 +68,14 @@ export const ArchiveBlockConf: Block = {
 			],
 		},
 		{
-			name: POST_CATEGORIES_SLUG,
+			name: PostCategories.slug,
 			type: 'relationship',
 			admin: {
 				condition: (_, siblingData) => siblingData.populateBy === 'collection',
 			},
 			hasMany: true,
 			label: 'Categories To Show',
-			relationTo: POST_CATEGORIES_SLUG,
+			relationTo: PostCategories.slug as CollectionSlug,
 		},
 		{
 			name: 'limit',
@@ -98,5 +98,4 @@ export const ArchiveBlockConf: Block = {
 			relationTo: ['posts'],
 		},
 	],
-	},
 }

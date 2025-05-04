@@ -3,9 +3,8 @@ import { anyone } from '@/access/anyone'
 import { slugField } from '@/fields/slug'
 import { CollectionConfig } from 'payload'
 
-export const PRODUCT_CATEGORIES_SLUG = 'productCategories'
 export const ProductCategories: CollectionConfig = {
-	slug: PRODUCT_CATEGORIES_SLUG,
+	slug: 'productCategories',
 	labels: {
 		singular: {
 			en: 'Product Category',
