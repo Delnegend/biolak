@@ -1,4 +1,4 @@
-import { Product } from '@/collections/Products'
+import { Products } from '@/collections/Products'
 import { Block, CollectionSlug } from 'payload'
 
 export const BestSellerBlockConf: Block = {
@@ -37,7 +37,7 @@ export const BestSellerBlockConf: Block = {
 				{
 					name: 'product',
 					type: 'relationship',
-					relationTo: Product.slug as CollectionSlug,
+					relationTo: Products.slug as CollectionSlug,
 				},
 			],
 		},
