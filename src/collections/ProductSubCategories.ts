@@ -1,12 +1,11 @@
 import { admin } from '@/access/admin'
 import { anyone } from '@/access/anyone'
 import { slugField } from '@/fields/slug'
-import { CollectionConfig } from 'payload'
-import { PRODUCT_CATEGORIES_SLUG } from './ProductCategories'
+import { CollectionConfig, CollectionSlug } from 'payload'
+import { ProductCategories } from './ProductCategories'
 
-export const PRODUCT_SUB_CATEGORY_SLUG = 'productSubCategories'
 export const ProductSubCategories: CollectionConfig = {
-	slug: PRODUCT_SUB_CATEGORY_SLUG,
+	slug: 'productSubCategories',
 	labels: {
 		singular: {
 			en: 'Product Sub Category',
@@ -25,9 +24,9 @@ export const ProductSubCategories: CollectionConfig = {
 	},
 	fields: [
 		{
-			name: PRODUCT_CATEGORIES_SLUG,
+			name: ProductCategories.slug,
 			type: 'relationship',
-			relationTo: PRODUCT_CATEGORIES_SLUG,
+			relationTo: ProductCategories.slug as CollectionSlug,
 			required: true,
 		},
 		{
