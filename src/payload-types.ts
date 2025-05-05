@@ -160,7 +160,9 @@ export interface Page {
   title: string;
   hero: {
     type: 'none' | 'highImpact' | 'mediumImpact' | 'lowImpact';
-    richText?: {
+    title?: string | null;
+    subtitle?: string | null;
+    description?: {
       root: {
         type: string;
         children: {
@@ -204,6 +206,7 @@ export interface Page {
   layout: (
     | ArchiveBlockProps
     | BestSellerBlockProps
+    | CallToAddToCartBlockProps
     | CallToActionCenterBlockProps
     | CallToActionLeftBlockProps
     | CallToActionRightBlockProps
@@ -217,12 +220,14 @@ export interface Page {
     | ThreePhotoBlockProps
   )[];
   meta?: {
-    title?: string | null;
-    /**
-     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
-     */
-    image?: (number | null) | Media;
-    description?: string | null;
+    meta?: {
+      title?: string | null;
+      /**
+       * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
+       */
+      image?: (number | null) | Media;
+      description?: string | null;
+    };
   };
   publishedAt?: string | null;
   slug?: string | null;
@@ -479,6 +484,51 @@ export interface Product {
         id?: string | null;
       }[]
     | null;
+  heroTitle?: string | null;
+  heroSubtitle?: string | null;
+  heroDescription?: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  heroMedia?: (number | null) | Media;
+  content?:
+    | (
+        | ArchiveBlockProps
+        | CallToAddToCartBlockProps
+        | CallToActionCenterBlockProps
+        | CallToActionLeftBlockProps
+        | CallToActionRightBlockProps
+        | CertificatesBlockProps
+        | ContentBlockProps
+        | FormBlockProps
+        | InfiniteScrollBlockProps
+        | LatestPostsBlockProps
+        | MediaBlockProps
+        | ProductsCarouselBlockProps
+        | ThreePhotoBlockProps
+      )[]
+    | null;
+  meta?: {
+    title?: string | null;
+    /**
+     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
+     */
+    image?: (number | null) | Media;
+    description?: string | null;
+  };
+  slug?: string | null;
+  slugLock?: boolean | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -506,6 +556,32 @@ export interface ProductSubCategory {
   slugLock?: boolean | null;
   updatedAt: string;
   createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "CallToAddToCartBlockProps".
+ */
+export interface CallToAddToCartBlockProps {
+  image?: (number | null) | Media;
+  content?: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  buttonLabel: string;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'call-to-add-to-cart';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1256,7 +1332,9 @@ export interface PagesSelect<T extends boolean = true> {
     | T
     | {
         type?: T;
-        richText?: T;
+        title?: T;
+        subtitle?: T;
+        description?: T;
         links?:
           | T
           | {
@@ -1279,6 +1357,7 @@ export interface PagesSelect<T extends boolean = true> {
     | {
         archive?: T | ArchiveBlockPropsSelect<T>;
         bestSeller?: T | BestSellerBlockPropsSelect<T>;
+        'call-to-add-to-cart'?: T | CallToAddToCartBlockPropsSelect<T>;
         'cta-center'?: T | CallToActionCenterBlockPropsSelect<T>;
         'cta-left'?: T | CallToActionLeftBlockPropsSelect<T>;
         'cta-right'?: T | CallToActionRightBlockPropsSelect<T>;
@@ -1294,9 +1373,13 @@ export interface PagesSelect<T extends boolean = true> {
   meta?:
     | T
     | {
-        title?: T;
-        image?: T;
-        description?: T;
+        meta?:
+          | T
+          | {
+              title?: T;
+              image?: T;
+              description?: T;
+            };
       };
   publishedAt?: T;
   slug?: T;
@@ -1332,6 +1415,17 @@ export interface BestSellerBlockPropsSelect<T extends boolean = true> {
         product?: T;
         id?: T;
       };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "CallToAddToCartBlockProps_select".
+ */
+export interface CallToAddToCartBlockPropsSelect<T extends boolean = true> {
+  image?: T;
+  content?: T;
+  buttonLabel?: T;
   id?: T;
   blockName?: T;
 }
@@ -1710,6 +1804,36 @@ export interface ProductsSelect<T extends boolean = true> {
         image?: T;
         id?: T;
       };
+  heroTitle?: T;
+  heroSubtitle?: T;
+  heroDescription?: T;
+  heroMedia?: T;
+  content?:
+    | T
+    | {
+        archive?: T | ArchiveBlockPropsSelect<T>;
+        'call-to-add-to-cart'?: T | CallToAddToCartBlockPropsSelect<T>;
+        'cta-center'?: T | CallToActionCenterBlockPropsSelect<T>;
+        'cta-left'?: T | CallToActionLeftBlockPropsSelect<T>;
+        'cta-right'?: T | CallToActionRightBlockPropsSelect<T>;
+        certificates?: T | CertificatesBlockPropsSelect<T>;
+        content?: T | ContentBlockPropsSelect<T>;
+        formBlock?: T | FormBlockPropsSelect<T>;
+        infiniteScroll?: T | InfiniteScrollBlockPropsSelect<T>;
+        latestPosts?: T | LatestPostsBlockPropsSelect<T>;
+        media?: T | MediaBlockPropsSelect<T>;
+        productsCarousel?: T | ProductsCarouselBlockPropsSelect<T>;
+        threePhoto?: T | ThreePhotoBlockPropsSelect<T>;
+      };
+  meta?:
+    | T
+    | {
+        title?: T;
+        image?: T;
+        description?: T;
+      };
+  slug?: T;
+  slugLock?: T;
   updatedAt?: T;
   createdAt?: T;
 }
