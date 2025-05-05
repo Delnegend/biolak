@@ -15,7 +15,7 @@
 	}
 
 	h1 {
-		@apply text-balance !text-[4rem] !font-medium;
+		@apply !text-[4rem] !font-medium !leading-none;
 	}
 
 	h2 {
