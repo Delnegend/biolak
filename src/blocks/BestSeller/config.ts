@@ -38,7 +38,7 @@ export const BestSellerBlockConf: Block = {
 				{
 					name: 'product',
 					type: 'relationship',
-					relationTo: Products.slug as CollectionSlug,
+					relationTo: Products.slug,
 				},
 			],
 		},

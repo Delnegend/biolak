@@ -34,7 +34,7 @@ export const CallToActionCenterBlockConf: Block = {
 		{
 			name: 'background',
 			type: 'upload',
-			relationTo: Media.slug as CollectionSlug,
+			relationTo: Media.slug,
 		},
 		{
 			name: 'button',

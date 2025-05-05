@@ -44,7 +44,7 @@ export const LatestPostsBlockConf: Block = {
 				{
 					name: 'post',
 					type: 'relationship',
-					relationTo: Posts.slug as CollectionSlug,
+					relationTo: Posts.slug,
 					required: true,
 					hasMany: false,
 				},

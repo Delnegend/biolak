@@ -4,7 +4,7 @@ import { CollectionConf } from '@/utilities/types'
 import { admin } from '../access/admin'
 import { anyone } from '../access/anyone'
 
-export const PostCategories: CollectionConfig = {
+export const PostCategories: CollectionConf<'postCategories'> = {
 	slug: 'postCategories',
 	labels: {
 		singular: {

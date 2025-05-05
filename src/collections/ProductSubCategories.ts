@@ -5,7 +5,7 @@ import { CollectionConf } from '@/utilities/types'
 
 import { ProductCategories } from './ProductCategories'
 
-export const ProductSubCategories: CollectionConfig = {
+export const ProductSubCategories: CollectionConf<'productSubCategories'> = {
 	slug: 'productSubCategories',
 	labels: {
 		singular: {
@@ -27,7 +27,7 @@ export const ProductSubCategories: CollectionConfig = {
 		{
 			name: ProductCategories.slug,
 			type: 'relationship',
-			relationTo: ProductCategories.slug as CollectionSlug,
+			relationTo: ProductCategories.slug,
 			required: true,
 		},
 		{

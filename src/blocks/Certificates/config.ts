@@ -41,7 +41,7 @@ export const CertificatesBlockConf: Block = {
 				{
 					name: 'logo',
 					type: 'upload',
-					relationTo: Media.slug as CollectionSlug,
+					relationTo: Media.slug,
 				},
 			],
 		},

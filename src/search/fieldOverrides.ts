@@ -34,7 +34,7 @@ export const searchFields: Field[] = [
 				name: 'image',
 				label: 'Image',
 				type: 'upload',
-				relationTo: Media.slug as CollectionSlug,
+				relationTo: Media.slug,
 			},
 		],
 	},
