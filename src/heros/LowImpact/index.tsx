@@ -36,7 +36,13 @@ export function LowImpactHero(props: Page['hero']): React.JSX.Element {
 				<Image src={media.url} alt={media.alt} width={media.width} height={media.height} />
 			)}
 			<div className="max-w-3xl text-center">
-				{richText && <RichText data={richText} enableGutter={false} />}
+				{props.title && (
+					<h1 className="mb-4 text-3xl font-bold md:text-5xl lg:text-6xl">{props.title}</h1>
+				)}
+				{props.subtitle && (
+					<h2 className="mb-4 text-2xl font-bold md:text-4xl lg:text-5xl">{props.subtitle}</h2>
+				)}
+				{props.description && <RichText data={props.description} enableGutter={false} />}
 			</div>
 			<ArrowDown color="#485A1E" size={30} />
 		</div>
