@@ -2,7 +2,7 @@ import { CollectionConf } from '@/utilities/types'
 
 import { admin } from '../../access/admin'
 
-export const Users: CollectionConfig = {
+export const Users: CollectionConf<'users'> = {
 	slug: 'users',
 	labels: {
 		singular: {
