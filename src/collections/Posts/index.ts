@@ -89,6 +89,10 @@ export const Posts: CollectionConf<'posts'> = {
 			type: 'tabs',
 			tabs: [
 				{
+					label: {
+						en: 'Content',
+						vi: 'Nội dung',
+					},
 					fields: [
 						{
 							name: 'heroImage',
@@ -113,10 +117,6 @@ export const Posts: CollectionConf<'posts'> = {
 							required: true,
 						},
 					],
-					label: {
-						en: 'Content',
-						vi: 'Nội dung',
-					},
 				},
 				{
 					fields: [
