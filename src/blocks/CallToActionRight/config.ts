@@ -43,7 +43,7 @@ export const CallToActionRightBlockConf: Block = {
 				{
 					name: 'image',
 					type: 'upload',
-					relationTo: Media.slug as CollectionSlug,
+					relationTo: Media.slug,
 				},
 			],
 		},

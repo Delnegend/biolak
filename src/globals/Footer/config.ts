@@ -23,7 +23,7 @@ export const Footer: GlobalConfig = {
 						{
 							name: 'image',
 							type: 'upload',
-							relationTo: Media.slug as CollectionSlug,
+							relationTo: Media.slug,
 							label: 'Image',
 						},
 					],
@@ -82,7 +82,7 @@ TP Hà Nội, Việt Nam.
 						{
 							name: 'stamp',
 							type: 'upload',
-							relationTo: Media.slug as CollectionSlug,
+							relationTo: Media.slug,
 							label: 'Stamp',
 							required: true,
 						},

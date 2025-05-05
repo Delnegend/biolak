@@ -93,7 +93,7 @@ export const Posts: CollectionConf<'posts'> = {
 						{
 							name: 'heroImage',
 							type: 'upload',
-							relationTo: Media.slug as CollectionSlug,
+							relationTo: Media.slug,
 						},
 						{
 							name: 'content',
@@ -147,7 +147,7 @@ export const Posts: CollectionConf<'posts'> = {
 								position: 'sidebar',
 							},
 							hasMany: true,
-							relationTo: PostCategories.slug as CollectionSlug,
+							relationTo: PostCategories.slug,
 							label: {
 								en: 'Post Categories',
 								vi: 'Danh mục bài viết',

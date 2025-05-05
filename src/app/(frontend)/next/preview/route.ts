@@ -18,7 +18,7 @@ export async function GET(
 	const { searchParams } = new URL(req.url)
 
 	const path = searchParams.get('path')
-	const collection = searchParams.get('collection') as CollectionSlug
+	const collection = searchParams.get('collection')
 	const slug = searchParams.get('slug')
 	const previewSecret = searchParams.get('previewSecret')
 

@@ -9,7 +9,7 @@ export const MediaBlockConf: Block = {
 		{
 			name: 'media',
 			type: 'upload',
-			relationTo: Media.slug as CollectionSlug,
+			relationTo: Media.slug,
 			required: true,
 		},
 	],

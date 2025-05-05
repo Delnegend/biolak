@@ -20,7 +20,7 @@ export const ThreePhotoBlockConf: Block = {
 		{
 			name: 'photoLeft',
 			type: 'upload',
-			relationTo: Media.slug as CollectionSlug,
+			relationTo: Media.slug,
 			label: {
 				en: 'Photo Left',
 				vi: 'Hình ảnh bên trái',
@@ -30,7 +30,7 @@ export const ThreePhotoBlockConf: Block = {
 		{
 			name: 'photoCenter',
 			type: 'upload',
-			relationTo: Media.slug as CollectionSlug,
+			relationTo: Media.slug,
 			label: {
 				en: 'Photo Center',
 				vi: 'Hình ảnh ở giữa',
@@ -40,7 +40,7 @@ export const ThreePhotoBlockConf: Block = {
 		{
 			name: 'photoRight',
 			type: 'upload',
-			relationTo: Media.slug as CollectionSlug,
+			relationTo: Media.slug,
 			label: {
 				en: 'Photo Right',
 				vi: 'Hình ảnh bên phải',

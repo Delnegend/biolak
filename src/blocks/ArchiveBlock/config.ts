@@ -75,7 +75,7 @@ export const ArchiveBlockConf: Block = {
 			},
 			hasMany: true,
 			label: 'Categories To Show',
-			relationTo: PostCategories.slug as CollectionSlug,
+			relationTo: PostCategories.slug,
 		},
 		{
 			name: 'limit',

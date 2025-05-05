@@ -3,7 +3,7 @@ import { anyone } from '@/access/anyone'
 import { slugField } from '@/fields/slug'
 import { CollectionConf } from '@/utilities/types'
 
-export const ProductCategories: CollectionConfig = {
+export const ProductCategories: CollectionConf<'productCategories'> = {
 	slug: 'productCategories',
 	labels: {
 		singular: {

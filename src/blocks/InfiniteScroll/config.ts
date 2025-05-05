@@ -15,7 +15,7 @@ export const InfiniteScrollBlockConf: Block = {
 			name: 'graphic',
 			type: 'upload',
 			required: true,
-			relationTo: Media.slug as CollectionSlug,
+			relationTo: Media.slug,
 		},
 		{
 			name: 'animationDuration',
