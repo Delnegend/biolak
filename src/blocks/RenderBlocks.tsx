@@ -1,12 +1,12 @@
 import React, { Fragment } from 'react'
 
-import type { Page } from '@/payload-types'
-
 import { ArchiveBlock } from '@/blocks/ArchiveBlock/Component'
 import { CallToActionCenterBlock } from '@/blocks/CallToActionCenter/Component'
 import { ContentBlock } from '@/blocks/Content/Component'
 import { FormBlock } from '@/blocks/Form/Component'
 import { MediaBlockComponent } from '@/blocks/MediaBlock/Component'
+import type { Page } from '@/payload-types'
+
 import { ArchiveBlockConf } from './ArchiveBlock/config'
 import { BestSellerBlock } from './BestSeller/Component'
 import { BestSellerBlockConf } from './BestSeller/config'
@@ -15,6 +15,8 @@ import { CallToActionLeftBlock } from './CallToActionLeft/Component'
 import { CallToActionLeftBlockConf } from './CallToActionLeft/config'
 import { CallToActionRightBlock } from './CallToActionRight/Component'
 import { CallToActionRightBlockConf } from './CallToActionRight/config'
+import { CallToAddToCartBlock } from './CallToAddToCart/Component'
+import { CallToAddToCartBlockConf } from './CallToAddToCart/config'
 import { CertificatesBlock } from './Certificates/Component'
 import { CertificatesBlockConf } from './Certificates/config'
 import { ContentBlockConf } from './Content/config'
@@ -32,6 +34,7 @@ import { ThreePhotoBlockConf } from './ThreePhoto/config'
 const blockComponents = {
 	[ArchiveBlockConf.slug]: ArchiveBlock,
 	[BestSellerBlockConf.slug]: BestSellerBlock,
+	[CallToAddToCartBlockConf.slug]: CallToAddToCartBlock,
 	[CallToActionCenterBlockConf.slug]: CallToActionCenterBlock,
 	[CallToActionLeftBlockConf.slug]: CallToActionLeftBlock,
 	[CallToActionRightBlockConf.slug]: CallToActionRightBlock,
@@ -45,13 +48,9 @@ const blockComponents = {
 	[ThreePhotoBlockConf.slug]: ThreePhotoBlock,
 }
 
-export const RenderBlocks: React.FC<{
-	blocks: Page['layout'][0][]
-}> = (props) => {
-	const { blocks } = props
-
+export function RenderBlocks({ blocks }: { blocks: Page['layout'][0][] }): React.JSX.Element {
 	if (!(blocks && Array.isArray(blocks) && blocks.length > 0)) {
-		return null
+		return <></>
 	}
 
 	return (

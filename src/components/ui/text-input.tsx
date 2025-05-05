@@ -1,7 +1,8 @@
 'use client'
 
-import { cn } from '@/utilities/ui'
 import React, { useRef } from 'react'
+
+import { cn } from '@/utilities/ui'
 
 export function TextInput({
 	label,

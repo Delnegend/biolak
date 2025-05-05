@@ -1,4 +1,5 @@
 import { InfiniteScrollBlockProps } from '@/payload-types'
+
 import { InfiniteScrollBlockCC } from './Component.client'
 
 export function InfiniteScrollBlock({

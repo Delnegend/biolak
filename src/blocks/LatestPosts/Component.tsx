@@ -1,7 +1,9 @@
-import { Carousel, CarouselContent, CarouselItem } from '@/components/ui/carousel'
-import { LatestPostsBlockProps } from '@/payload-types'
 import Image from 'next/image'
 import Link from 'next/link'
+
+import { Carousel, CarouselContent, CarouselItem } from '@/components/ui/carousel'
+import { LatestPostsBlockProps } from '@/payload-types'
+
 import { AllPostsButton } from './AllPostsButton.client'
 
 export function LatestPostsBlock(props: LatestPostsBlockProps): React.JSX.Element {

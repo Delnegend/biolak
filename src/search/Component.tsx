@@ -1,11 +1,12 @@
 'use client'
-import { Label } from '@/components/ui/label'
-import { TextInput } from '@/components/ui/text-input'
-import { useDebounce } from '@/utilities/useDebounce'
 import { useRouter } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
 
-export const Search: React.FC = () => {
+import { Label } from '@/components/ui/label'
+import { TextInput } from '@/components/ui/text-input'
+import { useDebounce } from '@/utilities/useDebounce'
+
+export function Search(): React.JSX.Element {
 	const [value, setValue] = useState('')
 	const router = useRouter()
 

@@ -1,6 +1,6 @@
-import type { CollectionConfig } from 'payload'
-
 import { slugField } from '@/fields/slug'
+import { CollectionConf } from '@/utilities/types'
+
 import { admin } from '../access/admin'
 import { anyone } from '../access/anyone'
 

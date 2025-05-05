@@ -1,12 +1,14 @@
+import { CirclePlus } from 'lucide-react'
+import { Lato } from 'next/font/google'
+import Image from 'next/image'
+import Link from 'next/link'
+import React from 'react'
+
 import { Button } from '@/components/ui/button'
 import { Carousel, CarouselContent, CarouselItem } from '@/components/ui/carousel'
 import { BestSellerBlockProps } from '@/payload-types'
 import { formatPrice } from '@/utilities/formatPrice'
 import { cn } from '@/utilities/ui'
-import { CirclePlus } from 'lucide-react'
-import { Lato } from 'next/font/google'
-import Image from 'next/image'
-import React from 'react'
 
 const lato = Lato({
 	subsets: ['latin'],
@@ -49,20 +51,22 @@ export function BestSellerBlock(props: BestSellerBlockProps): React.JSX.Element 
 								className="grid max-w-96 grid-cols-[1fr_auto] grid-rows-[auto]"
 								style={{
 									gridTemplateAreas: `"img img"
-                                      "title add-to-cart"
-                                      "desc add-to-cart"
-                                      "price add-to-cart"`,
+													"title add-to-cart"
+													"desc add-to-cart"
+													"price add-to-cart"`,
 								}}
 							>
-								<Image
-									src={img?.url ?? 'https://placehold.co/500x500'}
-									alt={`Ảnh sản phẩm ${p.title}`}
-									width={img?.width ?? 500}
-									height={img?.height ?? 500}
-									style={{ gridArea: 'img' }}
-									unoptimized={img === null}
-									className="mb-6 rounded-[0.5rem]"
-								/>
+								<Link href={p.slug ? `/products/${p.slug}` : '#'}>
+									<Image
+										src={img?.url ?? 'https://placehold.co/500x500'}
+										alt={`Ảnh sản phẩm ${p.title}`}
+										width={img?.width ?? 500}
+										height={img?.height ?? 500}
+										style={{ gridArea: 'img' }}
+										unoptimized={img === null}
+										className="mb-6 rounded-[0.5rem]"
+									/>
+								</Link>
 								<div style={{ gridArea: 'title' }} className="mb-2 text-lg font-bold">
 									{`${p.title} →`}
 								</div>

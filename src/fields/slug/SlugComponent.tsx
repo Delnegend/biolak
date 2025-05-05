@@ -1,31 +1,23 @@
 'use client'
-import React, { useCallback, useEffect } from 'react'
-import { TextFieldClientProps } from 'payload'
+import './index.scss'
 
-import { useField, Button, TextInput, FieldLabel, useFormFields, useForm } from '@payloadcms/ui'
+import { Button, FieldLabel, TextInput, useField, useForm, useFormFields } from '@payloadcms/ui'
+import { TextFieldClientProps } from 'payload'
+import React, { useCallback, useEffect } from 'react'
 
 import { formatSlug } from './formatSlug'
-import './index.scss'
 
 type SlugComponentProps = {
 	fieldToUse: string
 	checkboxFieldPath: string
 } & TextFieldClientProps
 
-export const SlugComponent: React.FC<SlugComponentProps> = ({
-	field,
-	fieldToUse,
-	checkboxFieldPath: checkboxFieldPathFromProps,
-	path,
-	readOnly: readOnlyFromProps,
-}) => {
-	const { label } = field
+export function SlugComponent(props: SlugComponentProps): React.JSX.Element {
+	const checkboxFieldPath = props.path?.includes('.')
+		? `${props.path}.${props.checkboxFieldPath}`
+		: props.checkboxFieldPath
 
-	const checkboxFieldPath = path?.includes('.')
-		? `${path}.${checkboxFieldPathFromProps}`
-		: checkboxFieldPathFromProps
-
-	const { value, setValue } = useField<string>({ path: path || field.name })
+	const { value, setValue } = useField<string>({ path: props.path || props.field.name })
 
 	const { dispatchFields } = useForm()
 
@@ -37,7 +29,7 @@ export const SlugComponent: React.FC<SlugComponentProps> = ({
 
 	// The value of the field we're listening to for the slug
 	const targetFieldValue = useFormFields(([fields]) => {
-		return fields[fieldToUse]?.value as string
+		return fields[props.fieldToUse]?.value as string
 	})
 
 	useEffect(() => {
@@ -65,12 +57,12 @@ export const SlugComponent: React.FC<SlugComponentProps> = ({
 		[checkboxValue, checkboxFieldPath, dispatchFields],
 	)
 
-	const readOnly = readOnlyFromProps || checkboxValue
+	const readOnly = props.readOnly || checkboxValue
 
 	return (
 		<div className="field-type slug-field-component">
 			<div className="label-wrapper">
-				<FieldLabel htmlFor={`field-${path}`} label={label} />
+				<FieldLabel htmlFor={`field-${props.path}`} label={props.field.label} />
 
 				<Button className="lock-button" buttonStyle="none" onClick={handleLock}>
 					{checkboxValue ? 'Unlock' : 'Lock'}
@@ -80,7 +72,7 @@ export const SlugComponent: React.FC<SlugComponentProps> = ({
 			<TextInput
 				value={value}
 				onChange={setValue}
-				path={path || field.name}
+				path={props.path || props.field.name}
 				readOnly={Boolean(readOnly)}
 			/>
 		</div>

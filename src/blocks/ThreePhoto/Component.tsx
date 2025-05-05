@@ -1,9 +1,12 @@
-import type { ThreePhotoBlockProps } from '@/payload-types'
 import Image from 'next/image'
 
-export const ThreePhotoBlock: React.FC<ThreePhotoBlockProps> = (props) => {
-	const { photoLeft, photoCenter, photoRight } = props
+import type { ThreePhotoBlockProps } from '@/payload-types'
 
+export function ThreePhotoBlock({
+	photoLeft,
+	photoCenter,
+	photoRight,
+}: ThreePhotoBlockProps): React.JSX.Element {
 	if (
 		typeof photoLeft === 'number' ||
 		typeof photoCenter === 'number' ||

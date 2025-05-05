@@ -1,20 +1,22 @@
 'use client'
 
-import React, { Fragment, useCallback, useState } from 'react'
-import { toast } from '@payloadcms/ui'
-
 import './index.scss'
 
-const SuccessMessage: React.FC = () => (
-	<div>
-		Database seeded! You can now{' '}
-		<a target="_blank" href="/">
-			visit your website
-		</a>
-	</div>
-)
+import { toast } from '@payloadcms/ui'
+import React, { Fragment, useCallback, useState } from 'react'
 
-export const SeedButton: React.FC = () => {
+export function SuccessMessage(): React.JSX.Element {
+	return (
+		<div>
+			Database seeded! You can now{' '}
+			<a target="_blank" href="/">
+				visit your website
+			</a>
+		</div>
+	)
+}
+
+export function SeedButton(): React.JSX.Element {
 	const [loading, setLoading] = useState(false)
 	const [seeded, setSeeded] = useState(false)
 	const [error, setError] = useState<null | string>(null)

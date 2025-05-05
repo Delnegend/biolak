@@ -1,6 +1,6 @@
 import React from 'react'
 
-const BeforeLogin: React.FC = () => {
+export function BeforeLogin(): React.JSX.Element {
 	return (
 		<div>
 			<p>

@@ -1,14 +1,14 @@
-import { admin } from '@/access/admin'
-import { anyone } from '@/access/anyone'
-import { Media } from '@/collections/Media'
 import {
-	OverviewField,
-	MetaTitleField,
-	MetaImageField,
 	MetaDescriptionField,
+	MetaImageField,
+	MetaTitleField,
+	OverviewField,
 	PreviewField,
 } from '@payloadcms/plugin-seo/fields'
 import { Field } from 'payload'
+
+import { admin } from '@/access/admin'
+import { Media } from '@/collections/Media'
 
 export const SeoFieldConf: Field = {
 	name: 'meta',

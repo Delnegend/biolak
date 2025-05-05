@@ -1,10 +1,11 @@
+import configPromise from '@payload-config'
 import type { Metadata } from 'next/types'
+import { getPayload } from 'payload'
 
 import { CardPostData } from '@/components/Card'
 import { CollectionArchive } from '@/components/CollectionArchive'
 import { Search } from '@/search/Component'
-import configPromise from '@payload-config'
-import { getPayload } from 'payload'
+
 import PageClient from './page.client'
 
 type Args = {

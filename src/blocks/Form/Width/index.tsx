@@ -1,13 +1,16 @@
 import * as React from 'react'
 
-export const Width: React.FC<{
+export function Width(props: {
 	children: React.ReactNode
 	className?: string
 	width?: number | string
-}> = ({ children, className, width }) => {
+}): React.JSX.Element {
 	return (
-		<div className={className} style={{ maxWidth: width ? `${width}%` : undefined }}>
-			{children}
+		<div
+			className={props.className}
+			style={{ maxWidth: props.width ? `${props.width}%` : undefined }}
+		>
+			{props.children}
 		</div>
 	)
 }

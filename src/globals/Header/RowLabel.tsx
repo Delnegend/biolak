@@ -1,7 +1,7 @@
 'use client'
 import { RowLabelProps } from '@payloadcms/ui'
 
-export const RowLabel: React.FC<RowLabelProps> = () => {
+export function RowLabel(props: RowLabelProps): React.JSX.Element {
 	// const data = useRowLabel<NonNullable<Header['navItemsLeft']>[number]>()
 
 	// const label = data?.data?.link?.label

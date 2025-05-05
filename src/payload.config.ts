@@ -1,12 +1,13 @@
 import { postgresAdapter } from '@payloadcms/db-postgres'
-
-import { defaultLexical } from '@/fields/defaultLexical'
 import { en } from '@payloadcms/translations/languages/en'
 import { vi } from '@payloadcms/translations/languages/vi'
 import path from 'path'
 import { buildConfig, PayloadRequest } from 'payload'
 import sharp from 'sharp' // sharp-import
 import { fileURLToPath } from 'url'
+
+import { defaultLexical } from '@/fields/defaultLexical'
+
 import { Media } from './collections/Media'
 import { Pages } from './collections/Pages'
 import { PostCategories } from './collections/PostCategories'

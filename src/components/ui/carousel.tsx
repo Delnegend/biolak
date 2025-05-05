@@ -240,4 +240,4 @@ function CarouselNext({
 }
 CarouselNext.displayName = 'CarouselNext'
 
-export { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious, type CarouselApi }
+export { Carousel, type CarouselApi, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious }

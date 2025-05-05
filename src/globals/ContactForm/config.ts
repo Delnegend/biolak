@@ -1,5 +1,7 @@
-import { admin } from '@/access/admin'
 import { GlobalConfig } from 'payload'
+
+import { admin } from '@/access/admin'
+
 import { revalidateContactForm } from './hooks/revalidateContactForm'
 
 export const ContactForm: GlobalConfig = {

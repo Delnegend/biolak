@@ -1,5 +1,6 @@
+import type { Block } from 'payload'
+
 import { Media } from '@/collections/Media'
-import type { Block, CollectionSlug } from 'payload'
 
 export const MediaBlockConf: Block = {
 	slug: 'media',

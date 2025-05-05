@@ -1,45 +1,45 @@
 import type { CheckboxField } from '@payloadcms/plugin-form-builder/types'
+import React from 'react'
 import type { FieldErrorsImpl, FieldValues, UseFormRegister } from 'react-hook-form'
-
 import { useFormContext } from 'react-hook-form'
 
 import { Checkbox as CheckboxUi } from '@/components/ui/checkbox'
 import { Label } from '@/components/ui/label'
-import React from 'react'
 
 import { Error } from '../Error'
 import { Width } from '../Width'
 
-export const Checkbox: React.FC<
-	CheckboxField & {
+export function Checkbox(
+	props: CheckboxField & {
 		errors: Partial<FieldErrorsImpl>
 		register: UseFormRegister<FieldValues>
-	}
-> = ({ name, defaultValue, errors, label, register, required, width }) => {
-	const props = register(name, { required: required })
+	},
+): React.JSX.Element {
+	const props_ = props.register(props.name, { required: props.required })
 	const { setValue } = useFormContext()
 
 	return (
-		<Width width={width}>
+		<Width width={props.width}>
 			<div className="flex items-center gap-2">
 				<CheckboxUi
-					defaultChecked={defaultValue}
-					id={name}
-					{...props}
+					defaultChecked={props.defaultValue}
+					id={props.name}
+					{...props_}
+					// @ts-expect-error TODO: unused, if use then fix type
 					onCheckedChange={(checked) => {
-						setValue(props.name, checked)
+						setValue(props_.name, checked)
 					}}
 				/>
-				<Label htmlFor={name}>
-					{required && (
+				<Label htmlFor={props.name}>
+					{props.required && (
 						<span className="required">
 							* <span className="sr-only">(required)</span>
 						</span>
 					)}
-					{label}
+					{props.label}
 				</Label>
 			</div>
-			{errors[name] && <Error name={name} />}
+			{props.errors[props.name] && <Error name={props.name} />}
 		</Width>
 	)
 }

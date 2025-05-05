@@ -1,8 +1,6 @@
 'use client'
 import React from 'react'
 
-const PageClient: React.FC = () => {
+export default function PageClient(): React.JSX.Element {
 	return <React.Fragment />
 }
-
-export default PageClient

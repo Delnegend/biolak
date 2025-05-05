@@ -1,15 +1,15 @@
 'use client'
-import type { FormFieldBlock, Form as FormType } from '@payloadcms/plugin-form-builder/types'
-
+import type { Form as FormType, FormFieldBlock } from '@payloadcms/plugin-form-builder/types'
+import type { SerializedEditorState } from '@payloadcms/richtext-lexical/lexical'
 import { useRouter } from 'next/navigation'
 import React, { useCallback, useState } from 'react'
-import { useForm, FormProvider } from 'react-hook-form'
+import { FormProvider, useForm } from 'react-hook-form'
+
 import RichText from '@/components/RichText'
 import { Button } from '@/components/ui/button'
-import type { SerializedEditorState } from '@payloadcms/richtext-lexical/lexical'
+import { getClientSideURL } from '@/utilities/getURL'
 
 import { fields } from './fields'
-import { getClientSideURL } from '@/utilities/getURL'
 
 export type FormBlockType = {
 	blockName?: string
@@ -19,20 +19,9 @@ export type FormBlockType = {
 	introContent?: SerializedEditorState
 }
 
-export const FormBlock: React.FC<
-	{
-		id?: string
-	} & FormBlockType
-> = (props) => {
-	const {
-		enableIntro,
-		form: formFromProps,
-		form: { id: formID, confirmationMessage, confirmationType, redirect, submitButtonLabel } = {},
-		introContent,
-	} = props
-
+export function FormBlock(props: FormBlockType): React.JSX.Element {
 	const formMethods = useForm({
-		defaultValues: formFromProps.fields,
+		defaultValues: props.form.fields,
 	})
 	const {
 		control,
@@ -65,7 +54,7 @@ export const FormBlock: React.FC<
 				try {
 					const req = await fetch(`${getClientSideURL()}/api/form-submissions`, {
 						body: JSON.stringify({
-							form: formID,
+							form: props.form.id,
 							submissionData: dataToSend,
 						}),
 						headers: {
@@ -92,10 +81,8 @@ export const FormBlock: React.FC<
 					setIsLoading(false)
 					setHasSubmitted(true)
 
-					if (confirmationType === 'redirect' && redirect) {
-						const { url } = redirect
-
-						const redirectUrl = url
+					if (props.form.confirmationType === 'redirect' && props.form.redirect) {
+						const redirectUrl = props.form.redirect.url
 
 						if (redirectUrl) router.push(redirectUrl)
 					}
@@ -110,27 +97,27 @@ export const FormBlock: React.FC<
 
 			void submitForm()
 		},
-		[router, formID, redirect, confirmationType],
+		[router, props.form.id, props.form.redirect, props.form.confirmationType],
 	)
 
 	return (
 		<div className="container lg:max-w-[48rem]">
-			{enableIntro && introContent && !hasSubmitted && (
-				<RichText className="mb-8 lg:mb-12" data={introContent} enableGutter={false} />
+			{props.enableIntro && props.introContent && !hasSubmitted && (
+				<RichText className="mb-8 lg:mb-12" data={props.introContent} enableGutter={false} />
 			)}
 			<div className="rounded-[0.8rem] border border-border p-4 lg:p-6">
 				<FormProvider {...formMethods}>
-					{!isLoading && hasSubmitted && confirmationType === 'message' && (
-						<RichText data={confirmationMessage} />
+					{!isLoading && hasSubmitted && props.form.confirmationType === 'message' && (
+						<RichText data={props.form.confirmationMessage} />
 					)}
 					{isLoading && !hasSubmitted && <p>Loading, please wait...</p>}
 					{error && <div>{`${error.status || '500'}: ${error.message || ''}`}</div>}
 					{!hasSubmitted && (
-						<form id={formID} onSubmit={handleSubmit(onSubmit)}>
+						<form id={props.form.id} onSubmit={handleSubmit(onSubmit)}>
 							<div className="mb-4 last:mb-0">
-								{formFromProps &&
-									formFromProps.fields &&
-									formFromProps.fields?.map((field, index) => {
+								{props.form &&
+									props.form.fields &&
+									props.form.fields?.map((field, index) => {
 										// eslint-disable-next-line @typescript-eslint/no-explicit-any
 										const Field: React.FC<any> =
 											fields?.[field.blockType as keyof typeof fields]
@@ -138,7 +125,7 @@ export const FormBlock: React.FC<
 											return (
 												<div className="mb-6 last:mb-0" key={index}>
 													<Field
-														form={formFromProps}
+														form={props.form}
 														{...field}
 														{...formMethods}
 														control={control}
@@ -152,8 +139,8 @@ export const FormBlock: React.FC<
 									})}
 							</div>
 
-							<Button form={formID} type="submit" variant="default">
-								{submitButtonLabel}
+							<Button form={props.form.id} type="submit" variant="default">
+								{props.form.submitButtonLabel}
 							</Button>
 						</form>
 					)}

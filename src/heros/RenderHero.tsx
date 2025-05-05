@@ -1,10 +1,9 @@
 import React from 'react'
 
-import type { Page } from '@/payload-types'
-
 import { HighImpactHero } from '@/heros/HighImpact'
 import { LowImpactHero } from '@/heros/LowImpact'
 import { MediumImpactHero } from '@/heros/MediumImpact'
+import { Page } from '@/payload-types'
 
 const heroes = {
 	highImpact: HighImpactHero,
@@ -12,14 +11,12 @@ const heroes = {
 	mediumImpact: MediumImpactHero,
 }
 
-export const RenderHero: React.FC<Page['hero']> = (props) => {
-	const { type } = props || {}
+export function RenderHero(props: Page['hero']): React.JSX.Element {
+	if (!props.type || props.type === 'none') return <></>
 
-	if (!type || type === 'none') return null
+	const HeroToRender = heroes[props.type]
 
-	const HeroToRender = heroes[type]
-
-	if (!HeroToRender) return null
+	if (!HeroToRender) return <></>
 
 	return <HeroToRender {...props} />
 }

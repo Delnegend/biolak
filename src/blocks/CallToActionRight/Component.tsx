@@ -1,14 +1,13 @@
+import { Phudu } from 'next/font/google'
+import Image from 'next/image'
+import Link from 'next/link'
 import React from 'react'
-
-import type { CallToActionRightBlockProps } from '@/payload-types'
 
 import RichText from '@/components/RichText'
 import { Button } from '@/components/ui/button'
 import { Carousel, CarouselContent, CarouselItem } from '@/components/ui/carousel'
+import type { CallToActionRightBlockProps } from '@/payload-types'
 import { cn } from '@/utilities/ui'
-import { Phudu } from 'next/font/google'
-import Image from 'next/image'
-import Link from 'next/link'
 
 const phudu = Phudu({ subsets: ['vietnamese'], weight: ['400', '600'] })
 
