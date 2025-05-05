@@ -1,0 +1,92 @@
+import configPromise from '@payload-config'
+import { draftMode } from 'next/headers'
+import { getPayload } from 'payload'
+import { cache } from 'react'
+
+import { RenderBlocks } from '@/blocks/RenderBlocks'
+import { Products } from '@/collections/Products'
+import { LivePreviewListener } from '@/components/LivePreviewListener'
+import { PayloadRedirects } from '@/components/PayloadRedirects'
+import { ProductHero } from '@/heros/Product'
+import { generateMeta } from '@/utilities/generateMeta'
+
+import PageClient from './page.client'
+
+export async function generateStaticParams() {
+	const payload = await getPayload({ config: configPromise })
+
+	const products = await payload.find({
+		collection: Products.slug,
+		draft: false,
+		limit: 1000,
+		overrideAccess: false,
+		pagination: false,
+		select: {
+			slug: true,
+		},
+	})
+
+	return products.docs
+		.map((doc) => doc.slug)
+		.filter((slug): slug is string => typeof slug === 'string' && slug.length > 0)
+		.map((slug) => ({ slug }))
+}
+
+const queryProductBySlug = cache(async ({ slug }: { slug: string }) => {
+	const { isEnabled: draft } = await draftMode()
+
+	const payload = await getPayload({ config: configPromise })
+
+	const result = await payload.find({
+		collection: Products.slug,
+		draft,
+		limit: 1,
+		overrideAccess: draft,
+		pagination: false,
+		where: {
+			slug: {
+				equals: slug,
+			},
+		},
+	})
+
+	return result.docs?.[0] || null
+})
+
+export async function generateMetadata({
+	params: paramsPromise,
+}: {
+	params: Promise<{ slug?: string }>
+}) {
+	const { slug = '' } = await paramsPromise
+	const doc = await queryProductBySlug({ slug })
+	return generateMeta({
+		doc: {
+			...doc,
+			title: doc && 'title' in doc && doc.title ? doc.title : undefined,
+		},
+	})
+}
+
+export default async function Product({
+	params: paramsPromise,
+}: {
+	params: Promise<{ slug?: string }>
+}) {
+	const { isEnabled: draft } = await draftMode()
+	const { slug = '' } = await paramsPromise
+	const url = '/products/' + slug
+	const product = await queryProductBySlug({ slug })
+
+	if (!product) return <PayloadRedirects url={url} />
+
+	return (
+		<article className="pb-16 pt-16">
+			<PageClient />
+			<PayloadRedirects disableNotFound url={url} />
+			{draft && <LivePreviewListener />}
+			<ProductHero product={product} />
+			{product.content && <RenderBlocks blocks={product.content} />}
+		</article>
+	)
+}
