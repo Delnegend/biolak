@@ -1,7 +1,17 @@
-import type { CollectionConfig } from 'payload'
-
+import { BestSellerBlockConf } from '@/blocks/BestSeller/config'
+import { CallToActionLeftBlockConf } from '@/blocks/CallToActionLeft/config'
+import { CallToActionRightBlockConf } from '@/blocks/CallToActionRight/config'
+import { CallToAddToCartBlockConf } from '@/blocks/CallToAddToCart/config'
+import { CertificatesBlockConf } from '@/blocks/Certificates/config'
+import { InfiniteScrollBlockConf } from '@/blocks/InfiniteScroll/config'
+import { LatestPostsBlockConf } from '@/blocks/LatestPosts/config'
+import { ProductsCarouselBlockConf } from '@/blocks/ProductsCarousel/config'
+import { ThreePhotoBlockConf } from '@/blocks/ThreePhoto/config'
+import { linkGroup } from '@/fields/linkGroup'
+import { SeoFieldConf } from '@/fields/seo'
 import { slugField } from '@/fields/slug'
-import { HeroFieldConf } from '@/heros/config'
+import { CollectionConf } from '@/utilities/types'
+
 import { admin } from '../../access/admin'
 import { adminOrPublished } from '../../access/adminOrPublished'
 import { ArchiveBlockConf } from '../../blocks/ArchiveBlock/config'
@@ -11,27 +21,10 @@ import { FormBlockConf } from '../../blocks/Form/config'
 import { MediaBlockConf } from '../../blocks/MediaBlock/config'
 import { populatePublishedAt } from '../../hooks/populatePublishedAt'
 import { generatePreviewPath } from '../../utilities/generatePreviewPath'
+import { Media } from '../Media'
 import { revalidateDelete, revalidatePage } from './hooks/revalidatePage'
 
-import { BestSellerBlockConf } from '@/blocks/BestSeller/config'
-import { CallToActionLeftBlockConf } from '@/blocks/CallToActionLeft/config'
-import { CallToActionRightBlockConf } from '@/blocks/CallToActionRight/config'
-import { CertificatesBlockConf } from '@/blocks/Certificates/config'
-import { InfiniteScrollBlockConf } from '@/blocks/InfiniteScroll/config'
-import { LatestPostsBlockConf } from '@/blocks/LatestPosts/config'
-import { ProductsCarouselBlockConf } from '@/blocks/ProductsCarousel/config'
-import { ThreePhotoBlockConf } from '@/blocks/ThreePhoto/config'
-import {
-	MetaDescriptionField,
-	MetaImageField,
-	MetaTitleField,
-	OverviewField,
-	PreviewField,
-} from '@payloadcms/plugin-seo/fields'
-import { Media } from '../Media'
-import { SeoFieldConf } from '@/fields/seo'
-
-export const Pages: CollectionConfig<'pages'> = {
+export const Pages: CollectionConf<'pages'> = {
 	slug: 'pages',
 	labels: {
 		singular: {
@@ -91,8 +84,99 @@ export const Pages: CollectionConfig<'pages'> = {
 			type: 'tabs',
 			tabs: [
 				{
-					fields: [HeroFieldConf],
 					label: 'Hero',
+					fields: [
+						{
+							name: 'hero',
+							type: 'group',
+							access: {
+								create: admin,
+								read: () => true,
+								update: admin,
+							},
+							fields: [
+								{
+									name: 'type',
+									type: 'select',
+									defaultValue: 'lowImpact',
+									label: {
+										en: 'Type',
+										vi: 'Kiểu',
+									},
+									options: [
+										{
+											value: 'none',
+											label: {
+												en: 'None',
+												vi: 'Không có',
+											},
+										},
+										{
+											value: 'highImpact',
+											label: {
+												en: 'High Impact',
+												vi: 'Tác động lớn',
+											},
+										},
+										{
+											value: 'mediumImpact',
+											label: {
+												en: 'Medium Impact',
+												vi: 'Tác động vừa phải',
+											},
+										},
+										{
+											value: 'lowImpact',
+											label: {
+												en: 'Low Impact',
+												vi: 'Tác động thấp',
+											},
+										},
+									],
+									required: true,
+								},
+								{
+									name: 'title',
+									type: 'textarea',
+									label: {
+										en: 'Title',
+										vi: 'Tiêu đề',
+									},
+								},
+								{
+									name: 'subtitle',
+									type: 'textarea',
+									label: {
+										en: 'Subtitle',
+										vi: 'Tiêu đề phụ',
+									},
+								},
+								{
+									name: 'description',
+									type: 'richText',
+									label: {
+										en: 'Description',
+										vi: 'Mô tả',
+									},
+								},
+								linkGroup({
+									overrides: {
+										maxRows: 2,
+									},
+								}),
+								{
+									name: 'media',
+									type: 'upload',
+									label: {
+										en: 'Media',
+										vi: 'Phương tiện',
+									},
+									relationTo: Media.slug,
+								},
+							],
+							label: false,
+						},
+					],
 				},
 				{
 					label: {
@@ -106,6 +190,7 @@ export const Pages: CollectionConfig<'pages'> = {
 							blocks: [
 								ArchiveBlockConf,
 								BestSellerBlockConf,
+								CallToAddToCartBlockConf,
 								CallToActionCenterBlockConf,
 								CallToActionLeftBlockConf,
 								CallToActionRightBlockConf,
