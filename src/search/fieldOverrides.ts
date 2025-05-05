@@ -1,5 +1,6 @@
+import { Field } from 'payload'
+
 import { Media } from '@/collections/Media'
-import { CollectionSlug, Field } from 'payload'
 
 export const searchFields: Field[] = [
 	{

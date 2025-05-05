@@ -1,6 +1,7 @@
 'use client'
 import { Highlight, themes } from 'prism-react-renderer'
 import React from 'react'
+
 import { CopyButton } from './CopyButton'
 
 type Props = {
@@ -8,11 +9,11 @@ type Props = {
 	language?: string
 }
 
-export const Code: React.FC<Props> = ({ code, language = '' }) => {
-	if (!code) return null
+export function Code(props: Props): React.JSX.Element {
+	if (!props.code) return <></>
 
 	return (
-		<Highlight code={code} language={language} theme={themes.vsDark}>
+		<Highlight code={props.code} language={props.language ?? ''} theme={themes.vsDark}>
 			{({ getLineProps, getTokenProps, tokens }) => (
 				<pre className="overflow-x-auto rounded border border-border bg-black p-4 text-xs">
 					{tokens.map((line, i) => (
@@ -27,7 +28,7 @@ export const Code: React.FC<Props> = ({ code, language = '' }) => {
 							</span>
 						</div>
 					))}
-					<CopyButton code={code} />
+					<CopyButton code={props.code} />
 				</pre>
 			)}
 		</Highlight>

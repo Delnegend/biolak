@@ -1,4 +1,4 @@
-import type { CollectionConfig } from 'payload'
+import { CollectionConf } from '@/utilities/types'
 
 import { admin } from '../../access/admin'
 

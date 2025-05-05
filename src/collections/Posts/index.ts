@@ -1,5 +1,10 @@
-import type { CollectionConfig, CollectionSlug } from 'payload'
-
+import {
+	MetaDescriptionField,
+	MetaImageField,
+	MetaTitleField,
+	OverviewField,
+	PreviewField,
+} from '@payloadcms/plugin-seo/fields'
 import {
 	BlocksFeature,
 	FixedToolbarFeature,
@@ -8,27 +13,21 @@ import {
 	lexicalEditor,
 } from '@payloadcms/richtext-lexical'
 
+import { slugField } from '@/fields/slug'
+import { CollectionConf } from '@/utilities/types'
+
 import { admin } from '../../access/admin'
 import { adminOrPublished } from '../../access/adminOrPublished'
 import { BannerBlockConf } from '../../blocks/Banner/config'
 import { Code } from '../../blocks/Code/config'
 import { MediaBlockConf } from '../../blocks/MediaBlock/config'
 import { generatePreviewPath } from '../../utilities/generatePreviewPath'
+import { Media } from '../Media'
+import { PostCategories } from '../PostCategories'
 import { populateAuthors } from './hooks/populateAuthors'
 import { revalidateDelete, revalidatePost } from './hooks/revalidatePost'
 
-import { slugField } from '@/fields/slug'
-import {
-	MetaDescriptionField,
-	MetaImageField,
-	MetaTitleField,
-	OverviewField,
-	PreviewField,
-} from '@payloadcms/plugin-seo/fields'
-import { Media } from '../Media'
-import { PostCategories } from '../PostCategories'
-
-export const Posts: CollectionConfig<'posts'> = {
+export const Posts: CollectionConf<'posts'> = {
 	slug: 'posts',
 	labels: {
 		singular: {
@@ -61,15 +60,12 @@ export const Posts: CollectionConfig<'posts'> = {
 	admin: {
 		defaultColumns: ['title', 'slug', 'updatedAt'],
 		livePreview: {
-			url: ({ data, req }) => {
-				const path = generatePreviewPath({
+			url: ({ data, req }) =>
+				generatePreviewPath({
 					slug: typeof data?.slug === 'string' ? data.slug : '',
 					collection: 'posts',
 					req,
-				})
-
-				return path
-			},
+				}),
 		},
 		preview: (data, { req }) =>
 			generatePreviewPath({

@@ -1,9 +1,9 @@
-import type { Page } from '@/payload-types'
+import { ArrowDown } from 'lucide-react'
 import Image from 'next/image'
 import React from 'react'
 
 import RichText from '@/components/RichText'
-import { ArrowDown } from 'lucide-react'
+import type { Page } from '@/payload-types'
 
 interface ValidMedia {
 	url: string
@@ -12,23 +12,21 @@ interface ValidMedia {
 	alt: string
 }
 
-export const LowImpactHero: React.FC<Page['hero']> = (props) => {
-	const { richText, media: media_ } = props
-
+export function LowImpactHero(props: Page['hero']): React.JSX.Element {
 	let media: ValidMedia | undefined
 	if (
-		media_ !== undefined &&
-		typeof media_ === 'object' &&
-		media_ !== null &&
-		media_.url &&
-		media_.width &&
-		media_.height
+		props.media !== undefined &&
+		typeof props.media === 'object' &&
+		props.media !== null &&
+		props.media.url &&
+		props.media.width &&
+		props.media.height
 	) {
 		media = {
-			url: media_.url,
-			width: media_.width,
-			height: media_.height,
-			alt: media_.alt ?? '',
+			url: props.media.url,
+			width: props.media.width,
+			height: props.media.height,
+			alt: props.media.alt ?? '',
 		}
 	}
 

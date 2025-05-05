@@ -1,34 +1,20 @@
-import type { ArchiveBlockProps, Post } from '@/payload-types'
-
-import RichText from '@/components/RichText'
 import configPromise from '@payload-config'
 import { getPayload } from 'payload'
 import React from 'react'
 
 import { CollectionArchive } from '@/components/CollectionArchive'
+import RichText from '@/components/RichText'
+import type { ArchiveBlockProps, Post } from '@/payload-types'
 
-export const ArchiveBlock: React.FC<
-	ArchiveBlockProps & {
-		id?: string
-	}
-> = async (props) => {
-	const {
-		id,
-		postCategories,
-		introContent,
-		limit: limitFromProps,
-		populateBy,
-		selectedDocs,
-	} = props
-
-	const limit = limitFromProps || 3
+export async function ArchiveBlock(props: ArchiveBlockProps): Promise<React.JSX.Element> {
+	const limit = props.limit || 3
 
 	let posts: Post[] = []
 
-	if (populateBy === 'collection') {
+	if (props.populateBy === 'collection') {
 		const payload = await getPayload({ config: configPromise })
 
-		const flattenedCategories = postCategories?.map((category) => {
+		const flattenedCategories = props.postCategories?.map((category) => {
 			if (typeof category === 'object') return category.id
 			else return category
 		})
@@ -50,8 +36,8 @@ export const ArchiveBlock: React.FC<
 
 		posts = fetchedPosts.docs
 	} else {
-		if (selectedDocs?.length) {
-			const filteredSelectedPosts = selectedDocs.map((post) => {
+		if (props.selectedDocs?.length) {
+			const filteredSelectedPosts = props.selectedDocs.map((post) => {
 				if (typeof post.value === 'object') return post.value
 			}) as Post[]
 
@@ -60,10 +46,14 @@ export const ArchiveBlock: React.FC<
 	}
 
 	return (
-		<div className="my-16" id={`block-${id}`}>
-			{introContent && (
+		<div className="my-16" id={`block-${props.id}`}>
+			{props.introContent && (
 				<div className="container mb-16">
-					<RichText className="ms-0 max-w-[48rem]" data={introContent} enableGutter={false} />
+					<RichText
+						className="ms-0 max-w-[48rem]"
+						data={props.introContent}
+						enableGutter={false}
+					/>
 				</div>
 			)}
 			<CollectionArchive posts={posts} />

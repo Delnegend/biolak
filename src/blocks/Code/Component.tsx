@@ -12,10 +12,10 @@ type Props = CodeBlockProps & {
 	className?: string
 }
 
-export const CodeBlock: React.FC<Props> = ({ className, code, language }) => {
+export function CodeBlock(props: Props): React.JSX.Element {
 	return (
-		<div className={[className, 'not-prose'].filter(Boolean).join(' ')}>
-			<Code code={code} language={language} />
+		<div className={[props.className, 'not-prose'].filter(Boolean).join(' ')}>
+			<Code code={props.code} language={props.language} />
 		</div>
 	)
 }

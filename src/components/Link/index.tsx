@@ -1,8 +1,7 @@
-import { Button, type ButtonProps } from '@/components/ui/button'
-import { cn } from '@/utilities/ui'
 import Link from 'next/link'
 import React from 'react'
 
+import { Button, type ButtonProps } from '@/components/ui/button'
 import type { Page, Post } from '@/payload-types'
 
 type CMSLinkType = {
@@ -20,46 +19,38 @@ type CMSLinkType = {
 	url?: string | null
 }
 
-export const CMSLink: React.FC<CMSLinkType> = (props) => {
-	const {
-		type,
-		appearance = 'inline',
-		children,
-		className,
-		label,
-		newTab,
-		reference,
-		size: sizeFromProps,
-		url,
-	} = props
+export function CMSLink(props: CMSLinkType): React.JSX.Element {
+	const appearance = props.appearance ?? 'inline'
 
 	const href =
-		type === 'reference' && typeof reference?.value === 'object' && reference.value.slug
-			? `${reference?.relationTo !== 'pages' ? `/${reference?.relationTo}` : ''}/${
-					reference.value.slug
+		props.type === 'reference' &&
+		typeof props.reference?.value === 'object' &&
+		props.reference.value.slug
+			? `${props.reference?.relationTo !== 'pages' ? `/${props.reference?.relationTo}` : ''}/${
+					props.reference.value.slug
 				}`
-			: url
+			: props.url
 
-	if (!href) return null
+	if (!href) return <></>
 
-	const size = appearance === 'link' ? 'clear' : sizeFromProps
-	const newTabProps = newTab ? { rel: 'noopener noreferrer', target: '_blank' } : {}
+	const size = appearance === 'link' ? 'clear' : props.size
+	const newTabProps = props.newTab ? { rel: 'noopener noreferrer', target: '_blank' } : {}
 
 	/* Ensure we don't break any styles set by richText */
 	if (appearance === 'inline') {
 		return (
-			<Link className={cn(className)} href={href || url || ''} {...newTabProps}>
-				{label && label}
-				{children && children}
+			<Link className={props.className} href={href || props.url || ''} {...newTabProps}>
+				{props.label && props.label}
+				{props.children && props.children}
 			</Link>
 		)
 	}
 
 	return (
-		<Button asChild className={className} size={size} variant={appearance}>
-			<Link className={cn(className)} href={href || url || ''} {...newTabProps}>
-				{label && label}
-				{children && children}
+		<Button asChild className={props.className} size={size} variant={appearance}>
+			<Link className={props.className} href={href || props.url || ''} {...newTabProps}>
+				{props.label && props.label}
+				{props.children && props.children}
 			</Link>
 		</Button>
 	)

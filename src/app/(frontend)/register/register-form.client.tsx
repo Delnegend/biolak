@@ -1,8 +1,9 @@
 'use client'
 
+import { SubmitHandler, useForm } from 'react-hook-form'
+
 import { Button } from '@/components/ui/button'
 import { TextInput } from '@/components/ui/text-input'
-import { SubmitHandler, useForm } from 'react-hook-form'
 
 interface IFormInput {
 	email: string

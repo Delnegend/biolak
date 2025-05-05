@@ -1,8 +1,9 @@
-import type { CollectionSlug, GlobalConfig } from 'payload'
+import type { GlobalConfig } from 'payload'
 
 import { admin } from '@/access/admin'
 import { anyone } from '@/access/anyone'
 import { Media } from '@/collections/Media'
+
 import { revalidateFooter } from './hooks/revalidateFooter'
 
 export const Footer: GlobalConfig = {

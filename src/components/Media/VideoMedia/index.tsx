@@ -1,15 +1,12 @@
 'use client'
 
-import { cn } from '@/utilities/ui'
 import React, { useEffect, useRef } from 'react'
-
-import type { Props as MediaProps } from '../types'
 
 import { getClientSideURL } from '@/utilities/getURL'
 
-export const VideoMedia: React.FC<MediaProps> = (props) => {
-	const { onClick, resource, videoClassName } = props
+import type { Props as MediaProps } from '../types'
 
+export function VideoMedia(props: MediaProps): React.JSX.Element {
 	const videoRef = useRef<HTMLVideoElement>(null)
 	// const [showFallback] = useState<boolean>()
 
@@ -23,17 +20,17 @@ export const VideoMedia: React.FC<MediaProps> = (props) => {
 		}
 	}, [])
 
-	if (resource && typeof resource === 'object') {
-		const { filename } = resource
+	if (props.resource && typeof props.resource === 'object') {
+		const { filename } = props.resource
 
 		return (
 			<video
 				autoPlay
-				className={cn(videoClassName)}
+				className={props.videoClassName}
 				controls={false}
 				loop
 				muted
-				onClick={onClick}
+				onClick={props.onClick}
 				playsInline
 				ref={videoRef}
 			>
@@ -42,5 +39,5 @@ export const VideoMedia: React.FC<MediaProps> = (props) => {
 		)
 	}
 
-	return null
+	return <></>
 }

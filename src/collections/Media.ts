@@ -1,5 +1,3 @@
-import type { CollectionConfig } from 'payload'
-
 import {
 	FixedToolbarFeature,
 	InlineToolbarFeature,
@@ -7,6 +5,8 @@ import {
 } from '@payloadcms/richtext-lexical'
 import path from 'path'
 import { fileURLToPath } from 'url'
+
+import { CollectionConf } from '@/utilities/types'
 
 import { admin } from '../access/admin'
 import { anyone } from '../access/anyone'

@@ -12,7 +12,7 @@ const defaultCollectionLabels = {
 	},
 }
 
-export const PageRange: React.FC<{
+export function PageRange(props: {
 	className?: string
 	collection?: keyof typeof defaultCollectionLabels
 	collectionLabels?: {
@@ -22,35 +22,27 @@ export const PageRange: React.FC<{
 	currentPage?: number
 	limit?: number
 	totalDocs?: number
-}> = (props) => {
-	const {
-		className,
-		collection,
-		collectionLabels: collectionLabelsFromProps,
-		currentPage,
-		limit,
-		totalDocs,
-	} = props
+}): React.JSX.Element {
+	let indexStart = (props.currentPage ? props.currentPage - 1 : 1) * (props.limit || 1) + 1
+	if (props.totalDocs && indexStart > props.totalDocs) indexStart = 0
 
-	let indexStart = (currentPage ? currentPage - 1 : 1) * (limit || 1) + 1
-	if (totalDocs && indexStart > totalDocs) indexStart = 0
-
-	let indexEnd = (currentPage || 1) * (limit || 1)
-	if (totalDocs && indexEnd > totalDocs) indexEnd = totalDocs
+	let indexEnd = (props.currentPage || 1) * (props.limit || 1)
+	if (props.totalDocs && indexEnd > props.totalDocs) indexEnd = props.totalDocs
 
 	const { plural, singular } =
-		collectionLabelsFromProps ||
-		(collection ? defaultCollectionLabels[collection] : undefined) ||
+		props.collectionLabels ||
+		(props.collection ? defaultCollectionLabels[props.collection] : undefined) ||
 		defaultLabels ||
 		{}
 
 	return (
-		<div className={[className, 'font-semibold'].filter(Boolean).join(' ')}>
-			{(typeof totalDocs === 'undefined' || totalDocs === 0) && 'Search produced no results.'}
-			{typeof totalDocs !== 'undefined' &&
-				totalDocs > 0 &&
-				`Showing ${indexStart}${indexStart > 0 ? ` - ${indexEnd}` : ''} of ${totalDocs} ${
-					totalDocs > 1 ? plural : singular
+		<div className={[props.className, 'font-semibold'].filter(Boolean).join(' ')}>
+			{(typeof props.totalDocs === 'undefined' || props.totalDocs === 0) &&
+				'Search produced no results.'}
+			{typeof props.totalDocs !== 'undefined' &&
+				props.totalDocs > 0 &&
+				`Showing ${indexStart}${indexStart > 0 ? ` - ${indexEnd}` : ''} of ${props.totalDocs} ${
+					props.totalDocs > 1 ? plural : singular
 				}`}
 		</div>
 	)

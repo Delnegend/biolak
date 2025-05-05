@@ -1,18 +1,17 @@
-import type { Metadata } from 'next'
+import './globals.css'
 
-import { cn } from '@/utilities/ui'
+import type { Metadata } from 'next'
+import { Crimson_Pro, Manrope } from 'next/font/google'
+import { draftMode } from 'next/headers'
 import React from 'react'
 
 import { AdminBar } from '@/components/AdminBar'
 import { Footer } from '@/globals/Footer/Component'
 import { Header } from '@/globals/Header/Component'
-import { mergeOpenGraph } from '@/utilities/mergeOpenGraph'
-import { draftMode } from 'next/headers'
-
 import { Promo } from '@/globals/Promo/Component'
 import { getServerSideURL } from '@/utilities/getURL'
-import { Crimson_Pro, Manrope } from 'next/font/google'
-import './globals.css'
+import { mergeOpenGraph } from '@/utilities/mergeOpenGraph'
+import { cn } from '@/utilities/ui'
 
 const manrope = Manrope({
 	subsets: ['vietnamese'],

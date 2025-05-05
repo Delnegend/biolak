@@ -1,10 +1,9 @@
+import Link from 'next/link'
 import React from 'react'
-
-import type { CallToActionLeftBlockProps } from '@/payload-types'
 
 import RichText from '@/components/RichText'
 import { Button } from '@/components/ui/button'
-import Link from 'next/link'
+import type { CallToActionLeftBlockProps } from '@/payload-types'
 
 export function CallToActionLeftBlock(props: CallToActionLeftBlockProps): React.JSX.Element {
 	const bgUrl =

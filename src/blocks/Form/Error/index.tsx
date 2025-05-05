@@ -3,7 +3,7 @@
 import * as React from 'react'
 import { useFormContext } from 'react-hook-form'
 
-export const Error = ({ name }: { name: string }) => {
+export function Error({ name }: { name: string }): React.JSX.Element {
 	const {
 		formState: { errors },
 	} = useFormContext()

@@ -1,5 +1,6 @@
+import { Block } from 'payload'
+
 import { Posts } from '@/collections/Posts'
-import { Block, CollectionSlug } from 'payload'
 
 export const LatestPostsBlockConf: Block = {
 	slug: 'latestPosts',

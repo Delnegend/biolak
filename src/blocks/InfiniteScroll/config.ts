@@ -1,5 +1,6 @@
+import { Block } from 'payload'
+
 import { Media } from '@/collections/Media'
-import { Block, CollectionSlug } from 'payload'
 
 export const InfiniteScrollBlockConf: Block = {
 	slug: 'infiniteScroll',

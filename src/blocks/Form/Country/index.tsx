@@ -1,5 +1,7 @@
 import type { CountryField } from '@payloadcms/plugin-form-builder/types'
+import React from 'react'
 import type { Control, FieldErrorsImpl } from 'react-hook-form'
+import { Controller } from 'react-hook-form'
 
 import { Label } from '@/components/ui/label'
 import {
@@ -9,41 +11,39 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from '@/components/ui/select'
-import React from 'react'
-import { Controller } from 'react-hook-form'
 
 import { Error } from '../Error'
 import { Width } from '../Width'
 import { countryOptions } from './options'
 
-export const Country: React.FC<
-	CountryField & {
+export function Country(
+	props: CountryField & {
 		control: Control
 		errors: Partial<FieldErrorsImpl>
-	}
-> = ({ name, control, errors, label, required, width }) => {
+	},
+): React.JSX.Element {
 	return (
-		<Width width={width}>
-			<Label className="" htmlFor={name}>
-				{label}
+		<Width width={props.width}>
+			<Label className="" htmlFor={props.name}>
+				{props.label}
 
-				{required && (
+				{props.required && (
 					<span className="required">
 						* <span className="sr-only">(required)</span>
 					</span>
 				)}
 			</Label>
 			<Controller
-				control={control}
+				control={props.control}
 				defaultValue=""
-				name={name}
+				name={props.name}
 				render={({ field: { onChange, value } }) => {
 					const controlledValue = countryOptions.find((t) => t.value === value)
 
 					return (
 						<Select onValueChange={(val) => onChange(val)} value={controlledValue?.value}>
-							<SelectTrigger className="w-full" id={name}>
-								<SelectValue placeholder={label} />
+							<SelectTrigger className="w-full" id={props.name}>
+								<SelectValue placeholder={props.label} />
 							</SelectTrigger>
 							<SelectContent>
 								{countryOptions.map(({ label, value }) => {
@@ -57,9 +57,9 @@ export const Country: React.FC<
 						</Select>
 					)
 				}}
-				rules={{ required }}
+				rules={{ required: props.required }}
 			/>
-			{errors[name] && <Error name={name} />}
+			{props.errors[props.name] && <Error name={props.name} />}
 		</Width>
 	)
 }

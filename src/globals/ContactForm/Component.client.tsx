@@ -1,11 +1,12 @@
 'use client'
 
-import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
-import { TextInput } from '@/components/ui/text-input'
 import Link from 'next/link'
 import { DataFromGlobalSlug } from 'payload'
 import { SubmitHandler, useForm } from 'react-hook-form'
+
+import { Button } from '@/components/ui/button'
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
+import { TextInput } from '@/components/ui/text-input'
 
 type IFormInput = {
 	name: string

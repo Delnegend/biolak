@@ -1,52 +1,40 @@
 import type { StaticImageData } from 'next/image'
-
-import RichText from '@/components/RichText'
-import { cn } from '@/utilities/ui'
 import React from 'react'
 
+import RichText from '@/components/RichText'
 import type { MediaBlockProps } from '@/payload-types'
+import { cn } from '@/utilities/ui'
 
 import { Media } from '../../components/Media'
 
-type Props = MediaBlockProps & {
-	breakout?: boolean
-	captionClassName?: string
-	className?: string
-	enableGutter?: boolean
-	imgClassName?: string
-	staticImage?: StaticImageData
-	disableInnerContainer?: boolean
-}
-
-export const MediaBlockComponent: React.FC<Props> = (props) => {
-	const {
-		captionClassName,
-		className,
-		enableGutter = true,
-		imgClassName,
-		media,
-		staticImage,
-		disableInnerContainer,
-	} = props
-
-	let caption
-	if (media && typeof media === 'object') caption = media.caption
+export function MediaBlockComponent(
+	props: MediaBlockProps & {
+		breakout?: boolean
+		captionClassName?: string
+		className?: string
+		enableGutter?: boolean
+		imgClassName?: string
+		staticImage?: StaticImageData
+		disableInnerContainer?: boolean
+	},
+): React.JSX.Element {
+	const caption = props.media && typeof props.media === 'object' ? props.media.caption : undefined
 
 	return (
 		<div
 			className={cn(
 				'',
 				{
-					container: enableGutter,
+					container: props.enableGutter ?? true,
 				},
-				className,
+				props.className,
 			)}
 		>
-			{(media || staticImage) && (
+			{(props.media || props.staticImage) && (
 				<Media
-					imgClassName={cn('border border-border rounded-[0.8rem]', imgClassName)}
-					resource={media}
-					src={staticImage}
+					imgClassName={cn('border border-border rounded-[0.8rem]', props.imgClassName)}
+					resource={props.media}
+					src={props.staticImage}
 				/>
 			)}
 			{caption && (
@@ -54,9 +42,9 @@ export const MediaBlockComponent: React.FC<Props> = (props) => {
 					className={cn(
 						'mt-6',
 						{
-							container: !disableInnerContainer,
+							container: !props.disableInnerContainer,
 						},
-						captionClassName,
+						props.captionClassName,
 					)}
 				>
 					<RichText data={caption} enableGutter={false} />

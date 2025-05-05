@@ -1,6 +1,7 @@
+import type { Block } from 'payload'
+
 import { Media } from '@/collections/Media'
 import { link } from '@/fields/link'
-import type { Block, CollectionSlug } from 'payload'
 
 export const CallToActionLeftBlockConf: Block = {
 	slug: 'cta-left',

@@ -1,15 +1,13 @@
-import { cn } from '@/utilities/ui'
 import React from 'react'
 
 import { Card, CardPostData } from '@/components/Card'
+import { cn } from '@/utilities/ui'
 
 export type Props = {
 	posts: CardPostData[]
 }
 
-export const CollectionArchive: React.FC<Props> = (props) => {
-	const { posts } = props
-
+export function CollectionArchive({ posts }: Props): React.JSX.Element {
 	return (
 		<div className={cn('container')}>
 			<div>

@@ -1,19 +1,18 @@
+import configPromise from '@payload-config'
 import type { Metadata } from 'next'
+import { draftMode } from 'next/headers'
+import { getPayload } from 'payload'
+import { cache } from 'react'
 
 import { RelatedPosts } from '@/blocks/RelatedPosts/Component'
+import { Posts } from '@/collections/Posts'
+import { LivePreviewListener } from '@/components/LivePreviewListener'
 import { PayloadRedirects } from '@/components/PayloadRedirects'
-import configPromise from '@payload-config'
-import { getPayload } from 'payload'
-import { draftMode } from 'next/headers'
-import React, { cache } from 'react'
 import RichText from '@/components/RichText'
-
-import type { Post } from '@/payload-types'
-
 import { PostHero } from '@/heros/PostHero'
 import { generateMeta } from '@/utilities/generateMeta'
+
 import PageClient from './page.client'
-import { LivePreviewListener } from '@/components/LivePreviewListener'
 
 export async function generateStaticParams() {
 	const payload = await getPayload({ config: configPromise })
@@ -28,11 +27,7 @@ export async function generateStaticParams() {
 		},
 	})
 
-	const params = posts.docs.map(({ slug }) => {
-		return { slug }
-	})
-
-	return params
+	return posts.docs.map(({ slug }) => ({ slug }))
 }
 
 type Args = {
@@ -92,7 +87,7 @@ const queryPostBySlug = cache(async ({ slug }: { slug: string }) => {
 	const payload = await getPayload({ config: configPromise })
 
 	const result = await payload.find({
-		collection: 'posts',
+		collection: Posts.slug,
 		draft,
 		limit: 1,
 		overrideAccess: draft,

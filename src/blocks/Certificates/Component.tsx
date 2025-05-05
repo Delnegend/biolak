@@ -1,7 +1,8 @@
-import { CertificatesBlockProps } from '@/payload-types'
-import { cn } from '@/utilities/ui'
 import { DM_Sans } from 'next/font/google'
 import Image from 'next/image'
+
+import { CertificatesBlockProps } from '@/payload-types'
+import { cn } from '@/utilities/ui'
 
 const dmsans = DM_Sans({
 	subsets: ['latin'],

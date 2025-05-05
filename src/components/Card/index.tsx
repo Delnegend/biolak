@@ -1,61 +1,62 @@
 'use client'
-import { cn } from '@/utilities/ui'
-import useClickableCard from '@/utilities/useClickableCard'
 import Link from 'next/link'
 import React, { Fragment } from 'react'
 
-import type { Post } from '@/payload-types'
-
 import { Media } from '@/components/Media'
+import type { Post } from '@/payload-types'
+import { cn } from '@/utilities/ui'
+import useClickableCard from '@/utilities/useClickableCard'
 
 export type CardPostData = Pick<Post, 'slug' | 'postCategories' | 'meta' | 'title'>
 
-export const Card: React.FC<{
+export function Card(props: {
 	alignItems?: 'center'
 	className?: string
 	doc?: CardPostData
 	relationTo?: 'posts'
 	showCategories?: boolean
 	title?: string
-}> = (props) => {
+}): React.JSX.Element {
 	const { card, link } = useClickableCard({})
-	const { className, doc, relationTo, showCategories, title: titleFromProps } = props
+	// const { className, doc, relationTo, showCategories, title: titleFromProps } = props
 
-	const { slug, postCategories, meta, title } = doc || {}
-	const { description, image: metaImage } = meta || {}
+	// const { slug, postCategories, meta, title } = doc || {}
+	// const { description, image: metaImage } = meta || {}
 
 	const hasCategories =
-		postCategories && Array.isArray(postCategories) && postCategories.length > 0
-	const titleToUse = titleFromProps || title
-	const sanitizedDescription = description?.replace(/\s/g, ' ') // replace non-breaking space with white space
-	const href = `/${relationTo}/${slug}`
+		props.doc?.postCategories &&
+		Array.isArray(props.doc.postCategories) &&
+		props.doc.postCategories.length > 0
+	const titleToUse = props.title || props.doc?.title
+	const sanitizedDescription = props.doc?.meta?.description?.replace(/\s/g, ' ') // replace non-breaking space with white space
+	const href = `/${props.relationTo}/${props.doc?.slug}`
 
 	return (
 		<article
 			className={cn(
 				'overflow-hidden rounded-lg border border-border bg-card hover:cursor-pointer',
-				className,
+				props.className,
 			)}
 			ref={card.ref}
 		>
 			<div className="relative w-full">
-				{!metaImage && <div className="">No image</div>}
-				{metaImage && typeof metaImage !== 'string' && (
-					<Media resource={metaImage} size="33vw" />
+				{!props.doc?.meta?.image && <div className="">No image</div>}
+				{props.doc?.meta?.image && typeof props.doc?.meta?.image !== 'string' && (
+					<Media resource={props.doc?.meta?.image} size="33vw" />
 				)}
 			</div>
 			<div className="p-4">
-				{showCategories && hasCategories && (
+				{props.showCategories && hasCategories && (
 					<div className="mb-4 text-sm uppercase">
-						{showCategories && hasCategories && (
+						{props.showCategories && hasCategories && (
 							<div>
-								{postCategories?.map((category, index) => {
+								{props.doc?.postCategories?.map((category, index) => {
 									if (typeof category === 'object') {
 										const { title: titleFromCategory } = category
 
 										const categoryTitle = titleFromCategory || 'Untitled category'
 
-										const isLast = index === postCategories.length - 1
+										const isLast = index === (props.doc?.postCategories?.length ?? 0) - 1
 
 										return (
 											<Fragment key={index}>
@@ -80,8 +81,10 @@ export const Card: React.FC<{
 						</h3>
 					</div>
 				)}
-				{description && (
-					<div className="mt-2">{description && <p>{sanitizedDescription}</p>}</div>
+				{props.doc?.meta?.description && (
+					<div className="mt-2">
+						{props.doc.meta.description && <p>{sanitizedDescription}</p>}
+					</div>
 				)}
 			</div>
 		</article>

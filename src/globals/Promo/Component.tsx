@@ -1,6 +1,7 @@
-import { getCachedGlobal } from '@/utilities/getGlobals'
 import Link from 'next/link'
 import { DataFromGlobalSlug } from 'payload'
+
+import { getCachedGlobal } from '@/utilities/getGlobals'
 
 export async function Promo(): Promise<React.JSX.Element> {
 	const promoData = (await getCachedGlobal('promo', 1)()) as DataFromGlobalSlug<'promo'>

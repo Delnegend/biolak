@@ -1,13 +1,12 @@
 'use client'
-import { Media } from '@/payload-types'
-import Image from 'next/image'
-import { useEffect, useRef, useState } from 'react'
 import './style.scss'
 
-export function InfiniteScrollBlockCC({
-	graphic,
-	animationDuration,
-}: {
+import Image from 'next/image'
+import { useEffect, useRef, useState } from 'react'
+
+import { Media } from '@/payload-types'
+
+export function InfiniteScrollBlockCC(props: {
 	graphic: Media
 	animationDuration: number
 }): React.JSX.Element {
@@ -17,7 +16,7 @@ export function InfiniteScrollBlockCC({
 
 	function setRenderCountHelper(): void {
 		const containerWidth = containerRef.current?.clientWidth
-		const bannerWidth = graphic.width
+		const bannerWidth = props.graphic.width
 
 		if (!containerWidth || containerWidth === 0 || !bannerWidth || bannerWidth === 0) return
 
@@ -41,6 +40,7 @@ export function InfiniteScrollBlockCC({
 		return () => {
 			observer.disconnect()
 		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [])
 
 	return (
@@ -50,7 +50,7 @@ export function InfiniteScrollBlockCC({
 			id="infinite-scroll-block"
 			style={{
 				// @ts-expect-error idc
-				'--animation-duration': `${animationDuration}s`,
+				'--animation-duration': `${props.animationDuration}s`,
 				'--banner-proportion': `-${bannerProportion}%`,
 			}}
 		>
@@ -58,11 +58,11 @@ export function InfiniteScrollBlockCC({
 				{Array.from({ length: renderCount }).map((_, i) => (
 					<Image
 						key={i}
-						src={graphic.url ?? ''}
-						alt={graphic.alt ?? ''}
-						width={graphic.width ?? 0}
-						height={graphic.height ?? 0}
-						unoptimized={graphic.mimeType === 'image/svg+xml'}
+						src={props.graphic.url ?? ''}
+						alt={props.graphic.alt ?? ''}
+						width={props.graphic.width ?? 0}
+						height={props.graphic.height ?? 0}
+						unoptimized={props.graphic.mimeType === 'image/svg+xml'}
 					/>
 				))}
 			</div>

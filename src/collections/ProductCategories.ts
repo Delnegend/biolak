@@ -1,7 +1,7 @@
 import { admin } from '@/access/admin'
 import { anyone } from '@/access/anyone'
 import { slugField } from '@/fields/slug'
-import { CollectionConfig } from 'payload'
+import { CollectionConf } from '@/utilities/types'
 
 export const ProductCategories: CollectionConfig = {
 	slug: 'productCategories',

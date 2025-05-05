@@ -1,13 +1,12 @@
+import { Lato } from 'next/font/google'
+import Link from 'next/link'
 import React from 'react'
-
-import type { CallToActionCenterBlockProps } from '@/payload-types'
 
 import RichText from '@/components/RichText'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import type { CallToActionCenterBlockProps } from '@/payload-types'
 import { cn } from '@/utilities/ui'
-import { Lato } from 'next/font/google'
-import Link from 'next/link'
 
 const lato = Lato({
 	subsets: ['latin'],

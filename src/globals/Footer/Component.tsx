@@ -1,11 +1,11 @@
-import { getCachedGlobal } from '@/utilities/getGlobals'
-
-import { TextInput } from '@/components/ui/text-input'
-import type { Footer } from '@/payload-types'
-import { cn } from '@/utilities/ui'
 import { Lato, Phudu } from 'next/font/google'
 import Image from 'next/image'
 import { DataFromGlobalSlug } from 'payload'
+
+import { TextInput } from '@/components/ui/text-input'
+import type { Footer } from '@/payload-types'
+import { getCachedGlobal } from '@/utilities/getGlobals'
+import { cn } from '@/utilities/ui'
 
 const lato = Lato({ subsets: ['latin'], weight: ['400'] })
 const phudu = Phudu({ subsets: ['vietnamese'], weight: ['400', '600', '700'] })

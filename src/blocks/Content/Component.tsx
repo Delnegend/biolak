@@ -1,15 +1,13 @@
-import RichText from '@/components/RichText'
-import { cn } from '@/utilities/ui'
 import React from 'react'
 
+import RichText from '@/components/RichText'
 import type { ContentBlockProps } from '@/payload-types'
-
 import { cssStringToStyle } from '@/utilities/cssStringToStyle'
+import { cn } from '@/utilities/ui'
+
 import { CMSLink } from '../../components/Link'
 
-export const ContentBlock: React.FC<ContentBlockProps> = (props) => {
-	const { columns } = props
-
+export function ContentBlock({ columns }: ContentBlockProps): React.JSX.Element {
 	const colsSpanClasses = {
 		full: '12',
 		half: '6',

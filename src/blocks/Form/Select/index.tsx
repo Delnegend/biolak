@@ -1,5 +1,7 @@
 import type { SelectField } from '@payloadcms/plugin-form-builder/types'
+import React from 'react'
 import type { Control, FieldErrorsImpl } from 'react-hook-form'
+import { Controller } from 'react-hook-form'
 
 import { Label } from '@/components/ui/label'
 import {
@@ -9,45 +11,43 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from '@/components/ui/select'
-import React from 'react'
-import { Controller } from 'react-hook-form'
 
 import { Error } from '../Error'
 import { Width } from '../Width'
 
-export const Select: React.FC<
-	SelectField & {
+export function Select(
+	props: SelectField & {
 		control: Control
 		errors: Partial<FieldErrorsImpl>
-	}
-> = ({ name, control, errors, label, options, required, width }) => {
+	},
+): React.JSX.Element {
 	return (
-		<Width width={width}>
-			<Label htmlFor={name}>
-				{label}
-				{required && (
+		<Width width={props.width}>
+			<Label htmlFor={props.name}>
+				{props.label}
+				{props.required && (
 					<span className="required">
 						* <span className="sr-only">(required)</span>
 					</span>
 				)}
 			</Label>
 			<Controller
-				control={control}
+				control={props.control}
 				defaultValue=""
-				name={name}
+				name={props.name}
 				render={({ field: { onChange, value } }) => {
-					const controlledValue = options.find((t) => t.value === value)
+					const controlledValue = props.options.find((t) => t.value === value)
 
 					return (
 						<SelectComponent
 							onValueChange={(val) => onChange(val)}
 							value={controlledValue?.value}
 						>
-							<SelectTrigger className="w-full" id={name}>
-								<SelectValue placeholder={label} />
+							<SelectTrigger className="w-full" id={props.name}>
+								<SelectValue placeholder={props.label} />
 							</SelectTrigger>
 							<SelectContent>
-								{options.map(({ label, value }) => {
+								{props.options.map(({ label, value }) => {
 									return (
 										<SelectItem key={value} value={value}>
 											{label}
@@ -58,9 +58,9 @@ export const Select: React.FC<
 						</SelectComponent>
 					)
 				}}
-				rules={{ required }}
+				rules={{ required: props.required }}
 			/>
-			{errors[name] && <Error name={name} />}
+			{props.errors[props.name] && <Error name={props.name} />}
 		</Width>
 	)
 }

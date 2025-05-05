@@ -1,6 +1,8 @@
+import { DataFromGlobalSlug } from 'payload'
+
 import { DialogTitle } from '@/components/ui/dialog'
 import { getCachedGlobal } from '@/utilities/getGlobals'
-import { DataFromGlobalSlug } from 'payload'
+
 import { ContactFormCC } from './Component.client'
 
 export async function ContactForm({ inDialog }: { inDialog?: boolean }) {

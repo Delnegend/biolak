@@ -1,37 +1,37 @@
 import type { TextField } from '@payloadcms/plugin-form-builder/types'
+import React from 'react'
 import type { FieldErrorsImpl, FieldValues, UseFormRegister } from 'react-hook-form'
 
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import React from 'react'
 
 import { Error } from '../Error'
 import { Width } from '../Width'
 
-export const Text: React.FC<
-	TextField & {
+export function Text(
+	props: TextField & {
 		errors: Partial<FieldErrorsImpl>
 		register: UseFormRegister<FieldValues>
-	}
-> = ({ name, defaultValue, errors, label, register, required, width }) => {
+	},
+): React.JSX.Element {
 	return (
-		<Width width={width}>
-			<Label htmlFor={name}>
-				{label}
+		<Width width={props.width}>
+			<Label htmlFor={props.name}>
+				{props.label}
 
-				{required && (
+				{props.required && (
 					<span className="required">
 						* <span className="sr-only">(required)</span>
 					</span>
 				)}
 			</Label>
 			<Input
-				defaultValue={defaultValue}
-				id={name}
+				defaultValue={props.defaultValue}
+				id={props.name}
 				type="text"
-				{...register(name, { required })}
+				{...props.register(props.name, { required: props.required })}
 			/>
-			{errors[name] && <Error name={name} />}
+			{props.errors[props.name] && <Error name={props.name} />}
 		</Width>
 	)
 }

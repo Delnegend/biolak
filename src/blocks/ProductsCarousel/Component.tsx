@@ -1,11 +1,13 @@
+import Image from 'next/image'
+import Link from 'next/link'
+
 import { Button } from '@/components/ui/button'
 import { Carousel, CarouselContent, CarouselItem } from '@/components/ui/carousel'
 import type { ProductsCarouselBlockProps } from '@/payload-types'
-import Image from 'next/image'
-import Link from 'next/link'
+
 import { ProductsCarouselNavButton } from './ProductsCarouselNavButton'
 
-export const ProductsCarouselBlock: React.FC<ProductsCarouselBlockProps> = (props) => {
+export function ProductsCarouselBlock(props: ProductsCarouselBlockProps): React.JSX.Element {
 	const products = props.products
 		? props.products.map((p) => p.product).filter((p) => typeof p === 'object')
 		: undefined
@@ -34,7 +36,7 @@ export const ProductsCarouselBlock: React.FC<ProductsCarouselBlockProps> = (prop
 										<div className="text-xl font-medium">Sản phẩm bán chạy</div>
 										<div className="font-serif text-7xl font-bold">{p.title}</div>
 										<div className="my-5">{p.longDescription ?? p.shortDescription}</div>
-										<Link href="/[slug]" as={`/products/${p.id}`}>
+										<Link href="/[slug]" as={p.slug ? `/products/${p.slug}` : '#'}>
 											<Button size="lg" className="w-[26rem]">
 												XEM THÊM
 											</Button>

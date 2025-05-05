@@ -1,6 +1,6 @@
+import { revalidateTag } from 'next/cache'
 import type { GlobalAfterChangeHook } from 'payload'
 
-import { revalidateTag } from 'next/cache'
 import { Header } from '../config'
 
 export const revalidateHeader: GlobalAfterChangeHook = ({ doc, req: { payload, context } }) => {
