@@ -114,3 +114,12 @@ html[data-theme='light'] {
 .safe-width {
 	@apply mx-auto w-[95%] max-w-[80rem];
 }
+
+li {
+	margin: 0 !important;
+}
+
+li::marker {
+	color: hsl(var(--primary)) !important;
+	font-size: 1.5rem !important;
+}
