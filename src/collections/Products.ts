@@ -51,21 +51,12 @@ export const Products: CollectionConf<'products'> = {
 					},
 					fields: [
 						{
-							name: ProductCategories.slug,
+							name: 'category',
 							type: 'relationship',
-							relationTo: ProductCategories.slug,
+							relationTo: [ProductCategories.slug, ProductSubCategories.slug],
 							label: {
 								en: 'Product Categories',
 								vi: 'Danh mục sản phẩm',
-							},
-						},
-						{
-							name: ProductSubCategories.slug,
-							type: 'relationship',
-							relationTo: ProductSubCategories.slug,
-							label: {
-								en: 'Product Sub Categories',
-								vi: 'Danh mục con sản phẩm',
 							},
 						},
 						{
