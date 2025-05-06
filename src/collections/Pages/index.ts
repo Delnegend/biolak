@@ -10,6 +10,7 @@ import { HighlighRightBlockConf } from '@/blocks/HighlightRight/config'
 import { InfiniteScrollBlockConf } from '@/blocks/InfiniteScroll/config'
 import { LatestPostsBlockConf } from '@/blocks/LatestPosts/config'
 import { ProductsCarouselBlockConf } from '@/blocks/ProductsCarousel/config'
+import { ProductsCategoryBlockConf } from '@/blocks/ProductsCategory/config'
 import { ThreePhotoBlockConf } from '@/blocks/ThreePhoto/config'
 import { linkGroup } from '@/fields/linkGroup'
 import { SeoFieldConf } from '@/fields/seo'
@@ -209,6 +210,7 @@ export const Pages: CollectionConf<'pages'> = {
 								LatestPostsBlockConf,
 								MediaBlockConf,
 								ProductsCarouselBlockConf,
+								ProductsCategoryBlockConf,
 								ThreePhotoBlockConf,
 							],
 							required: true,

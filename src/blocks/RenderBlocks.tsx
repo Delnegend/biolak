@@ -36,6 +36,8 @@ import { LatestPostsBlockConf } from './LatestPosts/config'
 import { MediaBlockConf } from './MediaBlock/config'
 import { ProductsCarouselBlock } from './ProductsCarousel/Component'
 import { ProductsCarouselBlockConf } from './ProductsCarousel/config'
+import { ProductsCategoryBlock } from './ProductsCategory/Component'
+import { ProductsCategoryBlockConf } from './ProductsCategory/config'
 import { ThreePhotoBlock } from './ThreePhoto/Component'
 import { ThreePhotoBlockConf } from './ThreePhoto/config'
 
@@ -58,6 +60,7 @@ const blockComponents = {
 	[LatestPostsBlockConf.slug]: LatestPostsBlock,
 	[MediaBlockConf.slug]: MediaBlockComponent,
 	[ProductsCarouselBlockConf.slug]: ProductsCarouselBlock,
+	[ProductsCategoryBlockConf.slug]: ProductsCategoryBlock,
 	[ThreePhotoBlockConf.slug]: ThreePhotoBlock,
 }
 
