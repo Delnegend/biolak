@@ -7,8 +7,14 @@ export const InfiniteScrollBlockConf: Block = {
 	interfaceName: 'InfiniteScrollBlockProps',
 	imageURL: '/thumbs/infinite-scroll.avif',
 	labels: {
-		singular: 'Infinite Scroll',
-		plural: 'Infinite Scroll',
+		singular: {
+			en: 'Infinite Scroll',
+			vi: 'Cuộn vô tận',
+		},
+		plural: {
+			en: 'Infinite Scroll',
+			vi: 'Cuộn vô tận',
+		},
 	},
 	fields: [
 		{
