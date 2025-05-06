@@ -19,17 +19,17 @@ minify-json:
   echo "JSON minification complete."
 
 dev:
-  bun next dev --turbo
+  pnpm next dev --turbo
 gen-importmap:
-  bun payload generate:importmap
+  pnpm payload generate:importmap
 gen-types:
-  bun payload generate:types
+  pnpm payload generate:types
 gen-db-schema:
-  bun payload generate:db-schema
+  pnpm payload generate:db-schema
 db-start-migrate:
-  bun payload migrate
+  pnpm payload migrate
 db-create-migrate:
-  bun payload migrate:create
+  pnpm payload migrate:create
   just minify-json
 db-dev-pg-start:
   docker compose up -d postgres-dev
@@ -38,10 +38,10 @@ db-dev-pg-backup:
 db-dev-pg-restore:
   docker exec -it postgres-dev bash /postgres-dev-backup/restore.sh
 lint:
-  bun next lint --fix && bun prettier --write .
+  pnpm next lint --fix && pnpm prettier --write .
 payload:
-  bun payload
+  pnpm payload
 reinstall:
-  bun rm -rf node_modules && rm bun-lock.yaml && bun --ignore-workspace install
+  pnpm rm -rf node_modules && rm pnpm-lock.yaml && pnpm --ignore-workspace install
 start:
-  bun next start
+  pnpm next start
