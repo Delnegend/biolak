@@ -3,6 +3,9 @@ import { CallToActionLeftBlockConf } from '@/blocks/CallToActionLeft/config'
 import { CallToActionRightBlockConf } from '@/blocks/CallToActionRight/config'
 import { CallToAddToCartBlockConf } from '@/blocks/CallToAddToCart/config'
 import { CertificatesBlockConf } from '@/blocks/Certificates/config'
+import { HighlightCenterBlockConf } from '@/blocks/HighlightCenter/config'
+import { HighlightLeftBlockConf } from '@/blocks/HighlightLeft/config'
+import { HighlighRightBlockConf } from '@/blocks/HighlightRight/config'
 import { InfiniteScrollBlockConf } from '@/blocks/InfiniteScroll/config'
 import { LatestPostsBlockConf } from '@/blocks/LatestPosts/config'
 import { ProductsCarouselBlockConf } from '@/blocks/ProductsCarousel/config'
@@ -197,6 +200,9 @@ export const Pages: CollectionConf<'pages'> = {
 								CertificatesBlockConf,
 								ContentBlockConf,
 								FormBlockConf,
+								HighlightCenterBlockConf,
+								HighlightLeftBlockConf,
+								HighlighRightBlockConf,
 								InfiniteScrollBlockConf,
 								LatestPostsBlockConf,
 								MediaBlockConf,

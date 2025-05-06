@@ -21,6 +21,12 @@ import { CertificatesBlock } from './Certificates/Component'
 import { CertificatesBlockConf } from './Certificates/config'
 import { ContentBlockConf } from './Content/config'
 import { FormBlockConf } from './Form/config'
+import { HighlightCenterBlock } from './HighlightCenter/Component'
+import { HighlightCenterBlockConf } from './HighlightCenter/config'
+import { HighlightLeftBlock } from './HighlightLeft/Component'
+import { HighlightLeftBlockConf } from './HighlightLeft/config'
+import { HighlightRightBlock } from './HighlightRight/Component'
+import { HighlighRightBlockConf as HighlightRightBlockConf } from './HighlightRight/config'
 import { InfiniteScrollBlock } from './InfiniteScroll/Component'
 import { InfiniteScrollBlockConf } from './InfiniteScroll/config'
 import { LatestPostsBlock } from './LatestPosts/Component'
@@ -41,6 +47,10 @@ const blockComponents = {
 	[CertificatesBlockConf.slug]: CertificatesBlock,
 	[ContentBlockConf.slug]: ContentBlock,
 	[FormBlockConf.slug]: FormBlock,
+	[HighlightLeftBlockConf.slug]: HighlightLeftBlock,
+	[HighlightRightBlockConf.slug]: HighlightRightBlock,
+	[HighlightCenterBlockConf.slug]: HighlightCenterBlock,
+	[BestSellerBlockConf.slug]: BestSellerBlock,
 	[InfiniteScrollBlockConf.slug]: InfiniteScrollBlock,
 	[LatestPostsBlockConf.slug]: LatestPostsBlock,
 	[MediaBlockConf.slug]: MediaBlockComponent,
