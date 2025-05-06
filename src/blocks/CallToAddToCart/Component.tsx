@@ -20,7 +20,11 @@ export function CallToAddToCartBlock(props: CallToAddToCartBlockProps): React.JS
 			{props.content && (
 				<RichText data={props.content} enableGutter={false} className="mt-4 [&_li]:text-xl" />
 			)}
-			<Button size="lg" variant="outline" className="mt-6 w-[47rem] border-primary text-primary">
+			<Button
+				size="lg"
+				variant="outline"
+				className="mt-6 w-full max-w-[47rem] border-primary text-primary"
+			>
 				{props.buttonLabel}
 			</Button>
 		</div>
