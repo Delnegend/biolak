@@ -81,7 +81,7 @@ export default async function Product({
 	if (!product) return <PayloadRedirects url={url} />
 
 	return (
-		<article className="pb-16 pt-16">
+		<article>
 			<PageClient />
 			<PayloadRedirects disableNotFound url={url} />
 			{draft && <LivePreviewListener />}
