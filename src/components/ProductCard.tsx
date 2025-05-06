@@ -48,9 +48,13 @@ export function ProductCard({
 					className="mb-6 rounded-[0.5rem]"
 				/>
 			</Link>
-			<div style={{ gridArea: 'title' }} className="mb-2 text-lg font-bold">
+			<Link
+				href={p.slug ? `/products/${p.slug}` : '#'}
+				style={{ gridArea: 'title' }}
+				className="mb-2 text-lg font-bold"
+			>
 				{`${p.title} →`}
-			</div>
+			</Link>
 			<div
 				style={{ gridArea: 'desc' }}
 				className={cn('mb-[1.375rem] text-xs uppercase', lato.className)}
@@ -58,7 +62,7 @@ export function ProductCard({
 				{p.shortDescription}
 			</div>
 			<div style={{ gridArea: 'price' }}>{formatPrice(p.price)}</div>
-			<div style={{ gridArea: 'add-to-cart' }} className="flex items-center justify-end">
+			<div style={{ gridArea: 'add-to-cart' }}>
 				<Button
 					hideArrow={true}
 					className="group flex size-12 items-center justify-center rounded-[0.5rem] border-[#E7B27E] bg-[#E7B27E] p-0 transition-all hover:border hover:bg-transparent"
