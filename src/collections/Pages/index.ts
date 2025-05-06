@@ -1,4 +1,5 @@
 import { BestSellerBlockConf } from '@/blocks/BestSeller/config'
+import { BuyNowBlockConf } from '@/blocks/BuyNow/config'
 import { CallToActionLeftBlockConf } from '@/blocks/CallToActionLeft/config'
 import { CallToActionRightBlockConf } from '@/blocks/CallToActionRight/config'
 import { CallToAddToCartBlockConf } from '@/blocks/CallToAddToCart/config'
@@ -193,6 +194,7 @@ export const Pages: CollectionConf<'pages'> = {
 							blocks: [
 								ArchiveBlockConf,
 								BestSellerBlockConf,
+								BuyNowBlockConf,
 								CallToAddToCartBlockConf,
 								CallToActionCenterBlockConf,
 								CallToActionLeftBlockConf,

@@ -1,6 +1,7 @@
 import { admin } from '@/access/admin'
 import { anyone } from '@/access/anyone'
 import { ArchiveBlockConf } from '@/blocks/ArchiveBlock/config'
+import { BuyNowBlockConf } from '@/blocks/BuyNow/config'
 import { CallToActionCenterBlockConf } from '@/blocks/CallToActionCenter/config'
 import { CallToActionLeftBlockConf } from '@/blocks/CallToActionLeft/config'
 import { CallToActionRightBlockConf } from '@/blocks/CallToActionRight/config'
@@ -194,6 +195,7 @@ export const Products: CollectionConf<'products'> = {
 							},
 							blocks: [
 								ArchiveBlockConf,
+								BuyNowBlockConf,
 								CallToAddToCartBlockConf,
 								CallToActionCenterBlockConf,
 								CallToActionLeftBlockConf,

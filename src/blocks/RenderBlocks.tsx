@@ -10,6 +10,8 @@ import type { Page } from '@/payload-types'
 import { ArchiveBlockConf } from './ArchiveBlock/config'
 import { BestSellerBlock } from './BestSeller/Component'
 import { BestSellerBlockConf } from './BestSeller/config'
+import { BuyNowBlock } from './BuyNow/Component'
+import { BuyNowBlockConf } from './BuyNow/config'
 import { CallToActionCenterBlockConf } from './CallToActionCenter/config'
 import { CallToActionLeftBlock } from './CallToActionLeft/Component'
 import { CallToActionLeftBlockConf } from './CallToActionLeft/config'
@@ -40,6 +42,7 @@ import { ThreePhotoBlockConf } from './ThreePhoto/config'
 const blockComponents = {
 	[ArchiveBlockConf.slug]: ArchiveBlock,
 	[BestSellerBlockConf.slug]: BestSellerBlock,
+	[BuyNowBlockConf.slug]: BuyNowBlock,
 	[CallToAddToCartBlockConf.slug]: CallToAddToCartBlock,
 	[CallToActionCenterBlockConf.slug]: CallToActionCenterBlock,
 	[CallToActionLeftBlockConf.slug]: CallToActionLeftBlock,
