@@ -33,7 +33,14 @@ echo 'alias j=just' >> ~/.zshrc
 curl https://get.volta.sh | bash
 export VOLTA_HOME="$HOME/.volta"
 export PATH="$VOLTA_HOME/bin:$PATH"
+if ! grep -qF 'export VOLTA_HOME="$HOME/.volta"' ~/.zshrc; then
+  echo 'export VOLTA_HOME="$HOME/.volta"' >> ~/.zshrc
+fi
+if ! grep -qF 'export PATH="$VOLTA_HOME/bin:$PATH"' ~/.zshrc; then
+  echo 'export PATH="$VOLTA_HOME/bin:$PATH"' >> ~/.zshrc
+fi
 volta install node@lts pnpm
 pnpm config set store-dir ~/.pnpm-store
+pnpm i
 
 echo 0 | sudo update-alternatives --config iptables
