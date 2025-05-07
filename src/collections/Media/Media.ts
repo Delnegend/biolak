@@ -19,11 +19,11 @@ export const Media: CollectionConfig<typeof MediaSlug> = {
 	labels: {
 		singular: {
 			en: 'Media',
-			vi: 'Ảnh và video',
+			vi: 'Đa phuơng tiện',
 		},
 		plural: {
 			en: 'Media',
-			vi: 'Ảnh và video',
+			vi: 'Đa phuơng tiện',
 		},
 	},
 	access: {
