@@ -7,9 +7,9 @@ import { cn } from '@/utilities/ui'
 
 export function BestSellerBlock(props: BestSellerBlockProps): React.JSX.Element {
 	const products =
-		props.products
-			?.map((p) => p !== null && p.product)
-			.filter((p) => typeof p === 'object' && p !== null) || []
+		props.products && props.products.length > 0
+			? props.products.filter((p) => p !== null && typeof p === 'object')
+			: []
 
 	return (
 		<div className="safe-width flex h-[48rem]">

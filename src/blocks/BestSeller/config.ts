@@ -37,28 +37,13 @@ export const BestSellerBlockConf: Block = {
 		},
 		{
 			name: 'products',
-			type: 'array',
 			label: {
 				vi: 'Sản phẩm',
 				en: 'Products',
 			},
-			labels: {
-				singular: {
-					vi: 'Sản phẩm',
-					en: 'Product',
-				},
-				plural: {
-					vi: 'Sản phẩm',
-					en: 'Products',
-				},
-			},
-			fields: [
-				{
-					name: 'product',
-					type: 'relationship',
-				},
-			],
+			type: 'relationship',
 			relationTo: ProductsSlug,
+			hasMany: true,
 		},
 	],
 }
