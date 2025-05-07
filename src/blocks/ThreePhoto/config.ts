@@ -25,7 +25,6 @@ export const ThreePhotoBlockConf: Block = {
 				en: 'Photo Left',
 				vi: 'Hình ảnh bên trái',
 			},
-			required: true,
 		},
 		{
 			name: 'photoCenter',
@@ -35,7 +34,6 @@ export const ThreePhotoBlockConf: Block = {
 				en: 'Photo Center',
 				vi: 'Hình ảnh ở giữa',
 			},
-			required: true,
 		},
 		{
 			name: 'photoRight',
@@ -45,7 +43,6 @@ export const ThreePhotoBlockConf: Block = {
 				en: 'Photo Right',
 				vi: 'Hình ảnh bên phải',
 			},
-			required: true,
 		},
 	],
 }
