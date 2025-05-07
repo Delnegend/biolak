@@ -102,35 +102,13 @@ export const Products: CollectionConfig<typeof ProductsSlug> = {
 						},
 						{
 							name: 'gallery',
-							type: 'array',
+							type: 'upload',
 							label: {
 								en: 'Gallery',
 								vi: 'Thư viện ảnh',
 							},
-							minRows: 0,
-							maxRows: 50,
-							labels: {
-								singular: {
-									en: 'Image',
-									vi: 'Hình ảnh',
-								},
-								plural: {
-									en: 'Images',
-									vi: 'Hình ảnh',
-								},
-							},
-							fields: [
-								{
-									name: 'image',
-									type: 'upload',
-									relationTo: MediaSlug,
-									label: {
-										en: 'Image',
-										vi: 'Hình ảnh',
-									},
-									required: true,
-								},
-							],
+							relationTo: MediaSlug,
+							hasMany: true,
 						},
 					],
 				},
