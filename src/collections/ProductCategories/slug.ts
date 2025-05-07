@@ -1,1 +1,1 @@
-export const ProductCategorySlug = 'productCategories'
+export const ProductCategoriesSlug = 'productCategories'

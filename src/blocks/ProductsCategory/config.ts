@@ -1,8 +1,8 @@
 import { Block } from 'payload'
 
-import { ProductCategories } from '@/collections/ProductCategories'
+import { ProductCategoriesSlug } from '@/collections/ProductCategories/slug'
 import { ProductsSlug } from '@/collections/Products/slug'
-import { ProductSubCategories } from '@/collections/ProductSubCategories'
+import { ProductSubCategoriesSlug } from '@/collections/ProductSubCategories/slug'
 
 export const ProductsCategoryBlockConf: Block = {
 	slug: 'productsCategory',
@@ -22,7 +22,7 @@ export const ProductsCategoryBlockConf: Block = {
 		{
 			name: 'category',
 			type: 'relationship',
-			relationTo: [ProductCategories.slug, ProductSubCategories.slug],
+			relationTo: [ProductCategoriesSlug, ProductSubCategoriesSlug],
 			label: {
 				en: 'Products Category',
 				vi: 'Danh mục sản phẩm',
