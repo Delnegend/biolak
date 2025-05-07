@@ -21,10 +21,7 @@ export function ProductCard({
 	component?: React.ElementType
 }): React.JSX.Element {
 	const Comp = component ?? 'div'
-	const img =
-		p.gallery && p.gallery[0] && p.gallery[0].image && typeof p.gallery[0].image === 'object'
-			? p.gallery[0].image
-			: null
+	const img = p.gallery?.[0] && typeof p.gallery[0] === 'object' ? p.gallery[0] : null
 
 	return (
 		<Comp
