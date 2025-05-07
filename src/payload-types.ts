@@ -949,13 +949,7 @@ export interface MediaBlockProps {
  * via the `definition` "ProductsCarouselBlockProps".
  */
 export interface ProductsCarouselBlockProps {
-  products?:
-    | {
-        product: number | Product;
-        id?: string | null;
-      }[]
-    | null;
-  'products-new'?: (number | Product)[] | null;
+  products?: (number | Product)[] | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'productsCarousel';
@@ -979,12 +973,7 @@ export interface Product {
   shortDescription: string;
   longDescription?: string | null;
   price: number;
-  gallery?:
-    | {
-        image: number | Media;
-        id?: string | null;
-      }[]
-    | null;
+  gallery?: (number | Media)[] | null;
   heroTitle?: string | null;
   heroSubtitle?: string | null;
   heroDescription?: {
@@ -1069,12 +1058,7 @@ export interface ProductCategory {
 export interface LatestPostsBlockProps {
   title: string;
   buttonLabel: string;
-  posts?:
-    | {
-        post: number | Post;
-        id?: string | null;
-      }[]
-    | null;
+  posts: (number | Post)[];
   id?: string | null;
   blockName?: string | null;
   blockType: 'latestPosts';
@@ -1754,12 +1738,7 @@ export interface InfiniteScrollBlockPropsSelect<T extends boolean = true> {
 export interface LatestPostsBlockPropsSelect<T extends boolean = true> {
   title?: T;
   buttonLabel?: T;
-  posts?:
-    | T
-    | {
-        post?: T;
-        id?: T;
-      };
+  posts?: T;
   id?: T;
   blockName?: T;
 }
@@ -1786,13 +1765,7 @@ export interface PostsGridBlockPropsSelect<T extends boolean = true> {
  * via the `definition` "ProductsCarouselBlockProps_select".
  */
 export interface ProductsCarouselBlockPropsSelect<T extends boolean = true> {
-  products?:
-    | T
-    | {
-        product?: T;
-        id?: T;
-      };
-  'products-new'?: T;
+  products?: T;
   id?: T;
   blockName?: T;
 }
@@ -2013,12 +1986,7 @@ export interface ProductsSelect<T extends boolean = true> {
   shortDescription?: T;
   longDescription?: T;
   price?: T;
-  gallery?:
-    | T
-    | {
-        image?: T;
-        id?: T;
-      };
+  gallery?: T;
   heroTitle?: T;
   heroSubtitle?: T;
   heroDescription?: T;
