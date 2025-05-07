@@ -5,10 +5,10 @@ import { getPayload } from 'payload'
 import { cache } from 'react'
 
 import { RelatedPosts } from '@/blocks/RelatedPosts/Component'
+import { RenderBlocks } from '@/blocks/RenderBlocks'
 import { PostsSlug } from '@/collections/Posts/slug'
 import { LivePreviewListener } from '@/components/LivePreviewListener'
 import { PayloadRedirects } from '@/components/PayloadRedirects'
-import RichText from '@/components/RichText'
 import { PostHero } from '@/heros/PostHero'
 import { generateMeta } from '@/utilities/generateMeta'
 
@@ -57,11 +57,7 @@ export default async function Post({ params: paramsPromise }: Args) {
 
 			<div className="flex flex-col items-center gap-4 pt-8">
 				<div className="container">
-					<RichText
-						className="mx-auto max-w-[48rem]"
-						data={post.content}
-						enableGutter={false}
-					/>
+					<RenderBlocks blocks={post.layout} />
 					{post.relatedPosts && post.relatedPosts.length > 0 && (
 						<RelatedPosts
 							className="col-span-3 col-start-1 mt-12 max-w-[52rem] grid-rows-[2fr] lg:grid lg:grid-cols-subgrid"
