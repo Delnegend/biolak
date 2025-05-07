@@ -7,10 +7,7 @@ import { LatestPostsBlockProps } from '@/payload-types'
 import { AllPostsButton } from './AllPostsButton.client'
 
 export function LatestPostsBlock(props: LatestPostsBlockProps): React.JSX.Element {
-	const posts =
-		props.posts
-			?.map((p) => p !== null && p.post)
-			.filter((p) => typeof p === 'object' && p !== null) || []
+	const posts = props.posts.filter((post) => typeof post === 'object') ?? []
 
 	return (
 		<div className="border-t py-14">

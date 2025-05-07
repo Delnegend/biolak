@@ -211,6 +211,7 @@ export interface Page {
     | CallToActionCenterBlockProps
     | CallToActionLeftBlockProps
     | CallToActionRightBlockProps
+    | CallToActionPostBlockProps
     | CertificatesBlockProps
     | ContentBlockProps
     | FormBlockProps
@@ -220,6 +221,7 @@ export interface Page {
     | InfiniteScrollBlockProps
     | LatestPostsBlockProps
     | MediaBlockProps
+    | PostsGridBlockProps
     | ProductsCarouselBlockProps
     | ProductsCategoryBlockProps
     | ThreePhotoBlockProps
@@ -249,21 +251,24 @@ export interface Post {
   id: number;
   title: string;
   heroImage?: (number | null) | Media;
-  content: {
-    root: {
-      type: string;
-      children: {
-        type: string;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  };
+  layout: (
+    | ArchiveBlockProps
+    | BuyNowBlockProps
+    | CallToAddToCartBlockProps
+    | CallToActionCenterBlockProps
+    | CallToActionLeftBlockProps
+    | CallToActionRightBlockProps
+    | CertificatesBlockProps
+    | ContentBlockProps
+    | FormBlockProps
+    | HighlightCenterBlockProps
+    | HighlightLeftBlockProps
+    | HighlightRightBlockProps
+    | InfiniteScrollBlockProps
+    | MediaBlockProps
+    | ProductsCarouselBlockProps
+    | ThreePhotoBlockProps
+  )[];
   relatedPosts?: (number | Post)[] | null;
   postCategories?: (number | PostCategory)[] | null;
   meta?: {
@@ -382,46 +387,6 @@ export interface Media {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "postCategories".
- */
-export interface PostCategory {
-  id: number;
-  title: string;
-  slug?: string | null;
-  slugLock?: boolean | null;
-  parent?: (number | null) | PostCategory;
-  breadcrumbs?:
-    | {
-        doc?: (number | null) | PostCategory;
-        url?: string | null;
-        label?: string | null;
-        id?: string | null;
-      }[]
-    | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "users".
- */
-export interface User {
-  id: number;
-  name?: string | null;
-  role: 'admin' | 'customer';
-  updatedAt: string;
-  createdAt: string;
-  email: string;
-  resetPasswordToken?: string | null;
-  resetPasswordExpiration?: string | null;
-  salt?: string | null;
-  hash?: string | null;
-  loginAttempts?: number | null;
-  lockUntil?: string | null;
-  password?: string | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "ArchiveBlockProps".
  */
 export interface ArchiveBlockProps {
@@ -456,120 +421,22 @@ export interface ArchiveBlockProps {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "BestSellerBlockProps".
+ * via the `definition` "postCategories".
  */
-export interface BestSellerBlockProps {
+export interface PostCategory {
+  id: number;
   title: string;
-  description?: string | null;
-  products?:
+  slug?: string | null;
+  slugLock?: boolean | null;
+  parent?: (number | null) | PostCategory;
+  breadcrumbs?:
     | {
-        product?: (number | null) | Product;
+        doc?: (number | null) | PostCategory;
+        url?: string | null;
+        label?: string | null;
         id?: string | null;
       }[]
     | null;
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'bestSeller';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "products".
- */
-export interface Product {
-  id: number;
-  category?:
-    | ({
-        relationTo: 'productCategories';
-        value: number | ProductCategory;
-      } | null)
-    | ({
-        relationTo: 'productSubCategories';
-        value: number | ProductSubCategory;
-      } | null);
-  title: string;
-  shortDescription: string;
-  longDescription?: string | null;
-  price: number;
-  gallery?:
-    | {
-        image: number | Media;
-        id?: string | null;
-      }[]
-    | null;
-  heroTitle?: string | null;
-  heroSubtitle?: string | null;
-  heroDescription?: {
-    root: {
-      type: string;
-      children: {
-        type: string;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  } | null;
-  heroMedia?: (number | null) | Media;
-  content?:
-    | (
-        | ArchiveBlockProps
-        | BuyNowBlockProps
-        | CallToAddToCartBlockProps
-        | CallToActionCenterBlockProps
-        | CallToActionLeftBlockProps
-        | CallToActionRightBlockProps
-        | CertificatesBlockProps
-        | ContentBlockProps
-        | FormBlockProps
-        | HighlightCenterBlockProps
-        | HighlightLeftBlockProps
-        | HighlightRightBlockProps
-        | InfiniteScrollBlockProps
-        | LatestPostsBlockProps
-        | MediaBlockProps
-        | ProductsCarouselBlockProps
-        | ThreePhotoBlockProps
-      )[]
-    | null;
-  meta?: {
-    title?: string | null;
-    /**
-     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
-     */
-    image?: (number | null) | Media;
-    description?: string | null;
-  };
-  slug?: string | null;
-  slugLock?: boolean | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "productCategories".
- */
-export interface ProductCategory {
-  id: number;
-  title: string;
-  slug?: string | null;
-  slugLock?: boolean | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "productSubCategories".
- */
-export interface ProductSubCategory {
-  id: number;
-  productCategories: number | ProductCategory;
-  title: string;
-  slug?: string | null;
-  slugLock?: boolean | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -1069,23 +936,6 @@ export interface InfiniteScrollBlockProps {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "LatestPostsBlockProps".
- */
-export interface LatestPostsBlockProps {
-  title: string;
-  buttonLabel: string;
-  posts?:
-    | {
-        post: number | Post;
-        id?: string | null;
-      }[]
-    | null;
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'latestPosts';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "MediaBlockProps".
  */
 export interface MediaBlockProps {
@@ -1105,9 +955,129 @@ export interface ProductsCarouselBlockProps {
         id?: string | null;
       }[]
     | null;
+  'products-new'?: (number | Product)[] | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'productsCarousel';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "products".
+ */
+export interface Product {
+  id: number;
+  category?:
+    | ({
+        relationTo: 'postCategories';
+        value: number | PostCategory;
+      } | null)
+    | ({
+        relationTo: 'productSubCategories';
+        value: number | ProductSubCategory;
+      } | null);
+  title: string;
+  shortDescription: string;
+  longDescription?: string | null;
+  price: number;
+  gallery?:
+    | {
+        image: number | Media;
+        id?: string | null;
+      }[]
+    | null;
+  heroTitle?: string | null;
+  heroSubtitle?: string | null;
+  heroDescription?: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  heroMedia?: (number | null) | Media;
+  content?:
+    | (
+        | ArchiveBlockProps
+        | BuyNowBlockProps
+        | CallToAddToCartBlockProps
+        | CallToActionCenterBlockProps
+        | CallToActionLeftBlockProps
+        | CallToActionRightBlockProps
+        | CertificatesBlockProps
+        | ContentBlockProps
+        | FormBlockProps
+        | HighlightCenterBlockProps
+        | HighlightLeftBlockProps
+        | HighlightRightBlockProps
+        | InfiniteScrollBlockProps
+        | LatestPostsBlockProps
+        | MediaBlockProps
+        | ProductsCarouselBlockProps
+        | ThreePhotoBlockProps
+      )[]
+    | null;
+  meta?: {
+    title?: string | null;
+    /**
+     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
+     */
+    image?: (number | null) | Media;
+    description?: string | null;
+  };
+  slug?: string | null;
+  slugLock?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "productSubCategories".
+ */
+export interface ProductSubCategory {
+  id: number;
+  category: number | ProductCategory;
+  title: string;
+  slug?: string | null;
+  slugLock?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "productCategories".
+ */
+export interface ProductCategory {
+  id: number;
+  title: string;
+  slug?: string | null;
+  slugLock?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "LatestPostsBlockProps".
+ */
+export interface LatestPostsBlockProps {
+  title: string;
+  buttonLabel: string;
+  posts?:
+    | {
+        post: number | Post;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'latestPosts';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1120,6 +1090,60 @@ export interface ThreePhotoBlockProps {
   id?: string | null;
   blockName?: string | null;
   blockType: 'threePhoto';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "users".
+ */
+export interface User {
+  id: number;
+  name?: string | null;
+  role: 'admin' | 'customer';
+  updatedAt: string;
+  createdAt: string;
+  email: string;
+  resetPasswordToken?: string | null;
+  resetPasswordExpiration?: string | null;
+  salt?: string | null;
+  hash?: string | null;
+  loginAttempts?: number | null;
+  lockUntil?: string | null;
+  password?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "BestSellerBlockProps".
+ */
+export interface BestSellerBlockProps {
+  title: string;
+  description?: string | null;
+  products?: (number | Product)[] | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'bestSeller';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "CallToActionPostBlockProps".
+ */
+export interface CallToActionPostBlockProps {
+  post: number | Post;
+  overwriteTitle?: string | null;
+  overwriteDescription?: string | null;
+  buttonLabel: string;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'call-to-action-post';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "PostsGridBlockProps".
+ */
+export interface PostsGridBlockProps {
+  posts?: (number | Post)[] | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'posts-grid';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1450,6 +1474,7 @@ export interface PagesSelect<T extends boolean = true> {
         'cta-center'?: T | CallToActionCenterBlockPropsSelect<T>;
         'cta-left'?: T | CallToActionLeftBlockPropsSelect<T>;
         'cta-right'?: T | CallToActionRightBlockPropsSelect<T>;
+        'call-to-action-post'?: T | CallToActionPostBlockPropsSelect<T>;
         certificates?: T | CertificatesBlockPropsSelect<T>;
         content?: T | ContentBlockPropsSelect<T>;
         formBlock?: T | FormBlockPropsSelect<T>;
@@ -1459,6 +1484,7 @@ export interface PagesSelect<T extends boolean = true> {
         infiniteScroll?: T | InfiniteScrollBlockPropsSelect<T>;
         latestPosts?: T | LatestPostsBlockPropsSelect<T>;
         media?: T | MediaBlockPropsSelect<T>;
+        'posts-grid'?: T | PostsGridBlockPropsSelect<T>;
         productsCarousel?: T | ProductsCarouselBlockPropsSelect<T>;
         productsCategory?: T | ProductsCategoryBlockPropsSelect<T>;
         threePhoto?: T | ThreePhotoBlockPropsSelect<T>;
@@ -1502,12 +1528,7 @@ export interface ArchiveBlockPropsSelect<T extends boolean = true> {
 export interface BestSellerBlockPropsSelect<T extends boolean = true> {
   title?: T;
   description?: T;
-  products?:
-    | T
-    | {
-        product?: T;
-        id?: T;
-      };
+  products?: T;
   id?: T;
   blockName?: T;
 }
@@ -1609,6 +1630,18 @@ export interface CallToActionRightBlockPropsSelect<T extends boolean = true> {
               url?: T;
             };
       };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "CallToActionPostBlockProps_select".
+ */
+export interface CallToActionPostBlockPropsSelect<T extends boolean = true> {
+  post?: T;
+  overwriteTitle?: T;
+  overwriteDescription?: T;
+  buttonLabel?: T;
   id?: T;
   blockName?: T;
 }
@@ -1741,6 +1774,15 @@ export interface MediaBlockPropsSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "PostsGridBlockProps_select".
+ */
+export interface PostsGridBlockPropsSelect<T extends boolean = true> {
+  posts?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "ProductsCarouselBlockProps_select".
  */
 export interface ProductsCarouselBlockPropsSelect<T extends boolean = true> {
@@ -1750,6 +1792,7 @@ export interface ProductsCarouselBlockPropsSelect<T extends boolean = true> {
         product?: T;
         id?: T;
       };
+  'products-new'?: T;
   id?: T;
   blockName?: T;
 }
@@ -1787,7 +1830,26 @@ export interface ThreePhotoBlockPropsSelect<T extends boolean = true> {
 export interface PostsSelect<T extends boolean = true> {
   title?: T;
   heroImage?: T;
-  content?: T;
+  layout?:
+    | T
+    | {
+        archive?: T | ArchiveBlockPropsSelect<T>;
+        'buy-now'?: T | BuyNowBlockPropsSelect<T>;
+        'call-to-add-to-cart'?: T | CallToAddToCartBlockPropsSelect<T>;
+        'cta-center'?: T | CallToActionCenterBlockPropsSelect<T>;
+        'cta-left'?: T | CallToActionLeftBlockPropsSelect<T>;
+        'cta-right'?: T | CallToActionRightBlockPropsSelect<T>;
+        certificates?: T | CertificatesBlockPropsSelect<T>;
+        content?: T | ContentBlockPropsSelect<T>;
+        formBlock?: T | FormBlockPropsSelect<T>;
+        'highlight-center'?: T | HighlightCenterBlockPropsSelect<T>;
+        'highlight-left'?: T | HighlightLeftBlockPropsSelect<T>;
+        'highlight-right'?: T | HighlightRightBlockPropsSelect<T>;
+        infiniteScroll?: T | InfiniteScrollBlockPropsSelect<T>;
+        media?: T | MediaBlockPropsSelect<T>;
+        productsCarousel?: T | ProductsCarouselBlockPropsSelect<T>;
+        threePhoto?: T | ThreePhotoBlockPropsSelect<T>;
+      };
   relatedPosts?: T;
   postCategories?: T;
   meta?:
@@ -2010,7 +2072,7 @@ export interface ProductCategoriesSelect<T extends boolean = true> {
  * via the `definition` "productSubCategories_select".
  */
 export interface ProductSubCategoriesSelect<T extends boolean = true> {
-  productCategories?: T;
+  category?: T;
   title?: T;
   slug?: T;
   slugLock?: T;
@@ -2464,42 +2526,6 @@ export interface TaskSchedulePublish {
     user?: (number | null) | User;
   };
   output?: unknown;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "BannerBlockProps".
- */
-export interface BannerBlockProps {
-  style: 'info' | 'warning' | 'error' | 'success';
-  content: {
-    root: {
-      type: string;
-      children: {
-        type: string;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  };
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'banner';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "CodeBlockProps".
- */
-export interface CodeBlockProps {
-  language?: ('typescript' | 'javascript' | 'css') | null;
-  code: string;
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'code';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
