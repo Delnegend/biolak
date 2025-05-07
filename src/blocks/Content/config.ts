@@ -105,10 +105,34 @@ const columnFields: Field[] = [
 export const ContentBlockConf: Block = {
 	slug: 'content',
 	interfaceName: 'ContentBlockProps',
+	labels: {
+		singular: {
+			en: 'Content',
+			vi: 'Nội dung',
+		},
+		plural: {
+			en: 'Contents',
+			vi: 'Nội dung',
+		},
+	},
 	fields: [
 		{
 			name: 'columns',
 			type: 'array',
+			label: {
+				en: 'Columns',
+				vi: 'Cột',
+			},
+			labels: {
+				singular: {
+					en: 'Column',
+					vi: 'Cột',
+				},
+				plural: {
+					en: 'Columns',
+					vi: 'Cột',
+				},
+			},
 			admin: {
 				initCollapsed: true,
 			},

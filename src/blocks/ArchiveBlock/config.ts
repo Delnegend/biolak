@@ -25,6 +25,10 @@ export const ArchiveBlockConf: Block = {
 		{
 			name: 'introContent',
 			type: 'richText',
+			label: {
+				en: 'Intro Content',
+				vi: 'Nội dung giới thiệu',
+			},
 			editor: lexicalEditor({
 				features: ({ rootFeatures }) => {
 					return [
@@ -35,11 +39,14 @@ export const ArchiveBlockConf: Block = {
 					]
 				},
 			}),
-			label: 'Intro Content',
 		},
 		{
 			name: 'populateBy',
 			type: 'select',
+			label: {
+				en: 'Populate By',
+				vi: 'Phân loại',
+			},
 			defaultValue: 'collection',
 			options: [
 				{
@@ -55,11 +62,14 @@ export const ArchiveBlockConf: Block = {
 		{
 			name: 'relationTo',
 			type: 'select',
+			label: {
+				en: 'Relation To',
+				vi: 'Liên quan đến',
+			},
 			admin: {
 				condition: (_, siblingData) => siblingData.populateBy === 'collection',
 			},
 			defaultValue: 'posts',
-			label: 'Collections To Show',
 			options: [
 				{
 					label: 'Posts',
@@ -70,31 +80,40 @@ export const ArchiveBlockConf: Block = {
 		{
 			name: PostCategories.slug,
 			type: 'relationship',
+			label: {
+				en: 'Categories',
+				vi: 'Thể loại',
+			},
 			admin: {
 				condition: (_, siblingData) => siblingData.populateBy === 'collection',
 			},
 			hasMany: true,
-			label: 'Categories To Show',
 			relationTo: PostCategories.slug,
 		},
 		{
 			name: 'limit',
 			type: 'number',
+			label: {
+				en: 'Limit',
+				vi: 'Giới hạn',
+			},
 			admin: {
 				condition: (_, siblingData) => siblingData.populateBy === 'collection',
 				step: 1,
 			},
 			defaultValue: 10,
-			label: 'Limit',
 		},
 		{
 			name: 'selectedDocs',
 			type: 'relationship',
+			label: {
+				en: 'Selected Posts',
+				vi: 'Bài viết đã chọn',
+			},
 			admin: {
 				condition: (_, siblingData) => siblingData.populateBy === 'selection',
 			},
 			hasMany: true,
-			label: 'Selection',
 			relationTo: ['posts'],
 		},
 	],

@@ -21,28 +21,52 @@ export const CallToActionLeftBlockConf: Block = {
 		{
 			name: 'title',
 			type: 'textarea',
+			label: {
+				en: 'Title',
+				vi: 'Tiêu đề',
+			},
 			required: true,
 		},
 		{
 			name: 'sub-title',
 			type: 'textarea',
+			label: {
+				en: 'Sub Title',
+				vi: 'Tiêu đề phụ',
+			},
 		},
 		{
 			name: 'description',
 			type: 'richText',
+			label: {
+				en: 'Description',
+				vi: 'Mô tả',
+			},
 		},
 		{
 			name: 'background',
 			type: 'upload',
+			label: {
+				en: 'Background',
+				vi: 'Ảnh nền',
+			},
 			relationTo: Media.slug,
 		},
 		{
 			name: 'button',
 			type: 'group',
+			label: {
+				en: 'Button',
+				vi: 'Nút',
+			},
 			fields: [
 				{
 					name: 'text',
 					type: 'text',
+					label: {
+						en: 'Button Label',
+						vi: 'Nhãn nút',
+					},
 					required: true,
 				},
 				link({ appearances: false, disableLabel: true }),
