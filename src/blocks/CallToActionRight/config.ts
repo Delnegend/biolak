@@ -21,28 +21,62 @@ export const CallToActionRightBlockConf: Block = {
 		{
 			name: 'title',
 			type: 'textarea',
+			label: {
+				en: 'Title',
+				vi: 'Tiêu đề',
+			},
 			required: true,
 		},
 		{
 			name: 'sub-title',
 			type: 'textarea',
+			label: {
+				en: 'Sub Title',
+				vi: 'Tiêu đề phụ',
+			},
 		},
 		{
 			name: 'description',
 			type: 'richText',
+			label: {
+				en: 'Description',
+				vi: 'Mô tả',
+			},
 		},
 		{
 			name: 'gallery',
 			type: 'array',
+			label: {
+				en: 'Gallery',
+				vi: 'Thư viện',
+			},
+			labels: {
+				singular: {
+					en: 'Image',
+					vi: 'Hình ảnh',
+				},
+				plural: {
+					en: 'Images',
+					vi: 'Hình ảnh',
+				},
+			},
 			fields: [
 				{
 					name: 'title',
 					type: 'text',
+					label: {
+						en: 'Image Title',
+						vi: 'Tiêu đề hình ảnh',
+					},
 					required: true,
 				},
 				{
 					name: 'image',
 					type: 'upload',
+					label: {
+						en: 'Image',
+						vi: 'Hình ảnh',
+					},
 					relationTo: Media.slug,
 				},
 			],
@@ -50,10 +84,18 @@ export const CallToActionRightBlockConf: Block = {
 		{
 			name: 'button',
 			type: 'group',
+			label: {
+				en: 'Button',
+				vi: 'Nút',
+			},
 			fields: [
 				{
 					name: 'text',
 					type: 'text',
+					label: {
+						en: 'Button Label',
+						vi: 'Nhãn nút',
+					},
 					required: true,
 				},
 				link({ appearances: false, disableLabel: true }),

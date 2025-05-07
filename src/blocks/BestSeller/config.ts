@@ -30,10 +30,28 @@ export const BestSellerBlockConf: Block = {
 		{
 			name: 'description',
 			type: 'textarea',
+			label: {
+				vi: 'Mô tả',
+				en: 'Description',
+			},
 		},
 		{
 			name: 'products',
 			type: 'array',
+			label: {
+				vi: 'Sản phẩm',
+				en: 'Products',
+			},
+			labels: {
+				singular: {
+					vi: 'Sản phẩm',
+					en: 'Product',
+				},
+				plural: {
+					vi: 'Sản phẩm',
+					en: 'Products',
+				},
+			},
 			fields: [
 				{
 					name: 'product',
