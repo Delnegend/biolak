@@ -17,8 +17,8 @@ export function ProductsCarouselBlock(props: ProductsCarouselBlockProps): React.
 					<CarouselContent>
 						{products.map((p) => {
 							const img =
-								p.gallery && p.gallery[0] && typeof p.gallery[0].image === 'object'
-									? p.gallery[0].image
+								p.gallery && p.gallery[0] && typeof p.gallery[0] === 'object'
+									? p.gallery[0]
 									: undefined
 							return (
 								<CarouselItem key={p.id} className="grid grid-cols-2">
