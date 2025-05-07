@@ -3,8 +3,6 @@ import Link from 'next/link'
 
 import { Post } from '@/payload-types'
 
-import { CarouselItem } from './ui/carousel'
-
 export function PostCard({ post }: { post: Post }): React.JSX.Element {
 	const img = post.heroImage && typeof post.heroImage === 'object' ? post.heroImage : null
 
