@@ -5,7 +5,7 @@ import { getPayload } from 'payload'
 import { cache } from 'react'
 
 import { RelatedPosts } from '@/blocks/RelatedPosts/Component'
-import { Posts } from '@/collections/Posts'
+import { PostsSlug } from '@/collections/Posts/slug'
 import { LivePreviewListener } from '@/components/LivePreviewListener'
 import { PayloadRedirects } from '@/components/PayloadRedirects'
 import RichText from '@/components/RichText'
@@ -87,7 +87,7 @@ const queryPostBySlug = cache(async ({ slug }: { slug: string }) => {
 	const payload = await getPayload({ config: configPromise })
 
 	const result = await payload.find({
-		collection: Posts.slug,
+		collection: PostsSlug,
 		draft,
 		limit: 1,
 		overrideAccess: draft,
