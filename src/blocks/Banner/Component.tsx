@@ -1,14 +1,14 @@
 import React from 'react'
-import type { BannerBlockProps } from 'src/payload-types'
 
 import RichText from '@/components/RichText'
+import type { BannerBlockProps } from '@/payload-types'
 import { cn } from '@/utilities/ui'
 
 type Props = {
 	className?: string
 } & BannerBlockProps
 
-export function BannerBlockComponent(props: Props): React.JSX.Element {
+export function BannerBlock(props: Props): React.JSX.Element {
 	return (
 		<div className={cn('mx-auto my-8 w-full', props.className)}>
 			<div

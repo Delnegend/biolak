@@ -1,5 +1,6 @@
 import { CollectionConfig } from 'payload'
 
+import { BannerBlockConf } from '@/blocks/Banner/config'
 import { BestSellerBlockConf } from '@/blocks/BestSeller/config'
 import { BuyNowBlockConf } from '@/blocks/BuyNow/config'
 import { CallToActionLeftBlockConf } from '@/blocks/CallToActionLeft/config'
@@ -198,6 +199,7 @@ export const Pages: CollectionConfig<typeof PagesSlug> = {
 							type: 'blocks',
 							blocks: [
 								ArchiveBlockConf,
+								BannerBlockConf,
 								BestSellerBlockConf,
 								BuyNowBlockConf,
 								CallToAddToCartBlockConf,
