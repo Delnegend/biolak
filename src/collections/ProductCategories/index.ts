@@ -4,10 +4,10 @@ import { admin } from '@/access/admin'
 import { anyone } from '@/access/anyone'
 import { slugField } from '@/fields/slug'
 
-import { ProductCategorySlug } from './slug'
+import { ProductCategoriesSlug } from './slug'
 
-export const ProductCategories: CollectionConfig<typeof ProductCategorySlug> = {
-	slug: ProductCategorySlug,
+export const ProductCategories: CollectionConfig<typeof ProductCategoriesSlug> = {
+	slug: ProductCategoriesSlug,
 	labels: {
 		singular: {
 			en: 'Product Category',

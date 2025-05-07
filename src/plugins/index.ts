@@ -8,7 +8,7 @@ import { GenerateTitle, GenerateURL } from '@payloadcms/plugin-seo/types'
 import { FixedToolbarFeature, HeadingFeature, lexicalEditor } from '@payloadcms/richtext-lexical'
 import { Plugin } from 'payload'
 
-import { PostCategories } from '@/collections/PostCategories'
+import { PostCategoriesSlug } from '@/collections/PostCategories/slug'
 import { revalidateRedirects } from '@/hooks/revalidateRedirects'
 import { Page, Post } from '@/payload-types'
 import { beforeSyncWithSearch } from '@/search/beforeSync'
@@ -50,7 +50,7 @@ export const plugins: Plugin[] = [
 		},
 	}),
 	nestedDocsPlugin({
-		collections: [PostCategories.slug],
+		collections: [PostCategoriesSlug],
 		generateURL: (docs) => docs.reduce((url, doc) => `${url}/${doc.slug}`, ''),
 	}),
 	seoPlugin({
