@@ -1,9 +1,10 @@
-import { CollectionConf } from '@/utilities/types'
+import { CollectionConfig } from 'payload'
 
 import { admin } from '../../access/admin'
+import { UsersSlug } from './slug'
 
-export const Users: CollectionConf<'users'> = {
-	slug: 'users',
+export const Users: CollectionConfig<typeof UsersSlug> = {
+	slug: UsersSlug,
 	labels: {
 		singular: {
 			en: 'User',

@@ -1,12 +1,13 @@
+import { CollectionConfig } from 'payload'
+
 import { admin } from '@/access/admin'
 import { anyone } from '@/access/anyone'
 import { slugField } from '@/fields/slug'
-import { CollectionConf } from '@/utilities/types'
 
-import { ProductCategories } from './ProductCategories'
+import { ProductSubCategoriesSlug } from './slug'
 
-export const ProductSubCategories: CollectionConf<'productSubCategories'> = {
-	slug: 'productSubCategories',
+export const ProductSubCategories: CollectionConfig<typeof ProductSubCategoriesSlug> = {
+	slug: ProductSubCategoriesSlug,
 	labels: {
 		singular: {
 			en: 'Product Sub Category',
@@ -25,9 +26,9 @@ export const ProductSubCategories: CollectionConf<'productSubCategories'> = {
 	},
 	fields: [
 		{
-			name: ProductCategories.slug,
+			name: 'category',
 			type: 'relationship',
-			relationTo: ProductCategories.slug,
+			relationTo: 'productCategories',
 			required: true,
 		},
 		{

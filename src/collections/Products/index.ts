@@ -1,3 +1,5 @@
+import { CollectionConfig } from 'payload'
+
 import { admin } from '@/access/admin'
 import { anyone } from '@/access/anyone'
 import { ArchiveBlockConf } from '@/blocks/ArchiveBlock/config'
@@ -20,14 +22,14 @@ import { ThreePhotoBlockConf } from '@/blocks/ThreePhoto/config'
 import { SeoFieldConf } from '@/fields/seo'
 import { slugField } from '@/fields/slug'
 import { generatePreviewPath } from '@/utilities/generatePreviewPath'
-import { CollectionConf } from '@/utilities/types'
 
-import { Media } from './Media'
-import { ProductCategories } from './ProductCategories'
-import { ProductSubCategories } from './ProductSubCategories'
+import { MediaSlug } from '../Media/slug'
+import { PostCategoriesSlug } from '../PostCategories/slug'
+import { ProductSubCategories } from '../ProductSubCategories'
+import { ProductsSlug } from './slug'
 
-export const Products: CollectionConf<'products'> = {
-	slug: 'products',
+export const Products: CollectionConfig<typeof ProductsSlug> = {
+	slug: ProductsSlug,
 	labels: {
 		singular: {
 			en: 'Product',
@@ -57,7 +59,7 @@ export const Products: CollectionConf<'products'> = {
 						{
 							name: 'category',
 							type: 'relationship',
-							relationTo: [ProductCategories.slug, ProductSubCategories.slug],
+							relationTo: [PostCategoriesSlug, ProductSubCategories.slug],
 							label: {
 								en: 'Product Categories',
 								vi: 'Danh mục sản phẩm',
@@ -121,7 +123,7 @@ export const Products: CollectionConf<'products'> = {
 								{
 									name: 'image',
 									type: 'upload',
-									relationTo: Media.slug,
+									relationTo: MediaSlug,
 									label: {
 										en: 'Image',
 										vi: 'Hình ảnh',
@@ -166,7 +168,7 @@ export const Products: CollectionConf<'products'> = {
 								en: 'Media',
 								vi: 'Phương tiện',
 							},
-							relationTo: Media.slug,
+							relationTo: MediaSlug,
 						},
 					],
 				},

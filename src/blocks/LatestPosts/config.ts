@@ -1,6 +1,6 @@
 import { Block } from 'payload'
 
-import { Posts } from '@/collections/Posts'
+import { PostsSlug } from '@/collections/Posts/slug'
 
 export const LatestPostsBlockConf: Block = {
 	slug: 'latestPosts',
@@ -44,7 +44,7 @@ export const LatestPostsBlockConf: Block = {
 				{
 					name: 'post',
 					type: 'relationship',
-					relationTo: Posts.slug,
+					relationTo: PostsSlug,
 					required: true,
 					hasMany: false,
 				},

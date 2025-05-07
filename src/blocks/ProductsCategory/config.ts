@@ -1,7 +1,7 @@
 import { Block } from 'payload'
 
 import { ProductCategories } from '@/collections/ProductCategories'
-import { Products } from '@/collections/Products'
+import { ProductsSlug } from '@/collections/Products/slug'
 import { ProductSubCategories } from '@/collections/ProductSubCategories'
 
 export const ProductsCategoryBlockConf: Block = {
@@ -51,7 +51,7 @@ export const ProductsCategoryBlockConf: Block = {
 				{
 					name: 'product',
 					type: 'relationship',
-					relationTo: Products.slug,
+					relationTo: ProductsSlug,
 					label: {
 						en: 'Product',
 						vi: 'Sản phẩm',

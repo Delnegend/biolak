@@ -4,18 +4,18 @@ import {
 	lexicalEditor,
 } from '@payloadcms/richtext-lexical'
 import path from 'path'
+import { CollectionConfig } from 'payload'
 import { fileURLToPath } from 'url'
 
-import { CollectionConf } from '@/utilities/types'
-
-import { admin } from '../access/admin'
-import { anyone } from '../access/anyone'
+import { admin } from '../../access/admin'
+import { anyone } from '../../access/anyone'
+import { MediaSlug } from './slug'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
-export const Media: CollectionConf<'media'> = {
-	slug: 'media',
+export const Media: CollectionConfig<typeof MediaSlug> = {
+	slug: MediaSlug,
 	labels: {
 		singular: {
 			en: 'Media',
@@ -58,7 +58,7 @@ export const Media: CollectionConf<'media'> = {
 	],
 	upload: {
 		// Upload to the public/media directory in Next.js making them publicly accessible even outside of Payload
-		staticDir: path.resolve(dirname, '../../public/media'),
+		staticDir: path.resolve(dirname, '../../../public/media'),
 		adminThumbnail: 'thumbnail',
 		focalPoint: true,
 		imageSizes: [

@@ -1,6 +1,6 @@
 import { Block } from 'payload'
 
-import { Media } from '@/collections/Media'
+import { MediaSlug } from '@/collections/Media/slug'
 
 export const CallToAddToCartBlockConf: Block = {
 	slug: 'call-to-add-to-cart',
@@ -20,7 +20,7 @@ export const CallToAddToCartBlockConf: Block = {
 		{
 			name: 'image',
 			type: 'upload',
-			relationTo: Media.slug,
+			relationTo: MediaSlug,
 			label: {
 				en: 'Image',
 				vi: 'Hình ảnh',
