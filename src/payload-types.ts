@@ -205,6 +205,7 @@ export interface Page {
   };
   layout: (
     | ArchiveBlockProps
+    | BannerBlockProps
     | BestSellerBlockProps
     | BuyNowBlockProps
     | CallToAddToCartBlockProps
@@ -1096,6 +1097,31 @@ export interface User {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "BannerBlockProps".
+ */
+export interface BannerBlockProps {
+  style: 'info' | 'warning' | 'error' | 'success';
+  content: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'banner';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "BestSellerBlockProps".
  */
 export interface BestSellerBlockProps {
@@ -1452,6 +1478,7 @@ export interface PagesSelect<T extends boolean = true> {
     | T
     | {
         archive?: T | ArchiveBlockPropsSelect<T>;
+        banner?: T | BannerBlockPropsSelect<T>;
         bestSeller?: T | BestSellerBlockPropsSelect<T>;
         'buy-now'?: T | BuyNowBlockPropsSelect<T>;
         'call-to-add-to-cart'?: T | CallToAddToCartBlockPropsSelect<T>;
@@ -1502,6 +1529,16 @@ export interface ArchiveBlockPropsSelect<T extends boolean = true> {
   postCategories?: T;
   limit?: T;
   selectedDocs?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "BannerBlockProps_select".
+ */
+export interface BannerBlockPropsSelect<T extends boolean = true> {
+  style?: T;
+  content?: T;
   id?: T;
   blockName?: T;
 }

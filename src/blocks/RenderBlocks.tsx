@@ -8,6 +8,8 @@ import { MediaBlockComponent } from '@/blocks/MediaBlock/Component'
 import type { Page } from '@/payload-types'
 
 import { ArchiveBlockConf } from './ArchiveBlock/config'
+import { BannerBlock } from './Banner/Component'
+import { BannerBlockConf } from './Banner/config'
 import { BestSellerBlock } from './BestSeller/Component'
 import { BestSellerBlockConf } from './BestSeller/config'
 import { BuyNowBlock } from './BuyNow/Component'
@@ -47,6 +49,7 @@ import { ThreePhotoBlockConf } from './ThreePhoto/config'
 
 const blockComponents = {
 	[ArchiveBlockConf.slug]: ArchiveBlock,
+	[BannerBlockConf.slug]: BannerBlock,
 	[BestSellerBlockConf.slug]: BestSellerBlock,
 	[BuyNowBlockConf.slug]: BuyNowBlock,
 	[CallToAddToCartBlockConf.slug]: CallToAddToCartBlock,

@@ -10,7 +10,7 @@ import {
 	RichText as ConvertRichText,
 } from '@payloadcms/richtext-lexical/react'
 
-import { BannerBlockComponent } from '@/blocks/Banner/Component'
+import { BannerBlock } from '@/blocks/Banner/Component'
 import { CallToActionCenterBlock } from '@/blocks/CallToActionCenter/Component'
 import { CodeBlock, CodeBlockProps } from '@/blocks/Code/Component'
 import { MediaBlockComponent } from '@/blocks/MediaBlock/Component'
@@ -40,7 +40,7 @@ const jsxConverters: JSXConvertersFunction<NodeTypes> = ({ defaultConverters }) 
 	...defaultConverters,
 	...LinkJSXConverter({ internalDocToHref }),
 	blocks: {
-		banner: ({ node }) => <BannerBlockComponent className="col-start-2 mb-4" {...node.fields} />,
+		banner: ({ node }) => <BannerBlock className="col-start-2 mb-4" {...node.fields} />,
 		mediaBlock: ({ node }: { node: SerializedBlockNode<MediaBlockProps> }) => (
 			<MediaBlockComponent
 				className="col-span-3 col-start-1"
