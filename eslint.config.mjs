@@ -20,6 +20,7 @@ export default [
 			'simple-import-sort/imports': 'error',
 			'simple-import-sort/exports': 'error',
 		},
+		ignores: ['./src/app/(payload)/admin/importMap.js'],
 	},
 	{
 		rules: {
