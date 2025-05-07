@@ -30,7 +30,10 @@ export const InfiniteScrollBlockConf: Block = {
 		{
 			name: 'animationDuration',
 			type: 'number',
-			label: 'Animation Duration in seconds',
+			label: {
+				en: 'Animation Duration in seconds',
+				vi: 'Thời gian hoạt ảnh (giây)',
+			},
 			defaultValue: 5,
 		},
 	],
