@@ -1,10 +1,13 @@
+import { CollectionConfig } from 'payload'
+
 import { admin } from '@/access/admin'
 import { anyone } from '@/access/anyone'
 import { slugField } from '@/fields/slug'
-import { CollectionConf } from '@/utilities/types'
 
-export const ProductCategories: CollectionConf<'productCategories'> = {
-	slug: 'productCategories',
+import { ProductCategorySlug } from './slug'
+
+export const ProductCategories: CollectionConfig<typeof ProductCategorySlug> = {
+	slug: ProductCategorySlug,
 	labels: {
 		singular: {
 			en: 'Product Category',

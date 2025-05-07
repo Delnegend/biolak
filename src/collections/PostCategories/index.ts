@@ -1,11 +1,13 @@
+import { CollectionConfig } from 'payload'
+
 import { slugField } from '@/fields/slug'
-import { CollectionConf } from '@/utilities/types'
 
-import { admin } from '../access/admin'
-import { anyone } from '../access/anyone'
+import { admin } from '../../access/admin'
+import { anyone } from '../../access/anyone'
+import { PostCategoriesSlug } from './slug'
 
-export const PostCategories: CollectionConf<'postCategories'> = {
-	slug: 'postCategories',
+export const PostCategories: CollectionConfig<typeof PostCategoriesSlug> = {
+	slug: PostCategoriesSlug,
 	labels: {
 		singular: {
 			en: 'Post Category',

@@ -8,7 +8,7 @@ import {
 import { Field } from 'payload'
 
 import { admin } from '@/access/admin'
-import { Media } from '@/collections/Media'
+import { MediaSlug } from '@/collections/Media/slug'
 
 export const SeoFieldConf: Field = {
 	name: 'meta',
@@ -28,7 +28,7 @@ export const SeoFieldConf: Field = {
 			hasGenerateFn: true,
 		}),
 		MetaImageField({
-			relationTo: Media.slug,
+			relationTo: MediaSlug,
 		}),
 
 		MetaDescriptionField({}),

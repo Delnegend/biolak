@@ -1,6 +1,6 @@
 import { Block } from 'payload'
 
-import { Media } from '@/collections/Media'
+import { MediaSlug } from '@/collections/Media/slug'
 
 export const InfiniteScrollBlockConf: Block = {
 	slug: 'infiniteScroll',
@@ -20,8 +20,12 @@ export const InfiniteScrollBlockConf: Block = {
 		{
 			name: 'graphic',
 			type: 'upload',
+			label: {
+				en: 'Graphic',
+				vi: 'Ảnh đồ họa',
+			},
 			required: true,
-			relationTo: Media.slug,
+			relationTo: MediaSlug,
 		},
 		{
 			name: 'animationDuration',

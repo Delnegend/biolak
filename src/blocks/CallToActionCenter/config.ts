@@ -1,6 +1,6 @@
 import type { Block } from 'payload'
 
-import { Media } from '@/collections/Media'
+import { MediaSlug } from '@/collections/Media/slug'
 import { link } from '@/fields/link'
 
 export const CallToActionCenterBlockConf: Block = {
@@ -50,7 +50,7 @@ export const CallToActionCenterBlockConf: Block = {
 				en: 'Background',
 				vi: 'Ảnh nền',
 			},
-			relationTo: Media.slug,
+			relationTo: MediaSlug,
 		},
 		{
 			name: 'button',

@@ -1,6 +1,6 @@
 import type { Block } from 'payload'
 
-import { Media } from '@/collections/Media'
+import { MediaSlug } from '@/collections/Media/slug'
 
 export const MediaBlockConf: Block = {
 	slug: 'media',
@@ -9,7 +9,11 @@ export const MediaBlockConf: Block = {
 		{
 			name: 'media',
 			type: 'upload',
-			relationTo: Media.slug,
+			relationTo: MediaSlug,
+			label: {
+				en: 'Media',
+				vi: 'Phương tiện',
+			},
 			required: true,
 		},
 	],

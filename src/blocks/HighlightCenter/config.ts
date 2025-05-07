@@ -1,6 +1,6 @@
 import { Block } from 'payload'
 
-import { Media } from '@/collections/Media'
+import { MediaSlug } from '@/collections/Media/slug'
 
 export const HighlightCenterBlockConf: Block = {
 	slug: 'highlight-center',
@@ -51,7 +51,7 @@ export const HighlightCenterBlockConf: Block = {
 				en: 'Image',
 				vi: 'Hình ảnh',
 			},
-			relationTo: Media.slug,
+			relationTo: MediaSlug,
 		},
 	],
 }

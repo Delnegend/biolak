@@ -1,6 +1,6 @@
 import { Block } from 'payload'
 
-import { Media } from '@/collections/Media'
+import { MediaSlug } from '@/collections/Media/slug'
 
 export const CertificatesBlockConf: Block = {
 	slug: 'certificates',
@@ -26,7 +26,6 @@ export const CertificatesBlockConf: Block = {
 		{
 			type: 'array',
 			name: 'organizations',
-			maxRows: 3,
 			fields: [
 				{
 					name: 'title',
@@ -53,7 +52,7 @@ export const CertificatesBlockConf: Block = {
 						en: 'Logo',
 						vi: 'Logo',
 					},
-					relationTo: Media.slug,
+					relationTo: MediaSlug,
 				},
 			],
 		},

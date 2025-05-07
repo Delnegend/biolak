@@ -6,7 +6,7 @@ import {
 } from '@payloadcms/richtext-lexical'
 import type { Block } from 'payload'
 
-import { PostCategories } from '@/collections/PostCategories'
+import { PostCategoriesSlug } from '@/collections/PostCategories/slug'
 
 export const ArchiveBlockConf: Block = {
 	slug: 'archive',
@@ -78,7 +78,7 @@ export const ArchiveBlockConf: Block = {
 			],
 		},
 		{
-			name: PostCategories.slug,
+			name: PostCategoriesSlug,
 			type: 'relationship',
 			label: {
 				en: 'Categories',
@@ -88,7 +88,7 @@ export const ArchiveBlockConf: Block = {
 				condition: (_, siblingData) => siblingData.populateBy === 'collection',
 			},
 			hasMany: true,
-			relationTo: PostCategories.slug,
+			relationTo: PostCategoriesSlug,
 		},
 		{
 			name: 'limit',

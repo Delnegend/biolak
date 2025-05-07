@@ -1,6 +1,6 @@
 import type { Block } from 'payload'
 
-import { Media } from '@/collections/Media'
+import { MediaSlug } from '@/collections/Media/slug'
 import { link } from '@/fields/link'
 
 export const CallToActionRightBlockConf: Block = {
@@ -77,7 +77,7 @@ export const CallToActionRightBlockConf: Block = {
 						en: 'Image',
 						vi: 'Hình ảnh',
 					},
-					relationTo: Media.slug,
+					relationTo: MediaSlug,
 				},
 			],
 		},

@@ -8,7 +8,7 @@ import { fileURLToPath } from 'url'
 
 import { defaultLexical } from '@/fields/defaultLexical'
 
-import { Media } from './collections/Media'
+import { Media } from './collections/Media/Media'
 import { Pages } from './collections/Pages'
 import { PostCategories } from './collections/PostCategories'
 import { Posts } from './collections/Posts'
@@ -16,6 +16,7 @@ import { ProductCategories } from './collections/ProductCategories'
 import { Products } from './collections/Products'
 import { ProductSubCategories } from './collections/ProductSubCategories'
 import { Users } from './collections/Users'
+import { UsersSlug } from './collections/Users/slug'
 import { ContactForm } from './globals/ContactForm/config'
 import { Footer } from './globals/Footer/config'
 import { Header } from './globals/Header/config'
@@ -39,7 +40,7 @@ export default buildConfig({
 		importMap: {
 			baseDir: path.resolve(dirname),
 		},
-		user: Users.slug,
+		user: UsersSlug,
 		livePreview: {
 			breakpoints: [
 				{

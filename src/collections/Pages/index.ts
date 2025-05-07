@@ -1,6 +1,9 @@
+import { CollectionConfig } from 'payload'
+
 import { BestSellerBlockConf } from '@/blocks/BestSeller/config'
 import { BuyNowBlockConf } from '@/blocks/BuyNow/config'
 import { CallToActionLeftBlockConf } from '@/blocks/CallToActionLeft/config'
+import { CallToActionPostBlockConfig } from '@/blocks/CallToActionPost/config'
 import { CallToActionRightBlockConf } from '@/blocks/CallToActionRight/config'
 import { CallToAddToCartBlockConf } from '@/blocks/CallToAddToCart/config'
 import { CertificatesBlockConf } from '@/blocks/Certificates/config'
@@ -9,13 +12,13 @@ import { HighlightLeftBlockConf } from '@/blocks/HighlightLeft/config'
 import { HighlighRightBlockConf } from '@/blocks/HighlightRight/config'
 import { InfiniteScrollBlockConf } from '@/blocks/InfiniteScroll/config'
 import { LatestPostsBlockConf } from '@/blocks/LatestPosts/config'
+import { PostsGridBlockConf } from '@/blocks/PostsGrid/config'
 import { ProductsCarouselBlockConf } from '@/blocks/ProductsCarousel/config'
 import { ProductsCategoryBlockConf } from '@/blocks/ProductsCategory/config'
 import { ThreePhotoBlockConf } from '@/blocks/ThreePhoto/config'
 import { linkGroup } from '@/fields/linkGroup'
 import { SeoFieldConf } from '@/fields/seo'
 import { slugField } from '@/fields/slug'
-import { CollectionConf } from '@/utilities/types'
 
 import { admin } from '../../access/admin'
 import { adminOrPublished } from '../../access/adminOrPublished'
@@ -26,11 +29,12 @@ import { FormBlockConf } from '../../blocks/Form/config'
 import { MediaBlockConf } from '../../blocks/MediaBlock/config'
 import { populatePublishedAt } from '../../hooks/populatePublishedAt'
 import { generatePreviewPath } from '../../utilities/generatePreviewPath'
-import { Media } from '../Media'
+import { MediaSlug } from '../Media/slug'
 import { revalidateDelete, revalidatePage } from './hooks/revalidatePage'
+import { PagesSlug } from './slug'
 
-export const Pages: CollectionConf<'pages'> = {
-	slug: 'pages',
+export const Pages: CollectionConfig<typeof PagesSlug> = {
+	slug: PagesSlug,
 	labels: {
 		singular: {
 			en: 'Page',
@@ -176,7 +180,7 @@ export const Pages: CollectionConf<'pages'> = {
 										en: 'Media',
 										vi: 'Phương tiện',
 									},
-									relationTo: Media.slug,
+									relationTo: MediaSlug,
 								},
 							],
 							label: false,
@@ -200,6 +204,7 @@ export const Pages: CollectionConf<'pages'> = {
 								CallToActionCenterBlockConf,
 								CallToActionLeftBlockConf,
 								CallToActionRightBlockConf,
+								CallToActionPostBlockConfig,
 								CertificatesBlockConf,
 								ContentBlockConf,
 								FormBlockConf,
@@ -209,6 +214,7 @@ export const Pages: CollectionConf<'pages'> = {
 								InfiniteScrollBlockConf,
 								LatestPostsBlockConf,
 								MediaBlockConf,
+								PostsGridBlockConf,
 								ProductsCarouselBlockConf,
 								ProductsCategoryBlockConf,
 								ThreePhotoBlockConf,

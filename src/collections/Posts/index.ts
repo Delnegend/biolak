@@ -5,30 +5,37 @@ import {
 	OverviewField,
 	PreviewField,
 } from '@payloadcms/plugin-seo/fields'
-import {
-	BlocksFeature,
-	FixedToolbarFeature,
-	HorizontalRuleFeature,
-	InlineToolbarFeature,
-	lexicalEditor,
-} from '@payloadcms/richtext-lexical'
+import { CollectionConfig } from 'payload'
 
+import { ArchiveBlockConf } from '@/blocks/ArchiveBlock/config'
+import { BuyNowBlockConf } from '@/blocks/BuyNow/config'
+import { CallToActionCenterBlockConf } from '@/blocks/CallToActionCenter/config'
+import { CallToActionLeftBlockConf } from '@/blocks/CallToActionLeft/config'
+import { CallToActionRightBlockConf } from '@/blocks/CallToActionRight/config'
+import { CallToAddToCartBlockConf } from '@/blocks/CallToAddToCart/config'
+import { CertificatesBlockConf } from '@/blocks/Certificates/config'
+import { ContentBlockConf } from '@/blocks/Content/config'
+import { FormBlockConf } from '@/blocks/Form/config'
+import { HighlightCenterBlockConf } from '@/blocks/HighlightCenter/config'
+import { HighlightLeftBlockConf } from '@/blocks/HighlightLeft/config'
+import { HighlighRightBlockConf } from '@/blocks/HighlightRight/config'
+import { InfiniteScrollBlockConf } from '@/blocks/InfiniteScroll/config'
+import { ProductsCarouselBlockConf } from '@/blocks/ProductsCarousel/config'
+import { ThreePhotoBlockConf } from '@/blocks/ThreePhoto/config'
 import { slugField } from '@/fields/slug'
-import { CollectionConf } from '@/utilities/types'
 
 import { admin } from '../../access/admin'
 import { adminOrPublished } from '../../access/adminOrPublished'
-import { BannerBlockConf } from '../../blocks/Banner/config'
-import { Code } from '../../blocks/Code/config'
 import { MediaBlockConf } from '../../blocks/MediaBlock/config'
 import { generatePreviewPath } from '../../utilities/generatePreviewPath'
-import { Media } from '../Media'
-import { PostCategories } from '../PostCategories'
+import { MediaSlug } from '../Media/slug'
+import { PostCategoriesSlug } from '../PostCategories/slug'
 import { populateAuthors } from './hooks/populateAuthors'
 import { revalidateDelete, revalidatePost } from './hooks/revalidatePost'
+import { PostsSlug } from './slug'
 
-export const Posts: CollectionConf<'posts'> = {
-	slug: 'posts',
+export const Posts: CollectionConfig<typeof PostsSlug> = {
+	slug: PostsSlug,
 	labels: {
 		singular: {
 			en: 'Post',
@@ -51,7 +58,7 @@ export const Posts: CollectionConf<'posts'> = {
 	defaultPopulate: {
 		title: true,
 		slug: true,
-		[PostCategories.slug]: true,
+		[PostCategoriesSlug]: true,
 		meta: {
 			image: true,
 			description: true,
@@ -97,24 +104,47 @@ export const Posts: CollectionConf<'posts'> = {
 						{
 							name: 'heroImage',
 							type: 'upload',
-							relationTo: Media.slug,
+							label: {
+								en: 'Hero Image',
+								vi: 'Hình ảnh chính',
+							},
+							relationTo: MediaSlug,
 						},
 						{
-							name: 'content',
-							type: 'richText',
-							editor: lexicalEditor({
-								features: ({ rootFeatures }) => {
-									return [
-										...rootFeatures,
-										BlocksFeature({ blocks: [BannerBlockConf, Code, MediaBlockConf] }),
-										FixedToolbarFeature(),
-										InlineToolbarFeature(),
-										HorizontalRuleFeature(),
-									]
-								},
-							}),
-							label: false,
+							name: 'layout',
+							type: 'blocks',
+							blocks: [
+								ArchiveBlockConf,
+								BuyNowBlockConf,
+								CallToAddToCartBlockConf,
+								CallToActionCenterBlockConf,
+								CallToActionLeftBlockConf,
+								CallToActionRightBlockConf,
+								CertificatesBlockConf,
+								ContentBlockConf,
+								FormBlockConf,
+								HighlightCenterBlockConf,
+								HighlightLeftBlockConf,
+								HighlighRightBlockConf,
+								InfiniteScrollBlockConf,
+								MediaBlockConf,
+								ProductsCarouselBlockConf,
+								ThreePhotoBlockConf,
+							],
 							required: true,
+							admin: {
+								initCollapsed: true,
+							},
+							labels: {
+								singular: {
+									en: 'Block',
+									vi: 'Khối',
+								},
+								plural: {
+									en: 'Blocks',
+									vi: 'Các khối',
+								},
+							},
 						},
 					],
 				},
@@ -141,13 +171,13 @@ export const Posts: CollectionConf<'posts'> = {
 							},
 						},
 						{
-							name: PostCategories.slug,
+							name: PostCategoriesSlug,
 							type: 'relationship',
 							admin: {
 								position: 'sidebar',
 							},
 							hasMany: true,
-							relationTo: PostCategories.slug,
+							relationTo: PostCategoriesSlug,
 							label: {
 								en: 'Post Categories',
 								vi: 'Danh mục bài viết',
@@ -169,7 +199,7 @@ export const Posts: CollectionConf<'posts'> = {
 							hasGenerateFn: true,
 						}),
 						MetaImageField({
-							relationTo: Media.slug,
+							relationTo: MediaSlug,
 						}),
 
 						MetaDescriptionField({}),
