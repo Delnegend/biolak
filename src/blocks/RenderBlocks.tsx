@@ -15,6 +15,8 @@ import { BuyNowBlockConf } from './BuyNow/config'
 import { CallToActionCenterBlockConf } from './CallToActionCenter/config'
 import { CallToActionLeftBlock } from './CallToActionLeft/Component'
 import { CallToActionLeftBlockConf } from './CallToActionLeft/config'
+import { CallToActionPostBlock } from './CallToActionPost/Component'
+import { CallToActionPostBlockConfig } from './CallToActionPost/config'
 import { CallToActionRightBlock } from './CallToActionRight/Component'
 import { CallToActionRightBlockConf } from './CallToActionRight/config'
 import { CallToAddToCartBlock } from './CallToAddToCart/Component'
@@ -34,6 +36,8 @@ import { InfiniteScrollBlockConf } from './InfiniteScroll/config'
 import { LatestPostsBlock } from './LatestPosts/Component'
 import { LatestPostsBlockConf } from './LatestPosts/config'
 import { MediaBlockConf } from './MediaBlock/config'
+import { PostsGridBlock } from './PostsGrid/Component'
+import { PostsGridBlockConf } from './PostsGrid/config'
 import { ProductsCarouselBlock } from './ProductsCarousel/Component'
 import { ProductsCarouselBlockConf } from './ProductsCarousel/config'
 import { ProductsCategoryBlock } from './ProductsCategory/Component'
@@ -49,6 +53,7 @@ const blockComponents = {
 	[CallToActionCenterBlockConf.slug]: CallToActionCenterBlock,
 	[CallToActionLeftBlockConf.slug]: CallToActionLeftBlock,
 	[CallToActionRightBlockConf.slug]: CallToActionRightBlock,
+	[CallToActionPostBlockConfig.slug]: CallToActionPostBlock,
 	[CertificatesBlockConf.slug]: CertificatesBlock,
 	[ContentBlockConf.slug]: ContentBlock,
 	[FormBlockConf.slug]: FormBlock,
@@ -59,6 +64,7 @@ const blockComponents = {
 	[InfiniteScrollBlockConf.slug]: InfiniteScrollBlock,
 	[LatestPostsBlockConf.slug]: LatestPostsBlock,
 	[MediaBlockConf.slug]: MediaBlockComponent,
+	[PostsGridBlockConf.slug]: PostsGridBlock,
 	[ProductsCarouselBlockConf.slug]: ProductsCarouselBlock,
 	[ProductsCategoryBlockConf.slug]: ProductsCategoryBlock,
 	[ThreePhotoBlockConf.slug]: ThreePhotoBlock,
