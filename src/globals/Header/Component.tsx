@@ -1,11 +1,12 @@
-import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog'
-import type { Header } from '@/payload-types'
-import { getCachedGlobal } from '@/utilities/getGlobals'
+import { SearchIcon } from 'lucide-react'
+import Image from 'next/image'
 import Link from 'next/link'
 
 import { Button } from '@/components/ui/button'
-import { SearchIcon } from 'lucide-react'
-import Image from 'next/image'
+import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog'
+import type { Header } from '@/payload-types'
+import { getCachedGlobal } from '@/utilities/getGlobals'
+
 import biolakIcon from '../../../public/biolak-logo.svg'
 import { ContactForm } from '../ContactForm/Component'
 
@@ -33,36 +34,20 @@ export async function Header() {
 				<SearchIcon className="w-5 scale-110 text-primary" size={30} />
 			</Link>
 		),
-		products: () => (
-			<Link href="/products" className="text-xl">
-				Sản phẩm
-			</Link>
-		),
-		about: () => (
-			<Link href="/about" className="text-xl">
-				BioLAK
-			</Link>
-		),
-		events: () => (
-			<Link href="/events" className="text-xl">
-				Sự kiện
-			</Link>
-		),
+		products: () => <div>Sản phẩm</div>,
+		about: () => <Link href="/about">BioLAK</Link>,
+		events: () => <Link href="/events">Sự kiện</Link>,
 		contact: () => (
 			<Dialog>
 				<DialogTrigger>
-					<div className="text-xl">Liên hệ</div>
+					<div>Liên hệ</div>
 				</DialogTrigger>
 				<DialogContent className="min-w-[932px] overflow-hidden !rounded-2xl bg-primary-foreground p-12">
 					<ContactForm inDialog={true} />
 				</DialogContent>
 			</Dialog>
 		),
-		'vie-en': () => (
-			<Link href="#" className="text-xl">
-				VIE/EN
-			</Link>
-		),
+		'vie-en': () => <Link href="#">VIE/EN</Link>,
 		cart: () => (
 			<Button
 				variant="default"
@@ -77,7 +62,7 @@ export async function Header() {
 	return (
 		<header className="relative z-20 flex h-20 w-full items-center bg-primary-foreground px-10">
 			<div className="grid w-full grid-cols-[1fr_auto_1fr]">
-				<nav className="flex items-center gap-9">
+				<nav className="flex items-center gap-9 text-xl">
 					{leftSide.map((item, index) => {
 						const Elem = elements[item]
 						if (Elem === undefined) {
@@ -91,7 +76,7 @@ export async function Header() {
 					<Image priority src={biolakIcon} alt="BioLAK Logo" className="h-12" />
 				</Link>
 
-				<nav className="flex items-center justify-end gap-9">
+				<nav className="flex items-center justify-end gap-9 text-xl">
 					{rightSide.map((item) => {
 						const Elem = elements[item]
 						if (Elem === undefined) {
