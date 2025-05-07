@@ -4,7 +4,7 @@ import { getPayload } from 'payload'
 import { cache } from 'react'
 
 import { RenderBlocks } from '@/blocks/RenderBlocks'
-import { Products } from '@/collections/Products'
+import { ProductsSlug } from '@/collections/Products/slug'
 import { LivePreviewListener } from '@/components/LivePreviewListener'
 import { PayloadRedirects } from '@/components/PayloadRedirects'
 import { ProductHero } from '@/heros/Product'
@@ -16,7 +16,7 @@ export async function generateStaticParams() {
 	const payload = await getPayload({ config: configPromise })
 
 	const products = await payload.find({
-		collection: Products.slug,
+		collection: ProductsSlug,
 		draft: false,
 		limit: 1000,
 		overrideAccess: false,
@@ -38,7 +38,7 @@ const queryProductBySlug = cache(async ({ slug }: { slug: string }) => {
 	const payload = await getPayload({ config: configPromise })
 
 	const result = await payload.find({
-		collection: Products.slug,
+		collection: ProductsSlug,
 		draft,
 		limit: 1,
 		overrideAccess: draft,
