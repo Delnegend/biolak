@@ -1069,9 +1069,9 @@ export interface LatestPostsBlockProps {
  * via the `definition` "ThreePhotoBlockProps".
  */
 export interface ThreePhotoBlockProps {
-  photoLeft: number | Media;
-  photoCenter: number | Media;
-  photoRight: number | Media;
+  photoLeft?: (number | null) | Media;
+  photoCenter?: (number | null) | Media;
+  photoRight?: (number | null) | Media;
   id?: string | null;
   blockName?: string | null;
   blockType: 'threePhoto';
