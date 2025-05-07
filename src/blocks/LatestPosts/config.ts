@@ -39,16 +39,14 @@ export const LatestPostsBlockConf: Block = {
 		},
 		{
 			name: 'posts',
-			type: 'array',
-			fields: [
-				{
-					name: 'post',
-					type: 'relationship',
-					relationTo: PostsSlug,
-					required: true,
-					hasMany: false,
-				},
-			],
+			label: {
+				en: 'Posts',
+				vi: 'Bài viết',
+			},
+			type: 'relationship',
+			relationTo: PostsSlug,
+			required: true,
+			hasMany: true,
 		},
 	],
 }
