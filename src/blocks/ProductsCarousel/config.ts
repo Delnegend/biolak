@@ -17,7 +17,10 @@ export const ProductsCarouselBlockConf: Block = {
 	fields: [
 		{
 			name: 'products',
-			label: 'Products',
+			label: {
+				en: 'Products',
+				vi: 'Sản phẩm',
+			},
 			type: 'array',
 			fields: [
 				{
