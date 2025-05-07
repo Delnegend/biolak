@@ -8,9 +8,7 @@ import type { ProductsCarouselBlockProps } from '@/payload-types'
 import { ProductsCarouselNavButton } from './ProductsCarouselNavButton'
 
 export function ProductsCarouselBlock(props: ProductsCarouselBlockProps): React.JSX.Element {
-	const products = props.products
-		? props.products.map((p) => p.product).filter((p) => typeof p === 'object')
-		: undefined
+	const products = props.products?.filter((p) => typeof p === 'object') ?? []
 
 	return (
 		<div className="relative max-h-[55rem] overflow-hidden">

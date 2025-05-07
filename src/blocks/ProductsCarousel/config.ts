@@ -1,5 +1,7 @@
 import { Block } from 'payload'
 
+import { ProductsSlug } from '@/collections/Products/slug'
+
 export const ProductsCarouselBlockConf: Block = {
 	slug: 'productsCarousel',
 	interfaceName: 'ProductsCarouselBlockProps',
@@ -21,29 +23,9 @@ export const ProductsCarouselBlockConf: Block = {
 				en: 'Products',
 				vi: 'Sản phẩm',
 			},
-			type: 'array',
-			fields: [
-				{
-					name: 'product',
-					type: 'relationship',
-					label: 'Product',
-					required: true,
-					relationTo: 'products',
-					admin: {
-						position: 'sidebar',
-					},
-				},
-			],
-			labels: {
-				plural: {
-					en: 'Products',
-					vi: 'Sản phẩm',
-				},
-				singular: {
-					en: 'Product',
-					vi: 'Sản phẩm',
-				},
-			},
+			type: 'relationship',
+			relationTo: ProductsSlug,
+			hasMany: true,
 		},
 	],
 }
