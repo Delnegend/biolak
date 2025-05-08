@@ -36,7 +36,7 @@ export async function Header() {
 		),
 		products: () => <div>Sản phẩm</div>,
 		about: () => <Link href="/about">BioLAK</Link>,
-		events: () => <Link href="/events">Sự kiện</Link>,
+		events: () => <Link href="/posts">Sự kiện</Link>,
 		contact: () => (
 			<Dialog>
 				<DialogTrigger>
