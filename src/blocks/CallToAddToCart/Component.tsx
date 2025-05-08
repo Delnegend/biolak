@@ -8,7 +8,7 @@ export function CallToAddToCartBlock(props: CallToAddToCartBlockProps): React.JS
 	const image = props.image && typeof props.image === 'object' ? props.image : null
 
 	return (
-		<div className="safe-width my-[7rem] flex !max-w-[50rem] flex-col items-center text-primary">
+		<div className="safe-width my-28 flex !max-w-[50rem] flex-col items-center text-primary">
 			<Image
 				src={image?.url ?? 'https://placehold.co/600x600'}
 				alt={image?.alt ?? 'Image'}
