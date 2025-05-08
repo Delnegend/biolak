@@ -16,7 +16,7 @@ export function HighlightCenterBlock(props: HighlightCenterBlockProps): React.JS
 	const img = props.image && typeof props.image === 'object' ? props.image : null
 
 	return (
-		<div className="safe-width my-[7rem] flex flex-col text-primary">
+		<div className="safe-width my-28 flex flex-col text-primary">
 			<div className="flex w-full flex-col items-center justify-center">
 				<Image
 					src={img?.url ?? 'https://placehold.co/1000x1000'}

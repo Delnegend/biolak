@@ -11,11 +11,15 @@ export function CallToActionLeftBlock(props: CallToActionLeftBlockProps): React.
 			? props.background.url
 			: 'https://placehold.co/1920x1080'
 
-	const link =
-		props.button.link?.type === 'reference' &&
-		typeof props.button.link.reference?.value === 'object'
-			? `/${props.button.link.reference?.relationTo}/${props.button.link.reference?.value.slug}`
-			: (props.button.link?.url ?? '#')
+	const link = props.button.link
+	const linkRef = link?.reference
+	const linkRelation = linkRef?.relationTo
+	const url =
+		link?.type === 'reference' && typeof linkRef?.value === 'object'
+			? linkRelation !== 'pages'
+				? `${linkRelation}/${linkRef?.value.slug}`
+				: `/${linkRef?.value.slug}`
+			: (link?.url ?? '#')
 
 	return (
 		<div
@@ -38,7 +42,7 @@ export function CallToActionLeftBlock(props: CallToActionLeftBlockProps): React.
 							className="mx-0 text-balance text-xl leading-8 text-white"
 						/>
 					)}
-					<Link href={link} target={props.button.link?.newTab ? '_blank' : '_self'}>
+					<Link href={url} target={props.button.link?.newTab ? '_blank' : '_self'}>
 						<Button className="w-full" size="lg">
 							{props.button.text}
 						</Button>
