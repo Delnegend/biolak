@@ -8,7 +8,7 @@ export function ThreePhotoBlock(props: ThreePhotoBlockProps): React.JSX.Element 
 	const photoCenter = typeof props.photoCenter === 'object' ? props.photoCenter : null
 
 	return (
-		<div className="mx-auto grid w-4/5 max-w-7xl grid-cols-[290fr_620fr_290fr] gap-x-10">
+		<div className="mx-auto my-28 grid w-4/5 max-w-7xl grid-cols-[290fr_620fr_290fr] gap-x-10">
 			<Image
 				className="place-self-center"
 				src={photoLeft?.url ?? 'https://placehold.co/1000x1000'}
