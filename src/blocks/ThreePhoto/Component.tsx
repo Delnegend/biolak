@@ -11,25 +11,27 @@ export function ThreePhotoBlock(props: ThreePhotoBlockProps): React.JSX.Element 
 		<div className="mx-auto my-28 grid w-4/5 max-w-7xl grid-cols-[290fr_620fr_290fr] gap-x-10">
 			<Image
 				className="place-self-center"
-				src={photoLeft?.url ?? 'https://placehold.co/1000x1000'}
+				src={photoLeft?.url ?? 'https://placehold.co/290x442'}
 				alt={photoLeft?.alt ?? 'Left Photo'}
-				width={photoLeft?.width ?? 1000}
-				height={photoLeft?.height ?? 1000}
+				width={photoLeft?.width ?? 290}
+				height={photoLeft?.height ?? 442}
 				unoptimized={photoLeft === null}
 			/>
 			<Image
 				className="place-self-center"
-				src={photoCenter?.url ?? 'https://placehold.co/1000x1000'}
+				src={photoCenter?.url ?? 'https://placehold.co/620x725'}
 				alt={photoCenter?.alt ?? 'Center Photo'}
-				width={photoCenter?.width ?? 1000}
-				height={photoCenter?.height ?? 1000}
+				width={photoCenter?.width ?? 620}
+				height={photoCenter?.height ?? 725}
+				unoptimized={photoCenter === null}
 			/>
 			<Image
 				className="place-self-center"
-				src={photoRight?.url ?? 'https://placehold.co/1000x1000'}
+				src={photoRight?.url ?? 'https://placehold.co/290x442'}
 				alt={photoRight?.alt ?? 'Right Photo'}
-				width={photoRight?.width ?? 1000}
-				height={photoRight?.height ?? 1000}
+				width={photoRight?.width ?? 290}
+				height={photoRight?.height ?? 442}
+				unoptimized={photoRight === null}
 			/>
 		</div>
 	)
