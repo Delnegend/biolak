@@ -103,7 +103,7 @@
 }
 
 html {
-	opacity: 0;
+	@apply opacity-0;
 }
 
 html[data-theme='dark'],
@@ -116,10 +116,9 @@ html[data-theme='light'] {
 }
 
 li {
-	margin: 0 !important;
+	@apply !m-0;
 }
 
 li::marker {
-	color: hsl(var(--primary)) !important;
-	font-size: 1.5rem !important;
+	@apply !text-2xl !text-primary;
 }
