@@ -19,6 +19,14 @@ export function CallToActionCenterBlock(props: CallToActionCenterBlockProps): Re
 			? props.background.url
 			: 'https://placehold.co/1920x1080'
 
+	console.log(props.button.link)
+
+	const link =
+		props.button.link?.type === 'reference' &&
+		typeof props.button.link.reference?.value === 'object'
+			? `/${props.button.link.reference?.relationTo}/${props.button.link.reference?.value.slug}`
+			: (props.button.link?.url ?? '#')
+
 	return (
 		<div
 			className="flex h-[60rem] items-center justify-center"
@@ -52,7 +60,7 @@ export function CallToActionCenterBlock(props: CallToActionCenterBlockProps): Re
 				</CardHeader>
 				<CardContent className="grid max-w-[38.5rem]">
 					<Link
-						href={props.button.link?.url ?? '#'}
+						href={link}
 						target={props.button.link?.newTab ? '_blank' : '_self'}
 						className="grid"
 					>
