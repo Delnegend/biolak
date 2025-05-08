@@ -12,6 +12,12 @@ import { cn } from '@/utilities/ui'
 const phudu = Phudu({ subsets: ['vietnamese'], weight: ['400', '600'] })
 
 export function CallToActionRightBlock(props: CallToActionRightBlockProps): React.JSX.Element {
+	const link =
+		props.button.link?.type === 'reference' &&
+		typeof props.button.link.reference?.value === 'object'
+			? `/${props.button.link.reference?.relationTo}/${props.button.link.reference?.value.slug}`
+			: (props.button.link?.url ?? '#')
+
 	return (
 		<div className="safe-width flex h-[48rem] justify-between bg-background">
 			<Carousel opts={{ dragFree: true }} className="place-self-center">
@@ -56,10 +62,7 @@ export function CallToActionRightBlock(props: CallToActionRightBlockProps): Reac
 						className="text-balance text-xl leading-8 text-primary"
 					/>
 				)}
-				<Link
-					href={props.button.link?.url ?? '#'}
-					target={props.button.link?.newTab ? '_blank' : '_self'}
-				>
+				<Link href={link} target={props.button.link?.newTab ? '_blank' : '_self'}>
 					<Button className="w-full" variant="outline" size="lg">
 						{props.button.text}
 					</Button>
