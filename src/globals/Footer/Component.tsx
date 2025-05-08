@@ -20,7 +20,7 @@ export async function Footer() {
 	const image =
 		images !== undefined && typeof images.image === 'object' && images.image !== null
 			? images.image
-			: undefined
+			: null
 
 	const stamp =
 		legal.stamp !== undefined && typeof legal.stamp === 'object' && legal.stamp !== null
@@ -35,7 +35,7 @@ export async function Footer() {
 				width={image?.width ?? 1000}
 				height={image?.height ?? 1000}
 				className="absolute top-1/2 h-full w-1/2 -translate-y-1/2 object-cover"
-				unoptimized={image?.url === undefined}
+				unoptimized={image === null}
 			/>
 
 			<div className="w-1/2 translate-x-full">
