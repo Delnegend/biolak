@@ -14,20 +14,32 @@ const columnFields: Field[] = [
 		defaultValue: 'full',
 		options: [
 			{
-				label: 'One Third',
 				value: 'oneThird',
+				label: {
+					en: 'One Third',
+					vi: 'Một phần ba',
+				},
 			},
 			{
-				label: 'Half',
 				value: 'half',
+				label: {
+					en: 'Half',
+					vi: 'Một nửa',
+				},
 			},
 			{
-				label: 'Two Thirds',
 				value: 'twoThirds',
+				label: {
+					en: 'Two Thirds',
+					vi: 'Hai phần ba',
+				},
 			},
 			{
-				label: 'Full',
 				value: 'full',
+				label: {
+					en: 'Full',
+					vi: 'Toàn bộ',
+				},
 			},
 		],
 		label: {
@@ -39,6 +51,10 @@ const columnFields: Field[] = [
 		name: 'font',
 		type: 'select',
 		defaultValue: 'default',
+		label: {
+			en: 'Font',
+			vi: 'Phông chữ',
+		},
 		options: [
 			{
 				label: 'Default',
@@ -57,10 +73,6 @@ const columnFields: Field[] = [
 				value: 'monospace',
 			},
 		],
-		label: {
-			en: 'Font',
-			vi: 'Phông chữ',
-		},
 	},
 	{
 		name: 'customCss',
