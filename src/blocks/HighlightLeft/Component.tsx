@@ -12,7 +12,7 @@ export function HighlightLeftBlock(props: HighlightLeftBlockProps): React.JSX.El
 	const img = props.image && typeof props.image === 'object' ? props.image : null
 
 	return (
-		<div className="safe-width my-[7rem] grid grid-cols-[25rem_1fr] gap-[7rem] text-primary">
+		<div className="safe-width my-28 grid grid-cols-[25rem_1fr] gap-[7rem] text-primary">
 			<div>
 				<Image
 					src={img?.url ?? 'https://placehold.co/1000x1000'}

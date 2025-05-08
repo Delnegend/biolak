@@ -19,13 +19,15 @@ export function CallToActionCenterBlock(props: CallToActionCenterBlockProps): Re
 			? props.background.url
 			: 'https://placehold.co/1920x1080'
 
-	console.log(props.button.link)
-
-	const link =
-		props.button.link?.type === 'reference' &&
-		typeof props.button.link.reference?.value === 'object'
-			? `/${props.button.link.reference?.relationTo}/${props.button.link.reference?.value.slug}`
-			: (props.button.link?.url ?? '#')
+	const link = props.button.link
+	const linkRef = link?.reference
+	const linkRelation = linkRef?.relationTo
+	const url =
+		link?.type === 'reference' && typeof linkRef?.value === 'object'
+			? linkRelation !== 'pages'
+				? `${linkRelation}/${linkRef?.value.slug}`
+				: `/${linkRef?.value.slug}`
+			: (link?.url ?? '#')
 
 	return (
 		<div
@@ -60,7 +62,7 @@ export function CallToActionCenterBlock(props: CallToActionCenterBlockProps): Re
 				</CardHeader>
 				<CardContent className="grid max-w-[38.5rem]">
 					<Link
-						href={link}
+						href={url}
 						target={props.button.link?.newTab ? '_blank' : '_self'}
 						className="grid"
 					>
