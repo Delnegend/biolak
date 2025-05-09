@@ -34,7 +34,7 @@ export function ProductsCarouselBlock(props: ProductsCarouselBlockProps): React.
 										<div className="text-xl font-medium">Sản phẩm bán chạy</div>
 										<div className="font-serif text-7xl font-bold">{p.title}</div>
 										<div className="my-5">{p.longDescription ?? p.shortDescription}</div>
-										<Link href="/[slug]" as={p.slug ? `/products/${p.slug}` : '#'}>
+										<Link href="/[slug]" as={p.slug ? `/product/${p.slug}` : '#'}>
 											<Button size="lg" className="w-[26rem]">
 												XEM THÊM
 											</Button>
