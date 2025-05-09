@@ -24,7 +24,7 @@ import { slugField } from '@/fields/slug'
 import { generatePreviewPath } from '@/utilities/generatePreviewPath'
 
 import { MediaSlug } from '../Media/slug'
-import { PostCategoriesSlug } from '../PostCategories/slug'
+import { ProductCategoriesSlug } from '../ProductCategories/slug'
 import { ProductSubCategoriesSlug } from '../ProductSubCategories/slug'
 import { ProductsSlug } from './slug'
 
@@ -59,7 +59,7 @@ export const Products: CollectionConfig<typeof ProductsSlug> = {
 						{
 							name: 'category',
 							type: 'relationship',
-							relationTo: [PostCategoriesSlug, ProductSubCategoriesSlug],
+							relationTo: [ProductCategoriesSlug, ProductSubCategoriesSlug],
 							label: {
 								en: 'Product Categories',
 								vi: 'Danh mục sản phẩm',
