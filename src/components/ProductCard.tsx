@@ -15,9 +15,11 @@ const lato = Lato({
 
 export function ProductCard({
 	product: p,
+	size = 'lg',
 	component,
 }: {
 	product: Product
+	size?: 'lg' | 'sm'
 	component?: React.ElementType
 }): React.JSX.Element {
 	const Comp = component ?? 'div'
@@ -26,7 +28,10 @@ export function ProductCard({
 	return (
 		<Comp
 			key={p.id}
-			className="grid max-w-96 grid-cols-[1fr_auto] grid-rows-[auto]"
+			className={cn(
+				'grid grid-cols-[1fr_auto] grid-rows-[auto]',
+				size === 'lg' ? 'max-w-96' : 'max-w-72',
+			)}
 			style={{
 				gridTemplateAreas: `"img img"
 											"title add-to-cart"
@@ -42,7 +47,10 @@ export function ProductCard({
 					height={img?.height ?? 1000}
 					style={{ gridArea: 'img' }}
 					unoptimized={img === null}
-					className="mb-6 rounded-[0.5rem]"
+					className={cn(
+						'mb-6 rounded-[0.5rem] object-cover',
+						size === 'lg' ? 'h-[28.75rem]' : 'h-[25.875rem]',
+					)}
 				/>
 			</Link>
 			<Link
