@@ -59,11 +59,22 @@ export const Products: CollectionConfig<typeof ProductsSlug> = {
 						{
 							name: 'category',
 							type: 'relationship',
-							relationTo: [ProductCategoriesSlug, ProductSubCategoriesSlug],
+							relationTo: ProductCategoriesSlug,
 							label: {
 								en: 'Product Categories',
 								vi: 'Danh mục sản phẩm',
 							},
+							hasMany: true,
+						},
+						{
+							name: 'subCategory',
+							type: 'relationship',
+							relationTo: ProductSubCategoriesSlug,
+							label: {
+								en: 'Product Subcategories',
+								vi: 'Danh mục con sản phẩm',
+							},
+							hasMany: true,
 						},
 						{
 							name: 'title',
