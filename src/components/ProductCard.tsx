@@ -3,7 +3,7 @@ import { Lato } from 'next/font/google'
 import Image from 'next/image'
 import Link from 'next/link'
 
-import { Product } from '@/payload-types'
+import { Media } from '@/payload-types'
 import { formatPrice } from '@/utilities/formatPrice'
 import { cn } from '@/utilities/ui'
 
@@ -18,7 +18,14 @@ export function ProductCard({
 	size = 'lg',
 	component,
 }: {
-	product: Product
+	product: {
+		id: number
+		title: string
+		slug?: string | null
+		shortDescription: string
+		price: number
+		gallery?: (number | Media)[] | null
+	}
 	size?: 'lg' | 'sm'
 	component?: React.ElementType
 }): React.JSX.Element {
