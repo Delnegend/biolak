@@ -12,5 +12,20 @@ services:
          - POSTGRES_PASSWORD=postgres
          - POSTGRES_DB=biolak
 
+   pgadmin:
+      container_name: pgadmin
+      image: dpage/pgadmin4
+      restart: unless-stopped
+      ports:
+         - 5050:80
+      depends_on:
+         - postgres-dev
+      environment:
+         - PGADMIN_DEFAULT_EMAIL=demo@example.com
+         - PGADMIN_DEFAULT_PASSWORD=111
+         - PGADMIN_CONFIG_SERVER_MODE=False
+      volumes:
+         - ./pgadmin.dev.json:/pgadmin4/servers.json
+
 volumes:
    postgres_dev:
