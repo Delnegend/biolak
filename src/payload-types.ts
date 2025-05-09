@@ -961,15 +961,8 @@ export interface ProductsCarouselBlockProps {
  */
 export interface Product {
   id: number;
-  category?:
-    | ({
-        relationTo: 'postCategories';
-        value: number | PostCategory;
-      } | null)
-    | ({
-        relationTo: 'productSubCategories';
-        value: number | ProductSubCategory;
-      } | null);
+  category?: (number | ProductCategory)[] | null;
+  subCategory?: (number | ProductSubCategory)[] | null;
   title: string;
   shortDescription: string;
   longDescription?: string | null;
@@ -1029,11 +1022,10 @@ export interface Product {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "productSubCategories".
+ * via the `definition` "productCategories".
  */
-export interface ProductSubCategory {
+export interface ProductCategory {
   id: number;
-  category: number | ProductCategory;
   title: string;
   slug?: string | null;
   slugLock?: boolean | null;
@@ -1042,10 +1034,11 @@ export interface ProductSubCategory {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "productCategories".
+ * via the `definition` "productSubCategories".
  */
-export interface ProductCategory {
+export interface ProductSubCategory {
   id: number;
+  category: number | ProductCategory;
   title: string;
   slug?: string | null;
   slugLock?: boolean | null;
@@ -2019,6 +2012,7 @@ export interface UsersSelect<T extends boolean = true> {
  */
 export interface ProductsSelect<T extends boolean = true> {
   category?: T;
+  subCategory?: T;
   title?: T;
   shortDescription?: T;
   longDescription?: T;
