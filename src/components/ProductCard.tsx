@@ -34,7 +34,7 @@ export function ProductCard({
 											"price add-to-cart"`,
 			}}
 		>
-			<Link href={p.slug ? `/products/${p.slug}` : '#'} style={{ gridArea: 'img' }}>
+			<Link href={p.slug ? `/product/${p.slug}` : '#'} style={{ gridArea: 'img' }}>
 				<Image
 					src={img?.url ?? 'https://placehold.co/1000x1000'}
 					alt={`Ảnh sản phẩm ${p.title}`}
@@ -46,7 +46,7 @@ export function ProductCard({
 				/>
 			</Link>
 			<Link
-				href={p.slug ? `/products/${p.slug}` : '#'}
+				href={p.slug ? `/product/${p.slug}` : '#'}
 				style={{ gridArea: 'title' }}
 				className="mb-2 text-lg font-bold"
 			>
