@@ -7,14 +7,15 @@
 	"features": {
 		"ghcr.io/devcontainers/features/docker-in-docker:2": {}
 	},
-	"mounts": [
-		{
-			"source": "global-pnpm-store",
-			"target": "/home/vscode/.pnpm-store",
-			"type": "volume"
-		}
+	"runArgs": [
+		"--hostname=devcontainer",
+		"-p",
+		"3000:3000",
+		"-p",
+		"5432:5432",
+		"-v",
+		"global-pnpm-store:/home/vscode/.pnpm-store"
 	],
-	"runArgs": ["--hostname=devcontainer", "-p", "3000:3000", "-p", "5432:5432"],
 	"postCreateCommand": "zsh .devcontainer/postinstall.sh",
 	"customizations": {
 		"vscode": {
