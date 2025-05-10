@@ -1,6 +1,7 @@
 import { type GlobalConfig } from 'payload'
 
 import { admin } from '@/access/admin'
+import { anyone } from '@/access/anyone'
 import { link } from '@/fields/link'
 
 import { revalidatePromo } from './hooks/revalidatePromo'
@@ -8,7 +9,7 @@ import { revalidatePromo } from './hooks/revalidatePromo'
 export const PromoGlobalConf: GlobalConfig = {
 	slug: 'promo',
 	access: {
-		read: () => true,
+		read: anyone,
 		update: admin,
 	},
 	fields: [
