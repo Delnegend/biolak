@@ -7,7 +7,7 @@ import { RenderBlocks } from '@/blocks/RenderBlocks'
 import { ProductsSlug } from '@/collections/Products/slug'
 import { LivePreviewListener } from '@/components/LivePreviewListener'
 import { PayloadRedirects } from '@/components/PayloadRedirects'
-import { ProductHero } from '@/heros/Product'
+import { ProductHero } from '@/heros/ProductHero'
 import { generateMeta } from '@/utilities/generateMeta'
 
 import PageClient from './page.client'
@@ -85,7 +85,14 @@ export default async function Product({
 			<PageClient />
 			<PayloadRedirects disableNotFound url={url} />
 			{draft && <LivePreviewListener />}
-			<ProductHero product={product} />
+			<ProductHero
+				product={product}
+				overrides={{
+					subtitle: product.heroSubtitle,
+					title: product.heroTitle,
+					description: product.heroDescription,
+				}}
+			/>
 			{product.content && <RenderBlocks blocks={product.content} />}
 		</article>
 	)
