@@ -33,7 +33,7 @@ const options = [
 	},
 ]
 
-export const Header: GlobalConfig = {
+export const HeaderGlobalConf: GlobalConfig = {
 	slug: 'header',
 	access: {
 		read: () => true,

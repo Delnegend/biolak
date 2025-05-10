@@ -17,10 +17,10 @@ import { Products } from './collections/Products'
 import { ProductSubCategories } from './collections/ProductSubCategories'
 import { Users } from './collections/Users'
 import { UsersSlug } from './collections/Users/slug'
-import { ContactForm } from './globals/ContactForm/config'
-import { Footer } from './globals/Footer/config'
-import { Header } from './globals/Header/config'
-import { Promo } from './globals/Promo/config'
+import { ContactFormGlobalConf } from './globals/ContactForm/config'
+import { FooterGlobalConf } from './globals/Footer/config'
+import { HeaderGlobalConf } from './globals/Header/config'
+import { PromoGlobalConf } from './globals/Promo/config'
 import { plugins } from './plugins'
 import { getServerSideURL } from './utilities/getURL'
 
@@ -82,7 +82,12 @@ export default buildConfig({
 		ProductSubCategories,
 	],
 	cors: [getServerSideURL()].filter(Boolean),
-	globals: [Header, Footer, Promo, ContactForm],
+	globals: [
+		HeaderGlobalConf,
+		FooterGlobalConf,
+		PromoGlobalConf,
+		ContactFormGlobalConf,
+	],
 	plugins: [
 		...plugins,
 		// storage-adapter-placeholder
