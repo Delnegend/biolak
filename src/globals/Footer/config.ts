@@ -6,7 +6,7 @@ import { MediaSlug } from '@/collections/Media/slug'
 
 import { revalidateFooter } from './hooks/revalidateFooter'
 
-export const Footer: GlobalConfig = {
+export const FooterGlobalConf: GlobalConfig = {
 	slug: 'footer',
 	access: {
 		read: anyone,

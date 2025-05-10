@@ -5,7 +5,7 @@ import { link } from '@/fields/link'
 
 import { revalidatePromo } from './hooks/revalidatePromo'
 
-export const Promo: GlobalConfig = {
+export const PromoGlobalConf: GlobalConfig = {
 	slug: 'promo',
 	access: {
 		read: () => true,
