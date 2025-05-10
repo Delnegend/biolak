@@ -52,7 +52,6 @@ export function PostHero({ post: p }: { post: Post }): React.JSX.Element {
 						{p.publishedAt && (
 							<div className="flex flex-col gap-1">
 								<p className="text-sm">Date Published</p>
-
 								<time dateTime={p.publishedAt}>{formatDateTime(p.publishedAt)}</time>
 							</div>
 						)}
