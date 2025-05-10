@@ -17,6 +17,7 @@ import { Products } from './collections/Products'
 import { ProductSubCategories } from './collections/ProductSubCategories'
 import { Users } from './collections/Users'
 import { UsersSlug } from './collections/Users/slug'
+import { CheckoutPageGlobalConf } from './globals/CheckoutPage/config'
 import { ContactFormGlobalConf } from './globals/ContactForm/config'
 import { FooterGlobalConf } from './globals/Footer/config'
 import { HeaderGlobalConf } from './globals/Header/config'
@@ -87,6 +88,7 @@ export default buildConfig({
 		FooterGlobalConf,
 		PromoGlobalConf,
 		ContactFormGlobalConf,
+		CheckoutPageGlobalConf,
 	],
 	plugins: [
 		...plugins,
