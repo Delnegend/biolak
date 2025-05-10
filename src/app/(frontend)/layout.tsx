@@ -2,7 +2,7 @@ import './globals.css'
 
 import type { Metadata } from 'next'
 import { Crimson_Pro, Manrope } from 'next/font/google'
-import { draftMode } from 'next/headers'
+import { draftMode, headers } from 'next/headers'
 import React from 'react'
 
 import { AdminBar } from '@/components/AdminBar'
@@ -26,6 +26,8 @@ const crimsonPro = Crimson_Pro({
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
 	const { isEnabled } = await draftMode()
+	const heads = await headers()
+	const pathname = heads.get('x-current-path')
 
 	return (
 		<html
@@ -44,8 +46,14 @@ export default async function RootLayout({ children }: { children: React.ReactNo
 						preview: isEnabled,
 					}}
 				/>
-				<Promo />
-				<Header />
+				{pathname === '/checkout' ? (
+					<></>
+				) : (
+					<>
+						<Promo />
+						<Header />
+					</>
+				)}
 				{children}
 				<Footer />
 			</body>
