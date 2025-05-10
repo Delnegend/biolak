@@ -23,6 +23,9 @@
 	}
 
 	:root {
+		--safe-width-max-width: 80rem;
+		--safe-width-width: 90%;
+
 		--background: 40 100% 96%;
 		--foreground: 222.2 84% 4.9%;
 
@@ -112,7 +115,9 @@ html[data-theme='light'] {
 }
 
 .safe-width {
-	@apply mx-auto w-[95%] max-w-[80rem];
+	max-width: var(--safe-width-max-width);
+	width: var(--safe-width-width);
+	@apply mx-auto;
 }
 
 li {
