@@ -96,7 +96,7 @@ export const Products: CollectionConfig<typeof ProductsSlug> = {
 						},
 						{
 							name: 'longDescription',
-							type: 'text',
+							type: 'richText',
 							label: {
 								en: 'Long Description',
 								vi: 'Mô tả chi tiết',
@@ -127,35 +127,35 @@ export const Products: CollectionConfig<typeof ProductsSlug> = {
 					label: 'Hero',
 					fields: [
 						{
-							name: 'heroTitle',
-							type: 'textarea',
-							label: {
-								en: 'Title',
-								vi: 'Tiêu đề',
-							},
-						},
-						{
 							name: 'heroSubtitle',
 							type: 'textarea',
 							label: {
-								en: 'Subtitle',
-								vi: 'Tiêu đề phụ',
+								en: 'Subtitle override',
+								vi: 'Ghi đè phụ thể',
+							},
+						},
+						{
+							name: 'heroTitle',
+							type: 'textarea',
+							label: {
+								en: 'Title override',
+								vi: 'Ghi đè tiêu đề',
 							},
 						},
 						{
 							name: 'heroDescription',
 							type: 'richText',
 							label: {
-								en: 'Description',
-								vi: 'Mô tả',
+								en: 'Description override',
+								vi: 'Ghi đè mô tả',
 							},
 						},
 						{
 							name: 'heroMedia',
 							type: 'upload',
 							label: {
-								en: 'Media',
-								vi: 'Phương tiện',
+								en: 'Media override',
+								vi: 'Ghi đè ảnh sản phẩm',
 							},
 							relationTo: MediaSlug,
 						},
