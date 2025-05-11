@@ -15,6 +15,9 @@ import { CallToActionRightBlockConf } from '@/blocks/CallToActionRight/config'
 import { CallToAddToCartBlockConf } from '@/blocks/CallToAddToCart/config'
 import { CertificatesBlockConf } from '@/blocks/Certificates/config'
 import { ContentBlockConf } from '@/blocks/Content/config'
+import { FocusLeftSmallImageBlockConf } from '@/blocks/FocusLeftSmallImage/config'
+import { FocusRightLargeImageBlockConf } from '@/blocks/FocusRightLargeImage/config'
+import { FocusRightSmallImageBlockConf } from '@/blocks/FocusRightSmallImage/config'
 import { FormBlockConf } from '@/blocks/Form/config'
 import { HighlightCenterBlockConf } from '@/blocks/HighlightCenter/config'
 import { HighlightLeftBlockConf } from '@/blocks/HighlightLeft/config'
@@ -122,6 +125,9 @@ export const Posts: CollectionConfig<typeof PostsSlug> = {
 								CallToActionRightBlockConf,
 								CertificatesBlockConf,
 								ContentBlockConf,
+								FocusLeftSmallImageBlockConf,
+								FocusRightLargeImageBlockConf,
+								FocusRightSmallImageBlockConf,
 								FormBlockConf,
 								HighlightCenterBlockConf,
 								HighlightLeftBlockConf,
