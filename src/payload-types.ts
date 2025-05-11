@@ -111,12 +111,14 @@ export interface Config {
     footer: Footer;
     promo: Promo;
     'contact-form': ContactForm;
+    checkout: Checkout;
   };
   globalsSelect: {
     header: HeaderSelect<false> | HeaderSelect<true>;
     footer: FooterSelect<false> | FooterSelect<true>;
     promo: PromoSelect<false> | PromoSelect<true>;
     'contact-form': ContactFormSelect<false> | ContactFormSelect<true>;
+    checkout: CheckoutSelect<false> | CheckoutSelect<true>;
   };
   locale: null;
   user: User & {
@@ -261,6 +263,9 @@ export interface Post {
     | CallToActionRightBlockProps
     | CertificatesBlockProps
     | ContentBlockProps
+    | FocusLeftSmallImageBlockProps
+    | FocusRightLargeImageBlockProps
+    | FocusRightSmallImageBlockProps
     | FormBlockProps
     | HighlightCenterBlockProps
     | HighlightLeftBlockProps
@@ -687,6 +692,81 @@ export interface ContentBlockProps {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "FocusLeftSmallImageBlockProps".
+ */
+export interface FocusLeftSmallImageBlockProps {
+  image?: (number | null) | Media;
+  content: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'focus-left-small-image';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "FocusRightLargeImageBlockProps".
+ */
+export interface FocusRightLargeImageBlockProps {
+  image?: (number | null) | Media;
+  content: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'focus-right-large-image';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "FocusRightSmallImageBlockProps".
+ */
+export interface FocusRightSmallImageBlockProps {
+  image?: (number | null) | Media;
+  content: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'focus-right-small-image';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "FormBlockProps".
  */
 export interface FormBlockProps {
@@ -950,6 +1030,7 @@ export interface MediaBlockProps {
  * via the `definition` "ProductsCarouselBlockProps".
  */
 export interface ProductsCarouselBlockProps {
+  title: string;
   products?: (number | Product)[] | null;
   id?: string | null;
   blockName?: string | null;
@@ -965,11 +1046,25 @@ export interface Product {
   subCategory?: (number | ProductSubCategory)[] | null;
   title: string;
   shortDescription: string;
-  longDescription?: string | null;
+  longDescription?: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
   price: number;
   gallery?: (number | Media)[] | null;
-  heroTitle?: string | null;
   heroSubtitle?: string | null;
+  heroTitle?: string | null;
   heroDescription?: {
     root: {
       type: string;
@@ -1795,6 +1890,7 @@ export interface PostsGridBlockPropsSelect<T extends boolean = true> {
  * via the `definition` "ProductsCarouselBlockProps_select".
  */
 export interface ProductsCarouselBlockPropsSelect<T extends boolean = true> {
+  title?: T;
   products?: T;
   id?: T;
   blockName?: T;
@@ -1844,6 +1940,9 @@ export interface PostsSelect<T extends boolean = true> {
         'cta-right'?: T | CallToActionRightBlockPropsSelect<T>;
         certificates?: T | CertificatesBlockPropsSelect<T>;
         content?: T | ContentBlockPropsSelect<T>;
+        'focus-left-small-image'?: T | FocusLeftSmallImageBlockPropsSelect<T>;
+        'focus-right-large-image'?: T | FocusRightLargeImageBlockPropsSelect<T>;
+        'focus-right-small-image'?: T | FocusRightSmallImageBlockPropsSelect<T>;
         formBlock?: T | FormBlockPropsSelect<T>;
         'highlight-center'?: T | HighlightCenterBlockPropsSelect<T>;
         'highlight-left'?: T | HighlightLeftBlockPropsSelect<T>;
@@ -1875,6 +1974,36 @@ export interface PostsSelect<T extends boolean = true> {
   updatedAt?: T;
   createdAt?: T;
   _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "FocusLeftSmallImageBlockProps_select".
+ */
+export interface FocusLeftSmallImageBlockPropsSelect<T extends boolean = true> {
+  image?: T;
+  content?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "FocusRightLargeImageBlockProps_select".
+ */
+export interface FocusRightLargeImageBlockPropsSelect<T extends boolean = true> {
+  image?: T;
+  content?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "FocusRightSmallImageBlockProps_select".
+ */
+export interface FocusRightSmallImageBlockPropsSelect<T extends boolean = true> {
+  image?: T;
+  content?: T;
+  id?: T;
+  blockName?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -2018,8 +2147,8 @@ export interface ProductsSelect<T extends boolean = true> {
   longDescription?: T;
   price?: T;
   gallery?: T;
-  heroTitle?: T;
   heroSubtitle?: T;
+  heroTitle?: T;
   heroDescription?: T;
   heroMedia?: T;
   content?:
@@ -2420,6 +2549,47 @@ export interface ContactForm {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "checkout".
+ */
+export interface Checkout {
+  id: number;
+  contacts: {
+    title: string;
+    emailInputLabel: string;
+    acceptNewsletter: string;
+  };
+  address: {
+    title: string;
+    nameInputLabel: string;
+    phoneInputLabel: string;
+    provinceCityInputLabel: string;
+    districtInputLabel: string;
+    wardInputLabel: string;
+  };
+  shipping: {
+    title: string;
+    standardShippingLabel: string;
+    fastShippingLabel: string;
+  };
+  payment: {
+    title: string;
+    codLabel: string;
+    bankTransferLabel: string;
+  };
+  gift: {
+    title: string;
+    senderInputLabel: string;
+    recipientInputLabel: string;
+    messageInputLabel: string;
+  };
+  order: {
+    title: string;
+  };
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "header_select".
  */
 export interface HeaderSelect<T extends boolean = true> {
@@ -2500,6 +2670,59 @@ export interface ContactFormSelect<T extends boolean = true> {
   actionSend?: T;
   biolakPhoneNumber?: T;
   actionCall?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "checkout_select".
+ */
+export interface CheckoutSelect<T extends boolean = true> {
+  contacts?:
+    | T
+    | {
+        title?: T;
+        emailInputLabel?: T;
+        acceptNewsletter?: T;
+      };
+  address?:
+    | T
+    | {
+        title?: T;
+        nameInputLabel?: T;
+        phoneInputLabel?: T;
+        provinceCityInputLabel?: T;
+        districtInputLabel?: T;
+        wardInputLabel?: T;
+      };
+  shipping?:
+    | T
+    | {
+        title?: T;
+        standardShippingLabel?: T;
+        fastShippingLabel?: T;
+      };
+  payment?:
+    | T
+    | {
+        title?: T;
+        codLabel?: T;
+        bankTransferLabel?: T;
+      };
+  gift?:
+    | T
+    | {
+        title?: T;
+        senderInputLabel?: T;
+        recipientInputLabel?: T;
+        messageInputLabel?: T;
+      };
+  order?:
+    | T
+    | {
+        title?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;
