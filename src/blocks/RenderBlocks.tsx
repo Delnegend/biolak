@@ -26,6 +26,12 @@ import { CallToAddToCartBlockConf } from './CallToAddToCart/config'
 import { CertificatesBlock } from './Certificates/Component'
 import { CertificatesBlockConf } from './Certificates/config'
 import { ContentBlockConf } from './Content/config'
+import { FocusLeftSmallImageBlock } from './FocusLeftSmallImage/Component'
+import { FocusLeftSmallImageBlockConf } from './FocusLeftSmallImage/config'
+import { FocusRightLargeImageBlock } from './FocusRightLargeImage/Component'
+import { FocusRightLargeImageBlockConf } from './FocusRightLargeImage/config'
+import { FocusRightSmallImageBlock } from './FocusRightSmallImage/Component'
+import { FocusRightSmallImageBlockConf } from './FocusRightSmallImage/config'
 import { FormBlockConf } from './Form/config'
 import { HighlightCenterBlock } from './HighlightCenter/Component'
 import { HighlightCenterBlockConf } from './HighlightCenter/config'
@@ -59,6 +65,9 @@ const blockComponents = {
 	[CallToActionPostBlockConfig.slug]: CallToActionPostBlock,
 	[CertificatesBlockConf.slug]: CertificatesBlock,
 	[ContentBlockConf.slug]: ContentBlock,
+	[FocusLeftSmallImageBlockConf.slug]: FocusLeftSmallImageBlock,
+	[FocusRightLargeImageBlockConf.slug]: FocusRightLargeImageBlock,
+	[FocusRightSmallImageBlockConf.slug]: FocusRightSmallImageBlock,
 	[FormBlockConf.slug]: FormBlock,
 	[HighlightLeftBlockConf.slug]: HighlightLeftBlock,
 	[HighlightRightBlockConf.slug]: HighlightRightBlock,
