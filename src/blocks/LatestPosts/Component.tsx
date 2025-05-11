@@ -14,7 +14,7 @@ export function LatestPostsBlock(props: LatestPostsBlockProps): React.JSX.Elemen
 			<div className="safe-width">
 				<div className="mb-12 flex flex-row items-center justify-between font-semibold italic">
 					<div className="font-serif text-7xl">{props.title}</div>
-					<Link href={'/posts'} className="">
+					<Link href={'/events'} className="">
 						<AllPostsButton buttonLabel={props.buttonLabel} />
 					</Link>
 				</div>
