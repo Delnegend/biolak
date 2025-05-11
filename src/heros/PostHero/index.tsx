@@ -2,7 +2,6 @@ import { Phudu } from 'next/font/google'
 import React from 'react'
 
 import type { Post } from '@/payload-types'
-import { formatAuthors } from '@/utilities/formatAuthors'
 import { cn } from '@/utilities/ui'
 
 const phudu = Phudu({
@@ -11,10 +10,10 @@ const phudu = Phudu({
 })
 
 export function PostHero({ post: p }: { post: Post }): React.JSX.Element {
-	const hasAuthors =
-		p.populatedAuthors &&
-		p.populatedAuthors.length > 0 &&
-		formatAuthors(p.populatedAuthors) !== ''
+	// const hasAuthors =
+	// 	p.populatedAuthors &&
+	// 	p.populatedAuthors.length > 0 &&
+	// 	formatAuthors(p.populatedAuthors) !== ''
 
 	return (
 		<div className="safe-width mt-14 text-primary">
