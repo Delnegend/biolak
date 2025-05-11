@@ -18,6 +18,16 @@ export const ProductsCarouselBlockConf: Block = {
 	},
 	fields: [
 		{
+			name: 'title',
+			label: {
+				en: 'Title',
+				vi: 'Tiêu đề',
+			},
+			type: 'text',
+			defaultValue: 'Sản phẩm bán chạy',
+			required: true,
+		},
+		{
 			name: 'products',
 			label: {
 				en: 'Products',

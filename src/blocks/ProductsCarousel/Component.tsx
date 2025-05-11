@@ -31,7 +31,7 @@ export function ProductsCarouselBlock(props: ProductsCarouselBlockProps): React.
 										unoptimized={img?.url === undefined}
 									/>
 									<div className="flex flex-col justify-center gap-3 text-balance bg-[#210E0A] px-14 text-[#F1DAAE]">
-										<div className="text-xl font-medium">Sản phẩm bán chạy</div>
+										<div className="text-xl font-medium">{props.title}</div>
 										<div className="font-serif text-7xl font-bold">{p.title}</div>
 										<div className="my-5">{p.longDescription ?? p.shortDescription}</div>
 										<Link href="/[slug]" as={p.slug ? `/product/${p.slug}` : '#'}>
