@@ -109,7 +109,7 @@ export const Posts: CollectionConfig<typeof PostsSlug> = {
 							type: 'upload',
 							label: {
 								en: 'Hero Image',
-								vi: 'Hình ảnh chính',
+								vi: 'Hình ảnh minh họa',
 							},
 							relationTo: MediaSlug,
 						},
