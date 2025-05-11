@@ -5,7 +5,7 @@ import { CallToActionCenterBlock } from '@/blocks/CallToActionCenter/Component'
 import { ContentBlock } from '@/blocks/Content/Component'
 import { FormBlock } from '@/blocks/Form/Component'
 import { MediaBlockComponent } from '@/blocks/MediaBlock/Component'
-import type { Page } from '@/payload-types'
+import type { Page, Post, Product } from '@/payload-types'
 
 import { ArchiveBlockConf } from './ArchiveBlock/config'
 import { BannerBlock } from './Banner/Component'
@@ -82,7 +82,11 @@ const blockComponents = {
 	[ThreePhotoBlockConf.slug]: ThreePhotoBlock,
 }
 
-export function RenderBlocks({ blocks }: { blocks: Page['layout'][0][] }): React.JSX.Element {
+export function RenderBlocks({
+	blocks,
+}: {
+	blocks: Page['layout'][0][] | Post['layout'][0][] | Product['content']
+}): React.JSX.Element {
 	if (!(blocks && Array.isArray(blocks) && blocks.length > 0)) {
 		return <></>
 	}
