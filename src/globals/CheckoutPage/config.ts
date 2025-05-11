@@ -3,6 +3,8 @@ import { GlobalConfig } from 'payload'
 import { admin } from '@/access/admin'
 import { anyone } from '@/access/anyone'
 
+import { revalidateCheckoutPage } from './hooks/revalidateCheckoutPage'
+
 export const CheckoutPageGlobalConf: GlobalConfig = {
 	slug: 'checkout',
 	access: {
@@ -270,4 +272,7 @@ export const CheckoutPageGlobalConf: GlobalConfig = {
 			],
 		},
 	],
+	hooks: {
+		afterChange: [revalidateCheckoutPage],
+	},
 }
