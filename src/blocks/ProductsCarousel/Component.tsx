@@ -1,6 +1,7 @@
 import Image from 'next/image'
 import Link from 'next/link'
 
+import RichText from '@/components/RichText'
 import { Button } from '@/components/ui/button'
 import { Carousel, CarouselContent, CarouselItem } from '@/components/ui/carousel'
 import type { ProductsCarouselBlockProps } from '@/payload-types'
@@ -33,7 +34,15 @@ export function ProductsCarouselBlock(props: ProductsCarouselBlockProps): React.
 									<div className="flex flex-col justify-center gap-3 text-balance bg-[#210E0A] px-14 text-[#F1DAAE]">
 										<div className="text-xl font-medium">{props.title}</div>
 										<div className="font-serif text-7xl font-bold">{p.title}</div>
-										<div className="my-5">{p.longDescription ?? p.shortDescription}</div>
+										{p.longDescription ? (
+											<RichText
+												className="my-5"
+												data={p.longDescription}
+												enableGutter={false}
+											/>
+										) : (
+											<div className="my-5">{p.shortDescription}</div>
+										)}
 										<Link href="/[slug]" as={p.slug ? `/product/${p.slug}` : '#'}>
 											<Button size="lg" className="w-[26rem]">
 												XEM THÊM
