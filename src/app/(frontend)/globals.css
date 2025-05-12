@@ -32,7 +32,7 @@
 		--card: 240 5% 100%;
 		--card-foreground: 222.2 84% 4.9%;
 
-		--popover: 0 0% 100%;
+		--popover: var(--primary-foreground);
 		--popover-foreground: 222.2 84% 4.9%;
 
 		--primary: 23 63% 18%;
@@ -101,7 +101,7 @@
 		@apply border-border;
 	}
 	body {
-		@apply flex min-h-[100vh] flex-col bg-background text-foreground;
+		@apply flex min-h-[100vh] flex-col overflow-x-clip bg-background text-foreground;
 	}
 }
 
