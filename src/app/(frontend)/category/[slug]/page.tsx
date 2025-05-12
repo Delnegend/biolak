@@ -48,7 +48,7 @@ export default async function Category({
 		products = await payload.find({
 			collection: ProductsSlug,
 			where: {
-				'category.slug': {
+				[`${ProductCategoriesSlug}.slug`]: {
 					equals: categorySlug,
 				},
 			},
@@ -64,7 +64,7 @@ export default async function Category({
 			products = await payload.find({
 				collection: ProductsSlug,
 				where: {
-					'subCategory.slug': {
+					[`${ProductSubCategoriesSlug}.slug`]: {
 						equals: categorySlug,
 					},
 				},
