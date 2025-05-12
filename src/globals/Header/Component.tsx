@@ -9,34 +9,37 @@ import { getCachedGlobal } from '@/utilities/getGlobals'
 
 import biolakIcon from '../../../public/biolak-logo.svg'
 import { ContactForm } from '../ContactForm/Component'
+import { ProductsDropdown } from './ProductsDropdown'
+
+type NavItem = NonNullable<
+	NonNullable<Header['navItemsLeft'] | Header['navItemsRight']>[number]['item']
+>
 
 export async function Header() {
 	const headerData: Header = await getCachedGlobal('header', 1)()
-	let leftSide = headerData.navItemsLeft
-		?.map((i) => i.item)
-		.filter((i) => i !== null && i !== undefined)
-	if (leftSide === undefined || leftSide.length === 0) {
+	let leftSide: NavItem[] =
+		headerData.navItemsLeft?.map((i) => i.item).filter((i) => i !== null && i !== undefined) ?? []
+	if (leftSide.length === 0) {
 		leftSide = ['search', 'products', 'about', 'events']
 	}
 
-	let rightSide = headerData.navItemsRight
-		?.map((i) => i.item)
-		.filter((i) => i !== null && i !== undefined)
-	if (rightSide === undefined || rightSide.length === 0) {
+	let rightSide: NavItem[] =
+		headerData.navItemsRight?.map((i) => i.item).filter((i) => i !== null && i !== undefined) ??
+		[]
+	if (rightSide.length === 0) {
 		rightSide = ['contact', 'vie-en', 'cart']
 	}
 
-	type Elements = NonNullable<NonNullable<Header['navItemsLeft']>[number]['item']>
-	const elements: Record<Elements, () => React.JSX.Element> = {
+	const elements: Record<NavItem, () => React.JSX.Element | Promise<React.JSX.Element>> = {
 		search: () => (
 			<Link href="/search" className="flex size-7 items-center justify-center">
 				<span className="sr-only">Tìm kiếm</span>
 				<SearchIcon className="w-5 scale-110 text-primary" size={30} />
 			</Link>
 		),
-		products: () => <div>Sản phẩm</div>,
+		products: ProductsDropdown,
 		about: () => <Link href="/about">BioLAK</Link>,
-		events: () => <Link href="/posts">Sự kiện</Link>,
+		events: () => <Link href="/events">Sự kiện</Link>,
 		contact: () => (
 			<Dialog>
 				<DialogTrigger>
