@@ -4,8 +4,8 @@ import { slugField } from '@/fields/slug'
 
 import { admin } from '../../access/admin'
 import { anyone } from '../../access/anyone'
-import { PostCategoriesSlug } from './slug'
 import { PostsSlug } from '../Posts/slug'
+import { PostCategoriesSlug } from './slug'
 
 export const PostCategories: CollectionConfig<typeof PostCategoriesSlug> = {
 	slug: PostCategoriesSlug,
