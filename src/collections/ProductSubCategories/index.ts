@@ -4,6 +4,8 @@ import { admin } from '@/access/admin'
 import { anyone } from '@/access/anyone'
 import { slugField } from '@/fields/slug'
 
+import { ProductCategoriesSlug } from '../ProductCategories/slug'
+import { ProductsSlug } from '../Products/slug'
 import { ProductSubCategoriesSlug } from './slug'
 
 export const ProductSubCategories: CollectionConfig<typeof ProductSubCategoriesSlug> = {
@@ -26,9 +28,13 @@ export const ProductSubCategories: CollectionConfig<typeof ProductSubCategoriesS
 	},
 	fields: [
 		{
-			name: 'category',
+			name: ProductCategoriesSlug,
 			type: 'relationship',
-			relationTo: 'productCategories',
+			label: {
+				en: 'Category',
+				vi: 'Danh mục',
+			},
+			relationTo: ProductCategoriesSlug,
 			required: true,
 		},
 		{
@@ -38,6 +44,16 @@ export const ProductSubCategories: CollectionConfig<typeof ProductSubCategoriesS
 			label: {
 				en: 'Title',
 				vi: 'Tiêu đề',
+			},
+		},
+		{
+			name: ProductsSlug,
+			type: 'join',
+			collection: ProductsSlug,
+			on: ProductSubCategoriesSlug,
+			label: {
+				en: 'Products',
+				vi: 'Sản phẩm',
 			},
 		},
 		...slugField(),
