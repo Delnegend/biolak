@@ -84,7 +84,18 @@ export interface Config {
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
   };
-  collectionsJoins: {};
+  collectionsJoins: {
+    postCategories: {
+      posts: 'posts';
+    };
+    productCategories: {
+      productSubCategories: 'productSubCategories';
+      products: 'products';
+    };
+    productSubCategories: {
+      products: 'products';
+    };
+  };
   collectionsSelect: {
     pages: PagesSelect<false> | PagesSelect<true>;
     posts: PostsSelect<false> | PostsSelect<true>;
@@ -432,6 +443,11 @@ export interface ArchiveBlockProps {
 export interface PostCategory {
   id: number;
   title: string;
+  posts?: {
+    docs?: (number | Post)[];
+    hasNextPage?: boolean;
+    totalDocs?: number;
+  };
   slug?: string | null;
   slugLock?: boolean | null;
   parent?: (number | null) | PostCategory;
@@ -1042,8 +1058,8 @@ export interface ProductsCarouselBlockProps {
  */
 export interface Product {
   id: number;
-  category?: (number | ProductCategory)[] | null;
-  subCategory?: (number | ProductSubCategory)[] | null;
+  productCategories?: (number | ProductCategory)[] | null;
+  productSubCategories?: (number | ProductSubCategory)[] | null;
   title: string;
   shortDescription: string;
   longDescription?: {
@@ -1122,6 +1138,16 @@ export interface Product {
 export interface ProductCategory {
   id: number;
   title: string;
+  productSubCategories?: {
+    docs?: (number | ProductSubCategory)[];
+    hasNextPage?: boolean;
+    totalDocs?: number;
+  };
+  products?: {
+    docs?: (number | Product)[];
+    hasNextPage?: boolean;
+    totalDocs?: number;
+  };
   slug?: string | null;
   slugLock?: boolean | null;
   updatedAt: string;
@@ -1133,8 +1159,13 @@ export interface ProductCategory {
  */
 export interface ProductSubCategory {
   id: number;
-  category: number | ProductCategory;
+  productCategories: number | ProductCategory;
   title: string;
+  products?: {
+    docs?: (number | Product)[];
+    hasNextPage?: boolean;
+    totalDocs?: number;
+  };
   slug?: string | null;
   slugLock?: boolean | null;
   updatedAt: string;
@@ -2104,6 +2135,7 @@ export interface MediaSelect<T extends boolean = true> {
  */
 export interface PostCategoriesSelect<T extends boolean = true> {
   title?: T;
+  posts?: T;
   slug?: T;
   slugLock?: T;
   parent?: T;
@@ -2140,8 +2172,8 @@ export interface UsersSelect<T extends boolean = true> {
  * via the `definition` "products_select".
  */
 export interface ProductsSelect<T extends boolean = true> {
-  category?: T;
-  subCategory?: T;
+  productCategories?: T;
+  productSubCategories?: T;
   title?: T;
   shortDescription?: T;
   longDescription?: T;
@@ -2190,6 +2222,8 @@ export interface ProductsSelect<T extends boolean = true> {
  */
 export interface ProductCategoriesSelect<T extends boolean = true> {
   title?: T;
+  productSubCategories?: T;
+  products?: T;
   slug?: T;
   slugLock?: T;
   updatedAt?: T;
@@ -2200,8 +2234,9 @@ export interface ProductCategoriesSelect<T extends boolean = true> {
  * via the `definition` "productSubCategories_select".
  */
 export interface ProductSubCategoriesSelect<T extends boolean = true> {
-  category?: T;
+  productCategories?: T;
   title?: T;
+  products?: T;
   slug?: T;
   slugLock?: T;
   updatedAt?: T;
