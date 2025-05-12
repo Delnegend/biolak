@@ -11,7 +11,7 @@ interface IFormInput {
 	countryOfResidence: string
 }
 
-export function RegisterFormCC(): React.JSX.Element {
+export function RegisterFormClient(): React.JSX.Element {
 	const { register, handleSubmit } = useForm<IFormInput>()
 	const onSubmit: SubmitHandler<IFormInput> = async (data) => console.log(data)
 

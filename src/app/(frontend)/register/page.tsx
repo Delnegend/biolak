@@ -3,7 +3,7 @@ import Link from 'next/link'
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 
-import { RegisterFormCC } from './register-form.client'
+import { RegisterFormClient } from './register-form.client'
 
 export default async function Login() {
 	return (
@@ -23,7 +23,7 @@ export default async function Login() {
 					</CardDescription>
 				</CardHeader>
 				<CardContent>
-					<RegisterFormCC />
+					<RegisterFormClient />
 				</CardContent>
 			</Card>
 		</div>
