@@ -9,7 +9,7 @@ import { getCachedGlobal } from '@/utilities/getGlobals'
 
 import biolakIcon from '../../../public/biolak-logo.svg'
 import { ContactForm } from '../ContactForm/Component'
-import { ProductsDropdown } from './ProductsDropdown'
+import { ProductsDropdown } from './components/ProductsDropdown'
 
 type NavItem = NonNullable<
 	NonNullable<Header['navItemsLeft'] | Header['navItemsRight']>[number]['item']
