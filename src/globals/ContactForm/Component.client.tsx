@@ -47,7 +47,7 @@ export function ContactFormCC({ data }: { data: DataFromGlobalSlug<'contact-form
 				<Button onClick={handleSubmit(onSubmit)} size="lg">
 					{data.actionSend}
 				</Button>
-				<Link href={`tel:${data.biolakPhoneNumber}`}>
+				<Link href={`tel:${data.biolakPhoneNumber}`} tabIndex={-1}>
 					<Button className="pointer-events-none w-full" variant="outline" size="lg">
 						{data.actionCall}
 					</Button>
