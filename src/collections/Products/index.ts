@@ -57,7 +57,7 @@ export const Products: CollectionConfig<typeof ProductsSlug> = {
 					},
 					fields: [
 						{
-							name: 'category',
+							name: ProductCategoriesSlug,
 							type: 'relationship',
 							relationTo: ProductCategoriesSlug,
 							label: {
@@ -67,7 +67,7 @@ export const Products: CollectionConfig<typeof ProductsSlug> = {
 							hasMany: true,
 						},
 						{
-							name: 'subCategory',
+							name: ProductSubCategoriesSlug,
 							type: 'relationship',
 							relationTo: ProductSubCategoriesSlug,
 							label: {

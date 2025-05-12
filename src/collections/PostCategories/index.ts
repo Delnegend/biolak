@@ -5,6 +5,7 @@ import { slugField } from '@/fields/slug'
 import { admin } from '../../access/admin'
 import { anyone } from '../../access/anyone'
 import { PostCategoriesSlug } from './slug'
+import { PostsSlug } from '../Posts/slug'
 
 export const PostCategories: CollectionConfig<typeof PostCategoriesSlug> = {
 	slug: PostCategoriesSlug,
@@ -35,6 +36,16 @@ export const PostCategories: CollectionConfig<typeof PostCategoriesSlug> = {
 			label: {
 				en: 'Title',
 				vi: 'Tiêu đề',
+			},
+		},
+		{
+			name: PostsSlug,
+			type: 'join',
+			collection: PostsSlug,
+			on: PostCategoriesSlug,
+			label: {
+				en: 'Posts',
+				vi: 'Bài viết',
 			},
 		},
 		...slugField(),
