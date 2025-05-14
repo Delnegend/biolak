@@ -104,6 +104,14 @@
 	body {
 		@apply flex min-h-[100vh] flex-col overflow-x-clip bg-background text-foreground;
 	}
+
+	li {
+		@apply !m-0;
+	}
+
+	li::marker {
+		@apply !text-2xl !text-primary;
+	}
 }
 
 html {
@@ -121,10 +129,6 @@ html[data-theme='light'] {
 	@apply mx-auto;
 }
 
-li {
-	@apply !m-0;
 }
 
-li::marker {
-	@apply !text-2xl !text-primary;
 }
