@@ -6,7 +6,6 @@ import { draftMode, headers } from 'next/headers'
 import React from 'react'
 
 import { AdminBar } from '@/components/AdminBar'
-import { Footer } from '@/globals/Footer/Component'
 import { Header } from '@/globals/Header/Component'
 import { Promo } from '@/globals/Promo/Component'
 import { getServerSideURL } from '@/utilities/getURL'
@@ -55,7 +54,6 @@ export default async function RootLayout({ children }: { children: React.ReactNo
 					</>
 				)}
 				{children}
-				<Footer />
 			</body>
 		</html>
 	)
