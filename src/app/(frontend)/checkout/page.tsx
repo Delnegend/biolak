@@ -1,5 +1,5 @@
-import { DataFromGlobalSlug } from 'payload'
-
+import { CheckoutPageGlobalSlug } from '@/globals/CheckoutPage/config'
+import { CheckoutPageGlobal } from '@/payload-types'
 import { getCachedGlobal } from '@/utilities/getGlobals'
 
 import PageClient from './page.client'
@@ -11,7 +11,7 @@ export async function generateStaticParams() {
 }
 
 export default async function Checkout(): Promise<React.JSX.Element> {
-	const checkoutData = (await getCachedGlobal('checkout', 1)()) as DataFromGlobalSlug<'checkout'>
+	const checkoutData = (await getCachedGlobal(CheckoutPageGlobalSlug, 1)()) as CheckoutPageGlobal
 
 	return (
 		<div className="safe-width">

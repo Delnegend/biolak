@@ -1,26 +1,33 @@
 import { Lato, Phudu } from 'next/font/google'
 import Image from 'next/image'
-import { DataFromGlobalSlug } from 'payload'
 
 import { TextInput } from '@/components/ui/text-input'
-import type { Footer } from '@/payload-types'
+import { FooterGlobal } from '@/payload-types'
 import { getCachedGlobal } from '@/utilities/getGlobals'
 import { cn } from '@/utilities/ui'
+
+import { FooterGlobalSlug } from './config'
 
 const lato = Lato({ subsets: ['latin'], weight: ['400'] })
 const phudu = Phudu({ subsets: ['vietnamese'], weight: ['400', '600', '700'] })
 
-export async function Footer() {
-	const {
-		contactUs,
-		legal,
-		image: images,
-	}: Footer = (await getCachedGlobal('footer', 1)()) as DataFromGlobalSlug<'footer'>
+export async function FooterComponent({ size }: { size?: 'sm' | 'lg' | 'md' }) {
+	const globals = (await getCachedGlobal(FooterGlobalSlug, 1)()) as FooterGlobal
+
+	switch (size) {
+		case 'lg':
+			return <FooterLarge globals={globals} />
+		case 'md':
+			return <FooterMedium globals={globals} />
+		default:
+			return <FooterSmall globals={globals} />
+	}
+}
+async function FooterLarge({ globals }: { globals: FooterGlobal }): Promise<React.JSX.Element> {
+	const { contactUs, legal, image: img } = globals
 
 	const image =
-		images !== undefined && typeof images.image === 'object' && images.image !== null
-			? images.image
-			: null
+		img !== undefined && typeof img.image === 'object' && img.image !== null ? img.image : null
 
 	const stamp =
 		legal.stamp !== undefined && typeof legal.stamp === 'object' && legal.stamp !== null
@@ -73,4 +80,12 @@ export async function Footer() {
 			</div>
 		</footer>
 	)
+}
+
+async function FooterMedium({ globals }: { globals: FooterGlobal }): Promise<React.JSX.Element> {
+	return <></>
+}
+
+async function FooterSmall({ globals }: { globals: FooterGlobal }): Promise<React.JSX.Element> {
+	return <></>
 }
