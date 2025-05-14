@@ -1,7 +1,7 @@
 {
 	"name": "biolak",
 	"version": "1.0.0",
-	"description": "Website template for Payload",
+	"description": "BioLAK",
 	"license": "MIT",
 	"type": "module",
 	"scripts": {
