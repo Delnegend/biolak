@@ -14,7 +14,7 @@ import { MediaSlug } from './slug'
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
-export const Media: CollectionConfig<typeof MediaSlug> = {
+export const MediaCollection: CollectionConfig<typeof MediaSlug> = {
 	slug: MediaSlug,
 	labels: {
 		singular: {
