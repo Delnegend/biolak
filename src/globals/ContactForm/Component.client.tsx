@@ -1,23 +1,17 @@
 'use client'
 
 import Link from 'next/link'
-import { DataFromGlobalSlug } from 'payload'
-import { SubmitHandler, useForm } from 'react-hook-form'
+import { useForm } from 'react-hook-form'
 
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { TextInput } from '@/components/ui/text-input'
+import { ContactFormGlobal } from '@/payload-types'
 
-type IFormInput = {
-	name: string
-	phoneNumber: string
-	email: string
-	question: string
-}
+import { type ContactFormInputType, submitContactForm } from './actions/submitContactForm'
 
-export function ContactFormCC({ data }: { data: DataFromGlobalSlug<'contact-form'> }) {
-	const { register, handleSubmit } = useForm<IFormInput>()
-	const onSubmit: SubmitHandler<IFormInput> = async (data) => console.log(data)
+export function ContactFormClient({ data }: { data: ContactFormGlobal }) {
+	const { register, handleSubmit } = useForm<ContactFormInputType>()
 
 	return (
 		<Card className="flex flex-col gap-[4.5rem] border-none bg-transparent">
@@ -25,9 +19,9 @@ export function ContactFormCC({ data }: { data: DataFromGlobalSlug<'contact-form
 				<CardTitle className="h-[70px] font-serif text-4xl">{data.title}</CardTitle>
 			</CardHeader>
 			<CardContent className="p-0">
-				<form onSubmit={handleSubmit(onSubmit)}>
+				<form onSubmit={handleSubmit(submitContactForm)}>
 					<div className="grid grid-cols-2 gap-9">
-						<TextInput label={data.name} {...register('name')} />
+						<TextInput label={data.name} {...register('username')} />
 						<TextInput label={data.phoneNumber} {...register('phoneNumber')} />
 						<TextInput
 							classNames={{ container: 'col-span-2' }}
@@ -38,13 +32,13 @@ export function ContactFormCC({ data }: { data: DataFromGlobalSlug<'contact-form
 						<TextInput
 							classNames={{ container: 'col-span-2' }}
 							label={data.question}
-							{...register('question')}
+							{...register('message')}
 						/>
 					</div>
 				</form>
 			</CardContent>
 			<CardFooter className="grid grid-cols-2 gap-5 p-0">
-				<Button onClick={handleSubmit(onSubmit)} size="lg">
+				<Button onClick={handleSubmit(submitContactForm)} size="lg">
 					{data.actionSend}
 				</Button>
 				<Link href={`tel:${data.biolakPhoneNumber}`} tabIndex={-1}>
