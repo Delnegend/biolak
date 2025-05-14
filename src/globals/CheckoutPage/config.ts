@@ -5,8 +5,9 @@ import { anyone } from '@/access/anyone'
 
 import { revalidateCheckoutPage } from './hooks/revalidateCheckoutPage'
 
-export const CheckoutPageGlobalConf: GlobalConfig = {
-	slug: 'checkout',
+export const CheckoutPageGlobalSlug = 'checkoutPageGlobal'
+export const CheckoutPageGlobalConf: GlobalConfig<typeof CheckoutPageGlobalSlug> = {
+	slug: CheckoutPageGlobalSlug,
 	access: {
 		read: anyone,
 		update: admin,

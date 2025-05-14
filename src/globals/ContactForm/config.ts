@@ -4,8 +4,9 @@ import { admin } from '@/access/admin'
 
 import { revalidateContactForm } from './hooks/revalidateContactForm'
 
-export const ContactFormGlobalConf: GlobalConfig = {
-	slug: 'contact-form',
+export const ContactFormGlobalSlug = 'contactFormGlobal'
+export const ContactFormGlobalConf: GlobalConfig<typeof ContactFormGlobalSlug> = {
+	slug: ContactFormGlobalSlug,
 	access: {
 		read: () => true,
 		update: admin,
