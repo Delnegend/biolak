@@ -81,8 +81,8 @@ export const ProductsCollection: CollectionConfig<typeof ProductsSlug> = {
 							type: 'text',
 							required: true,
 							label: {
-								en: 'Title',
-								vi: 'Tiêu đề',
+								en: "Product's title",
+								vi: 'Tên sản phẩm',
 							},
 						},
 						{
@@ -107,8 +107,8 @@ export const ProductsCollection: CollectionConfig<typeof ProductsSlug> = {
 							type: 'number',
 							required: true,
 							label: {
-								en: 'Price',
-								vi: 'Giá',
+								en: 'Price (in Vietnamese dong)',
+								vi: 'Giá (đơn vị: đồng)',
 							},
 						},
 						{
@@ -131,7 +131,7 @@ export const ProductsCollection: CollectionConfig<typeof ProductsSlug> = {
 							type: 'textarea',
 							label: {
 								en: 'Subtitle override',
-								vi: 'Ghi đè phụ thể',
+								vi: 'Ghi đè tên sản phẩm (phụ đề)',
 							},
 						},
 						{
@@ -139,7 +139,7 @@ export const ProductsCollection: CollectionConfig<typeof ProductsSlug> = {
 							type: 'textarea',
 							label: {
 								en: 'Title override',
-								vi: 'Ghi đè tiêu đề',
+								vi: 'Ghi đè mô tả ngắn (tiêu đề)',
 							},
 						},
 						{
