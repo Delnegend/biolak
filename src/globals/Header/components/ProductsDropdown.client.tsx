@@ -73,7 +73,10 @@ export function ProductsDropdownClient({
 	}, [open])
 
 	// close on route change
+	const pathname = usePathname()
 	useEffect(() => {
+		setOpen(false)
+	}, [pathname])
 
 	return (
 		<div className="relative">
