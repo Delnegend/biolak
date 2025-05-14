@@ -56,6 +56,7 @@ export function ProductsDropdownClient({
 	// find the minimum height for the dropdown for it to fill the screen perfectly
 	const spaceAbove = useRef(0)
 	useEffect(() => {
+		document.body.style.overflowY = open ? 'hidden' : 'auto'
 		if (!dropdownElement.current) return
 		if (spaceAbove.current === 0)
 			spaceAbove.current = dropdownElement.current.getBoundingClientRect().top ?? 0
@@ -71,25 +72,8 @@ export function ProductsDropdownClient({
 		setActiveProducts(null)
 	}, [open])
 
-	// clear cached products except for the active subcategory when user's browser tab is not active
+	// close on route change
 	useEffect(() => {
-		if (!open) return
-
-		const handleVisibilityChange = () => {
-			if (activeSubCategory) {
-				setCachedProducts((prev) => ({
-					...Object.fromEntries(
-						Object.entries(prev).filter(([k]) => k !== activeSubCategory.slug),
-					),
-				}))
-			}
-		}
-		document.addEventListener('visibilitychange', handleVisibilityChange)
-
-		return () => {
-			document.removeEventListener('visibilitychange', handleVisibilityChange)
-		}
-	}, [open, activeSubCategory])
 
 	return (
 		<div className="relative">
