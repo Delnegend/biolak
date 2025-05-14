@@ -34,7 +34,7 @@ import { MediaSlug } from '../Media/slug'
 import { revalidateDelete, revalidatePage } from './hooks/revalidatePage'
 import { PagesSlug } from './slug'
 
-export const Pages: CollectionConfig<typeof PagesSlug> = {
+export const PagesCollection: CollectionConfig<typeof PagesSlug> = {
 	slug: PagesSlug,
 	labels: {
 		singular: {
