@@ -5,6 +5,7 @@ import { HighlightLeftBlockProps } from '@/payload-types'
 import { cn } from '@/utilities/ui'
 
 const lato = Lato({
+	subsets: ['latin'],
 	weight: '400',
 })
 
