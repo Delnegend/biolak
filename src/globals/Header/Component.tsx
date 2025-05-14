@@ -4,19 +4,20 @@ import Link from 'next/link'
 
 import { Button } from '@/components/ui/button'
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog'
-import type { Header } from '@/payload-types'
+import type { HeaderGlobal } from '@/payload-types'
 import { getCachedGlobal } from '@/utilities/getGlobals'
 
 import biolakIcon from '../../../public/biolak-logo.svg'
 import { ContactForm } from '../ContactForm/Component'
 import { ProductsDropdown } from './components/ProductsDropdown'
+import { HeaderGlobalSlug } from './config'
 
 type NavItem = NonNullable<
-	NonNullable<Header['navItemsLeft'] | Header['navItemsRight']>[number]['item']
+	NonNullable<HeaderGlobal['navItemsLeft'] | HeaderGlobal['navItemsRight']>[number]['item']
 >
 
-export async function Header() {
-	const headerData: Header = await getCachedGlobal('header', 1)()
+export async function HeaderGlobalComponent() {
+	const headerData: HeaderGlobal = await getCachedGlobal(HeaderGlobalSlug, 1)()
 	let leftSide: NavItem[] =
 		headerData.navItemsLeft?.map((i) => i.item).filter((i) => i !== null && i !== undefined) ?? []
 	if (leftSide.length === 0) {
