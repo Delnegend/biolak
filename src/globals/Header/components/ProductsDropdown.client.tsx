@@ -1,5 +1,5 @@
 'use client'
-import { AnimatePresence, motion } from 'motion/react'
+import { AnimatePresence, motion, Variants } from 'motion/react'
 import { PaginatedDocs } from 'payload'
 import { useEffect, useRef, useState } from 'react'
 
@@ -8,13 +8,13 @@ import { cn } from '@/utilities/ui'
 
 import { getProductsBySubCategory } from '../actions/getProductsBySubCategory'
 
-const panelAnimationVariants = {
+const panelAnimationVariants: Variants = {
 	initial: { opacity: 0, x: -30 },
 	animate: { opacity: 1, x: 0, transition: { duration: 0.6, ease: 'easeInOut' } },
 	exit: { opacity: 0, x: -30, transition: { duration: 0.4, ease: 'easeInOut' } },
 }
 
-const itemAnimationVariants = {
+const itemAnimationVariants: Variants = {
 	initial: { opacity: 0, x: -30 },
 	animate: (index: number) => ({
 		opacity: 1,
