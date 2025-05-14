@@ -8,14 +8,15 @@ import { fileURLToPath } from 'url'
 
 import { defaultLexical } from '@/fields/defaultLexical'
 
-import { Media } from './collections/Media/Media'
-import { Pages } from './collections/Pages'
-import { PostCategories } from './collections/PostCategories'
-import { Posts } from './collections/Posts'
-import { ProductCategories } from './collections/ProductCategories'
-import { Products } from './collections/Products'
-import { ProductSubCategories } from './collections/ProductSubCategories'
-import { Users } from './collections/Users'
+import { ContactFormSubmissionsCollection } from './collections/ContactFormSubmissions/config'
+import { MediaCollection } from './collections/Media/Media'
+import { PagesCollection } from './collections/Pages'
+import { PostCategoriesCollection } from './collections/PostCategories'
+import { PostsCollection } from './collections/Posts'
+import { ProductCategoriesCollection } from './collections/ProductCategories'
+import { ProductsCollection } from './collections/Products'
+import { ProductSubCategoriesCollection } from './collections/ProductSubCategories'
+import { UsersCollection } from './collections/Users'
 import { UsersSlug } from './collections/Users/slug'
 import { CheckoutPageGlobalConf } from './globals/CheckoutPage/config'
 import { ContactFormGlobalConf } from './globals/ContactForm/config'
@@ -73,14 +74,15 @@ export default buildConfig({
 		},
 	}),
 	collections: [
-		Pages,
-		Posts,
-		Media,
-		PostCategories,
-		Users,
-		Products,
-		ProductCategories,
-		ProductSubCategories,
+		ContactFormSubmissionsCollection,
+		PagesCollection,
+		PostsCollection,
+		MediaCollection,
+		PostCategoriesCollection,
+		UsersCollection,
+		ProductsCollection,
+		ProductCategoriesCollection,
+		ProductSubCategoriesCollection,
 	],
 	cors: [getServerSideURL()].filter(Boolean),
 	globals: [
