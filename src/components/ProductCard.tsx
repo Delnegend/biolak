@@ -10,6 +10,7 @@ import { cn } from '@/utilities/ui'
 import { Button } from './ui/button'
 
 const lato = Lato({
+	subsets: ['latin'],
 	weight: ['400'],
 })
 
