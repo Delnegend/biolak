@@ -112,6 +112,15 @@ export const ProductsCollection: CollectionConfig<typeof ProductsSlug> = {
 							},
 						},
 						{
+							name: 'icon',
+							type: 'upload',
+							label: {
+								en: "Product's icon",
+								vi: 'Biểu tượng sản phẩm',
+							},
+							relationTo: MediaSlug,
+						},
+						{
 							name: 'gallery',
 							type: 'upload',
 							label: {
