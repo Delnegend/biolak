@@ -21,6 +21,9 @@ minify-json:
 dev:
   pnpm next dev --turbo
 
+build:
+  pnpm next build --turbo
+
 gen-importmap:
   pnpm payload generate:importmap
 
