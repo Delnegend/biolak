@@ -7,6 +7,7 @@ import React from 'react'
 
 import { AdminBar } from '@/components/AdminBar'
 import { Header } from '@/globals/Header/Component'
+import { Toaster } from '@/components/ui/sonner'
 import { Promo } from '@/globals/Promo/Component'
 import { getServerSideURL } from '@/utilities/getURL'
 import { mergeOpenGraph } from '@/utilities/mergeOpenGraph'
@@ -35,6 +36,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
 			data-theme="light"
 			suppressHydrationWarning
 		>
+			<Toaster />
 			<head>
 				<link href="/favicon.ico" rel="icon" sizes="32x32" />
 				<link href="/favicon.svg" rel="icon" type="image/svg+xml" />
