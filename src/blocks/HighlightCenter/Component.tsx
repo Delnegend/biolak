@@ -5,10 +5,12 @@ import { HighlightCenterBlockProps } from '@/payload-types'
 import { cn } from '@/utilities/ui'
 
 const phudu = Phudu({
+	subsets: ['vietnamese'],
 	weight: '400',
 })
 
 const lato = Lato({
+	subsets: ['latin'],
 	weight: '400',
 })
 

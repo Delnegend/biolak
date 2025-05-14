@@ -6,7 +6,10 @@ import { Button } from '@/components/ui/button'
 import { CallToActionPostBlockProps } from '@/payload-types'
 import { cn } from '@/utilities/ui'
 
-const lato = Lato({ weight: ['400', '700'] })
+const lato = Lato({
+	subsets: ['latin'],
+	weight: ['400', '700'],
+})
 
 export function CallToActionPostBlock(props: CallToActionPostBlockProps): React.JSX.Element {
 	const post = props.post && typeof props.post === 'object' ? props.post : null
