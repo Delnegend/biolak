@@ -37,7 +37,7 @@ import { populateAuthors } from './hooks/populateAuthors'
 import { revalidateDelete, revalidatePost } from './hooks/revalidatePost'
 import { PostsSlug } from './slug'
 
-export const Posts: CollectionConfig<typeof PostsSlug> = {
+export const PostsCollection: CollectionConfig<typeof PostsSlug> = {
 	slug: PostsSlug,
 	labels: {
 		singular: {
