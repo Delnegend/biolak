@@ -39,7 +39,6 @@ export function ProductsDropdownClient({
 	const [activeCategory, setActiveCategory] = useState<ProductCategory | null>(null)
 	const [activeSubCategory, setActiveSubCategory] = useState<ProductSubCategory | null>(null)
 	const [activeProducts, setActiveProducts] = useState<Product[] | null>(null)
-	const [cachedProducts, setCachedProducts] = useState<Record<string, Product[]>>({})
 
 	function handleCategoryLoad(category: ProductCategory) {
 		setActiveCategory(category)
@@ -51,16 +50,7 @@ export function ProductsDropdownClient({
 		setActiveSubCategory(subCategory)
 		setActiveProducts(null)
 		if (!subCategory.slug) return
-
-		const cached = cachedProducts[subCategory.slug]
-		if (cached && cached.length > 0) {
-			setActiveProducts(cached)
-			return
-		}
-
-		const products = await getProductsBySubCategory(subCategory.slug)
-		setCachedProducts((prev) => ({ ...prev, [String(subCategory.slug)]: products }))
-		setActiveProducts(products)
+		setActiveProducts(await getProductsBySubCategory(subCategory.slug))
 	}
 
 	// find the minimum height for the dropdown for it to fill the screen perfectly
