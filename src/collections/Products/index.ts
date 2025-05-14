@@ -19,6 +19,7 @@ import { LatestPostsBlockConf } from '@/blocks/LatestPosts/config'
 import { MediaBlockConf } from '@/blocks/MediaBlock/config'
 import { ProductsCarouselBlockConf } from '@/blocks/ProductsCarousel/config'
 import { ThreePhotoBlockConf } from '@/blocks/ThreePhoto/config'
+import { FooterSizeField } from '@/fields/footer'
 import { SeoFieldConf } from '@/fields/seo'
 import { slugField } from '@/fields/slug'
 import { generatePreviewPath } from '@/utilities/generatePreviewPath'
@@ -222,6 +223,7 @@ export const ProductsCollection: CollectionConfig<typeof ProductsSlug> = {
 			],
 		},
 		...slugField(),
+		FooterSizeField,
 	],
 	admin: {
 		defaultColumns: ['title', 'slug', 'updatedAt'],

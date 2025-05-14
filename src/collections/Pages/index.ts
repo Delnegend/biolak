@@ -17,6 +17,7 @@ import { PostsGridBlockConf } from '@/blocks/PostsGrid/config'
 import { ProductsCarouselBlockConf } from '@/blocks/ProductsCarousel/config'
 import { ProductsCategoryBlockConf } from '@/blocks/ProductsCategory/config'
 import { ThreePhotoBlockConf } from '@/blocks/ThreePhoto/config'
+import { FooterSizeField } from '@/fields/footer'
 import { linkGroup } from '@/fields/linkGroup'
 import { SeoFieldConf } from '@/fields/seo'
 import { slugField } from '@/fields/slug'
@@ -257,6 +258,7 @@ export const PagesCollection: CollectionConfig<typeof PagesSlug> = {
 			},
 		},
 		...slugField(),
+		FooterSizeField,
 	],
 	hooks: {
 		afterChange: [revalidatePage],

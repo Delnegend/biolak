@@ -25,6 +25,7 @@ import { HighlighRightBlockConf } from '@/blocks/HighlightRight/config'
 import { InfiniteScrollBlockConf } from '@/blocks/InfiniteScroll/config'
 import { ProductsCarouselBlockConf } from '@/blocks/ProductsCarousel/config'
 import { ThreePhotoBlockConf } from '@/blocks/ThreePhoto/config'
+import { FooterSizeField } from '@/fields/footer'
 import { slugField } from '@/fields/slug'
 
 import { admin } from '../../access/admin'
@@ -287,6 +288,7 @@ export const PostsCollection: CollectionConfig<typeof PostsSlug> = {
 			},
 		},
 		...slugField(),
+		FooterSizeField,
 	],
 	hooks: {
 		afterChange: [revalidatePost],

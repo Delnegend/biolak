@@ -2,6 +2,7 @@ import { CollectionConfig } from 'payload'
 
 import { admin } from '@/access/admin'
 import { anyone } from '@/access/anyone'
+import { FooterSizeField } from '@/fields/footer'
 import { slugField } from '@/fields/slug'
 
 import { ProductsSlug } from '../Products/slug'
@@ -57,6 +58,7 @@ export const ProductCategoriesCollection: CollectionConfig<typeof ProductCategor
 			},
 		},
 		...slugField(),
+		FooterSizeField,
 	],
 	admin: {
 		useAsTitle: 'title',
