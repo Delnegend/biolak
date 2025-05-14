@@ -8,7 +8,7 @@ import { ProductsSlug } from '../Products/slug'
 import { ProductSubCategoriesSlug } from '../ProductSubCategories/slug'
 import { ProductCategoriesSlug } from './slug'
 
-export const ProductCategories: CollectionConfig<typeof ProductCategoriesSlug> = {
+export const ProductCategoriesCollection: CollectionConfig<typeof ProductCategoriesSlug> = {
 	slug: ProductCategoriesSlug,
 	labels: {
 		singular: {
