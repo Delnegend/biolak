@@ -7,7 +7,7 @@ import { anyone } from '../../access/anyone'
 import { PostsSlug } from '../Posts/slug'
 import { PostCategoriesSlug } from './slug'
 
-export const PostCategories: CollectionConfig<typeof PostCategoriesSlug> = {
+export const PostCategoriesCollection: CollectionConfig<typeof PostCategoriesSlug> = {
 	slug: PostCategoriesSlug,
 	labels: {
 		singular: {
