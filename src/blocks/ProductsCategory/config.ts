@@ -1,7 +1,6 @@
 import { Block } from 'payload'
 
 import { ProductCategoriesSlug } from '@/collections/ProductCategories/slug'
-import { ProductsSlug } from '@/collections/Products/slug'
 import { ProductSubCategoriesSlug } from '@/collections/ProductSubCategories/slug'
 
 export const ProductsCategoryBlockConf: Block = {
@@ -28,36 +27,6 @@ export const ProductsCategoryBlockConf: Block = {
 				vi: 'Danh mục sản phẩm',
 			},
 			required: true,
-		},
-		{
-			name: 'products',
-			type: 'array',
-			required: true,
-			label: {
-				en: 'Products',
-				vi: 'Sản phẩm',
-			},
-			labels: {
-				singular: {
-					en: 'Product',
-					vi: 'Sản phẩm',
-				},
-				plural: {
-					en: 'Products',
-					vi: 'Sản phẩm',
-				},
-			},
-			fields: [
-				{
-					name: 'product',
-					type: 'relationship',
-					relationTo: ProductsSlug,
-					label: {
-						en: 'Product',
-						vi: 'Sản phẩm',
-					},
-				},
-			],
 		},
 		{
 			name: 'buttonLabel',

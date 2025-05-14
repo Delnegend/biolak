@@ -1,6 +1,11 @@
+import configPromise from '@payload-config'
 import { Phudu } from 'next/font/google'
 import Link from 'next/link'
+import { getPayload } from 'payload'
 
+import { ProductCategoriesSlug } from '@/collections/ProductCategories/slug'
+import { ProductsSlug } from '@/collections/Products/slug'
+import { ProductSubCategoriesSlug } from '@/collections/ProductSubCategories/slug'
 import { ProductCard } from '@/components/ProductCard'
 import { Carousel, CarouselContent, CarouselItem } from '@/components/ui/carousel'
 import { ProductsCategoryBlockProps } from '@/payload-types'
@@ -10,13 +15,44 @@ const phudu = Phudu({
 	subsets: ['vietnamese'],
 })
 
-export function ProductsCategoryBlock(props: ProductsCategoryBlockProps): React.JSX.Element {
+export async function ProductsCategoryBlock(
+	props: ProductsCategoryBlockProps,
+): Promise<React.JSX.Element> {
 	const category = typeof props.category.value === 'object' ? props.category.value : null
 
-	const products =
-		props.products && typeof props.products === 'object'
-			? props.products.map((p) => p.product).filter((p) => typeof p === 'object' && p !== null)
-			: null
+	const payload = await getPayload({ config: configPromise })
+	let products
+	try {
+		products = await payload.find({
+			collection: ProductsSlug,
+			where: {
+				[`${ProductCategoriesSlug}.slug`]: {
+					equals: category?.slug,
+				},
+			},
+		})
+	} catch (e) {
+		throw new Error(
+			`ProductsCategoryBlock: Error loading products for category ${category?.slug}: ${e}`,
+		)
+	}
+
+	if (products.docs.length === 0) {
+		try {
+			products = await payload.find({
+				collection: ProductsSlug,
+				where: {
+					[`${ProductSubCategoriesSlug}.slug`]: {
+						equals: category?.slug,
+					},
+				},
+			})
+		} catch (e) {
+			throw new Error(
+				`ProductsCategoryBlock: Error loading products for sub category ${category?.slug}: ${e}`,
+			)
+		}
+	}
 
 	return (
 		<div className="safe-width flex h-[48rem] flex-row items-center justify-between text-primary">
@@ -33,7 +69,7 @@ export function ProductsCategoryBlock(props: ProductsCategoryBlockProps): React.
 			</div>
 			<Carousel opts={{ dragFree: true }}>
 				<CarouselContent>
-					{products?.map((p) => (
+					{products.docs?.map((p) => (
 						<ProductCard product={p} key={p.id} component={CarouselItem} />
 					))}
 				</CarouselContent>
