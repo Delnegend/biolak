@@ -3,7 +3,7 @@ import { CollectionConfig } from 'payload'
 import { admin } from '../../access/admin'
 import { UsersSlug } from './slug'
 
-export const Users: CollectionConfig<typeof UsersSlug> = {
+export const UsersCollection: CollectionConfig<typeof UsersSlug> = {
 	slug: UsersSlug,
 	labels: {
 		singular: {
