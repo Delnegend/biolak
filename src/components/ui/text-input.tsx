@@ -9,17 +9,16 @@ export function TextInput({
 	type,
 	onBlur,
 	onFocus,
-	inputRef,
+	ref: providedRef,
 	classNames,
 	...props
 }: Omit<React.ComponentPropsWithRef<'input'>, 'placeholder'> & {
 	label: string
-	inputRef?: React.RefObject<HTMLInputElement>
 	classNames?: { container?: string; input?: string; label?: string }
 }): React.JSX.Element {
 	const [elevated, setElevated] = React.useState(false)
 	const internalRef = useRef<HTMLInputElement>(null)
-	const ref_ = inputRef ?? internalRef
+	const ref = providedRef ?? internalRef
 
 	return (
 		<div
@@ -45,15 +44,14 @@ export function TextInput({
 					onBlur?.(e)
 				}}
 				{...props}
-				ref={ref_}
+				ref={ref}
 			/>
 			<div
 				className={cn(
-					'absolute left-0 flex text-[#6B5A4A] transition-all',
+					'pointer-events-none absolute left-0 flex text-[#6B5A4A] transition-all',
 					elevated ? '-top-3 text-lg' : 'top-0 text-2xl',
 					classNames?.label,
 				)}
-				onClick={() => ref_.current?.focus?.()}
 			>
 				{label}
 			</div>
