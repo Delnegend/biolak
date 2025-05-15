@@ -1,6 +1,6 @@
 import { Block } from 'payload'
 
-import { PostsSlug } from '@/collections/Posts/slug'
+import { PostCategoriesSlug } from '@/collections/PostCategories/slug'
 
 export const PostsGridBlockConf: Block = {
 	slug: 'posts-grid',
@@ -18,14 +18,13 @@ export const PostsGridBlockConf: Block = {
 	},
 	fields: [
 		{
-			name: 'posts',
+			name: PostCategoriesSlug,
 			label: {
-				en: 'Posts',
-				vi: 'Bài viết',
+				en: 'Post Category',
+				vi: 'Danh mục bài viết',
 			},
 			type: 'relationship',
-			relationTo: PostsSlug,
-			hasMany: true,
+			relationTo: PostCategoriesSlug,
 		},
 	],
 }
