@@ -36,12 +36,12 @@ export default async function RootLayout({ children }: { children: React.ReactNo
 			data-theme="light"
 			suppressHydrationWarning
 		>
-			<Toaster />
 			<head>
 				<link href="/favicon.ico" rel="icon" sizes="32x32" />
 				<link href="/favicon.svg" rel="icon" type="image/svg+xml" />
 			</head>
 			<body>
+				<Toaster />
 				<AdminBar
 					adminBarProps={{
 						preview: isEnabled,
