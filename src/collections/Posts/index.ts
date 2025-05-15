@@ -142,6 +142,10 @@ export const PostsCollection: CollectionConfig<typeof PostsSlug> = {
 							admin: {
 								initCollapsed: true,
 							},
+							label: {
+								en: 'Layout',
+								vi: 'Bố cục',
+							},
 							labels: {
 								singular: {
 									en: 'Block',
