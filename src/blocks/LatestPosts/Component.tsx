@@ -29,7 +29,7 @@ export function LatestPostsBlock(props: LatestPostsBlockProps): React.JSX.Elemen
 							const lastModifiedStr = `${lastModified.getDate().toString().padStart(2, '0')}.${lastModified.getMonth().toString().padStart(2, '0')}.${lastModified.getFullYear().toString().slice(2)}`
 
 							return (
-								<Link href={`/posts/${post.slug}`} key={index}>
+								<Link href={`/post/${post.slug}`} key={index}>
 									<CarouselItem key={index} className="max-w-[25rem]">
 										<Image
 											src={img?.url || 'https://placehold.co/460x400'}
