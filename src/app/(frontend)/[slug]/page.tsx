@@ -12,6 +12,7 @@ import { generateMeta } from '@/utilities/generateMeta'
 
 import PageClient from './page.client'
 import { PagesSlug } from '@/collections/Pages/slug'
+import { FooterComponent } from '@/globals/Footer/Component'
 
 export async function generateStaticParams() {
 	const payload = await getPayload({ config: configPromise })
@@ -56,7 +57,7 @@ export default async function Page({ params: paramsPromise }: Args) {
 		return <PayloadRedirects url={url} />
 	}
 
-	const { hero, layout } = page
+	const { hero, layout, footerSize } = page
 
 	return (
 		<article>
@@ -68,6 +69,7 @@ export default async function Page({ params: paramsPromise }: Args) {
 
 			<RenderHero {...hero} />
 			<RenderBlocks blocks={layout} />
+			<FooterComponent size={footerSize} />
 		</article>
 	)
 }
