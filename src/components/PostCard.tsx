@@ -12,7 +12,7 @@ export function PostCard({ post }: { post: Post }): React.JSX.Element {
 
 	return (
 		<div className="max-w-[25rem]">
-			<Link href={`/posts/${post.slug}`}>
+			<Link href={`/post/${post.slug}`}>
 				<Image
 					src={img?.url || 'https://placehold.co/460x400'}
 					alt={img?.alt || ''}
@@ -30,8 +30,10 @@ export function PostCard({ post }: { post: Post }): React.JSX.Element {
 					<span className="text-[#e7b27e]">{lastModifiedStr}</span>
 				</div>
 
-				<Link href={`/posts/${post.slug}`}>
-					<div className="font-serif text-2xl font-bold">{post.title}&nbsp;→</div>
+				<Link href={`/post/${post.slug}`}>
+					<div className="my-1 font-serif text-2xl font-bold leading-6">
+						{post.title}&nbsp;→
+					</div>
 				</Link>
 
 				<div className="text-xs">
