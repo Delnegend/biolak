@@ -20,7 +20,7 @@ export function HighlightRightBlock(props: HighlightRightBlockProps): React.JSX.
 					width={img?.width ?? 1000}
 					height={img?.height ?? 1000}
 					alt={img?.alt ?? 'Placeholder'}
-					unoptimized={img === null}
+					unoptimized={!img}
 					className="aspect-square size-[25rem] overflow-hidden rounded-full object-cover"
 				/>
 				<div className="relative mt-28 text-center text-5xl">

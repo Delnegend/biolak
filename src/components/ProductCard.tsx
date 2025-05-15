@@ -54,7 +54,7 @@ export function ProductCard({
 					width={img?.width ?? 1000}
 					height={img?.height ?? 1000}
 					style={{ gridArea: 'img' }}
-					unoptimized={img === null}
+					unoptimized={!img}
 					className={cn(
 						'mb-6 rounded-[0.5rem] object-cover',
 						size === 'lg' ? 'h-[28.75rem]' : 'h-[25.875rem]',

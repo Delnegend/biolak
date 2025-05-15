@@ -16,7 +16,7 @@ export function FocusRightSmallImageBlock(
 				alt={img?.alt ?? 'Placeholder'}
 				width={img?.width ?? 1000}
 				height={img?.height ?? 1000}
-				unoptimized={img === null}
+				unoptimized={!img}
 				className="size-full max-h-[45rem] max-w-[30rem] place-self-end self-center object-cover pl-11"
 			/>
 		</div>

@@ -16,7 +16,7 @@ export function ProductHero({
 		description?: DefaultTypedEditorState | null
 	}
 }): React.JSX.Element {
-	const media = p.heroMedia && typeof p.heroMedia === 'object' ? p.heroMedia : null
+	const img = p.heroMedia && typeof p.heroMedia === 'object' ? p.heroMedia : null
 
 	const subtitle = overrides?.subtitle ?? p.title
 	const title = overrides?.title ?? p.shortDescription
@@ -25,11 +25,11 @@ export function ProductHero({
 	return (
 		<div className="grid h-[58.75rem] grid-cols-2">
 			<Image
-				src={media?.url ?? 'https://placehold.co/1000x1000'}
-				alt={media?.alt ?? 'Product Image'}
-				width={media?.width ?? 1000}
-				height={media?.height ?? 1000}
-				unoptimized={media === null}
+				src={img?.url ?? 'https://placehold.co/1000x1000'}
+				alt={img?.alt ?? 'Product Image'}
+				width={img?.width ?? 1000}
+				height={img?.height ?? 1000}
+				unoptimized={!img}
 				className="size-full object-cover"
 			/>
 			<div className="flex flex-col justify-center p-[7rem] text-primary">

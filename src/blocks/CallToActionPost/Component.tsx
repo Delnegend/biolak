@@ -35,7 +35,7 @@ export function CallToActionPostBlock(props: CallToActionPostBlockProps): React.
 					width={img?.width ?? 1000}
 					height={img?.height ?? 1000}
 					alt={img?.alt ?? ''}
-					unoptimized={img === null}
+					unoptimized={!img}
 					className="size-full object-cover max-lg:aspect-square lg:absolute"
 				/>
 			</div>

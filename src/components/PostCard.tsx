@@ -19,7 +19,7 @@ export function PostCard({ post }: { post: Post }): React.JSX.Element {
 					width={img?.width || 0}
 					height={img?.height || 0}
 					className="h-[25rem] w-[28.75rem] rounded-[0.5rem] object-cover"
-					unoptimized={img === null}
+					unoptimized={!img}
 				/>
 			</Link>
 

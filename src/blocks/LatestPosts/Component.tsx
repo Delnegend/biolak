@@ -37,7 +37,7 @@ export function LatestPostsBlock(props: LatestPostsBlockProps): React.JSX.Elemen
 											width={img?.width || 0}
 											height={img?.height || 0}
 											className="h-[25rem] w-[28.75rem] rounded-[0.5rem] object-cover"
-											unoptimized={img === null}
+											unoptimized={!img}
 										/>
 
 										<div className="my-6 text-primary">

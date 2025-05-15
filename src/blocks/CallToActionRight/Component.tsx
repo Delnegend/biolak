@@ -27,16 +27,16 @@ export function CallToActionRightBlock(props: CallToActionRightBlockProps): Reac
 			<Carousel opts={{ dragFree: true }} className="place-self-center">
 				<CarouselContent>
 					{props.gallery?.map((item, idx) => {
-						const image = item.image && typeof item.image === 'object' ? item.image : null
+						const img = item.image && typeof item.image === 'object' ? item.image : null
 						return (
 							<CarouselItem className="max-w-fit" key={item.id ?? `${idx}-${item.title}`}>
 								<Image
-									src={image?.url ?? 'https://placehold.co/380x460'}
+									src={img?.url ?? 'https://placehold.co/380x460'}
 									alt={`Ảnh sản phẩm ${item.title}`}
-									width={image?.width ?? 380}
-									height={image?.height ?? 460}
+									width={img?.width ?? 380}
+									height={img?.height ?? 460}
 									className="mb-4 h-[28.75rem] w-[23.75rem] rounded-[0.5rem] object-cover"
-									unoptimized={image === null}
+									unoptimized={!img}
 								/>
 								<div className={cn('text-balance text-center text-2xl', phudu.className)}>
 									{item.title}
