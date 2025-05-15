@@ -6,15 +6,15 @@ import { ContactFormClient } from './Component.client'
 import { ContactFormGlobalSlug } from './config'
 
 export async function ContactForm({ inDialog }: { inDialog?: boolean }) {
-	const data = (await getCachedGlobal(ContactFormGlobalSlug, 1)()) as ContactFormGlobal
+	const global = (await getCachedGlobal(ContactFormGlobalSlug, 1)()) as ContactFormGlobal
 
 	if (inDialog) {
 		return (
 			<>
-				<DialogTitle className="sr-only">{data.title}</DialogTitle>
-				<ContactFormClient data={data} />
+				<DialogTitle className="sr-only">{global.title}</DialogTitle>
+				<ContactFormClient global={global} />
 			</>
 		)
 	}
-	return <ContactFormClient data={data} />
+	return <ContactFormClient global={global} />
 }
