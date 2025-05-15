@@ -18,7 +18,7 @@ import { CallToActionCenterBlockConf } from './CallToActionCenter/config'
 import { CallToActionLeftBlock } from './CallToActionLeft/Component'
 import { CallToActionLeftBlockConf } from './CallToActionLeft/config'
 import { CallToActionPostBlock } from './CallToActionPost/Component'
-import { CallToActionPostBlockConfig } from './CallToActionPost/config'
+import { CallToActionPostBlockConf } from './CallToActionPost/config'
 import { CallToActionRightBlock } from './CallToActionRight/Component'
 import { CallToActionRightBlockConf } from './CallToActionRight/config'
 import { CallToAddToCartBlock } from './CallToAddToCart/Component'
@@ -62,7 +62,7 @@ const blockComponents = {
 	[CallToActionCenterBlockConf.slug]: CallToActionCenterBlock,
 	[CallToActionLeftBlockConf.slug]: CallToActionLeftBlock,
 	[CallToActionRightBlockConf.slug]: CallToActionRightBlock,
-	[CallToActionPostBlockConfig.slug]: CallToActionPostBlock,
+	[CallToActionPostBlockConf.slug]: CallToActionPostBlock,
 	[CertificatesBlockConf.slug]: CertificatesBlock,
 	[ContentBlockConf.slug]: ContentBlock,
 	[FocusLeftSmallImageBlockConf.slug]: FocusLeftSmallImageBlock,
