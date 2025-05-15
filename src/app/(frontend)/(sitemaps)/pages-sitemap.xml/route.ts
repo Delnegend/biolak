@@ -2,6 +2,7 @@ import config from '@payload-config'
 import { unstable_cache } from 'next/cache'
 import { getServerSideSitemap } from 'next-sitemap'
 import { getPayload } from 'payload'
+import { PagesSlug } from '@/collections/Pages/slug'
 
 const getPagesSitemap = unstable_cache(
 	async () => {
@@ -12,7 +13,7 @@ const getPagesSitemap = unstable_cache(
 			'https://example.com'
 
 		const results = await payload.find({
-			collection: 'pages',
+			collection: PagesSlug,
 			overrideAccess: false,
 			draft: false,
 			depth: 0,
@@ -37,7 +38,7 @@ const getPagesSitemap = unstable_cache(
 				lastmod: dateFallback,
 			},
 			{
-				loc: `${SITE_URL}/posts`,
+				loc: `${SITE_URL}/post`,
 				lastmod: dateFallback,
 			},
 		]
