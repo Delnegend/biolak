@@ -269,7 +269,7 @@ export function ProductsDropdownClient({
 														alt={icon?.alt ?? 'Product Icon'}
 														width={icon?.width ?? 200}
 														height={icon?.height ?? 200}
-														unoptimized={icon === null}
+														unoptimized={!icon}
 														className="size-[5.25rem] object-contain"
 														style={{ gridArea: 'image' }}
 													/>

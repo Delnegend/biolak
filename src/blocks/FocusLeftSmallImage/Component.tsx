@@ -13,7 +13,7 @@ export function FocusLeftSmallImageBlock(props: FocusLeftSmallImageBlockProps): 
 				alt={img?.alt ?? 'Placeholder'}
 				width={img?.width ?? 1000}
 				height={img?.height ?? 1000}
-				unoptimized={img === null}
+				unoptimized={!img}
 				className="size-full max-h-[35rem] max-w-[23rem] self-center object-cover px-11"
 			/>
 			<RichText data={props.content} enableGutter={false} className="self-center text-primary" />

@@ -25,7 +25,7 @@ export function HighlightCenterBlock(props: HighlightCenterBlockProps): React.JS
 					width={img?.width ?? 1000}
 					height={img?.height ?? 1000}
 					alt={img?.alt ?? 'Placeholder'}
-					unoptimized={img === null}
+					unoptimized={!img}
 					className="aspect-square w-[32.75rem] overflow-hidden rounded-full object-cover"
 				/>
 				<div className={cn('relative mt-28 text-5xl', phudu.className)}>

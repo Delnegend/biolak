@@ -15,7 +15,7 @@ export function ThreePhotoBlock(props: ThreePhotoBlockProps): React.JSX.Element 
 				alt={photoLeft?.alt ?? 'Left Photo'}
 				width={photoLeft?.width ?? 290}
 				height={photoLeft?.height ?? 442}
-				unoptimized={photoLeft === null}
+				unoptimized={!photoLeft}
 			/>
 			<Image
 				className="place-self-center"
@@ -23,7 +23,7 @@ export function ThreePhotoBlock(props: ThreePhotoBlockProps): React.JSX.Element 
 				alt={photoCenter?.alt ?? 'Center Photo'}
 				width={photoCenter?.width ?? 620}
 				height={photoCenter?.height ?? 725}
-				unoptimized={photoCenter === null}
+				unoptimized={!photoCenter}
 			/>
 			<Image
 				className="place-self-center"
@@ -31,7 +31,7 @@ export function ThreePhotoBlock(props: ThreePhotoBlockProps): React.JSX.Element 
 				alt={photoRight?.alt ?? 'Right Photo'}
 				width={photoRight?.width ?? 290}
 				height={photoRight?.height ?? 442}
-				unoptimized={photoRight === null}
+				unoptimized={!photoRight}
 			/>
 		</div>
 	)
