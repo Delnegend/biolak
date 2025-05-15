@@ -37,8 +37,8 @@ export const PostCategoriesCollection: CollectionConfig<typeof PostCategoriesSlu
 			type: 'text',
 			required: true,
 			label: {
-				en: 'Title',
-				vi: 'Tiêu đề',
+				en: 'Category name',
+				vi: 'Tên danh mục',
 			},
 		},
 		{
