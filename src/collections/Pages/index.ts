@@ -4,7 +4,7 @@ import { BannerBlockConf } from '@/blocks/Banner/config'
 import { BestSellerBlockConf } from '@/blocks/BestSeller/config'
 import { BuyNowBlockConf } from '@/blocks/BuyNow/config'
 import { CallToActionLeftBlockConf } from '@/blocks/CallToActionLeft/config'
-import { CallToActionPostBlockConfig } from '@/blocks/CallToActionPost/config'
+import { CallToActionPostBlockConf } from '@/blocks/CallToActionPost/config'
 import { CallToActionRightBlockConf } from '@/blocks/CallToActionRight/config'
 import { CallToAddToCartBlockConf } from '@/blocks/CallToAddToCart/config'
 import { CertificatesBlockConf } from '@/blocks/Certificates/config'
@@ -207,7 +207,7 @@ export const PagesCollection: CollectionConfig<typeof PagesSlug> = {
 								CallToActionCenterBlockConf,
 								CallToActionLeftBlockConf,
 								CallToActionRightBlockConf,
-								CallToActionPostBlockConfig,
+								CallToActionPostBlockConf,
 								CertificatesBlockConf,
 								ContentBlockConf,
 								FormBlockConf,
