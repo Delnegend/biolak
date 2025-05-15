@@ -2,7 +2,7 @@ import { Block } from 'payload'
 
 import { PostsSlug } from '@/collections/Posts/slug'
 
-export const CallToActionPostBlockConfig: Block = {
+export const CallToActionPostBlockConf: Block = {
 	slug: 'call-to-action-post',
 	labels: {
 		singular: {
