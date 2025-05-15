@@ -5,14 +5,14 @@ import { getPayload } from 'payload'
 import { cache } from 'react'
 
 import { RenderBlocks } from '@/blocks/RenderBlocks'
+import { PagesSlug } from '@/collections/Pages/slug'
 import { LivePreviewListener } from '@/components/LivePreviewListener'
 import { PayloadRedirects } from '@/components/PayloadRedirects'
+import { FooterComponent } from '@/globals/Footer/Component'
 import { RenderHero } from '@/heros/RenderHero'
 import { generateMeta } from '@/utilities/generateMeta'
 
 import PageClient from './page.client'
-import { PagesSlug } from '@/collections/Pages/slug'
-import { FooterComponent } from '@/globals/Footer/Component'
 
 export async function generateStaticParams() {
 	const payload = await getPayload({ config: configPromise })
