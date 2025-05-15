@@ -67,6 +67,7 @@ export interface Config {
   };
   blocks: {};
   collections: {
+    contactForm: ContactForm;
     pages: Page;
     posts: Post;
     media: Media;
@@ -97,6 +98,7 @@ export interface Config {
     };
   };
   collectionsSelect: {
+    contactForm: ContactFormSelect<false> | ContactFormSelect<true>;
     pages: PagesSelect<false> | PagesSelect<true>;
     posts: PostsSelect<false> | PostsSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
@@ -118,18 +120,18 @@ export interface Config {
     defaultIDType: number;
   };
   globals: {
-    header: Header;
-    footer: Footer;
+    headerGlobal: HeaderGlobal;
+    footerGlobal: FooterGlobal;
     promo: Promo;
-    'contact-form': ContactForm;
-    checkout: Checkout;
+    contactFormGlobal: ContactFormGlobal;
+    checkoutPageGlobal: CheckoutPageGlobal;
   };
   globalsSelect: {
-    header: HeaderSelect<false> | HeaderSelect<true>;
-    footer: FooterSelect<false> | FooterSelect<true>;
+    headerGlobal: HeaderGlobalSelect<false> | HeaderGlobalSelect<true>;
+    footerGlobal: FooterGlobalSelect<false> | FooterGlobalSelect<true>;
     promo: PromoSelect<false> | PromoSelect<true>;
-    'contact-form': ContactFormSelect<false> | ContactFormSelect<true>;
-    checkout: CheckoutSelect<false> | CheckoutSelect<true>;
+    contactFormGlobal: ContactFormGlobalSelect<false> | ContactFormGlobalSelect<true>;
+    checkoutPageGlobal: CheckoutPageGlobalSelect<false> | CheckoutPageGlobalSelect<true>;
   };
   locale: null;
   user: User & {
@@ -163,6 +165,19 @@ export interface UserAuthOperations {
     email: string;
     password: string;
   };
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "contactForm".
+ */
+export interface ContactForm {
+  id: number;
+  username: string;
+  email: string;
+  phoneNumber: string;
+  message: string;
+  updatedAt: string;
+  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -253,6 +268,7 @@ export interface Page {
   publishedAt?: string | null;
   slug?: string | null;
   slugLock?: boolean | null;
+  footerSize?: ('small' | 'medium' | 'large') | null;
   updatedAt: string;
   createdAt: string;
   _status?: ('draft' | 'published') | null;
@@ -306,6 +322,7 @@ export interface Post {
     | null;
   slug?: string | null;
   slugLock?: boolean | null;
+  footerSize?: ('small' | 'medium' | 'large') | null;
   updatedAt: string;
   createdAt: string;
   _status?: ('draft' | 'published') | null;
@@ -448,8 +465,10 @@ export interface PostCategory {
     hasNextPage?: boolean;
     totalDocs?: number;
   };
+  layout?: (CallToActionPostBlockProps | PostsGridBlockProps)[] | null;
   slug?: string | null;
   slugLock?: boolean | null;
+  footerSize?: ('small' | 'medium' | 'large') | null;
   parent?: (number | null) | PostCategory;
   breadcrumbs?:
     | {
@@ -461,6 +480,29 @@ export interface PostCategory {
     | null;
   updatedAt: string;
   createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "CallToActionPostBlockProps".
+ */
+export interface CallToActionPostBlockProps {
+  post: number | Post;
+  overwriteTitle?: string | null;
+  overwriteDescription?: string | null;
+  buttonLabel: string;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'call-to-action-post';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "PostsGridBlockProps".
+ */
+export interface PostsGridBlockProps {
+  postCategories?: (number | null) | PostCategory;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'posts-grid';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1078,6 +1120,7 @@ export interface Product {
     [k: string]: unknown;
   } | null;
   price: number;
+  icon?: (number | null) | Media;
   gallery?: (number | Media)[] | null;
   heroSubtitle?: string | null;
   heroTitle?: string | null;
@@ -1128,6 +1171,7 @@ export interface Product {
   };
   slug?: string | null;
   slugLock?: boolean | null;
+  footerSize?: ('small' | 'medium' | 'large') | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -1150,6 +1194,7 @@ export interface ProductCategory {
   };
   slug?: string | null;
   slugLock?: boolean | null;
+  footerSize?: ('small' | 'medium' | 'large') | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -1168,6 +1213,7 @@ export interface ProductSubCategory {
   };
   slug?: string | null;
   slugLock?: boolean | null;
+  footerSize?: ('small' | 'medium' | 'large') | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -1253,29 +1299,6 @@ export interface BestSellerBlockProps {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "CallToActionPostBlockProps".
- */
-export interface CallToActionPostBlockProps {
-  post: number | Post;
-  overwriteTitle?: string | null;
-  overwriteDescription?: string | null;
-  buttonLabel: string;
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'call-to-action-post';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "PostsGridBlockProps".
- */
-export interface PostsGridBlockProps {
-  posts?: (number | Post)[] | null;
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'posts-grid';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "ProductsCategoryBlockProps".
  */
 export interface ProductsCategoryBlockProps {
@@ -1288,10 +1311,6 @@ export interface ProductsCategoryBlockProps {
         relationTo: 'productSubCategories';
         value: number | ProductSubCategory;
       };
-  products: {
-    product?: (number | null) | Product;
-    id?: string | null;
-  }[];
   buttonLabel: string;
   id?: string | null;
   blockName?: string | null;
@@ -1470,6 +1489,10 @@ export interface PayloadLockedDocument {
   id: number;
   document?:
     | ({
+        relationTo: 'contactForm';
+        value: number | ContactForm;
+      } | null)
+    | ({
         relationTo: 'pages';
         value: number | Page;
       } | null)
@@ -1565,6 +1588,18 @@ export interface PayloadMigration {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "contactForm_select".
+ */
+export interface ContactFormSelect<T extends boolean = true> {
+  username?: T;
+  email?: T;
+  phoneNumber?: T;
+  message?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "pages_select".
  */
 export interface PagesSelect<T extends boolean = true> {
@@ -1633,6 +1668,7 @@ export interface PagesSelect<T extends boolean = true> {
   publishedAt?: T;
   slug?: T;
   slugLock?: T;
+  footerSize?: T;
   updatedAt?: T;
   createdAt?: T;
   _status?: T;
@@ -1912,7 +1948,7 @@ export interface MediaBlockPropsSelect<T extends boolean = true> {
  * via the `definition` "PostsGridBlockProps_select".
  */
 export interface PostsGridBlockPropsSelect<T extends boolean = true> {
-  posts?: T;
+  postCategories?: T;
   id?: T;
   blockName?: T;
 }
@@ -1932,12 +1968,6 @@ export interface ProductsCarouselBlockPropsSelect<T extends boolean = true> {
  */
 export interface ProductsCategoryBlockPropsSelect<T extends boolean = true> {
   category?: T;
-  products?:
-    | T
-    | {
-        product?: T;
-        id?: T;
-      };
   buttonLabel?: T;
   id?: T;
   blockName?: T;
@@ -2002,6 +2032,7 @@ export interface PostsSelect<T extends boolean = true> {
       };
   slug?: T;
   slugLock?: T;
+  footerSize?: T;
   updatedAt?: T;
   createdAt?: T;
   _status?: T;
@@ -2136,8 +2167,15 @@ export interface MediaSelect<T extends boolean = true> {
 export interface PostCategoriesSelect<T extends boolean = true> {
   title?: T;
   posts?: T;
+  layout?:
+    | T
+    | {
+        'call-to-action-post'?: T | CallToActionPostBlockPropsSelect<T>;
+        'posts-grid'?: T | PostsGridBlockPropsSelect<T>;
+      };
   slug?: T;
   slugLock?: T;
+  footerSize?: T;
   parent?: T;
   breadcrumbs?:
     | T
@@ -2178,6 +2216,7 @@ export interface ProductsSelect<T extends boolean = true> {
   shortDescription?: T;
   longDescription?: T;
   price?: T;
+  icon?: T;
   gallery?: T;
   heroSubtitle?: T;
   heroTitle?: T;
@@ -2213,6 +2252,7 @@ export interface ProductsSelect<T extends boolean = true> {
       };
   slug?: T;
   slugLock?: T;
+  footerSize?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -2226,6 +2266,7 @@ export interface ProductCategoriesSelect<T extends boolean = true> {
   products?: T;
   slug?: T;
   slugLock?: T;
+  footerSize?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -2239,6 +2280,7 @@ export interface ProductSubCategoriesSelect<T extends boolean = true> {
   products?: T;
   slug?: T;
   slugLock?: T;
+  footerSize?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -2498,9 +2540,9 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "header".
+ * via the `definition` "headerGlobal".
  */
-export interface Header {
+export interface HeaderGlobal {
   id: number;
   navItemsLeft?:
     | {
@@ -2519,9 +2561,9 @@ export interface Header {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "footer".
+ * via the `definition` "footerGlobal".
  */
-export interface Footer {
+export interface FooterGlobal {
   id: number;
   image?: {
     image?: (number | null) | Media;
@@ -2567,9 +2609,9 @@ export interface Promo {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "contact-form".
+ * via the `definition` "contactFormGlobal".
  */
-export interface ContactForm {
+export interface ContactFormGlobal {
   id: number;
   title: string;
   name: string;
@@ -2584,9 +2626,9 @@ export interface ContactForm {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "checkout".
+ * via the `definition` "checkoutPageGlobal".
  */
-export interface Checkout {
+export interface CheckoutPageGlobal {
   id: number;
   contacts: {
     title: string;
@@ -2625,9 +2667,9 @@ export interface Checkout {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "header_select".
+ * via the `definition` "headerGlobal_select".
  */
-export interface HeaderSelect<T extends boolean = true> {
+export interface HeaderGlobalSelect<T extends boolean = true> {
   navItemsLeft?:
     | T
     | {
@@ -2646,9 +2688,9 @@ export interface HeaderSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "footer_select".
+ * via the `definition` "footerGlobal_select".
  */
-export interface FooterSelect<T extends boolean = true> {
+export interface FooterGlobalSelect<T extends boolean = true> {
   image?:
     | T
     | {
@@ -2694,9 +2736,9 @@ export interface PromoSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "contact-form_select".
+ * via the `definition` "contactFormGlobal_select".
  */
-export interface ContactFormSelect<T extends boolean = true> {
+export interface ContactFormGlobalSelect<T extends boolean = true> {
   title?: T;
   name?: T;
   phoneNumber?: T;
@@ -2711,9 +2753,9 @@ export interface ContactFormSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "checkout_select".
+ * via the `definition` "checkoutPageGlobal_select".
  */
-export interface CheckoutSelect<T extends boolean = true> {
+export interface CheckoutPageGlobalSelect<T extends boolean = true> {
   contacts?:
     | T
     | {
