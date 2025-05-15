@@ -25,7 +25,7 @@ export function CallToActionPostBlock(props: CallToActionPostBlockProps): React.
 				<div className={cn('text-xl font-semibold', lato.className)}>
 					{props.overwriteDescription ?? post?.meta?.description}
 				</div>
-				<Link href={post?.slug ? `/posts/${post.slug}` : '#'} className="w-full">
+				<Link href={post?.slug ? `/post/${post.slug}` : '#'} className="w-full">
 					<Button size="lg">{props.buttonLabel}</Button>
 				</Link>
 			</div>
