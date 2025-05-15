@@ -1,23 +1,22 @@
-import configPromise from '@payload-config'
-import type { Metadata } from 'next'
+import config from '@payload-config'
+import { Metadata } from 'next'
 import { draftMode } from 'next/headers'
 import { getPayload } from 'payload'
 import { cache } from 'react'
 
-import { RelatedPosts } from '@/blocks/RelatedPosts/Component'
 import { RenderBlocks } from '@/blocks/RenderBlocks'
-import { PostsSlug } from '@/collections/Posts/slug'
+import { PostCategoriesSlug } from '@/collections/PostCategories/slug'
 import { LivePreviewListener } from '@/components/LivePreviewListener'
 import { PayloadRedirects } from '@/components/PayloadRedirects'
-import { PostHero } from '@/heros/PostHero'
-import { generateMeta } from '@/utilities/generateMeta'
+import { FooterComponent } from '@/globals/Footer/Component'
+import { type PostCategory } from '@/payload-types'
 
 import PageClient from './page.client'
 
 export async function generateStaticParams() {
-	const payload = await getPayload({ config: configPromise })
-	const posts = await payload.find({
-		collection: PostsSlug,
+	const payload = await getPayload({ config })
+	const postCategories = await payload.find({
+		collection: PostCategoriesSlug,
 		draft: false,
 		limit: 1000,
 		overrideAccess: false,
@@ -27,71 +26,62 @@ export async function generateStaticParams() {
 		},
 	})
 
-	return posts.docs.map(({ slug }) => ({ slug }))
+	return postCategories.docs
+		.map((c) => c.slug)
+		.filter((slug): slug is string => typeof slug === 'string' && slug.length > 0)
+		.map((slug) => ({ slug }))
 }
 
-type Args = {
-	params: Promise<{
-		slug?: string
-	}>
-}
-
-export default async function Post({ params: paramsPromise }: Args) {
+export default async function PostCategory({
+	params,
+}: {
+	params: Promise<{ slug?: string }>
+}): Promise<React.JSX.Element> {
 	const { isEnabled: draft } = await draftMode()
-	const { slug = '' } = await paramsPromise
-	const url = '/posts/' + slug
-	const post = await queryPostBySlug({ slug })
+	const { slug: categorySlug = '' } = await params
+	const url = '/posts/' + categorySlug
+	const postCategory = await queryPostCategoryBySlug({ slug: categorySlug })
 
-	if (!post) return <PayloadRedirects url={url} />
+	if (!postCategory) return <PayloadRedirects url={url} />
 
 	return (
 		<article>
 			<PageClient />
-
-			{/* Allows redirects for valid pages too */}
 			<PayloadRedirects disableNotFound url={url} />
-
 			{draft && <LivePreviewListener />}
-
-			<PostHero post={post} />
-
-			<div className="mt-8 items-center">
-				<RenderBlocks blocks={post.layout} />
-				{post.relatedPosts && post.relatedPosts.length > 0 && (
-					<RelatedPosts
-						className="col-span-3 col-start-1 mt-12 max-w-[52rem] grid-rows-[2fr] lg:grid lg:grid-cols-subgrid"
-						docs={post.relatedPosts.filter((post) => typeof post === 'object')}
-					/>
-				)}
-			</div>
+			<RenderBlocks blocks={postCategory.layout} />
+			<FooterComponent size={postCategory.footerSize} />
 		</article>
 	)
 }
 
-export async function generateMetadata({ params: paramsPromise }: Args): Promise<Metadata> {
-	const { slug = '' } = await paramsPromise
-	const post = await queryPostBySlug({ slug })
+const queryPostCategoryBySlug = cache(
+	async ({ slug: categorySlug }: { slug: string }): Promise<PostCategory | null> => {
+		const payload = await getPayload({ config })
 
-	return generateMeta({ doc: post })
-}
-
-const queryPostBySlug = cache(async ({ slug }: { slug: string }) => {
-	const { isEnabled: draft } = await draftMode()
-
-	const payload = await getPayload({ config: configPromise })
-
-	const result = await payload.find({
-		collection: PostsSlug,
-		draft,
-		limit: 1,
-		overrideAccess: draft,
-		pagination: false,
-		where: {
-			slug: {
-				equals: slug,
+		const result = await payload.find({
+			collection: PostCategoriesSlug,
+			draft: false,
+			where: {
+				slug: {
+					equals: categorySlug,
+				},
 			},
-		},
-	})
+		})
 
-	return result.docs?.[0] || null
-})
+		return result.docs?.[0] ?? null
+	},
+)
+
+export async function generateMetadata({
+	params,
+}: {
+	params: Promise<{ slug?: string }>
+}): Promise<Metadata> {
+	const { slug = '' } = await params
+	const postCategory = await queryPostCategoryBySlug({ slug })
+
+	return {
+		title: postCategory?.title ? `${postCategory.title} | BioLAK` : 'Các bài đăng | BioLAK',
+	}
+}
