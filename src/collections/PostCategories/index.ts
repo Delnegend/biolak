@@ -1,5 +1,8 @@
 import { CollectionConfig } from 'payload'
 
+import { CallToActionPostBlockConf } from '@/blocks/CallToActionPost/config'
+import { PostsGridBlockConf } from '@/blocks/PostsGrid/config'
+import { FooterSizeField } from '@/fields/footer'
 import { slugField } from '@/fields/slug'
 
 import { admin } from '../../access/admin'
@@ -48,6 +51,16 @@ export const PostCategoriesCollection: CollectionConfig<typeof PostCategoriesSlu
 				vi: 'Bài viết',
 			},
 		},
+		{
+			name: 'layout',
+			label: {
+				en: 'Layout',
+				vi: 'Bố cục',
+			},
+			type: 'blocks',
+			blocks: [CallToActionPostBlockConf, PostsGridBlockConf],
+		},
 		...slugField(),
+		FooterSizeField,
 	],
 }
