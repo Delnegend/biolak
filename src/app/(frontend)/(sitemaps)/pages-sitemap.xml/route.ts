@@ -2,6 +2,7 @@ import config from '@payload-config'
 import { unstable_cache } from 'next/cache'
 import { getServerSideSitemap } from 'next-sitemap'
 import { getPayload } from 'payload'
+
 import { PagesSlug } from '@/collections/Pages/slug'
 
 const getPagesSitemap = unstable_cache(
