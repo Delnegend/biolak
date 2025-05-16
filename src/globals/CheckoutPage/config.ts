@@ -8,6 +8,10 @@ import { revalidateCheckoutPage } from './hooks/revalidateCheckoutPage'
 export const CheckoutPageGlobalSlug = 'checkoutPageGlobal'
 export const CheckoutPageGlobalConf: GlobalConfig<typeof CheckoutPageGlobalSlug> = {
 	slug: CheckoutPageGlobalSlug,
+	label: {
+		en: 'Checkout Page',
+		vi: 'Trang thanh toán',
+	},
 	access: {
 		read: anyone,
 		update: admin,
