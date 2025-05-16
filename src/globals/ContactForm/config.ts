@@ -7,6 +7,10 @@ import { revalidateContactForm } from './hooks/revalidateContactForm'
 export const ContactFormGlobalSlug = 'contactFormGlobal'
 export const ContactFormGlobalConf: GlobalConfig<typeof ContactFormGlobalSlug> = {
 	slug: ContactFormGlobalSlug,
+	label: {
+		en: 'Contact Form',
+		vi: 'Mẫu liên hệ',
+	},
 	access: {
 		read: () => true,
 		update: admin,

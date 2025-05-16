@@ -9,6 +9,10 @@ import { revalidateFooter } from './hooks/revalidateFooter'
 export const FooterGlobalSlug = 'footerGlobal'
 export const FooterGlobalConf: GlobalConfig<typeof FooterGlobalSlug> = {
 	slug: FooterGlobalSlug,
+	label: {
+		en: 'Footer',
+		vi: 'Chân trang',
+	},
 	access: {
 		read: anyone,
 		update: admin,
