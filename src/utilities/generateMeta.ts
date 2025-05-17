@@ -18,9 +18,9 @@ function getImageURL(image?: Media | Config['db']['defaultIDType'] | null): stri
 	return url
 }
 
-export const generateMeta = async (args: {
+export async function generateMeta(args: {
 	doc: Partial<Page> | Partial<Post> | Partial<Product> | null
-}): Promise<Metadata> => {
+}): Promise<Metadata> {
 	const { doc } = args
 	const meta = doc?.meta
 
