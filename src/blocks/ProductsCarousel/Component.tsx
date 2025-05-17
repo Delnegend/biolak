@@ -2,6 +2,7 @@ import { Phudu } from 'next/font/google'
 import Image from 'next/image'
 import Link from 'next/link'
 
+import { CMSLink } from '@/components/Link'
 import RichText from '@/components/RichText'
 import { Button } from '@/components/ui/button'
 import { Carousel, CarouselContent, CarouselItem } from '@/components/ui/carousel'
@@ -78,15 +79,16 @@ export function ProductsCarouselBlock(props: ProductsCarouselBlockProps): React.
 											))}
 										</div>
 
-										<Link
-											href={props.apb.url ?? '#'}
+										<CMSLink
 											className={cn(
 												'text-xl font-medium text-[#FFF9ED]',
 												phudu.className,
 											)}
+											{...props.apb}
+											type={props.apb.type ?? undefined}
 										>
 											{props.apb.label}&nbsp;→
-										</Link>
+										</CMSLink>
 									</div>
 								</CarouselItem>
 							)
