@@ -1,57 +1,67 @@
 import Link from 'next/link'
 import React from 'react'
 
-import { Button, type ButtonProps } from '@/components/ui/button'
-import type { Page, Post } from '@/payload-types'
+import { PagesSlug } from '@/collections/Pages/slug'
+import { PostCategoriesSlug } from '@/collections/PostCategories/slug'
+import { PostsSlug } from '@/collections/Posts/slug'
+import { ProductCategoriesSlug } from '@/collections/ProductCategories/slug'
+import { ProductsSlug } from '@/collections/Products/slug'
+import { ProductSubCategoriesSlug } from '@/collections/ProductSubCategories/slug'
+import { type ButtonProps } from '@/components/ui/button'
+import { LinkFieldRelationsType } from '@/fields/link'
+import type { Page, Post, PostCategory, ProductCategory, ProductSubCategory } from '@/payload-types'
 
-type CMSLinkType = {
-	appearance?: 'inline' | ButtonProps['variant']
-	children?: React.ReactNode
-	className?: string
-	label?: string | null
-	newTab?: boolean | null
-	reference?: {
-		relationTo: 'pages' | 'posts'
-		value: Page | Post | string | number
-	} | null
-	size?: ButtonProps['size'] | null
-	type?: 'custom' | 'reference' | null
-	url?: string | null
-}
+/**
+ * Due to TS behavior, the `type` prop must be assigned seperately
+ *
+ * ```tsx
+ * <CMSLink {...props.link} type={props.link.type ?? undefined} />
+ * ```
+ */
+export function CMSLink(
+	props: {
+		children?: React.ReactNode
+		className?: string
+		label?: string | null
+		newTab?: boolean | null
+		reference?: {
+			relationTo?: LinkFieldRelationsType
+			value: Page | Post | PostCategory | ProductCategory | ProductSubCategory | string | number
+		} | null
+		size?: ButtonProps['size'] | null
+		type?: 'custom' | 'reference' | null
+		url?: string | null
+	} & Omit<React.ComponentPropsWithRef<typeof Link>, 'as' | 'href'>,
+): React.JSX.Element {
+	const { reference, type, newTab, url, ...rest } = props
 
-export function CMSLink(props: CMSLinkType): React.JSX.Element {
-	const appearance = props.appearance ?? 'inline'
-
-	const href =
-		props.type === 'reference' &&
-		typeof props.reference?.value === 'object' &&
-		props.reference.value.slug
-			? `${props.reference?.relationTo !== 'pages' ? `/${props.reference?.relationTo}` : ''}/${
-					props.reference.value.slug
-				}`
-			: props.url
-
-	if (!href) return <></>
-
-	const size = appearance === 'link' ? 'clear' : props.size
-	const newTabProps = props.newTab ? { rel: 'noopener noreferrer', target: '_blank' } : {}
-
-	/* Ensure we don't break any styles set by richText */
-	if (appearance === 'inline') {
-		return (
-			<Link className={props.className} href={href || props.url || ''} {...newTabProps}>
-				{props.label && props.label}
-				{props.children && props.children}
-			</Link>
-		)
+	let href = '#'
+	if (type === 'reference' && typeof reference?.value === 'object') {
+		const slug = reference?.value.slug
+		switch (reference?.relationTo) {
+			case PagesSlug:
+				href = `/${slug}`
+			case PostsSlug:
+				href = `/post/${slug}`
+			case PostCategoriesSlug:
+				href = `/posts/${slug}`
+			case ProductsSlug:
+				href = `/product/${slug}`
+			case ProductCategoriesSlug:
+				href = `/products/${slug}`
+			case ProductSubCategoriesSlug:
+				href = `/products/${slug}`
+		}
+	} else if (url) {
+		href = url
 	}
 
+	const newTabProps = newTab ? { rel: 'noopener noreferrer', target: '_blank' } : {}
+
 	return (
-		<Button asChild className={props.className} size={size} variant={appearance}>
-			<Link className={props.className} href={href || props.url || ''} {...newTabProps}>
-				{props.label && props.label}
-				{props.children && props.children}
-			</Link>
-		</Button>
+		<Link className={props.className} href={href} {...rest} {...newTabProps}>
+			{props.label && props.label}
+			{props.children && props.children}
+		</Link>
 	)
 }
