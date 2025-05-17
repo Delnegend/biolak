@@ -95,8 +95,10 @@ function DropdownColumn({
 
 export function ProductsDropdownClient({
 	categories,
+	label,
 }: {
 	categories: PaginatedDocs<ProductCategory>
+	label?: string
 }): React.JSX.Element {
 	const [open, setOpen] = useState(false)
 	const dropdownElement = useRef<HTMLDivElement | null>(null)
@@ -145,7 +147,7 @@ export function ProductsDropdownClient({
 
 	return (
 		<div className="relative">
-			<button onClick={() => setOpen(!open)}>Sản phẩm</button>
+			<button onClick={() => setOpen(!open)}>{label ?? 'Sản phẩm'}</button>
 			<AnimatePresence>
 				{open && (
 					<motion.div
