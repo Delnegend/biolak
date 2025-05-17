@@ -1,6 +1,6 @@
-import Link from 'next/link'
 import React from 'react'
 
+import { CMSLink } from '@/components/Link'
 import RichText from '@/components/RichText'
 import { Button } from '@/components/ui/button'
 import type { CallToActionLeftBlockProps } from '@/payload-types'
@@ -10,16 +10,6 @@ export function CallToActionLeftBlock(props: CallToActionLeftBlockProps): React.
 		props.background && typeof props.background === 'object' && props.background.url
 			? props.background.url
 			: 'https://placehold.co/1920x1080'
-
-	const link = props.button.link
-	const linkRef = link?.reference
-	const linkRelation = linkRef?.relationTo
-	const url =
-		link?.type === 'reference' && typeof linkRef?.value === 'object'
-			? linkRelation !== 'pages'
-				? `${linkRelation}/${linkRef?.value.slug}`
-				: `/${linkRef?.value.slug}`
-			: (link?.url ?? '#')
 
 	return (
 		<div
@@ -42,11 +32,11 @@ export function CallToActionLeftBlock(props: CallToActionLeftBlockProps): React.
 							className="mx-0 text-balance text-xl leading-8 text-white"
 						/>
 					)}
-					<Link href={url} target={props.button.link?.newTab ? '_blank' : '_self'}>
+					<CMSLink {...props.button.link} type={props.button.link?.type ?? undefined}>
 						<Button className="w-full" size="lg">
 							{props.button.text}
 						</Button>
-					</Link>
+					</CMSLink>
 				</div>
 			</div>
 		</div>

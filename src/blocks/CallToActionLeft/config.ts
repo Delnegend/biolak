@@ -69,7 +69,7 @@ export const CallToActionLeftBlockConf: Block = {
 					},
 					required: true,
 				},
-				link({ appearances: false, disableLabel: true }),
+				link({ disableLabel: true }),
 			],
 		},
 	],

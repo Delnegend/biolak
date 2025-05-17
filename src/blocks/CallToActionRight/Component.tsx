@@ -1,8 +1,8 @@
 import { Phudu } from 'next/font/google'
 import Image from 'next/image'
-import Link from 'next/link'
 import React from 'react'
 
+import { CMSLink } from '@/components/Link'
 import RichText from '@/components/RichText'
 import { Button } from '@/components/ui/button'
 import { Carousel, CarouselContent, CarouselItem } from '@/components/ui/carousel'
@@ -12,16 +12,6 @@ import { cn } from '@/utilities/ui'
 const phudu = Phudu({ subsets: ['vietnamese'], weight: ['400', '600'] })
 
 export function CallToActionRightBlock(props: CallToActionRightBlockProps): React.JSX.Element {
-	const link = props.button.link
-	const linkRef = link?.reference
-	const linkRelation = linkRef?.relationTo
-	const url =
-		link?.type === 'reference' && typeof linkRef?.value === 'object'
-			? linkRelation !== 'pages'
-				? `${linkRelation}/${linkRef?.value.slug}`
-				: `/${linkRef?.value.slug}`
-			: (link?.url ?? '#')
-
 	return (
 		<div className="safe-width flex h-[48rem] justify-between bg-background">
 			<Carousel opts={{ dragFree: true }} className="place-self-center">
@@ -66,11 +56,11 @@ export function CallToActionRightBlock(props: CallToActionRightBlockProps): Reac
 						className="text-balance text-xl leading-8 text-primary"
 					/>
 				)}
-				<Link href={url} target={props.button.link?.newTab ? '_blank' : '_self'}>
+				<CMSLink {...props.button.link} type={props.button.link?.type ?? undefined}>
 					<Button className="w-full" variant="outline" size="lg">
 						{props.button.text}
 					</Button>
-				</Link>
+				</CMSLink>
 			</div>
 		</div>
 	)

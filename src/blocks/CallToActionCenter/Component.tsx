@@ -1,7 +1,7 @@
 import { Lato } from 'next/font/google'
-import Link from 'next/link'
 import React from 'react'
 
+import { CMSLink } from '@/components/Link'
 import RichText from '@/components/RichText'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
@@ -18,16 +18,6 @@ export function CallToActionCenterBlock(props: CallToActionCenterBlockProps): Re
 		props.background && typeof props.background === 'object' && props.background.url
 			? props.background.url
 			: 'https://placehold.co/1920x1080'
-
-	const link = props.button.link
-	const linkRef = link?.reference
-	const linkRelation = linkRef?.relationTo
-	const url =
-		link?.type === 'reference' && typeof linkRef?.value === 'object'
-			? linkRelation !== 'pages'
-				? `${linkRelation}/${linkRef?.value.slug}`
-				: `/${linkRef?.value.slug}`
-			: (link?.url ?? '#')
 
 	return (
 		<div
@@ -61,15 +51,15 @@ export function CallToActionCenterBlock(props: CallToActionCenterBlockProps): Re
 					)}
 				</CardHeader>
 				<CardContent className="grid max-w-[38.5rem]">
-					<Link
-						href={url}
-						target={props.button.link?.newTab ? '_blank' : '_self'}
+					<CMSLink
 						className="grid"
+						{...props.button.link}
+						type={props.button.link?.type ?? undefined}
 					>
 						<Button size="lg" className="w-full max-w-[28rem] place-self-center">
 							{props.button.text}
 						</Button>
-					</Link>
+					</CMSLink>
 				</CardContent>
 			</Card>
 		</div>
