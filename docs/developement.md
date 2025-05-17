@@ -15,3 +15,10 @@ The PosgreSQL server must be accessible during build time.
 ## Migrations
 
 Before committing or after creating migrations, execute `just minify-json` to compress the JSON files within the migrations directory and reduce their file sizes.
+
+## Workaround notes
+- DO NOT modify/remove MULTIPLE fields in a global setting at once; do them individually.
+- If there's a database conflict and you can't interact with Drizzle's conflict resolver:
+   1. `Ctrl + C` then `j dev` to restart the dev server
+   2. Go to `http://localhost:3000` for it to compile a layout, fetch the database schema, and ask to resolve the conflicts; it should not let you interact just yet (if it does, then congrats)
+   3. Go to `http://localhost:3000/admin` for it to compile another layout, refetch the database schema, and now you should be able to interact with the conflict resolver
