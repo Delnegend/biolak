@@ -18,7 +18,7 @@ export function MediumImpactHero(props: Page['hero']): React.JSX.Element {
 						{props.links.map(({ link }, i) => {
 							return (
 								<li key={i}>
-									<CMSLink {...link} />
+									<CMSLink {...link} type={link.type ?? undefined} />
 								</li>
 							)
 						})}
