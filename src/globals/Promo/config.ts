@@ -18,7 +18,7 @@ export const PromoGlobalConf: GlobalConfig = {
 			type: 'text',
 			defaultValue: '',
 		},
-		link({ appearances: false }),
+		link(),
 	],
 	hooks: {
 		afterChange: [revalidatePromo],
