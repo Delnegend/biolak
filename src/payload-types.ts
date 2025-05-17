@@ -1230,6 +1230,7 @@ export interface MediaBlockProps {
 export interface ProductsCarouselBlockProps {
   title: string;
   products?: (number | Product)[] | null;
+  watchMoreBtnLabel: string;
   apb: {
     type?: ('reference' | 'custom') | null;
     newTab?: boolean | null;
@@ -2074,6 +2075,7 @@ export interface PostsGridBlockPropsSelect<T extends boolean = true> {
 export interface ProductsCarouselBlockPropsSelect<T extends boolean = true> {
   title?: T;
   products?: T;
+  watchMoreBtnLabel?: T;
   apb?:
     | T
     | {
@@ -2671,85 +2673,69 @@ export interface HeaderGlobal {
   id: number;
   headerItemsLeft?:
     | {
-        kind?: ('prebuilt' | 'regularLink') | null;
+        kind?: ('prebuilt' | 'internalUrl' | 'customUrl') | null;
         prebuilt?: ('search' | 'products' | 'about' | 'events' | 'contact' | 'vie-en' | 'cart') | null;
-        link?: {
-          type?: ('reference' | 'custom') | null;
-          newTab?: boolean | null;
-          reference?:
-            | ({
-                relationTo: 'pages';
-                value: number | Page;
-              } | null)
-            | ({
-                relationTo: 'posts';
-                value: number | Post;
-              } | null)
-            | ({
-                relationTo: 'postCategories';
-                value: number | PostCategory;
-              } | null)
-            | ({
-                relationTo: 'products';
-                value: number | Product;
-              } | null)
-            | ({
-                relationTo: 'productCategories';
-                value: number | ProductCategory;
-              } | null)
-            | ({
-                relationTo: 'productSubCategories';
-                value: number | ProductSubCategory;
-              } | null);
-          url?: string | null;
-          label: string;
-          /**
-           * Choose how the link should be rendered.
-           */
-          appearance?: ('default' | 'outline') | null;
-        };
+        customUrl?: string | null;
+        internalUrl?:
+          | ({
+              relationTo: 'pages';
+              value: number | Page;
+            } | null)
+          | ({
+              relationTo: 'products';
+              value: number | Product;
+            } | null)
+          | ({
+              relationTo: 'posts';
+              value: number | Post;
+            } | null)
+          | ({
+              relationTo: 'postCategories';
+              value: number | PostCategory;
+            } | null)
+          | ({
+              relationTo: 'productCategories';
+              value: number | ProductCategory;
+            } | null)
+          | ({
+              relationTo: 'productSubCategories';
+              value: number | ProductSubCategory;
+            } | null);
+        label?: string | null;
         id?: string | null;
       }[]
     | null;
   headerItemsRight?:
     | {
-        kind?: ('prebuilt' | 'regularLink') | null;
+        kind?: ('prebuilt' | 'internalUrl' | 'customUrl') | null;
         prebuilt?: ('search' | 'products' | 'about' | 'events' | 'contact' | 'vie-en' | 'cart') | null;
-        link?: {
-          type?: ('reference' | 'custom') | null;
-          newTab?: boolean | null;
-          reference?:
-            | ({
-                relationTo: 'pages';
-                value: number | Page;
-              } | null)
-            | ({
-                relationTo: 'posts';
-                value: number | Post;
-              } | null)
-            | ({
-                relationTo: 'postCategories';
-                value: number | PostCategory;
-              } | null)
-            | ({
-                relationTo: 'products';
-                value: number | Product;
-              } | null)
-            | ({
-                relationTo: 'productCategories';
-                value: number | ProductCategory;
-              } | null)
-            | ({
-                relationTo: 'productSubCategories';
-                value: number | ProductSubCategory;
-              } | null);
-          url?: string | null;
-          label: string;
-          /**
-           * Choose how the link should be rendered.
-           */
-          appearance?: ('default' | 'outline') | null;
-        };
+        customUrl?: string | null;
+        internalUrl?:
+          | ({
+              relationTo: 'pages';
+              value: number | Page;
+            } | null)
+          | ({
+              relationTo: 'products';
+              value: number | Product;
+            } | null)
+          | ({
+              relationTo: 'posts';
+              value: number | Post;
+            } | null)
+          | ({
+              relationTo: 'postCategories';
+              value: number | PostCategory;
+            } | null)
+          | ({
+              relationTo: 'productCategories';
+              value: number | ProductCategory;
+            } | null)
+          | ({
+              relationTo: 'productSubCategories';
+              value: number | ProductSubCategory;
+            } | null);
+        label?: string | null;
         id?: string | null;
       }[]
     | null;
@@ -2888,16 +2874,9 @@ export interface HeaderGlobalSelect<T extends boolean = true> {
     | {
         kind?: T;
         prebuilt?: T;
-        link?:
-          | T
-          | {
-              type?: T;
-              newTab?: T;
-              reference?: T;
-              url?: T;
-              label?: T;
-              appearance?: T;
-            };
+        customUrl?: T;
+        internalUrl?: T;
+        label?: T;
         id?: T;
       };
   headerItemsRight?:
@@ -2905,16 +2884,9 @@ export interface HeaderGlobalSelect<T extends boolean = true> {
     | {
         kind?: T;
         prebuilt?: T;
-        link?:
-          | T
-          | {
-              type?: T;
-              newTab?: T;
-              reference?: T;
-              url?: T;
-              label?: T;
-              appearance?: T;
-            };
+        customUrl?: T;
+        internalUrl?: T;
+        label?: T;
         id?: T;
       };
   updatedAt?: T;
