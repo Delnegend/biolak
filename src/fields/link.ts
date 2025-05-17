@@ -1,5 +1,11 @@
 import type { Field, GroupField } from 'payload'
 
+import { PagesSlug } from '@/collections/Pages/slug'
+import { PostCategoriesSlug } from '@/collections/PostCategories/slug'
+import { PostsSlug } from '@/collections/Posts/slug'
+import { ProductCategoriesSlug } from '@/collections/ProductCategories/slug'
+import { ProductSubCategoriesSlug } from '@/collections/ProductSubCategories/slug'
+import { ProductsSlug } from '@/collections/Products/slug'
 import deepMerge from '@/utilities/deepMerge'
 
 export type LinkAppearances = 'default' | 'outline'
@@ -110,7 +116,14 @@ export const link: LinkType = ({ appearances, disableLabel = false, overrides = 
 				en: 'Document to link to',
 				vi: 'Tài liệu liên kết đến',
 			},
-			relationTo: ['pages', 'posts'],
+			relationTo: [
+				PagesSlug,
+				PostsSlug,
+				PostCategoriesSlug,
+				ProductsSlug,
+				ProductCategoriesSlug,
+				ProductSubCategoriesSlug,
+			],
 			required: true,
 		},
 		{
