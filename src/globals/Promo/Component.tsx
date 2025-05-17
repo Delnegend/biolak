@@ -1,52 +1,21 @@
-import Link from 'next/link'
 import { DataFromGlobalSlug } from 'payload'
 
+import { CMSLink } from '@/components/Link'
 import { getCachedGlobal } from '@/utilities/getGlobals'
 
 export async function Promo(): Promise<React.JSX.Element> {
-	const promoData = (await getCachedGlobal('promo', 1)()) as DataFromGlobalSlug<'promo'>
-
-	let target = promoData.link.url
-	let internalLink = false
-	if (
-		!target &&
-		typeof promoData.link.reference?.value === 'object' &&
-		'slug' in promoData.link.reference.value &&
-		!!promoData.link.reference.value.slug
-	) {
-		target = `/${promoData.link.reference.value.slug}`
-		internalLink = true
-	}
-
-	if (!promoData.message) return <></>
-
-	if (target && !internalLink) {
-		return (
-			<div className="flex h-10 w-full items-center justify-center bg-black text-primary-foreground">
-				<a
-					target={promoData.link.newTab ? '_blank' : '_self'}
-					href={target}
-					className="underline-offset-2 hover:underline"
-				>
-					{promoData.message}
-				</a>
-			</div>
-		)
-	}
-
-	if (target && internalLink) {
-		return (
-			<div className="flex h-10 w-full items-center justify-center bg-black text-primary-foreground">
-				<Link href="#" className="underline-offset-2 hover:underline">
-					{promoData.message}
-				</Link>
-			</div>
-		)
-	}
+	const global = (await getCachedGlobal('promo', 1)()) as DataFromGlobalSlug<'promo'>
+	if (!global.message) return <></>
 
 	return (
 		<div className="flex h-10 w-full items-center justify-center bg-black text-primary-foreground">
-			{promoData.message}
+			<CMSLink
+				className="underline-offset-2 hover:underline"
+				{...global.link}
+				type={global.link.type ?? undefined}
+			>
+				{global.message}
+			</CMSLink>
 		</div>
 	)
 }
