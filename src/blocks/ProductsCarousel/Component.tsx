@@ -1,3 +1,4 @@
+import { Phudu } from 'next/font/google'
 import Image from 'next/image'
 import Link from 'next/link'
 
@@ -5,10 +6,9 @@ import RichText from '@/components/RichText'
 import { Button } from '@/components/ui/button'
 import { Carousel, CarouselContent, CarouselItem } from '@/components/ui/carousel'
 import type { ProductsCarouselBlockProps } from '@/payload-types'
+import { cn } from '@/utilities/ui'
 
 import { ProductsCarouselNavButton } from './ProductsCarouselNavButton'
-import { Phudu } from 'next/font/google'
-import { cn } from '@/utilities/ui'
 
 const phudu = Phudu({
 	subsets: ['vietnamese'],
