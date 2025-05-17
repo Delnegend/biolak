@@ -1,16 +1,16 @@
 import type { FieldHook } from 'payload'
 
-export const formatSlug = (val: string): string =>
-	val
+export function formatSlug(val: string): string {
+	return val
 		.normalize('NFD')
 		.replace(/[\u0300-\u036f]/g, '')
 		.replace(/ /g, '-')
 		.replace(/[^\w-]+/g, '')
 		.toLowerCase()
+}
 
-export const formatSlugHook =
-	(fallback: string): FieldHook =>
-	({ data, operation, value }) => {
+export function formatSlugHook(fallback: string): FieldHook {
+	return ({ data, operation, value }) => {
 		if (typeof value === 'string') {
 			return formatSlug(value)
 		}
@@ -25,3 +25,4 @@ export const formatSlugHook =
 
 		return value
 	}
+}
