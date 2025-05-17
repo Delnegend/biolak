@@ -98,7 +98,7 @@ export const CallToActionRightBlockConf: Block = {
 					},
 					required: true,
 				},
-				link({ appearances: false, disableLabel: true }),
+				link({ disableLabel: true }),
 			],
 		},
 	],
