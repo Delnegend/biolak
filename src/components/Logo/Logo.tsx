@@ -1,13 +1,12 @@
 import clsx from 'clsx'
 import React from 'react'
 
-interface Props {
+// export const Logo = (props: Props) => {
+export function Logo(props: {
 	className?: string
 	loading?: 'lazy' | 'eager'
 	priority?: 'auto' | 'high' | 'low'
-}
-
-export const Logo = (props: Props) => {
+}): React.JSX.Element {
 	const { loading: loadingFromProps, priority: priorityFromProps, className } = props
 
 	const loading = loadingFromProps || 'lazy'
