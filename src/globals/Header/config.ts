@@ -1,13 +1,13 @@
 import type { Field, GlobalConfig } from 'payload'
 
 import { anyone } from '@/access/anyone'
-
 import { PagesSlug } from '@/collections/Pages/slug'
 import { PostCategoriesSlug } from '@/collections/PostCategories/slug'
 import { PostsSlug } from '@/collections/Posts/slug'
 import { ProductCategoriesSlug } from '@/collections/ProductCategories/slug'
 import { ProductsSlug } from '@/collections/Products/slug'
 import { ProductSubCategoriesSlug } from '@/collections/ProductSubCategories/slug'
+
 import { revalidateHeader } from './hooks/revalidateHeader'
 
 const fields: Field[] = [
