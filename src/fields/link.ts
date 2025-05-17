@@ -113,8 +113,8 @@ export const link: LinkType = ({ appearances, disableLabel = false, overrides = 
 				condition: (_, siblingData) => siblingData?.type === 'reference',
 			},
 			label: {
-				en: 'Document to link to',
-				vi: 'Tài liệu liên kết đến',
+				en: 'Link to internal page',
+				vi: 'Liên kết tới trang nội bộ',
 			},
 			relationTo: [
 				PagesSlug,
