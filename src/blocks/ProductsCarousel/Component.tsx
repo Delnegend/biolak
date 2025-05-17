@@ -7,6 +7,13 @@ import { Carousel, CarouselContent, CarouselItem } from '@/components/ui/carouse
 import type { ProductsCarouselBlockProps } from '@/payload-types'
 
 import { ProductsCarouselNavButton } from './ProductsCarouselNavButton'
+import { Phudu } from 'next/font/google'
+import { cn } from '@/utilities/ui'
+
+const phudu = Phudu({
+	subsets: ['vietnamese'],
+	weight: '500',
+})
 
 export function ProductsCarouselBlock(props: ProductsCarouselBlockProps): React.JSX.Element {
 	const products = props.products?.filter((p) => typeof p === 'object') ?? []
@@ -43,12 +50,14 @@ export function ProductsCarouselBlock(props: ProductsCarouselBlockProps): React.
 										) : (
 											<div className="my-5">{p.shortDescription}</div>
 										)}
+
 										<Link href="/[slug]" as={p.slug ? `/product/${p.slug}` : '#'}>
 											<Button size="lg" className="w-[26rem]">
-												XEM THÊM
+												{props.watchMoreBtnLabel}
 											</Button>
 										</Link>
-										<div className="mt-3 flex flex-row gap-3">
+
+										<div className="my-3 flex flex-row gap-3">
 											{products.map((pDot, index) => (
 												<svg
 													key={`${pDot.id}-${index}`}
@@ -68,6 +77,16 @@ export function ProductsCarouselBlock(props: ProductsCarouselBlockProps): React.
 												</svg>
 											))}
 										</div>
+
+										<Link
+											href={props.apb.url ?? '#'}
+											className={cn(
+												'text-xl font-medium text-[#FFF9ED]',
+												phudu.className,
+											)}
+										>
+											{props.apb.label}&nbsp;→
+										</Link>
 									</div>
 								</CarouselItem>
 							)

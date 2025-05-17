@@ -1,6 +1,7 @@
 import { Block } from 'payload'
 
 import { ProductsSlug } from '@/collections/Products/slug'
+import { link } from '@/fields/link'
 
 export const ProductsCarouselBlockConf: Block = {
 	slug: 'productsCarousel',
@@ -37,5 +38,25 @@ export const ProductsCarouselBlockConf: Block = {
 			relationTo: ProductsSlug,
 			hasMany: true,
 		},
+		{
+			name: 'watchMoreBtnLabel',
+			label: {
+				en: 'Watch More Button Label',
+				vi: 'Nhãn nút xem thêm',
+			},
+			type: 'text',
+			defaultValue: 'XEM THÊM',
+			required: true,
+		},
+		link({
+			overrides: {
+				name: 'apb',
+				defaultValue: 'XEM TẤT CẢ SẢN PHẨM',
+				label: {
+					en: 'All Products Button',
+					vi: 'Nút xem tất cả sản phẩm',
+				},
+			},
+		}),
 	],
 }
