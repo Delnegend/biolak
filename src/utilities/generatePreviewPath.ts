@@ -11,7 +11,7 @@ type Props = {
 	req: PayloadRequest
 }
 
-export const generatePreviewPath = ({ collection, slug }: Props) => {
+export function generatePreviewPath({ collection, slug }: Props): string {
 	const encodedParams = new URLSearchParams({
 		slug,
 		collection,

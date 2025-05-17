@@ -1,6 +1,6 @@
 import canUseDOM from './canUseDOM'
 
-export const getServerSideURL = () => {
+export function getServerSideURL(): string {
 	let url = process.env.NEXT_PUBLIC_SERVER_URL
 
 	if (!url && process.env.VERCEL_PROJECT_PRODUCTION_URL) {
@@ -14,7 +14,7 @@ export const getServerSideURL = () => {
 	return url
 }
 
-export const getClientSideURL = () => {
+export function getClientSideURL(): string {
 	if (canUseDOM) {
 		const protocol = window.location.protocol
 		const domain = window.location.hostname
