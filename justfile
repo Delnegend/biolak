@@ -8,15 +8,26 @@ minify-json:
   #!/usr/bin/env bash
   set -euo pipefail
 
-  find src/migrations/ -name '*.json' -print0 | while IFS= read -r -d $'\0' file; do
+  # Define a function to minify a single JSON file
+  minify_single_json_file() {
+    local file="$1"
     echo "Minifying $file..."
     # Use python to load and dump the json compactly, writing to a temp file first
+    # The python script takes the input file path as its first argument (sys.argv[1])
     python3 -c "import json, sys; data = json.load(open(sys.argv[1])); json.dump(data, open(sys.argv[1]+'.tmp', 'w'), separators=(',', ':'))" "$file"
     # Replace the original file with the minified version
     mv "$file.tmp" "$file"
-  done
+  }
+
+  # Export the function so it's available to parallel's child processes
+  export -f minify_single_json_file
+
+  # Find all .json files in src/migrations/ and process them in parallel
+  # -print0 and -0 handle filenames with spaces or special characters
+  find src/migrations/ -name '*.json' -print0 | parallel -0 minify_single_json_file
 
   echo "JSON minification complete."
+
 
 dev:
   pnpm next dev --turbo
