@@ -218,6 +218,22 @@ export interface Page {
               | ({
                   relationTo: 'posts';
                   value: number | Post;
+                } | null)
+              | ({
+                  relationTo: 'postCategories';
+                  value: number | PostCategory;
+                } | null)
+              | ({
+                  relationTo: 'products';
+                  value: number | Product;
+                } | null)
+              | ({
+                  relationTo: 'productCategories';
+                  value: number | ProductCategory;
+                } | null)
+              | ({
+                  relationTo: 'productSubCategories';
+                  value: number | ProductSubCategory;
                 } | null);
             url?: string | null;
             label: string;
@@ -576,6 +592,22 @@ export interface CallToActionCenterBlockProps {
         | ({
             relationTo: 'posts';
             value: number | Post;
+          } | null)
+        | ({
+            relationTo: 'postCategories';
+            value: number | PostCategory;
+          } | null)
+        | ({
+            relationTo: 'products';
+            value: number | Product;
+          } | null)
+        | ({
+            relationTo: 'productCategories';
+            value: number | ProductCategory;
+          } | null)
+        | ({
+            relationTo: 'productSubCategories';
+            value: number | ProductSubCategory;
           } | null);
       url?: string | null;
     };
@@ -583,6 +615,129 @@ export interface CallToActionCenterBlockProps {
   id?: string | null;
   blockName?: string | null;
   blockType: 'cta-center';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "products".
+ */
+export interface Product {
+  id: number;
+  productCategories?: (number | ProductCategory)[] | null;
+  productSubCategories?: (number | ProductSubCategory)[] | null;
+  title: string;
+  shortDescription: string;
+  longDescription?: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  price: number;
+  icon?: (number | null) | Media;
+  gallery?: (number | Media)[] | null;
+  heroSubtitle?: string | null;
+  heroTitle?: string | null;
+  heroDescription?: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  heroMedia?: (number | null) | Media;
+  content?:
+    | (
+        | ArchiveBlockProps
+        | BuyNowBlockProps
+        | CallToAddToCartBlockProps
+        | CallToActionCenterBlockProps
+        | CallToActionLeftBlockProps
+        | CallToActionRightBlockProps
+        | CertificatesBlockProps
+        | ContentBlockProps
+        | FormBlockProps
+        | HighlightCenterBlockProps
+        | HighlightLeftBlockProps
+        | HighlightRightBlockProps
+        | InfiniteScrollBlockProps
+        | LatestPostsBlockProps
+        | MediaBlockProps
+        | ProductsCarouselBlockProps
+        | ThreePhotoBlockProps
+      )[]
+    | null;
+  meta?: {
+    title?: string | null;
+    /**
+     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
+     */
+    image?: (number | null) | Media;
+    description?: string | null;
+  };
+  slug?: string | null;
+  slugLock?: boolean | null;
+  footerSize?: ('small' | 'medium' | 'large') | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "productCategories".
+ */
+export interface ProductCategory {
+  id: number;
+  title: string;
+  productSubCategories?: {
+    docs?: (number | ProductSubCategory)[];
+    hasNextPage?: boolean;
+    totalDocs?: number;
+  };
+  products?: {
+    docs?: (number | Product)[];
+    hasNextPage?: boolean;
+    totalDocs?: number;
+  };
+  slug?: string | null;
+  slugLock?: boolean | null;
+  footerSize?: ('small' | 'medium' | 'large') | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "productSubCategories".
+ */
+export interface ProductSubCategory {
+  id: number;
+  productCategories: number | ProductCategory;
+  title: string;
+  products?: {
+    docs?: (number | Product)[];
+    hasNextPage?: boolean;
+    totalDocs?: number;
+  };
+  slug?: string | null;
+  slugLock?: boolean | null;
+  footerSize?: ('small' | 'medium' | 'large') | null;
+  updatedAt: string;
+  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -620,6 +775,22 @@ export interface CallToActionLeftBlockProps {
         | ({
             relationTo: 'posts';
             value: number | Post;
+          } | null)
+        | ({
+            relationTo: 'postCategories';
+            value: number | PostCategory;
+          } | null)
+        | ({
+            relationTo: 'products';
+            value: number | Product;
+          } | null)
+        | ({
+            relationTo: 'productCategories';
+            value: number | ProductCategory;
+          } | null)
+        | ({
+            relationTo: 'productSubCategories';
+            value: number | ProductSubCategory;
           } | null);
       url?: string | null;
     };
@@ -670,6 +841,22 @@ export interface CallToActionRightBlockProps {
         | ({
             relationTo: 'posts';
             value: number | Post;
+          } | null)
+        | ({
+            relationTo: 'postCategories';
+            value: number | PostCategory;
+          } | null)
+        | ({
+            relationTo: 'products';
+            value: number | Product;
+          } | null)
+        | ({
+            relationTo: 'productCategories';
+            value: number | ProductCategory;
+          } | null)
+        | ({
+            relationTo: 'productSubCategories';
+            value: number | ProductSubCategory;
           } | null);
       url?: string | null;
     };
@@ -733,6 +920,22 @@ export interface ContentBlockProps {
             | ({
                 relationTo: 'posts';
                 value: number | Post;
+              } | null)
+            | ({
+                relationTo: 'postCategories';
+                value: number | PostCategory;
+              } | null)
+            | ({
+                relationTo: 'products';
+                value: number | Product;
+              } | null)
+            | ({
+                relationTo: 'productCategories';
+                value: number | ProductCategory;
+              } | null)
+            | ({
+                relationTo: 'productSubCategories';
+                value: number | ProductSubCategory;
               } | null);
           url?: string | null;
           label: string;
@@ -747,81 +950,6 @@ export interface ContentBlockProps {
   id?: string | null;
   blockName?: string | null;
   blockType: 'content';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "FocusLeftSmallImageBlockProps".
- */
-export interface FocusLeftSmallImageBlockProps {
-  image?: (number | null) | Media;
-  content: {
-    root: {
-      type: string;
-      children: {
-        type: string;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  };
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'focus-left-small-image';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "FocusRightLargeImageBlockProps".
- */
-export interface FocusRightLargeImageBlockProps {
-  image?: (number | null) | Media;
-  content: {
-    root: {
-      type: string;
-      children: {
-        type: string;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  };
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'focus-right-large-image';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "FocusRightSmallImageBlockProps".
- */
-export interface FocusRightSmallImageBlockProps {
-  image?: (number | null) | Media;
-  content: {
-    root: {
-      type: string;
-      children: {
-        type: string;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  };
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'focus-right-small-image';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1075,6 +1203,18 @@ export interface InfiniteScrollBlockProps {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "LatestPostsBlockProps".
+ */
+export interface LatestPostsBlockProps {
+  title: string;
+  buttonLabel: string;
+  posts: (number | Post)[];
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'latestPosts';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "MediaBlockProps".
  */
 export interface MediaBlockProps {
@@ -1090,144 +1230,44 @@ export interface MediaBlockProps {
 export interface ProductsCarouselBlockProps {
   title: string;
   products?: (number | Product)[] | null;
+  apb: {
+    type?: ('reference' | 'custom') | null;
+    newTab?: boolean | null;
+    reference?:
+      | ({
+          relationTo: 'pages';
+          value: number | Page;
+        } | null)
+      | ({
+          relationTo: 'posts';
+          value: number | Post;
+        } | null)
+      | ({
+          relationTo: 'postCategories';
+          value: number | PostCategory;
+        } | null)
+      | ({
+          relationTo: 'products';
+          value: number | Product;
+        } | null)
+      | ({
+          relationTo: 'productCategories';
+          value: number | ProductCategory;
+        } | null)
+      | ({
+          relationTo: 'productSubCategories';
+          value: number | ProductSubCategory;
+        } | null);
+    url?: string | null;
+    label: string;
+    /**
+     * Choose how the link should be rendered.
+     */
+    appearance?: ('default' | 'outline') | null;
+  };
   id?: string | null;
   blockName?: string | null;
   blockType: 'productsCarousel';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "products".
- */
-export interface Product {
-  id: number;
-  productCategories?: (number | ProductCategory)[] | null;
-  productSubCategories?: (number | ProductSubCategory)[] | null;
-  title: string;
-  shortDescription: string;
-  longDescription?: {
-    root: {
-      type: string;
-      children: {
-        type: string;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  } | null;
-  price: number;
-  icon?: (number | null) | Media;
-  gallery?: (number | Media)[] | null;
-  heroSubtitle?: string | null;
-  heroTitle?: string | null;
-  heroDescription?: {
-    root: {
-      type: string;
-      children: {
-        type: string;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  } | null;
-  heroMedia?: (number | null) | Media;
-  content?:
-    | (
-        | ArchiveBlockProps
-        | BuyNowBlockProps
-        | CallToAddToCartBlockProps
-        | CallToActionCenterBlockProps
-        | CallToActionLeftBlockProps
-        | CallToActionRightBlockProps
-        | CertificatesBlockProps
-        | ContentBlockProps
-        | FormBlockProps
-        | HighlightCenterBlockProps
-        | HighlightLeftBlockProps
-        | HighlightRightBlockProps
-        | InfiniteScrollBlockProps
-        | LatestPostsBlockProps
-        | MediaBlockProps
-        | ProductsCarouselBlockProps
-        | ThreePhotoBlockProps
-      )[]
-    | null;
-  meta?: {
-    title?: string | null;
-    /**
-     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
-     */
-    image?: (number | null) | Media;
-    description?: string | null;
-  };
-  slug?: string | null;
-  slugLock?: boolean | null;
-  footerSize?: ('small' | 'medium' | 'large') | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "productCategories".
- */
-export interface ProductCategory {
-  id: number;
-  title: string;
-  productSubCategories?: {
-    docs?: (number | ProductSubCategory)[];
-    hasNextPage?: boolean;
-    totalDocs?: number;
-  };
-  products?: {
-    docs?: (number | Product)[];
-    hasNextPage?: boolean;
-    totalDocs?: number;
-  };
-  slug?: string | null;
-  slugLock?: boolean | null;
-  footerSize?: ('small' | 'medium' | 'large') | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "productSubCategories".
- */
-export interface ProductSubCategory {
-  id: number;
-  productCategories: number | ProductCategory;
-  title: string;
-  products?: {
-    docs?: (number | Product)[];
-    hasNextPage?: boolean;
-    totalDocs?: number;
-  };
-  slug?: string | null;
-  slugLock?: boolean | null;
-  footerSize?: ('small' | 'medium' | 'large') | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "LatestPostsBlockProps".
- */
-export interface LatestPostsBlockProps {
-  title: string;
-  buttonLabel: string;
-  posts: (number | Post)[];
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'latestPosts';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1240,6 +1280,81 @@ export interface ThreePhotoBlockProps {
   id?: string | null;
   blockName?: string | null;
   blockType: 'threePhoto';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "FocusLeftSmallImageBlockProps".
+ */
+export interface FocusLeftSmallImageBlockProps {
+  image?: (number | null) | Media;
+  content: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'focus-left-small-image';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "FocusRightLargeImageBlockProps".
+ */
+export interface FocusRightLargeImageBlockProps {
+  image?: (number | null) | Media;
+  content: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'focus-right-large-image';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "FocusRightSmallImageBlockProps".
+ */
+export interface FocusRightSmallImageBlockProps {
+  image?: (number | null) | Media;
+  content: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'focus-right-small-image';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1959,6 +2074,16 @@ export interface PostsGridBlockPropsSelect<T extends boolean = true> {
 export interface ProductsCarouselBlockPropsSelect<T extends boolean = true> {
   title?: T;
   products?: T;
+  apb?:
+    | T
+    | {
+        type?: T;
+        newTab?: T;
+        reference?: T;
+        url?: T;
+        label?: T;
+        appearance?: T;
+      };
   id?: T;
   blockName?: T;
 }
@@ -2544,15 +2669,87 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
  */
 export interface HeaderGlobal {
   id: number;
-  navItemsLeft?:
+  headerItemsLeft?:
     | {
-        item?: ('search' | 'products' | 'about' | 'events' | 'contact' | 'vie-en' | 'cart') | null;
+        kind?: ('prebuilt' | 'regularLink') | null;
+        prebuilt?: ('search' | 'products' | 'about' | 'events' | 'contact' | 'vie-en' | 'cart') | null;
+        link?: {
+          type?: ('reference' | 'custom') | null;
+          newTab?: boolean | null;
+          reference?:
+            | ({
+                relationTo: 'pages';
+                value: number | Page;
+              } | null)
+            | ({
+                relationTo: 'posts';
+                value: number | Post;
+              } | null)
+            | ({
+                relationTo: 'postCategories';
+                value: number | PostCategory;
+              } | null)
+            | ({
+                relationTo: 'products';
+                value: number | Product;
+              } | null)
+            | ({
+                relationTo: 'productCategories';
+                value: number | ProductCategory;
+              } | null)
+            | ({
+                relationTo: 'productSubCategories';
+                value: number | ProductSubCategory;
+              } | null);
+          url?: string | null;
+          label: string;
+          /**
+           * Choose how the link should be rendered.
+           */
+          appearance?: ('default' | 'outline') | null;
+        };
         id?: string | null;
       }[]
     | null;
-  navItemsRight?:
+  headerItemsRight?:
     | {
-        item?: ('search' | 'products' | 'about' | 'events' | 'contact' | 'vie-en' | 'cart') | null;
+        kind?: ('prebuilt' | 'regularLink') | null;
+        prebuilt?: ('search' | 'products' | 'about' | 'events' | 'contact' | 'vie-en' | 'cart') | null;
+        link?: {
+          type?: ('reference' | 'custom') | null;
+          newTab?: boolean | null;
+          reference?:
+            | ({
+                relationTo: 'pages';
+                value: number | Page;
+              } | null)
+            | ({
+                relationTo: 'posts';
+                value: number | Post;
+              } | null)
+            | ({
+                relationTo: 'postCategories';
+                value: number | PostCategory;
+              } | null)
+            | ({
+                relationTo: 'products';
+                value: number | Product;
+              } | null)
+            | ({
+                relationTo: 'productCategories';
+                value: number | ProductCategory;
+              } | null)
+            | ({
+                relationTo: 'productSubCategories';
+                value: number | ProductSubCategory;
+              } | null);
+          url?: string | null;
+          label: string;
+          /**
+           * Choose how the link should be rendered.
+           */
+          appearance?: ('default' | 'outline') | null;
+        };
         id?: string | null;
       }[]
     | null;
@@ -2600,6 +2797,22 @@ export interface Promo {
       | ({
           relationTo: 'posts';
           value: number | Post;
+        } | null)
+      | ({
+          relationTo: 'postCategories';
+          value: number | PostCategory;
+        } | null)
+      | ({
+          relationTo: 'products';
+          value: number | Product;
+        } | null)
+      | ({
+          relationTo: 'productCategories';
+          value: number | ProductCategory;
+        } | null)
+      | ({
+          relationTo: 'productSubCategories';
+          value: number | ProductSubCategory;
         } | null);
     url?: string | null;
     label: string;
@@ -2670,16 +2883,38 @@ export interface CheckoutPageGlobal {
  * via the `definition` "headerGlobal_select".
  */
 export interface HeaderGlobalSelect<T extends boolean = true> {
-  navItemsLeft?:
+  headerItemsLeft?:
     | T
     | {
-        item?: T;
+        kind?: T;
+        prebuilt?: T;
+        link?:
+          | T
+          | {
+              type?: T;
+              newTab?: T;
+              reference?: T;
+              url?: T;
+              label?: T;
+              appearance?: T;
+            };
         id?: T;
       };
-  navItemsRight?:
+  headerItemsRight?:
     | T
     | {
-        item?: T;
+        kind?: T;
+        prebuilt?: T;
+        link?:
+          | T
+          | {
+              type?: T;
+              newTab?: T;
+              reference?: T;
+              url?: T;
+              label?: T;
+              appearance?: T;
+            };
         id?: T;
       };
   updatedAt?: T;
