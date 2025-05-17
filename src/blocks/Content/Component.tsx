@@ -36,7 +36,7 @@ export function ContentBlock({ columns }: ContentBlockProps): React.JSX.Element 
 							>
 								{richText && <RichText data={richText} enableGutter={false} />}
 
-								{enableLink && <CMSLink {...link} />}
+								{enableLink && link && <CMSLink {...link} type={link.type ?? undefined} />}
 							</div>
 						)
 					})}
