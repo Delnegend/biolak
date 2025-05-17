@@ -8,41 +8,29 @@ import { ProductsSlug } from '@/collections/Products/slug'
 import { ProductSubCategoriesSlug } from '@/collections/ProductSubCategories/slug'
 import deepMerge from '@/utilities/deepMerge'
 
-export type LinkAppearances = 'default' | 'outline'
+export const LinkFieldRelations = [
+	PagesSlug,
+	PostsSlug,
+	PostCategoriesSlug,
+	ProductsSlug,
+	ProductCategoriesSlug,
+	ProductSubCategoriesSlug,
+] as const
 
-export const appearanceOptions: Record<
-	LinkAppearances,
-	{
-		label: {
-			en: string
-			vi: string
-		}
-		value: string
-	}
-> = {
-	default: {
-		value: 'default',
-		label: {
-			en: 'Default',
-			vi: 'Mặc định',
-		},
-	},
-	outline: {
-		value: 'outline',
-		label: {
-			en: 'Outline',
-			vi: 'Viền ngoài',
-		},
-	},
-}
+export type LinkFieldRelationsType = (typeof LinkFieldRelations)[number]
 
-type LinkType = (options?: {
-	appearances?: LinkAppearances[] | false
+/**
+ * ALWAYS use CMSLink component to render this field, check the
+ * components of blocks that are using this field for example.
+ *
+ */
+export function link({
+	disableLabel = false,
+	overrides = {},
+}: {
 	disableLabel?: boolean
 	overrides?: Partial<GroupField>
-}) => Field
-
-export const link: LinkType = ({ appearances, disableLabel = false, overrides = {} } = {}) => {
+} = {}): Field {
 	const linkResult: GroupField = {
 		name: 'link',
 		type: 'group',
@@ -116,14 +104,7 @@ export const link: LinkType = ({ appearances, disableLabel = false, overrides = 
 				en: 'Link to internal page',
 				vi: 'Liên kết tới trang nội bộ',
 			},
-			relationTo: [
-				PagesSlug,
-				PostsSlug,
-				PostCategoriesSlug,
-				ProductsSlug,
-				ProductCategoriesSlug,
-				ProductSubCategoriesSlug,
-			],
+			relationTo: [...LinkFieldRelations],
 			required: true,
 		},
 		{
@@ -169,31 +150,6 @@ export const link: LinkType = ({ appearances, disableLabel = false, overrides = 
 		})
 	} else {
 		linkResult.fields = [...linkResult.fields, ...linkTypes]
-	}
-
-	if (appearances !== false) {
-		let appearanceOptionsToUse = [appearanceOptions.default, appearanceOptions.outline]
-
-		if (appearances) {
-			appearanceOptionsToUse = appearances.map((appearance) => appearanceOptions[appearance])
-		}
-
-		linkResult.fields.push({
-			name: 'appearance',
-			type: 'select',
-			admin: {
-				description: {
-					en: 'Choose how the link should be rendered.',
-					vi: 'Chọn cách liên kết sẽ được hiển thị.',
-				},
-			},
-			defaultValue: 'default',
-			options: appearanceOptionsToUse,
-			label: {
-				en: 'Appearance',
-				vi: 'Kiểu dáng',
-			},
-		})
 	}
 
 	return deepMerge(linkResult, overrides)
