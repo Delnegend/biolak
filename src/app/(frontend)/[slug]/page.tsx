@@ -17,7 +17,7 @@ import PageClient from './page.client'
 export async function generateStaticParams() {
 	const payload = await getPayload({ config: configPromise })
 	const pages = await payload.find({
-		collection: 'pages',
+		collection: PagesSlug,
 		draft: false,
 		limit: 1000,
 		overrideAccess: false,
