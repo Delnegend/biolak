@@ -1,6 +1,6 @@
 import { DataFromGlobalSlug } from 'payload'
 
-import { CMSLink } from '@/components/Link'
+import { CMSLink } from '@/components/CMSLink'
 import { getCachedGlobal } from '@/utilities/getGlobals'
 
 export async function Promo(): Promise<React.JSX.Element> {

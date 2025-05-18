@@ -1,7 +1,7 @@
 import { Lato } from 'next/font/google'
 import React from 'react'
 
-import { CMSLink } from '@/components/Link'
+import { CMSLink } from '@/components/CMSLink'
 import RichText from '@/components/RichText'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'

@@ -5,7 +5,7 @@ import type { ContentBlockProps } from '@/payload-types'
 import { cssStringToStyle } from '@/utilities/cssStringToStyle'
 import { cn } from '@/utilities/ui'
 
-import { CMSLink } from '../../components/Link'
+import { CMSLink } from '../../components/CMSLink'
 
 export function ContentBlock({ columns }: ContentBlockProps): React.JSX.Element {
 	const colsSpanClasses = {
