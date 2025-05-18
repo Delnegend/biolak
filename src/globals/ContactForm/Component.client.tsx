@@ -10,26 +10,27 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/componen
 import { TextInput } from '@/components/ui/text-input'
 import { ContactFormGlobal } from '@/payload-types'
 
-import { type ContactFormInputType, submitContactForm } from './actions/submitContactForm'
+import {
+	type ContactFormInputType,
+	submitContactFormAction,
+} from './actions/submitContactFormAction'
 
 export function ContactFormClient({ global }: { global: ContactFormGlobal }) {
 	const { register, handleSubmit } = useForm<ContactFormInputType>()
 	const onSubmit: SubmitHandler<ContactFormInputType> = (data) => {
 		void (async (): Promise<void> => {
-			const response = await submitContactForm(data)
+			const response = await submitContactFormAction(data)
 			if (response.success) {
-				toast.success('BioLAK đã nhận đuợc câu hỏi của bạn!')
+				toast.success('BioLAK đã nhận đuợc phản hồi của bạn')
 				return
 			}
 			let description = ''
 			if (response.errors instanceof ZodError) {
-				for (const error of response.errors.errors) {
-					description += `${error.path.join('.')} ${error.message}\n`
-				}
+				description = response.errors.message
 			} else {
 				description = `${response.errors}`
 			}
-			toast.error('Không thể gửi biểu mẫu!', {
+			toast.error('Không thể gửi biểu mẫu', {
 				description,
 			})
 		})()
