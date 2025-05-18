@@ -1,4 +1,4 @@
-import { Lato, Phudu } from 'next/font/google'
+import { Phudu } from 'next/font/google'
 import Image from 'next/image'
 
 import { TextInput } from '@/components/ui/text-input'
@@ -8,7 +8,6 @@ import { cn } from '@/utilities/ui'
 
 import { FooterGlobalSlug } from './config'
 
-const lato = Lato({ subsets: ['latin'], weight: ['400'] })
 const phudu = Phudu({ subsets: ['vietnamese'], weight: ['400', '600', '700'] })
 
 export async function FooterComponent({ size }: { size?: 'small' | 'large' | 'medium' | null }) {
@@ -58,7 +57,7 @@ async function FooterLarge({
 					{/* contact us */}
 					<div className="font-serif text-7xl font-medium">{contactUs.title}</div>
 					<TextInput label={contactUs.emailInputLabel} required />
-					<div className={cn('text-xl font-normal leading-8 text-primary', lato.className)}>
+					<div className="text-xl font-normal leading-8 text-primary">
 						{contactUs.description}
 					</div>
 				</div>

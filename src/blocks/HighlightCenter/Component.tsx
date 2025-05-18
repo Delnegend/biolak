@@ -1,4 +1,4 @@
-import { Lato, Phudu } from 'next/font/google'
+import { Phudu } from 'next/font/google'
 import Image from 'next/image'
 
 import { HighlightCenterBlockProps } from '@/payload-types'
@@ -6,11 +6,6 @@ import { cn } from '@/utilities/ui'
 
 const phudu = Phudu({
 	subsets: ['vietnamese'],
-	weight: '400',
-})
-
-const lato = Lato({
-	subsets: ['latin'],
 	weight: '400',
 })
 
@@ -34,9 +29,7 @@ export function HighlightCenterBlock(props: HighlightCenterBlockProps): React.JS
 				</div>
 				<div className="my-4 text-center font-serif text-[2rem] italic">{props.title}</div>
 			</div>
-			<p className={cn('text-balance text-center text-[2rem]', lato.className)}>
-				{props.description}
-			</p>
+			<p className="text-balance text-center text-[2rem]">{props.description}</p>
 		</div>
 	)
 }

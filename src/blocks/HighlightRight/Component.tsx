@@ -1,13 +1,6 @@
-import { Lato } from 'next/font/google'
 import Image from 'next/image'
 
 import { HighlightRightBlockProps } from '@/payload-types'
-import { cn } from '@/utilities/ui'
-
-const lato = Lato({
-	subsets: ['latin'],
-	weight: '400',
-})
 
 export function HighlightRightBlock(props: HighlightRightBlockProps): React.JSX.Element {
 	const img = props.image && typeof props.image === 'object' ? props.image : null
@@ -31,9 +24,7 @@ export function HighlightRightBlock(props: HighlightRightBlockProps): React.JSX.
 
 			<div className="-order-1 self-center">
 				<div className="mb-[2.5rem] font-serif text-[2rem] italic"> {props.title}</div>
-				<div className={cn('text-balance text-[2rem]', lato.className)}>
-					{props.description}
-				</div>
+				<div className="text-balance text-[2rem]">{props.description}</div>
 			</div>
 		</div>
 	)
