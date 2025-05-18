@@ -86,9 +86,7 @@ export function ProductsCarouselBlock(props: ProductsCarouselBlockProps): React.
 											)}
 											{...props.apb}
 											type={props.apb.type ?? undefined}
-										>
-											{props.apb.label}&nbsp;→
-										</CMSLink>
+										/>
 									</div>
 								</CarouselItem>
 							)
