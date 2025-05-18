@@ -67,6 +67,7 @@ export interface Config {
   };
   blocks: {};
   collections: {
+    customers: Customer;
     contactForm: ContactForm;
     media: Media;
     pages: Page;
@@ -75,6 +76,7 @@ export interface Config {
     productCategories: ProductCategory;
     products: Product;
     productSubCategories: ProductSubCategory;
+    orders: Order;
     users: User;
     redirects: Redirect;
     forms: Form;
@@ -86,6 +88,9 @@ export interface Config {
     'payload-migrations': PayloadMigration;
   };
   collectionsJoins: {
+    customers: {
+      orders: 'orders';
+    };
     postCategories: {
       posts: 'posts';
     };
@@ -93,11 +98,15 @@ export interface Config {
       productSubCategories: 'productSubCategories';
       products: 'products';
     };
+    products: {
+      orders: 'orders';
+    };
     productSubCategories: {
       products: 'products';
     };
   };
   collectionsSelect: {
+    customers: CustomersSelect<false> | CustomersSelect<true>;
     contactForm: ContactFormSelect<false> | ContactFormSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     pages: PagesSelect<false> | PagesSelect<true>;
@@ -106,6 +115,7 @@ export interface Config {
     productCategories: ProductCategoriesSelect<false> | ProductCategoriesSelect<true>;
     products: ProductsSelect<false> | ProductsSelect<true>;
     productSubCategories: ProductSubCategoriesSelect<false> | ProductSubCategoriesSelect<true>;
+    orders: OrdersSelect<false> | OrdersSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
     redirects: RedirectsSelect<false> | RedirectsSelect<true>;
     forms: FormsSelect<false> | FormsSelect<true>;
@@ -125,6 +135,8 @@ export interface Config {
     footerGlobal: FooterGlobal;
     headerGlobal: HeaderGlobal;
     promo: Promo;
+    reviewsGlobal: ReviewsGlobal;
+    'popup-banner': PopupBanner;
   };
   globalsSelect: {
     checkoutPageGlobal: CheckoutPageGlobalSelect<false> | CheckoutPageGlobalSelect<true>;
@@ -132,6 +144,8 @@ export interface Config {
     footerGlobal: FooterGlobalSelect<false> | FooterGlobalSelect<true>;
     headerGlobal: HeaderGlobalSelect<false> | HeaderGlobalSelect<true>;
     promo: PromoSelect<false> | PromoSelect<true>;
+    reviewsGlobal: ReviewsGlobalSelect<false> | ReviewsGlobalSelect<true>;
+    'popup-banner': PopupBannerSelect<false> | PopupBannerSelect<true>;
   };
   locale: null;
   user: User & {
@@ -168,14 +182,163 @@ export interface UserAuthOperations {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "contactForm".
+ * via the `definition` "customers".
  */
-export interface ContactForm {
+export interface Customer {
   id: number;
-  username: string;
-  email: string;
-  phoneNumber: string;
-  message: string;
+  name?: string | null;
+  email?: string | null;
+  phoneNumber?: string | null;
+  address?: string | null;
+  orders?: {
+    docs?: (number | Order)[];
+    hasNextPage?: boolean;
+    totalDocs?: number;
+  };
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "orders".
+ */
+export interface Order {
+  id: number;
+  review: {
+    rating: number;
+    content: string;
+  };
+  products: number | Product;
+  customers?: (number | null) | Customer;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "products".
+ */
+export interface Product {
+  id: number;
+  productCategories?: (number | ProductCategory)[] | null;
+  productSubCategories?: (number | ProductSubCategory)[] | null;
+  title: string;
+  shortDescription: string;
+  longDescription?: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  price: number;
+  icon?: (number | null) | Media;
+  gallery?: (number | Media)[] | null;
+  reviewsVisible?: ('show' | 'hide') | null;
+  heroSubtitle?: string | null;
+  heroTitle?: string | null;
+  heroDescription?: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  heroMedia?: (number | null) | Media;
+  content?:
+    | (
+        | ArchiveBlockProps
+        | BuyNowBlockProps
+        | CallToActionCenterBlockProps
+        | CallToActionLeftBlockProps
+        | CallToActionRightBlockProps
+        | CallToAddToCartBlockProps
+        | CertificatesBlockProps
+        | ContentBlockProps
+        | FormBlockProps
+        | HighlightRightBlockProps
+        | HighlightCenterBlockProps
+        | HighlightLeftBlockProps
+        | InfiniteScrollBlockProps
+        | LatestPostsBlockProps
+        | MediaBlockProps
+        | ProductsCarouselBlockProps
+        | ThreePhotoBlockProps
+      )[]
+    | null;
+  orders?: {
+    docs?: (number | Order)[];
+    hasNextPage?: boolean;
+    totalDocs?: number;
+  };
+  meta?: {
+    title?: string | null;
+    /**
+     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
+     */
+    image?: (number | null) | Media;
+    description?: string | null;
+  };
+  slug?: string | null;
+  slugLock?: boolean | null;
+  footerSize?: ('small' | 'medium' | 'large') | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "productCategories".
+ */
+export interface ProductCategory {
+  id: number;
+  title: string;
+  productSubCategories?: {
+    docs?: (number | ProductSubCategory)[];
+    hasNextPage?: boolean;
+    totalDocs?: number;
+  };
+  products?: {
+    docs?: (number | Product)[];
+    hasNextPage?: boolean;
+    totalDocs?: number;
+  };
+  slug?: string | null;
+  slugLock?: boolean | null;
+  footerSize?: ('small' | 'medium' | 'large') | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "productSubCategories".
+ */
+export interface ProductSubCategory {
+  id: number;
+  productCategories: number | ProductCategory;
+  title: string;
+  products?: {
+    docs?: (number | Product)[];
+    hasNextPage?: boolean;
+    totalDocs?: number;
+  };
+  slug?: string | null;
+  slugLock?: boolean | null;
+  footerSize?: ('small' | 'medium' | 'large') | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -270,6 +433,195 @@ export interface Media {
       filename?: string | null;
     };
   };
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ArchiveBlockProps".
+ */
+export interface ArchiveBlockProps {
+  introContent?: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  populateBy?: ('collection' | 'selection') | null;
+  relationTo?: 'posts' | null;
+  postCategories?: (number | PostCategory)[] | null;
+  limit?: number | null;
+  selectedDocs?:
+    | {
+        relationTo: 'posts';
+        value: number | Post;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'archive';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "postCategories".
+ */
+export interface PostCategory {
+  id: number;
+  title: string;
+  posts?: {
+    docs?: (number | Post)[];
+    hasNextPage?: boolean;
+    totalDocs?: number;
+  };
+  layout?: (CallToActionPostBlockProps | PostsGridBlockProps)[] | null;
+  slug?: string | null;
+  slugLock?: boolean | null;
+  footerSize?: ('small' | 'medium' | 'large') | null;
+  parent?: (number | null) | PostCategory;
+  breadcrumbs?:
+    | {
+        doc?: (number | null) | PostCategory;
+        url?: string | null;
+        label?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "posts".
+ */
+export interface Post {
+  id: number;
+  title: string;
+  heroImage?: (number | null) | Media;
+  layout: (
+    | ArchiveBlockProps
+    | BuyNowBlockProps
+    | CallToActionCenterBlockProps
+    | CallToActionLeftBlockProps
+    | CallToActionRightBlockProps
+    | CallToAddToCartBlockProps
+    | CertificatesBlockProps
+    | ContentBlockProps
+    | FocusLeftSmallImageBlockProps
+    | FocusRightLargeImageBlockProps
+    | FocusRightSmallImageBlockProps
+    | FormBlockProps
+    | HighlightRightBlockProps
+    | HighlightCenterBlockProps
+    | HighlightLeftBlockProps
+    | InfiniteScrollBlockProps
+    | MediaBlockProps
+    | ProductsCarouselBlockProps
+    | ProductsCarouselBlockProps
+    | ProductsCategoryBlockProps
+    | ThreePhotoBlockProps
+    | ThreePhotoBlockProps
+  )[];
+  relatedPosts?: (number | Post)[] | null;
+  postCategories?: (number | PostCategory)[] | null;
+  meta?: {
+    title?: string | null;
+    /**
+     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
+     */
+    image?: (number | null) | Media;
+    description?: string | null;
+  };
+  publishedAt?: string | null;
+  authors?: (number | User)[] | null;
+  populatedAuthors?:
+    | {
+        id?: string | null;
+        name?: string | null;
+      }[]
+    | null;
+  slug?: string | null;
+  slugLock?: boolean | null;
+  footerSize?: ('small' | 'medium' | 'large') | null;
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "BuyNowBlockProps".
+ */
+export interface BuyNowBlockProps {
+  buttonLabel?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'buy-now';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "CallToActionCenterBlockProps".
+ */
+export interface CallToActionCenterBlockProps {
+  title: string;
+  'sub-title'?: string | null;
+  description?: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  background?: (number | null) | Media;
+  button: {
+    text: string;
+    link?: {
+      type?: ('reference' | 'custom') | null;
+      newTab?: boolean | null;
+      reference?:
+        | ({
+            relationTo: 'pages';
+            value: number | Page;
+          } | null)
+        | ({
+            relationTo: 'postCategories';
+            value: number | PostCategory;
+          } | null)
+        | ({
+            relationTo: 'posts';
+            value: number | Post;
+          } | null)
+        | ({
+            relationTo: 'productCategories';
+            value: number | ProductCategory;
+          } | null)
+        | ({
+            relationTo: 'products';
+            value: number | Product;
+          } | null)
+        | ({
+            relationTo: 'productSubCategories';
+            value: number | ProductSubCategory;
+          } | null);
+      url?: string | null;
+    };
+  };
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'cta-center';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -379,95 +731,11 @@ export interface Page {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "postCategories".
+ * via the `definition` "BannerBlockProps".
  */
-export interface PostCategory {
-  id: number;
-  title: string;
-  posts?: {
-    docs?: (number | Post)[];
-    hasNextPage?: boolean;
-    totalDocs?: number;
-  };
-  layout?: (CallToActionPostBlockProps | PostsGridBlockProps)[] | null;
-  slug?: string | null;
-  slugLock?: boolean | null;
-  footerSize?: ('small' | 'medium' | 'large') | null;
-  parent?: (number | null) | PostCategory;
-  breadcrumbs?:
-    | {
-        doc?: (number | null) | PostCategory;
-        url?: string | null;
-        label?: string | null;
-        id?: string | null;
-      }[]
-    | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "posts".
- */
-export interface Post {
-  id: number;
-  title: string;
-  heroImage?: (number | null) | Media;
-  layout: (
-    | ArchiveBlockProps
-    | BuyNowBlockProps
-    | CallToActionCenterBlockProps
-    | CallToActionLeftBlockProps
-    | CallToActionRightBlockProps
-    | CallToAddToCartBlockProps
-    | CertificatesBlockProps
-    | ContentBlockProps
-    | FocusLeftSmallImageBlockProps
-    | FocusRightLargeImageBlockProps
-    | FocusRightSmallImageBlockProps
-    | FormBlockProps
-    | HighlightRightBlockProps
-    | HighlightCenterBlockProps
-    | HighlightLeftBlockProps
-    | InfiniteScrollBlockProps
-    | MediaBlockProps
-    | ProductsCarouselBlockProps
-    | ProductsCarouselBlockProps
-    | ProductsCategoryBlockProps
-    | ThreePhotoBlockProps
-    | ThreePhotoBlockProps
-  )[];
-  relatedPosts?: (number | Post)[] | null;
-  postCategories?: (number | PostCategory)[] | null;
-  meta?: {
-    title?: string | null;
-    /**
-     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
-     */
-    image?: (number | null) | Media;
-    description?: string | null;
-  };
-  publishedAt?: string | null;
-  authors?: (number | User)[] | null;
-  populatedAuthors?:
-    | {
-        id?: string | null;
-        name?: string | null;
-      }[]
-    | null;
-  slug?: string | null;
-  slugLock?: boolean | null;
-  footerSize?: ('small' | 'medium' | 'large') | null;
-  updatedAt: string;
-  createdAt: string;
-  _status?: ('draft' | 'published') | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "ArchiveBlockProps".
- */
-export interface ArchiveBlockProps {
-  introContent?: {
+export interface BannerBlockProps {
+  style: 'info' | 'warning' | 'error' | 'success';
+  content: {
     root: {
       type: string;
       children: {
@@ -481,213 +749,22 @@ export interface ArchiveBlockProps {
       version: number;
     };
     [k: string]: unknown;
-  } | null;
-  populateBy?: ('collection' | 'selection') | null;
-  relationTo?: 'posts' | null;
-  postCategories?: (number | PostCategory)[] | null;
-  limit?: number | null;
-  selectedDocs?:
-    | {
-        relationTo: 'posts';
-        value: number | Post;
-      }[]
-    | null;
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'archive';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "BuyNowBlockProps".
- */
-export interface BuyNowBlockProps {
-  buttonLabel?: string | null;
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'buy-now';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "CallToActionCenterBlockProps".
- */
-export interface CallToActionCenterBlockProps {
-  title: string;
-  'sub-title'?: string | null;
-  description?: {
-    root: {
-      type: string;
-      children: {
-        type: string;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  } | null;
-  background?: (number | null) | Media;
-  button: {
-    text: string;
-    link?: {
-      type?: ('reference' | 'custom') | null;
-      newTab?: boolean | null;
-      reference?:
-        | ({
-            relationTo: 'pages';
-            value: number | Page;
-          } | null)
-        | ({
-            relationTo: 'postCategories';
-            value: number | PostCategory;
-          } | null)
-        | ({
-            relationTo: 'posts';
-            value: number | Post;
-          } | null)
-        | ({
-            relationTo: 'productCategories';
-            value: number | ProductCategory;
-          } | null)
-        | ({
-            relationTo: 'products';
-            value: number | Product;
-          } | null)
-        | ({
-            relationTo: 'productSubCategories';
-            value: number | ProductSubCategory;
-          } | null);
-      url?: string | null;
-    };
   };
   id?: string | null;
   blockName?: string | null;
-  blockType: 'cta-center';
+  blockType: 'banner';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "productCategories".
+ * via the `definition` "BestSellerBlockProps".
  */
-export interface ProductCategory {
-  id: number;
+export interface BestSellerBlockProps {
   title: string;
-  productSubCategories?: {
-    docs?: (number | ProductSubCategory)[];
-    hasNextPage?: boolean;
-    totalDocs?: number;
-  };
-  products?: {
-    docs?: (number | Product)[];
-    hasNextPage?: boolean;
-    totalDocs?: number;
-  };
-  slug?: string | null;
-  slugLock?: boolean | null;
-  footerSize?: ('small' | 'medium' | 'large') | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "productSubCategories".
- */
-export interface ProductSubCategory {
-  id: number;
-  productCategories: number | ProductCategory;
-  title: string;
-  products?: {
-    docs?: (number | Product)[];
-    hasNextPage?: boolean;
-    totalDocs?: number;
-  };
-  slug?: string | null;
-  slugLock?: boolean | null;
-  footerSize?: ('small' | 'medium' | 'large') | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "products".
- */
-export interface Product {
-  id: number;
-  productCategories?: (number | ProductCategory)[] | null;
-  productSubCategories?: (number | ProductSubCategory)[] | null;
-  title: string;
-  shortDescription: string;
-  longDescription?: {
-    root: {
-      type: string;
-      children: {
-        type: string;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  } | null;
-  price: number;
-  icon?: (number | null) | Media;
-  gallery?: (number | Media)[] | null;
-  heroSubtitle?: string | null;
-  heroTitle?: string | null;
-  heroDescription?: {
-    root: {
-      type: string;
-      children: {
-        type: string;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  } | null;
-  heroMedia?: (number | null) | Media;
-  content?:
-    | (
-        | ArchiveBlockProps
-        | BuyNowBlockProps
-        | CallToActionCenterBlockProps
-        | CallToActionLeftBlockProps
-        | CallToActionRightBlockProps
-        | CallToAddToCartBlockProps
-        | CertificatesBlockProps
-        | ContentBlockProps
-        | FormBlockProps
-        | HighlightRightBlockProps
-        | HighlightCenterBlockProps
-        | HighlightLeftBlockProps
-        | InfiniteScrollBlockProps
-        | LatestPostsBlockProps
-        | MediaBlockProps
-        | ProductsCarouselBlockProps
-        | ThreePhotoBlockProps
-      )[]
-    | null;
-  meta?: {
-    title?: string | null;
-    /**
-     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
-     */
-    image?: (number | null) | Media;
-    description?: string | null;
-  };
-  slug?: string | null;
-  slugLock?: boolean | null;
-  footerSize?: ('small' | 'medium' | 'large') | null;
-  updatedAt: string;
-  createdAt: string;
+  description?: string | null;
+  products?: (number | Product)[] | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'bestSeller';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -748,6 +825,19 @@ export interface CallToActionLeftBlockProps {
   id?: string | null;
   blockName?: string | null;
   blockType: 'cta-left';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "CallToActionPostBlockProps".
+ */
+export interface CallToActionPostBlockProps {
+  post: number | Post;
+  overwriteTitle?: string | null;
+  overwriteDescription?: string | null;
+  buttonLabel: string;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'call-to-action-post';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1197,6 +1287,16 @@ export interface MediaBlockProps {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "PostsGridBlockProps".
+ */
+export interface PostsGridBlockProps {
+  postCategories?: (number | null) | PostCategory;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'posts-grid';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "ProductsCarouselBlockProps".
  */
 export interface ProductsCarouselBlockProps {
@@ -1237,6 +1337,25 @@ export interface ProductsCarouselBlockProps {
   id?: string | null;
   blockName?: string | null;
   blockType: 'productsCarousel';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ProductsCategoryBlockProps".
+ */
+export interface ProductsCategoryBlockProps {
+  category:
+    | {
+        relationTo: 'productCategories';
+        value: number | ProductCategory;
+      }
+    | {
+        relationTo: 'productSubCategories';
+        value: number | ProductSubCategory;
+      };
+  buttonLabel: string;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'productsCategory';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1327,31 +1446,12 @@ export interface FocusRightSmallImageBlockProps {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "ProductsCategoryBlockProps".
- */
-export interface ProductsCategoryBlockProps {
-  category:
-    | {
-        relationTo: 'productCategories';
-        value: number | ProductCategory;
-      }
-    | {
-        relationTo: 'productSubCategories';
-        value: number | ProductSubCategory;
-      };
-  buttonLabel: string;
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'productsCategory';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "users".
  */
 export interface User {
   id: number;
   name?: string | null;
-  role: 'admin' | 'customer';
+  role: 'admin' | 'sales-manager' | 'content-manager';
   updatedAt: string;
   createdAt: string;
   email: string;
@@ -1365,63 +1465,16 @@ export interface User {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "CallToActionPostBlockProps".
+ * via the `definition` "contactForm".
  */
-export interface CallToActionPostBlockProps {
-  post: number | Post;
-  overwriteTitle?: string | null;
-  overwriteDescription?: string | null;
-  buttonLabel: string;
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'call-to-action-post';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "PostsGridBlockProps".
- */
-export interface PostsGridBlockProps {
-  postCategories?: (number | null) | PostCategory;
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'posts-grid';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "BannerBlockProps".
- */
-export interface BannerBlockProps {
-  style: 'info' | 'warning' | 'error' | 'success';
-  content: {
-    root: {
-      type: string;
-      children: {
-        type: string;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  };
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'banner';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "BestSellerBlockProps".
- */
-export interface BestSellerBlockProps {
-  title: string;
-  description?: string | null;
-  products?: (number | Product)[] | null;
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'bestSeller';
+export interface ContactForm {
+  id: number;
+  username: string;
+  email: string;
+  phoneNumber: string;
+  message: string;
+  updatedAt: string;
+  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1596,6 +1649,10 @@ export interface PayloadLockedDocument {
   id: number;
   document?:
     | ({
+        relationTo: 'customers';
+        value: number | Customer;
+      } | null)
+    | ({
         relationTo: 'contactForm';
         value: number | ContactForm;
       } | null)
@@ -1626,6 +1683,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'productSubCategories';
         value: number | ProductSubCategory;
+      } | null)
+    | ({
+        relationTo: 'orders';
+        value: number | Order;
       } | null)
     | ({
         relationTo: 'users';
@@ -1692,6 +1753,19 @@ export interface PayloadMigration {
   batch?: number | null;
   updatedAt: string;
   createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "customers_select".
+ */
+export interface CustomersSelect<T extends boolean = true> {
+  name?: T;
+  email?: T;
+  phoneNumber?: T;
+  address?: T;
+  orders?: T;
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -2331,6 +2405,7 @@ export interface ProductsSelect<T extends boolean = true> {
   price?: T;
   icon?: T;
   gallery?: T;
+  reviewsVisible?: T;
   heroSubtitle?: T;
   heroTitle?: T;
   heroDescription?: T;
@@ -2356,6 +2431,7 @@ export interface ProductsSelect<T extends boolean = true> {
         productsCarousel?: T | ProductsCarouselBlockPropsSelect<T>;
         threePhoto?: T | ThreePhotoBlockPropsSelect<T>;
       };
+  orders?: T;
   meta?:
     | T
     | {
@@ -2380,6 +2456,22 @@ export interface ProductSubCategoriesSelect<T extends boolean = true> {
   slug?: T;
   slugLock?: T;
   footerSize?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "orders_select".
+ */
+export interface OrdersSelect<T extends boolean = true> {
+  review?:
+    | T
+    | {
+        rating?: T;
+        content?: T;
+      };
+  products?: T;
+  customers?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -2752,20 +2844,20 @@ export interface HeaderGlobal {
               value: number | Page;
             } | null)
           | ({
-              relationTo: 'products';
-              value: number | Product;
+              relationTo: 'postCategories';
+              value: number | PostCategory;
             } | null)
           | ({
               relationTo: 'posts';
               value: number | Post;
             } | null)
           | ({
-              relationTo: 'postCategories';
-              value: number | PostCategory;
-            } | null)
-          | ({
               relationTo: 'productCategories';
               value: number | ProductCategory;
+            } | null)
+          | ({
+              relationTo: 'products';
+              value: number | Product;
             } | null)
           | ({
               relationTo: 'productSubCategories';
@@ -2786,20 +2878,20 @@ export interface HeaderGlobal {
               value: number | Page;
             } | null)
           | ({
-              relationTo: 'products';
-              value: number | Product;
+              relationTo: 'postCategories';
+              value: number | PostCategory;
             } | null)
           | ({
               relationTo: 'posts';
               value: number | Post;
             } | null)
           | ({
-              relationTo: 'postCategories';
-              value: number | PostCategory;
-            } | null)
-          | ({
               relationTo: 'productCategories';
               value: number | ProductCategory;
+            } | null)
+          | ({
+              relationTo: 'products';
+              value: number | Product;
             } | null)
           | ({
               relationTo: 'productSubCategories';
@@ -2850,6 +2942,28 @@ export interface Promo {
     url?: string | null;
     label: string;
   };
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "reviewsGlobal".
+ */
+export interface ReviewsGlobal {
+  id: number;
+  title: string;
+  btnLabel: string;
+  reviewDialogTitle: string;
+  sendReviewBtnLabel: string;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "popup-banner".
+ */
+export interface PopupBanner {
+  id: number;
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -2996,6 +3110,28 @@ export interface PromoSelect<T extends boolean = true> {
         url?: T;
         label?: T;
       };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "reviewsGlobal_select".
+ */
+export interface ReviewsGlobalSelect<T extends boolean = true> {
+  title?: T;
+  btnLabel?: T;
+  reviewDialogTitle?: T;
+  sendReviewBtnLabel?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "popup-banner_select".
+ */
+export interface PopupBannerSelect<T extends boolean = true> {
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;
