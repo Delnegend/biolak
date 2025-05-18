@@ -61,8 +61,9 @@ export function Button({
 		<button
 			className={cn(
 				buttonVariants({ className, size, variant }),
-				'justify-between font-semibold',
+				'font-semibold',
 				phudu.className,
+				hideArrow ? 'justify-center' : 'justify-between',
 			)}
 			{...rest}
 		>
