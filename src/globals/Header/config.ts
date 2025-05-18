@@ -9,6 +9,7 @@ import { ProductsSlug } from '@/collections/Products/slug'
 import { ProductSubCategoriesSlug } from '@/collections/ProductSubCategories/slug'
 
 import { revalidateHeader } from './hooks/revalidateHeader'
+import { admin } from '@/access/admin'
 
 const fields: Field[] = [
 	{
@@ -141,6 +142,7 @@ export const HeaderGlobalConf: GlobalConfig<typeof HeaderGlobalSlug> = {
 	},
 	access: {
 		read: anyone,
+		update: admin,
 	},
 	fields: [
 		{
