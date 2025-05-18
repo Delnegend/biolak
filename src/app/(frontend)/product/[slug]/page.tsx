@@ -18,7 +18,6 @@ export async function generateStaticParams() {
 
 	const products = await payload.find({
 		collection: ProductsSlug,
-		draft: false,
 		limit: 1000,
 		overrideAccess: false,
 		pagination: false,
