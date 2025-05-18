@@ -7,8 +7,8 @@ import path from 'path'
 import { CollectionConfig } from 'payload'
 import { fileURLToPath } from 'url'
 
-import { admin } from '../../access/admin'
-import { anyone } from '../../access/anyone'
+import { allow, Role } from '@/access/allow'
+
 import { MediaSlug } from './slug'
 
 const filename = fileURLToPath(import.meta.url)
@@ -27,10 +27,10 @@ export const MediaCollection: CollectionConfig<typeof MediaSlug> = {
 		},
 	},
 	access: {
-		create: admin,
-		delete: admin,
-		read: anyone,
-		update: admin,
+		create: allow(Role.Admin),
+		delete: allow(Role.Admin),
+		read: allow(Role.Public),
+		update: allow(Role.Admin),
 	},
 	fields: [
 		{
