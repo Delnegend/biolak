@@ -44,6 +44,7 @@ export default async function Category({
 	try {
 		products = await payload.find({
 			collection: ProductsSlug,
+			overrideAccess: false,
 			where: {
 				[`${ProductCategoriesSlug}.slug`]: {
 					equals: categorySlug,
@@ -60,6 +61,7 @@ export default async function Category({
 		if (products.docs.length === 0) {
 			products = await payload.find({
 				collection: ProductsSlug,
+				overrideAccess: false,
 				where: {
 					[`${ProductSubCategoriesSlug}.slug`]: {
 						equals: categorySlug,
@@ -108,7 +110,7 @@ const queryCategoryBySlug = cache(async ({ slug: categorySlug }: { slug: string 
 
 	let result = await payload.find({
 		collection: ProductCategoriesSlug,
-		draft: false,
+		overrideAccess: false,
 		where: {
 			slug: {
 				equals: categorySlug,
@@ -119,7 +121,7 @@ const queryCategoryBySlug = cache(async ({ slug: categorySlug }: { slug: string 
 	if (result.docs.length === 0) {
 		result = await payload.find({
 			collection: ProductSubCategoriesSlug,
-			draft: false,
+			overrideAccess: false,
 			where: {
 				slug: {
 					equals: categorySlug,
