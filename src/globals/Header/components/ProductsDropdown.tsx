@@ -10,6 +10,7 @@ export async function ProductsDropdown({ label }: { label?: string }): Promise<R
 	const categories = await payload.find({
 		collection: ProductCategoriesSlug,
 		depth: 4,
+		overrideAccess: false,
 	})
 
 	return <ProductsDropdownClient categories={categories} label={label} />

@@ -14,6 +14,7 @@ export const getProductsBySubCategory = cache(
 		const payload = await getPayload({ config: configPromise })
 		const products = await payload.find({
 			collection: ProductsSlug,
+			overrideAccess: false,
 			where: {
 				[`${ProductSubCategoriesSlug}.slug`]: {
 					equals: subCategorySlug,
