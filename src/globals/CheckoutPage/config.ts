@@ -1,6 +1,7 @@
 import { GlobalConfig } from 'payload'
 
 import { allow, Role } from '@/access/allow'
+
 import { revalidateCheckoutPage } from './hooks/revalidateCheckoutPage'
 
 export const CheckoutPageGlobalSlug = 'checkoutPageGlobal'
