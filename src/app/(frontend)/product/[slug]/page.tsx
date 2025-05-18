@@ -40,7 +40,7 @@ const queryProductBySlug = cache(async ({ slug }: { slug: string }) => {
 		collection: ProductsSlug,
 		draft,
 		limit: 1,
-		overrideAccess: draft,
+		overrideAccess: false,
 		pagination: false,
 		where: {
 			slug: {
