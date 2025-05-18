@@ -1,5 +1,6 @@
 import type { Field, GlobalConfig } from 'payload'
 
+import { admin } from '@/access/admin'
 import { anyone } from '@/access/anyone'
 import { PagesSlug } from '@/collections/Pages/slug'
 import { PostCategoriesSlug } from '@/collections/PostCategories/slug'
@@ -9,7 +10,6 @@ import { ProductsSlug } from '@/collections/Products/slug'
 import { ProductSubCategoriesSlug } from '@/collections/ProductSubCategories/slug'
 
 import { revalidateHeader } from './hooks/revalidateHeader'
-import { admin } from '@/access/admin'
 
 const fields: Field[] = [
 	{
