@@ -34,7 +34,6 @@ export async function generateStaticParams() {
 
 const queryProductBySlug = cache(async ({ slug }: { slug: string }) => {
 	const { isEnabled: draft } = await draftMode()
-
 	const payload = await getPayload({ config: configPromise })
 
 	const result = await payload.find({
