@@ -28,6 +28,7 @@ import { ThreePhotoBlockConf } from '@/blocks/ThreePhoto/config'
 import { FooterSizeField } from '@/fields/footer'
 import { slugField } from '@/fields/slug'
 
+import { ProductsCategoryBlockConf } from '@/blocks/ProductsCategory/config'
 import { admin } from '../../access/admin'
 import { adminOrPublished } from '../../access/adminOrPublished'
 import { MediaBlockConf } from '../../blocks/MediaBlock/config'
@@ -120,22 +121,25 @@ export const PostsCollection: CollectionConfig<typeof PostsSlug> = {
 							blocks: [
 								ArchiveBlockConf,
 								BuyNowBlockConf,
-								CallToAddToCartBlockConf,
 								CallToActionCenterBlockConf,
 								CallToActionLeftBlockConf,
 								CallToActionRightBlockConf,
+								CallToAddToCartBlockConf,
 								CertificatesBlockConf,
 								ContentBlockConf,
 								FocusLeftSmallImageBlockConf,
 								FocusRightLargeImageBlockConf,
 								FocusRightSmallImageBlockConf,
 								FormBlockConf,
+								HighlighRightBlockConf,
 								HighlightCenterBlockConf,
 								HighlightLeftBlockConf,
-								HighlighRightBlockConf,
 								InfiniteScrollBlockConf,
 								MediaBlockConf,
 								ProductsCarouselBlockConf,
+								ProductsCarouselBlockConf,
+								ProductsCategoryBlockConf,
+								ThreePhotoBlockConf,
 								ThreePhotoBlockConf,
 							],
 							required: true,
