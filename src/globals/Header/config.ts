@@ -1,13 +1,8 @@
 import type { Field, GlobalConfig } from 'payload'
 
-import { PagesSlug } from '@/collections/Pages/slug'
-import { PostCategoriesSlug } from '@/collections/PostCategories/slug'
-import { PostsSlug } from '@/collections/Posts/slug'
-import { ProductCategoriesSlug } from '@/collections/ProductCategories/slug'
-import { ProductsSlug } from '@/collections/Products/slug'
-import { ProductSubCategoriesSlug } from '@/collections/ProductSubCategories/slug'
-
 import { allow, Role } from '@/access/allow'
+import { LinkFieldRelations } from '@/fields/link'
+
 import { revalidateHeader } from './hooks/revalidateHeader'
 
 const fields: Field[] = [
@@ -103,14 +98,7 @@ const fields: Field[] = [
 			{
 				name: 'internalUrl',
 				type: 'relationship',
-				relationTo: [
-					PagesSlug,
-					ProductsSlug,
-					PostsSlug,
-					PostCategoriesSlug,
-					ProductCategoriesSlug,
-					ProductSubCategoriesSlug,
-				],
+				relationTo: [...LinkFieldRelations],
 				label: {
 					en: 'Link to internal page',
 					vi: 'Liên kết trang nội bộ',
