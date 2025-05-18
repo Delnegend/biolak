@@ -23,7 +23,7 @@ const mockReviews = Array.from({ length: 10 }).map((_, i) => ({
 	createdAt: new Date(),
 }))
 
-export async function ReviewSection(): Promise<React.JSX.Element> {
+export async function ReviewsSection(): Promise<React.JSX.Element> {
 	const reviewGlobal = (await getCachedGlobal(ReviewsGlobalSlug, 1)()) as ReviewsGlobal
 
 	return (
