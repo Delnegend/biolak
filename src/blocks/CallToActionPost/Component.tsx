@@ -1,15 +1,8 @@
-import { Lato } from 'next/font/google'
 import Image from 'next/image'
 import Link from 'next/link'
 
 import { Button } from '@/components/ui/button'
 import { CallToActionPostBlockProps } from '@/payload-types'
-import { cn } from '@/utilities/ui'
-
-const lato = Lato({
-	subsets: ['latin'],
-	weight: ['400', '700'],
-})
 
 export function CallToActionPostBlock(props: CallToActionPostBlockProps): React.JSX.Element {
 	const post = props.post && typeof props.post === 'object' ? props.post : null
@@ -22,7 +15,7 @@ export function CallToActionPostBlock(props: CallToActionPostBlockProps): React.
 				<div className="font-serif text-[4rem] font-semibold leading-none">
 					{props.overwriteTitle ?? post?.title}
 				</div>
-				<div className={cn('text-xl font-semibold', lato.className)}>
+				<div className="text-xl font-semibold">
 					{props.overwriteDescription ?? post?.meta?.description}
 				</div>
 				<Link href={post?.slug ? `/post/${post.slug}` : '#'} className="w-full">

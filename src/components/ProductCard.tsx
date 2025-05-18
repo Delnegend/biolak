@@ -1,5 +1,4 @@
 import { CirclePlus } from 'lucide-react'
-import { Lato } from 'next/font/google'
 import Image from 'next/image'
 import Link from 'next/link'
 
@@ -8,11 +7,6 @@ import { formatPrice } from '@/utilities/formatPrice'
 import { cn } from '@/utilities/ui'
 
 import { Button } from './ui/button'
-
-const lato = Lato({
-	subsets: ['latin'],
-	weight: ['400'],
-})
 
 export function ProductCard({
 	product: p,
@@ -68,10 +62,7 @@ export function ProductCard({
 			>
 				{`${p.title} →`}
 			</Link>
-			<div
-				style={{ gridArea: 'desc' }}
-				className={cn('mb-[1.375rem] text-xs uppercase', lato.className)}
-			>
+			<div style={{ gridArea: 'desc' }} className="mb-[1.375rem] text-xs uppercase">
 				{p.shortDescription}
 			</div>
 			<div style={{ gridArea: 'price' }}>{formatPrice(p.price)}</div>

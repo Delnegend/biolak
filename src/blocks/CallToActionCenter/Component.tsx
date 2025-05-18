@@ -1,4 +1,3 @@
-import { Lato } from 'next/font/google'
 import React from 'react'
 
 import { CMSLink } from '@/components/CMSLink'
@@ -6,12 +5,6 @@ import RichText from '@/components/RichText'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import type { CallToActionCenterBlockProps } from '@/payload-types'
-import { cn } from '@/utilities/ui'
-
-const lato = Lato({
-	subsets: ['latin'],
-	weight: ['400'],
-})
 
 export function CallToActionCenterBlock(props: CallToActionCenterBlockProps): React.JSX.Element {
 	const bgUrl =
@@ -43,10 +36,7 @@ export function CallToActionCenterBlock(props: CallToActionCenterBlockProps): Re
 						<RichText
 							data={props.description}
 							enableGutter={false}
-							className={cn(
-								'text-balance text-center text-2xl text-[#834621]',
-								lato.className,
-							)}
+							className="text-balance text-center text-2xl text-[#834621]"
 						/>
 					)}
 				</CardHeader>
