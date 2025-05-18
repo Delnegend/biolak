@@ -9,8 +9,8 @@ export async function ProductsDropdown({ label }: { label?: string }): Promise<R
 	const payload = await getPayload({ config: configPromise })
 	const categories = await payload.find({
 		collection: ProductCategoriesSlug,
-		depth: 4,
 		overrideAccess: false,
+		depth: 2,
 	})
 
 	return <ProductsDropdownClient categories={categories} label={label} />
