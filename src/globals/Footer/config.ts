@@ -1,8 +1,8 @@
 import type { GlobalConfig } from 'payload'
 
+import { allow, Role } from '@/access/allow'
 import { MediaSlug } from '@/collections/Media/slug'
 
-import { allow, Role } from '@/access/allow'
 import { revalidateFooter } from './hooks/revalidateFooter'
 
 export const FooterGlobalSlug = 'footerGlobal'
