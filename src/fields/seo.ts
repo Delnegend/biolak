@@ -7,16 +7,16 @@ import {
 } from '@payloadcms/plugin-seo/fields'
 import { Field } from 'payload'
 
-import { admin } from '@/access/admin'
+import { allow, Role } from '@/access/allow'
 import { MediaSlug } from '@/collections/Media/slug'
 
 export const SeoFieldConf: Field = {
 	name: 'meta',
 	type: 'group',
 	access: {
-		create: admin,
-		read: () => true,
-		update: admin,
+		create: allow(Role.Admin, Role.ContentManager),
+		read: allow(Role.Public),
+		update: allow(Role.Admin, Role.ContentManager),
 	},
 	fields: [
 		OverviewField({
