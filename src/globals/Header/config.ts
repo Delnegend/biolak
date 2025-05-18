@@ -1,7 +1,5 @@
 import type { Field, GlobalConfig } from 'payload'
 
-import { admin } from '@/access/admin'
-import { anyone } from '@/access/anyone'
 import { PagesSlug } from '@/collections/Pages/slug'
 import { PostCategoriesSlug } from '@/collections/PostCategories/slug'
 import { PostsSlug } from '@/collections/Posts/slug'
@@ -9,6 +7,7 @@ import { ProductCategoriesSlug } from '@/collections/ProductCategories/slug'
 import { ProductsSlug } from '@/collections/Products/slug'
 import { ProductSubCategoriesSlug } from '@/collections/ProductSubCategories/slug'
 
+import { allow, Role } from '@/access/allow'
 import { revalidateHeader } from './hooks/revalidateHeader'
 
 const fields: Field[] = [
@@ -141,8 +140,8 @@ export const HeaderGlobalConf: GlobalConfig<typeof HeaderGlobalSlug> = {
 		vi: 'Thanh tiêu đề',
 	},
 	access: {
-		read: anyone,
-		update: admin,
+		read: allow(Role.Public),
+		update: allow(Role.Admin, Role.ContentManager),
 	},
 	fields: [
 		{

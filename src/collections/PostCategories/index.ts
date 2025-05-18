@@ -1,12 +1,11 @@
 import { CollectionConfig } from 'payload'
 
+import { allow, Role } from '@/access/allow'
 import { CallToActionPostBlockConf } from '@/blocks/CallToActionPost/config'
 import { PostsGridBlockConf } from '@/blocks/PostsGrid/config'
 import { FooterSizeField } from '@/fields/footer'
 import { slugField } from '@/fields/slug'
 
-import { admin } from '../../access/admin'
-import { anyone } from '../../access/anyone'
 import { PostsSlug } from '../Posts/slug'
 import { PostCategoriesSlug } from './slug'
 
@@ -23,10 +22,10 @@ export const PostCategoriesCollection: CollectionConfig<typeof PostCategoriesSlu
 		},
 	},
 	access: {
-		create: admin,
-		delete: admin,
-		read: anyone,
-		update: admin,
+		create: allow(Role.Admin),
+		delete: allow(Role.Admin),
+		read: allow(Role.Public),
+		update: allow(Role.Admin),
 	},
 	admin: {
 		useAsTitle: 'title',

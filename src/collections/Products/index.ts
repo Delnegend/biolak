@@ -1,7 +1,6 @@
 import { CollectionConfig } from 'payload'
 
-import { admin } from '@/access/admin'
-import { anyone } from '@/access/anyone'
+import { allow, Role } from '@/access/allow'
 import { ArchiveBlockConf } from '@/blocks/ArchiveBlock/config'
 import { BuyNowBlockConf } from '@/blocks/BuyNow/config'
 import { CallToActionCenterBlockConf } from '@/blocks/CallToActionCenter/config'
@@ -42,10 +41,10 @@ export const ProductsCollection: CollectionConfig<typeof ProductsSlug> = {
 		},
 	},
 	access: {
-		create: admin,
-		read: anyone,
-		update: admin,
-		delete: admin,
+		create: allow(Role.Admin, Role.ContentManager),
+		read: allow(Role.Public),
+		update: allow(Role.Admin, Role.ContentManager),
+		delete: allow(Role.Admin, Role.ContentManager),
 	},
 	fields: [
 		{

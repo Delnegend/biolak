@@ -1,7 +1,6 @@
 import { CollectionConfig } from 'payload'
 
-import { admin } from '@/access/admin'
-import { anyone } from '@/access/anyone'
+import { allow, Role } from '@/access/allow'
 import { FooterSizeField } from '@/fields/footer'
 import { slugField } from '@/fields/slug'
 
@@ -22,10 +21,10 @@ export const ProductCategoriesCollection: CollectionConfig<typeof ProductCategor
 		},
 	},
 	access: {
-		create: admin,
-		delete: admin,
-		read: anyone,
-		update: admin,
+		create: allow(Role.Admin, Role.ContentManager),
+		delete: allow(Role.Admin, Role.ContentManager),
+		read: allow(Role.Public),
+		update: allow(Role.Admin, Role.ContentManager),
 	},
 	fields: [
 		{

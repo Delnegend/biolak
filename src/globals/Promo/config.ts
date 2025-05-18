@@ -1,16 +1,15 @@
 import { type GlobalConfig } from 'payload'
 
-import { admin } from '@/access/admin'
-import { anyone } from '@/access/anyone'
 import { link } from '@/fields/link'
 
+import { allow, Role } from '@/access/allow'
 import { revalidatePromo } from './hooks/revalidatePromo'
 
 export const PromoGlobalConf: GlobalConfig = {
 	slug: 'promo',
 	access: {
-		read: anyone,
-		update: admin,
+		read: allow(Role.Public),
+		update: allow(Role.Admin, Role.ContentManager),
 	},
 	fields: [
 		{

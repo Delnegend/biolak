@@ -1,9 +1,8 @@
 import type { GlobalConfig } from 'payload'
 
-import { admin } from '@/access/admin'
-import { anyone } from '@/access/anyone'
 import { MediaSlug } from '@/collections/Media/slug'
 
+import { allow, Role } from '@/access/allow'
 import { revalidateFooter } from './hooks/revalidateFooter'
 
 export const FooterGlobalSlug = 'footerGlobal'
@@ -14,8 +13,8 @@ export const FooterGlobalConf: GlobalConfig<typeof FooterGlobalSlug> = {
 		vi: 'Chân trang',
 	},
 	access: {
-		read: anyone,
-		update: admin,
+		read: allow(Role.Public),
+		update: allow(Role.Admin, Role.ContentManager),
 	},
 	fields: [
 		{

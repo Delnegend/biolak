@@ -1,7 +1,6 @@
 import { GlobalConfig } from 'payload'
 
-import { admin } from '@/access/admin'
-
+import { allow, Role } from '@/access/allow'
 import { revalidateContactForm } from './hooks/revalidateContactForm'
 
 export const ContactFormGlobalSlug = 'contactFormGlobal'
@@ -12,8 +11,8 @@ export const ContactFormGlobalConf: GlobalConfig<typeof ContactFormGlobalSlug> =
 		vi: 'Mẫu liên hệ',
 	},
 	access: {
-		read: () => true,
-		update: admin,
+		read: allow(Role.Public),
+		update: allow(Role.Admin, Role.ContentManager),
 	},
 	fields: [
 		{

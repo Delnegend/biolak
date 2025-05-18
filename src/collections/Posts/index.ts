@@ -7,6 +7,7 @@ import {
 } from '@payloadcms/plugin-seo/fields'
 import { CollectionConfig } from 'payload'
 
+import { allow, Role } from '@/access/allow'
 import { ArchiveBlockConf } from '@/blocks/ArchiveBlock/config'
 import { BuyNowBlockConf } from '@/blocks/BuyNow/config'
 import { CallToActionCenterBlockConf } from '@/blocks/CallToActionCenter/config'
@@ -29,7 +30,6 @@ import { ThreePhotoBlockConf } from '@/blocks/ThreePhoto/config'
 import { FooterSizeField } from '@/fields/footer'
 import { slugField } from '@/fields/slug'
 
-import { admin } from '../../access/admin'
 import { adminOrPublished } from '../../access/adminOrPublished'
 import { MediaBlockConf } from '../../blocks/MediaBlock/config'
 import { generatePreviewPath } from '../../utilities/generatePreviewPath'
@@ -52,10 +52,10 @@ export const PostsCollection: CollectionConfig<typeof PostsSlug> = {
 		},
 	},
 	access: {
-		create: admin,
-		delete: admin,
+		create: allow(Role.Admin, Role.ContentManager),
+		delete: allow(Role.Admin, Role.ContentManager),
 		read: adminOrPublished,
-		update: admin,
+		update: allow(Role.Admin, Role.ContentManager),
 	},
 	// This config controls what's populated by default when a post is referenced
 	// https://payloadcms.com/docs/queries/select#defaultpopulate-collection-config-property
