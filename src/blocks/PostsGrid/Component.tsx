@@ -10,6 +10,7 @@ export async function PostsGridBlock(props: PostsGridBlockProps): Promise<React.
 	const payload = await getPayload({ config })
 	const posts = await payload.find({
 		collection: PostsSlug,
+		overrideAccess: false,
 		where: {
 			[`${PostCategoriesSlug}.slug`]: {
 				equals: typeof props.postCategories === 'object' ? props.postCategories?.slug : '',

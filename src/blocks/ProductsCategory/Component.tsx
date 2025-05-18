@@ -25,6 +25,7 @@ export async function ProductsCategoryBlock(
 	try {
 		products = await payload.find({
 			collection: ProductsSlug,
+			overrideAccess: false,
 			where: {
 				[`${ProductCategoriesSlug}.slug`]: {
 					equals: category?.slug,
@@ -41,6 +42,7 @@ export async function ProductsCategoryBlock(
 		try {
 			products = await payload.find({
 				collection: ProductsSlug,
+				overrideAccess: false,
 				where: {
 					[`${ProductSubCategoriesSlug}.slug`]: {
 						equals: category?.slug,
