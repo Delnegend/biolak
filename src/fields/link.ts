@@ -10,10 +10,10 @@ import deepMerge from '@/utilities/deepMerge'
 
 export const LinkFieldRelations = [
 	PagesSlug,
-	PostsSlug,
 	PostCategoriesSlug,
-	ProductsSlug,
+	PostsSlug,
 	ProductCategoriesSlug,
+	ProductsSlug,
 	ProductSubCategoriesSlug,
 ] as const
 
