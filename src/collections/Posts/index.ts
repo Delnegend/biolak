@@ -35,6 +35,7 @@ import { MediaBlockConf } from '../../blocks/MediaBlock/config'
 import { generatePreviewPath } from '../../utilities/generatePreviewPath'
 import { MediaSlug } from '../Media/slug'
 import { PostCategoriesSlug } from '../PostCategories/slug'
+import { UsersSlug } from '../Users/slug'
 import { populateAuthors } from './hooks/populateAuthors'
 import { revalidateDelete, revalidatePost } from './hooks/revalidatePost'
 import { PostsSlug } from './slug'
@@ -179,7 +180,7 @@ export const PostsCollection: CollectionConfig<typeof PostsSlug> = {
 								}
 							},
 							hasMany: true,
-							relationTo: 'posts',
+							relationTo: PostsSlug,
 							label: {
 								en: 'Related Posts',
 								vi: 'Bài viết liên quan',
@@ -261,7 +262,7 @@ export const PostsCollection: CollectionConfig<typeof PostsSlug> = {
 				position: 'sidebar',
 			},
 			hasMany: true,
-			relationTo: 'users',
+			relationTo: UsersSlug,
 			label: {
 				en: 'Authors',
 				vi: 'Tác giả',
