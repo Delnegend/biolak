@@ -8,6 +8,7 @@ import { ProductsSlug } from '@/collections/Products/slug'
 import { LivePreviewListener } from '@/components/LivePreviewListener'
 import { PayloadRedirects } from '@/components/PayloadRedirects'
 import { FooterComponent } from '@/globals/Footer/Component'
+import { ReviewSection } from '@/globals/Reviews/Component'
 import { ProductHero } from '@/heros/ProductHero'
 import { generateMeta } from '@/utilities/generateMeta'
 
@@ -93,6 +94,10 @@ export default async function Product({
 				}}
 			/>
 			{product.content && <RenderBlocks blocks={product.content} />}
+
+			{/* reviews */}
+			{product.reviewsVisible === 'show' && <ReviewSection />}
+
 			<FooterComponent size={product.footerSize} />
 		</article>
 	)
