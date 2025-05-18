@@ -14,7 +14,7 @@ const ContactFormInputSchema = z.object({
 
 export type ContactFormInputType = z.infer<typeof ContactFormInputSchema>
 
-export async function submitContactForm(input: unknown): Promise<{
+export async function submitContactFormAction(input: unknown): Promise<{
 	success: boolean
 	errors?: z.ZodError | unknown
 }> {
