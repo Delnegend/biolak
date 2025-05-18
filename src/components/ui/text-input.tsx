@@ -48,7 +48,7 @@ export function TextInput({
 			/>
 			<div
 				className={cn(
-					'pointer-events-none absolute left-0 flex text-[#6B5A4A] transition-all',
+					'pointer-events-none absolute left-0 flex whitespace-nowrap text-[#6B5A4A] transition-all',
 					elevated ? '-top-3 text-lg' : 'top-0 text-2xl',
 					classNames?.label,
 				)}
