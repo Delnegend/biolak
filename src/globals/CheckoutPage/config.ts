@@ -1,8 +1,6 @@
 import { GlobalConfig } from 'payload'
 
-import { admin } from '@/access/admin'
-import { anyone } from '@/access/anyone'
-
+import { allow, Role } from '@/access/allow'
 import { revalidateCheckoutPage } from './hooks/revalidateCheckoutPage'
 
 export const CheckoutPageGlobalSlug = 'checkoutPageGlobal'
@@ -13,8 +11,8 @@ export const CheckoutPageGlobalConf: GlobalConfig<typeof CheckoutPageGlobalSlug>
 		vi: 'Trang thanh toán',
 	},
 	access: {
-		read: anyone,
-		update: admin,
+		read: allow(Role.Public),
+		update: allow(Role.Admin, Role.ContentManager),
 	},
 	fields: [
 		{

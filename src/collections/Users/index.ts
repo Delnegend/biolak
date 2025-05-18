@@ -1,6 +1,7 @@
 import { CollectionConfig } from 'payload'
 
-import { admin } from '../../access/admin'
+import { allow, Role } from '@/access/allow'
+
 import { UsersSlug } from './slug'
 
 export const UsersCollection: CollectionConfig<typeof UsersSlug> = {
@@ -16,11 +17,11 @@ export const UsersCollection: CollectionConfig<typeof UsersSlug> = {
 		},
 	},
 	access: {
-		admin: admin,
-		create: admin,
-		delete: admin,
-		read: admin,
-		update: admin,
+		admin: allow(Role.Admin),
+		create: allow(Role.Admin),
+		delete: allow(Role.Admin),
+		read: allow(Role.Admin),
+		update: allow(Role.Admin),
 	},
 	admin: {
 		defaultColumns: ['name', 'email', 'role'],
@@ -46,18 +47,19 @@ export const UsersCollection: CollectionConfig<typeof UsersSlug> = {
 						en: 'Admin',
 						vi: 'Quản trị viên',
 					},
-					value: 'admin',
+					value: Role.Admin.toString(),
 				},
 				{
 					label: {
 						en: 'Customer',
 						vi: 'Khách hàng',
 					},
-					value: 'customer',
+					value: Role.SalesManager.toString(),
 				},
 			],
 			access: {
-				update: () => false,
+				update: (props) =>
+					!(props.req?.user?.role !== Role.Admin || props.doc?.role === Role.Admin),
 			},
 			label: {
 				en: 'Role',
