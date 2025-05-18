@@ -11,7 +11,7 @@ export async function generateStaticParams() {
 }
 
 export default async function Checkout(): Promise<React.JSX.Element> {
-	const checkoutData = (await getCachedGlobal(CheckoutPageGlobalSlug, 1)()) as CheckoutPageGlobal
+	const _global = (await getCachedGlobal(CheckoutPageGlobalSlug, 1)()) as CheckoutPageGlobal
 
 	return (
 		<div className="safe-width">
