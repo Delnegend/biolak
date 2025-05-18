@@ -37,7 +37,7 @@
 			"source.fixAll.eslint": "explicit"
 		}
 	},
-	"editor.tabSize": 3,
+	"editor.tabSize": 2,
 	"editor.stickyTabStops": true,
 	"tailwindCSS.experimental.classRegex": [
 		["cn\\(([^)]*)\\)", "(?:'|\"|`)([^']*)(?:'|\"|`)"],
