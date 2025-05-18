@@ -2,7 +2,7 @@ import { Phudu } from 'next/font/google'
 import Image from 'next/image'
 import React from 'react'
 
-import { CMSLink } from '@/components/Link'
+import { CMSLink } from '@/components/CMSLink'
 import RichText from '@/components/RichText'
 import { Button } from '@/components/ui/button'
 import { Carousel, CarouselContent, CarouselItem } from '@/components/ui/carousel'

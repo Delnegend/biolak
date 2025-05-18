@@ -1,7 +1,7 @@
 'use client'
 import React from 'react'
 
-import { CMSLink } from '@/components/Link'
+import { CMSLink } from '@/components/CMSLink'
 import { Media } from '@/components/Media'
 import RichText from '@/components/RichText'
 import type { Page } from '@/payload-types'
