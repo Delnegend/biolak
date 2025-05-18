@@ -130,6 +130,31 @@ export const ProductsCollection: CollectionConfig<typeof ProductsSlug> = {
 							relationTo: MediaSlug,
 							hasMany: true,
 						},
+						{
+							name: 'reviewsVisible',
+							label: {
+								en: 'Visible',
+								vi: 'Hiển thị',
+							},
+							type: 'radio',
+							options: [
+								{
+									value: 'show',
+									label: {
+										en: 'Show',
+										vi: 'Hiển thị',
+									},
+								},
+								{
+									value: 'hide',
+									label: {
+										en: 'Hide',
+										vi: 'Ẩn',
+									},
+								},
+							],
+							defaultValue: 'show',
+						},
 					],
 				},
 				{
