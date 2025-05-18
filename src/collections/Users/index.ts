@@ -51,10 +51,17 @@ export const UsersCollection: CollectionConfig<typeof UsersSlug> = {
 				},
 				{
 					label: {
-						en: 'Customer',
-						vi: 'Khách hàng',
+						en: 'Sales Manager',
+						vi: 'Quản lý bán hàng',
 					},
 					value: Role.SalesManager.toString(),
+				},
+				{
+					label: {
+						en: 'Content Manager',
+						vi: 'Quản lý nội dung',
+					},
+					value: Role.ContentManager.toString(),
 				},
 			],
 			access: {
