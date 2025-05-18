@@ -24,6 +24,7 @@ import { slugField } from '@/fields/slug'
 import { generatePreviewPath } from '@/utilities/generatePreviewPath'
 
 import { MediaSlug } from '../Media/slug'
+import { OrdersSlug } from '../Orders/slug'
 import { ProductCategoriesSlug } from '../ProductCategories/slug'
 import { ProductSubCategoriesSlug } from '../ProductSubCategories/slug'
 import { ProductsSlug } from './slug'
@@ -237,6 +238,24 @@ export const ProductsCollection: CollectionConfig<typeof ProductsSlug> = {
 								ProductsCarouselBlockConf,
 								ThreePhotoBlockConf,
 							],
+						},
+					],
+				},
+				{
+					label: {
+						en: 'Orders',
+						vi: 'Đơn hàng',
+					},
+					fields: [
+						{
+							name: OrdersSlug,
+							label: false,
+							type: 'join',
+							collection: OrdersSlug,
+							on: ProductsSlug,
+							access: {
+								read: allow(Role.Admin, Role.SalesManager),
+							},
 						},
 					],
 				},
