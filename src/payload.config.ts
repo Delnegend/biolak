@@ -8,8 +8,10 @@ import { fileURLToPath } from 'url'
 
 import { defaultLexical } from '@/fields/defaultLexical'
 
-import { ContactFormSubmissionsCollection } from './collections/ContactFormSubmissions/config'
-import { MediaCollection } from './collections/Media/Media'
+import { ContactFormSubmissionsCollection } from './collections/ContactFormSubmissions'
+import { CustomersCollection } from './collections/Customers'
+import { MediaCollection } from './collections/Media'
+import { OrdersCollection } from './collections/Orders'
 import { PagesCollection } from './collections/Pages'
 import { PostCategoriesCollection } from './collections/PostCategories'
 import { PostsCollection } from './collections/Posts'
@@ -22,7 +24,9 @@ import { CheckoutPageGlobalConf } from './globals/CheckoutPage/config'
 import { ContactFormGlobalConf } from './globals/ContactForm/config'
 import { FooterGlobalConf } from './globals/Footer/config'
 import { HeaderGlobalConf } from './globals/Header/config'
+import { PopupBannerGlobalConf } from './globals/PopupBanner/config'
 import { PromoGlobalConf } from './globals/Promo/config'
+import { ReviewsGlobalConf } from './globals/Reviews/config'
 import { plugins } from './plugins'
 import { getServerSideURL } from './utilities/getURL'
 
@@ -74,6 +78,7 @@ export default buildConfig({
 		},
 	}),
 	collections: [
+		CustomersCollection,
 		ContactFormSubmissionsCollection,
 		MediaCollection,
 		PagesCollection,
@@ -82,6 +87,7 @@ export default buildConfig({
 		ProductCategoriesCollection,
 		ProductsCollection,
 		ProductSubCategoriesCollection,
+		OrdersCollection,
 		UsersCollection,
 	],
 	cors: [getServerSideURL()].filter(Boolean),
@@ -91,6 +97,8 @@ export default buildConfig({
 		FooterGlobalConf,
 		HeaderGlobalConf,
 		PromoGlobalConf,
+		ReviewsGlobalConf,
+		PopupBannerGlobalConf,
 	],
 	plugins: [
 		...plugins,
