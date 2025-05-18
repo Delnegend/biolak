@@ -1,6 +1,6 @@
 import { CollectionConfig } from 'payload'
 
-import { admin } from '@/access/admin'
+import { allow, Role } from '@/access/allow'
 
 import { ContactFormSubmissionsSlug } from './slug'
 
@@ -18,10 +18,10 @@ export const ContactFormSubmissionsCollection: CollectionConfig<typeof ContactFo
 			},
 		},
 		access: {
-			create: () => true,
-			read: admin,
-			update: () => false,
-			delete: admin,
+			create: allow(Role.Public),
+			read: allow(Role.Admin),
+			update: allow(Role.NoOne),
+			delete: allow(Role.Admin),
 		},
 		fields: [
 			{
