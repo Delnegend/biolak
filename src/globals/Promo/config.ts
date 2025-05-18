@@ -1,8 +1,8 @@
 import { type GlobalConfig } from 'payload'
 
+import { allow, Role } from '@/access/allow'
 import { link } from '@/fields/link'
 
-import { allow, Role } from '@/access/allow'
 import { revalidatePromo } from './hooks/revalidatePromo'
 
 export const PromoGlobalConf: GlobalConfig = {
