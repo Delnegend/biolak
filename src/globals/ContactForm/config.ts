@@ -1,6 +1,7 @@
 import { GlobalConfig } from 'payload'
 
 import { allow, Role } from '@/access/allow'
+
 import { revalidateContactForm } from './hooks/revalidateContactForm'
 
 export const ContactFormGlobalSlug = 'contactFormGlobal'
