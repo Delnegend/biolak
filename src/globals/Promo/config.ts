@@ -7,6 +7,10 @@ import { revalidatePromo } from './hooks/revalidatePromo'
 
 export const PromoGlobalConf: GlobalConfig = {
 	slug: 'promo',
+	label: {
+		en: 'Promo message',
+		vi: 'Thông điệp khuyến mãi',
+	},
 	access: {
 		read: allow(Role.Public),
 		update: allow(Role.Admin, Role.ContentManager),
