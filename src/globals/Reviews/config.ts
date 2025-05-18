@@ -34,5 +34,25 @@ export const ReviewsGlobalConf: GlobalConfig<typeof ReviewsGlobalSlug> = {
 			required: true,
 			defaultValue: 'VIẾT ĐÁNH GIÁ',
 		},
+		{
+			name: 'reviewDialogTitle',
+			type: 'text',
+			label: {
+				en: 'Review dialog title',
+				vi: 'Nhãn hộp thoại đánh giá',
+			},
+			required: true,
+			defaultValue: 'Viết đánh giá của bạn',
+		},
+		{
+			name: 'sendReviewBtnLabel',
+			type: 'text',
+			label: {
+				en: 'Send review button label',
+				vi: 'Nhãn nút gửi đánh giá',
+			},
+			required: true,
+			defaultValue: 'GỬI ĐÁNH GIÁ',
+		},
 	],
 }
