@@ -21,6 +21,6 @@ async function getGlobal(slug: Global, depth = 0) {
  */
 export function getCachedGlobal(slug: Global, depth = 0) {
 	return unstable_cache(async () => getGlobal(slug, depth), [slug], {
-		tags: [`global_${slug}`],
+		tags: [slug],
 	})
 }
