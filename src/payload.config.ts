@@ -22,6 +22,7 @@ import { UsersCollection } from './collections/Users'
 import { UsersSlug } from './collections/Users/slug'
 import { CheckoutPageGlobalConf } from './globals/CheckoutPage/config'
 import { ContactFormGlobalConf } from './globals/ContactForm/config'
+import { FloatingGlobalConf } from './globals/Floating/config'
 import { FooterGlobalConf } from './globals/Footer/config'
 import { HeaderGlobalConf } from './globals/Header/config'
 import { PopupBannerGlobalConf } from './globals/PopupBanner/config'
@@ -94,6 +95,7 @@ export default buildConfig({
 	globals: [
 		CheckoutPageGlobalConf,
 		ContactFormGlobalConf,
+		FloatingGlobalConf,
 		FooterGlobalConf,
 		HeaderGlobalConf,
 		PopupBannerGlobalConf,
