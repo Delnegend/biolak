@@ -96,9 +96,9 @@ export default buildConfig({
 		ContactFormGlobalConf,
 		FooterGlobalConf,
 		HeaderGlobalConf,
+		PopupBannerGlobalConf,
 		PromoGlobalConf,
 		ReviewsGlobalConf,
-		PopupBannerGlobalConf,
 	],
 	plugins: [
 		...plugins,
