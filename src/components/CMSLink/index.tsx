@@ -41,16 +41,22 @@ export function CMSLink(
 		switch (reference?.relationTo) {
 			case PagesSlug:
 				href = `/${slug}`
+				break
 			case PostsSlug:
 				href = `/post/${slug}`
+				break
 			case PostCategoriesSlug:
 				href = `/posts/${slug}`
+				break
 			case ProductsSlug:
 				href = `/product/${slug}`
+				break
 			case ProductCategoriesSlug:
 				href = `/products/${slug}`
+				break
 			case ProductSubCategoriesSlug:
 				href = `/products/${slug}`
+				break
 		}
 	} else if (url) {
 		href = url
