@@ -1,10 +1,11 @@
-import { DataFromGlobalSlug } from 'payload'
-
 import { CMSLink } from '@/components/CMSLink'
+import { PromoGlobal } from '@/payload-types'
 import { getCachedGlobal } from '@/utilities/getGlobals'
 
+import { PromoGlobalSlug } from './config'
+
 export async function PromoGlobalComponent(): Promise<React.JSX.Element> {
-	const global = (await getCachedGlobal('promo', 1)()) as DataFromGlobalSlug<'promo'>
+	const global = (await getCachedGlobal(PromoGlobalSlug, 1)()) as PromoGlobal
 	if (!global.message) return <></>
 
 	return (
