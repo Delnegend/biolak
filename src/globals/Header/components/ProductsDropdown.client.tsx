@@ -168,9 +168,6 @@ export function INTERNAL_ProductsDropdownClient({
 						{/* categories */}
 						<DropdownColumn className="z-50 border-r" key="categories">
 							<DropdownLabel key="categories">Sản phẩm</DropdownLabel>
-							<DropdownItem tabIndex={-1} key="all" onClick={(e) => e.preventDefault()}>
-								<Link href="/products">Tất cả sản phẩm</Link>
-							</DropdownItem>
 							{categories.docs.map((category, index) => (
 								<DropdownItem
 									key={category.slug}
