@@ -17,7 +17,7 @@ services:
       ports:
          - '3000:3000'
       depends_on:
-         postgres:
+         biolak-postgres:
             condition: service_started
       environment:
          DATABASE_URI: postgres://postgres:postgres@biolak-postgres:5432/biolak
