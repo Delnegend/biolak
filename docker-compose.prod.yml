@@ -1,7 +1,7 @@
 services:
    biolak-postgres:
       container_name: biolak-postgres
-      image: postgres:17-alpine
+      image: docker.io/library/postgres:17-alpine
       ports:
          - '5432:5432'
       volumes:
@@ -13,7 +13,7 @@ services:
 
    biolak-payload:
       container_name: biolak-payload
-      image: node:24-alpine
+      image: docker.io/library/node:24-alpine
       ports:
          - '3000:3000'
       depends_on:
