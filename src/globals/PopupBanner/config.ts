@@ -3,7 +3,7 @@ import { GlobalConfig } from 'payload'
 
 import { allow, Role } from '@/access/allow'
 
-export const PopupBannerGlobalSlug = 'popup-banner'
+export const PopupBannerGlobalSlug = 'popupBannerGlobal'
 export const PopupBannerGlobalConf: GlobalConfig<typeof PopupBannerGlobalSlug> = {
 	slug: PopupBannerGlobalSlug,
 	label: {
