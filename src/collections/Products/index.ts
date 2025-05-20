@@ -13,6 +13,7 @@ import { FormBlockConf } from '@/blocks/Form/config'
 import { HighlightCenterBlockConf } from '@/blocks/HighlightCenter/config'
 import { HighlightLeftBlockConf } from '@/blocks/HighlightLeft/config'
 import { HighlighRightBlockConf } from '@/blocks/HighlightRight/config'
+import { HowToUseProductBlockConf } from '@/blocks/HowToUseProduct/config'
 import { InfiniteScrollBlockConf } from '@/blocks/InfiniteScroll/config'
 import { LatestPostsBlockConf } from '@/blocks/LatestPosts/config'
 import { MediaBlockConf } from '@/blocks/MediaBlock/config'
@@ -232,6 +233,7 @@ export const ProductsCollection: CollectionConfig<typeof ProductsSlug> = {
 								HighlighRightBlockConf,
 								HighlightCenterBlockConf,
 								HighlightLeftBlockConf,
+								HowToUseProductBlockConf,
 								InfiniteScrollBlockConf,
 								LatestPostsBlockConf,
 								MediaBlockConf,
