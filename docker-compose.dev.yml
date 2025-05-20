@@ -5,7 +5,7 @@ services:
       ports:
          - '5432:5432'
       volumes:
-         - postgres_dev:/var/lib/postgresql/data
+         - postgres-dev:/var/lib/postgresql/data
          - ./postgres-dev-backup:/postgres-dev-backup
       environment:
          - POSTGRES_USER=postgres
@@ -27,5 +27,40 @@ services:
       volumes:
          - ./pgadmin.dev.json:/pgadmin4/servers.json
 
+   postgres-test-prod:
+      container_name: biolak-postgres-test-prod
+      image: postgres:17-alpine
+      restart: unless-stopped
+      volumes:
+         - postgres-test-prod:/var/lib/postgresql/data
+      environment:
+         - POSTGRES_USER=postgres
+         - POSTGRES_PASSWORD=postgres
+         - POSTGRES_DB=biolak
+
+   server-test-prod:
+      container_name: biolak-server-test-prod
+      image: node:24-alpine
+      depends_on:
+         postgres-test-prod:
+            condition: service_started
+      environment:
+         DATABASE_URI: postgres://postgres:postgres@biolak-postgres-test-prod:5432/biolak
+         PAYLOAD_SECRET: YOUR_PAYLOAD_SECRET_HERE
+         NEXT_PUBLIC_SERVER_URL: https://example.com
+         CRON_SECRET: YOUR_CRON_SECRET_HERE
+         PREVIEW_SECRET: YOUR_SECRET_HERE
+      volumes:
+         - .:/home/node/app
+         - biolak-nextjs:/home/node/app/.next
+         - biolak-pnpm-store:/home/node/.pnpm-store
+         - biolak-node_modules:/home/node/app/node_modules
+      working_dir: /home/node/app/
+      command: sh -c "npm i -g pnpm && pnpm i --frozen-lockfile && pnpm payload migrate && pnpm next build --turbo"
+
 volumes:
-   postgres_dev:
+   postgres-dev:
+   postgres-test-prod:
+   biolak-nextjs:
+   biolak-pnpm-store:
+   biolak-node_modules:
