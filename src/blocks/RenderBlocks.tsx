@@ -39,6 +39,8 @@ import { HighlightLeftBlock } from './HighlightLeft/Component'
 import { HighlightLeftBlockConf } from './HighlightLeft/config'
 import { HighlightRightBlock } from './HighlightRight/Component'
 import { HighlighRightBlockConf as HighlightRightBlockConf } from './HighlightRight/config'
+import { HowToUseProductBlockComponent } from './HowToUseProduct/Component'
+import { HowToUseProductBlockConf } from './HowToUseProduct/config'
 import { InfiniteScrollBlock } from './InfiniteScroll/Component'
 import { InfiniteScrollBlockConf } from './InfiniteScroll/config'
 import { LatestPostsBlock } from './LatestPosts/Component'
@@ -57,22 +59,23 @@ const blockComponents = {
 	[ArchiveBlockConf.slug]: ArchiveBlock,
 	[BannerBlockConf.slug]: BannerBlock,
 	[BestSellerBlockConf.slug]: BestSellerBlock,
+	[BestSellerBlockConf.slug]: BestSellerBlock,
 	[BuyNowBlockConf.slug]: BuyNowBlock,
-	[CallToAddToCartBlockConf.slug]: CallToAddToCartBlock,
 	[CallToActionCenterBlockConf.slug]: CallToActionCenterBlock,
 	[CallToActionLeftBlockConf.slug]: CallToActionLeftBlock,
-	[CallToActionRightBlockConf.slug]: CallToActionRightBlock,
 	[CallToActionPostBlockConf.slug]: CallToActionPostBlock,
+	[CallToActionRightBlockConf.slug]: CallToActionRightBlock,
+	[CallToAddToCartBlockConf.slug]: CallToAddToCartBlock,
 	[CertificatesBlockConf.slug]: CertificatesBlock,
 	[ContentBlockConf.slug]: ContentBlock,
 	[FocusLeftSmallImageBlockConf.slug]: FocusLeftSmallImageBlock,
 	[FocusRightLargeImageBlockConf.slug]: FocusRightLargeImageBlock,
 	[FocusRightSmallImageBlockConf.slug]: FocusRightSmallImageBlock,
 	[FormBlockConf.slug]: FormBlock,
+	[HighlightCenterBlockConf.slug]: HighlightCenterBlock,
 	[HighlightLeftBlockConf.slug]: HighlightLeftBlock,
 	[HighlightRightBlockConf.slug]: HighlightRightBlock,
-	[HighlightCenterBlockConf.slug]: HighlightCenterBlock,
-	[BestSellerBlockConf.slug]: BestSellerBlock,
+	[HowToUseProductBlockConf.slug]: HowToUseProductBlockComponent,
 	[InfiniteScrollBlockConf.slug]: InfiniteScrollBlock,
 	[LatestPostsBlockConf.slug]: LatestPostsBlock,
 	[MediaBlockConf.slug]: MediaBlockComponent,
