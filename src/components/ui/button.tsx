@@ -64,6 +64,7 @@ export function Button({
 				'font-semibold',
 				phudu.className,
 				hideArrow ? 'justify-center' : 'justify-between',
+				className,
 			)}
 			{...rest}
 		>
