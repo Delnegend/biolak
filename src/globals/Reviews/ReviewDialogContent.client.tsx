@@ -10,7 +10,7 @@ import { ReviewsGlobal } from '@/payload-types'
 
 import { sendReviewAction, SendReviewInputType } from './actions/sendReviewAction'
 
-export function ReviewDialogContentClient({
+export function INTERNAL_ReviewDialogContentClient({
 	global,
 }: {
 	global: ReviewsGlobal
