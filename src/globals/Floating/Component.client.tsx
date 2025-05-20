@@ -9,6 +9,7 @@ import { useState } from 'react'
 
 import { Button } from '@/components/ui/button'
 import { FloatingGlobal } from '@/payload-types'
+import { toFaviconUrl } from '@/utilities/toFaviconUrl'
 import { cn } from '@/utilities/ui'
 
 const inter = Inter({ subsets: ['vietnamese'], weight: ['400'] })
@@ -18,7 +19,7 @@ export function INTERNAL_FloatingClient({ global }: { global: FloatingGlobal }):
 
 	return (
 		<div className={cn('fixed bottom-4 right-10 z-10 flex h-24 flex-row items-center gap-x-6')}>
-			<AnimatePresence mode="wait" initial={false}>
+			<AnimatePresence initial={false}>
 				{open &&
 					global.links?.map((l) => {
 						const icon = l.icon && typeof l.icon === 'object' ? l.icon : null
@@ -33,10 +34,12 @@ export function INTERNAL_FloatingClient({ global }: { global: FloatingGlobal }):
 							>
 								<Link href={l.link} target="_blank">
 									<Image
-										src={icon?.url ?? 'https://placehold.co/200x200'}
-										alt={icon?.alt ?? 'Floating Icon'}
-										width={icon?.width ?? 200}
-										height={icon?.height ?? 200}
+										src={
+											icon?.url ?? toFaviconUrl(l.link) ?? 'https://placehold.co/256x256'
+										}
+										alt={icon?.alt ?? l.link}
+										width={icon?.width ?? 256}
+										height={icon?.height ?? 256}
 										unoptimized={!icon}
 										className="aspect-square size-24 overflow-hidden rounded-full bg-white/80 object-contain p-4 shadow-md transition-all hover:bg-white hover:shadow-lg"
 									/>
