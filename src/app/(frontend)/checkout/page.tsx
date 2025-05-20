@@ -12,12 +12,6 @@ import { cn } from '@/utilities/ui'
 
 import PageClient from './page.client'
 
-export async function generateStaticParams() {
-	return {
-		title: 'Thanh toán',
-	}
-}
-
 function Title({
 	children,
 	className,
