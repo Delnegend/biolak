@@ -111,7 +111,7 @@ export default async function Product({
 			{product.content && <RenderBlocks blocks={product.content} />}
 
 			{/* reviews */}
-			{product.reviewsVisible === 'show' && orders && <ReviewsGlobalComponent orders={orders} />}
+			{product.reviewsVisible === 'show' && <ReviewsGlobalComponent orders={orders} />}
 
 			<FooterGlobalComponent size={product.footerSize} />
 		</article>
