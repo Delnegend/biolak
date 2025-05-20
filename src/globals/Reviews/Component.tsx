@@ -5,7 +5,7 @@ import { Fragment } from 'react'
 
 import { Button } from '@/components/ui/button'
 import { ReviewsGlobalSlug } from '@/globals/Reviews/config'
-import { ReviewDialogContentClient } from '@/globals/Reviews/ReviewDialogContent.client'
+import { INTERNAL_ReviewDialogContentClient } from '@/globals/Reviews/ReviewDialogContent.client'
 import { ReviewsGlobal } from '@/payload-types'
 import { getCachedGlobal } from '@/utilities/getGlobals'
 import { cn } from '@/utilities/ui'
@@ -23,7 +23,7 @@ const mockReviews = Array.from({ length: 10 }).map((_, i) => ({
 	createdAt: new Date(),
 }))
 
-export async function ReviewsSection(): Promise<React.JSX.Element> {
+export async function ReviewsGlobalComponent(): Promise<React.JSX.Element> {
 	const reviewGlobal = (await getCachedGlobal(ReviewsGlobalSlug, 1)()) as ReviewsGlobal
 
 	return (
@@ -64,7 +64,7 @@ export async function ReviewsSection(): Promise<React.JSX.Element> {
 							{reviewGlobal.btnLabel}
 						</Button>
 					</DialogTrigger>
-					<ReviewDialogContentClient global={reviewGlobal} />
+					<INTERNAL_ReviewDialogContentClient global={reviewGlobal} />
 				</Dialog>
 			</div>
 
