@@ -15,7 +15,7 @@ import {
 	submitContactFormAction,
 } from './actions/submitContactFormAction'
 
-export function ContactFormClient({ global }: { global: ContactFormGlobal }) {
+export function INTERNAL_ContactFormClient({ global }: { global: ContactFormGlobal }) {
 	const { register, handleSubmit } = useForm<ContactFormInputType>()
 	const onSubmit: SubmitHandler<ContactFormInputType> = (data) => {
 		void (async (): Promise<void> => {
