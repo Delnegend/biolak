@@ -25,6 +25,8 @@ const crimsonPro = Crimson_Pro({
 	variable: '--font-crimson-pro',
 })
 
+export const dynamic = 'force-dynamic'
+
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
 	const { isEnabled } = await draftMode()
 	let pathname
