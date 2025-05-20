@@ -10,7 +10,11 @@ import { FooterGlobalSlug } from './config'
 
 const phudu = Phudu({ subsets: ['vietnamese'], weight: ['400', '600', '700'] })
 
-export async function FooterComponent({ size }: { size?: 'small' | 'large' | 'medium' | null }) {
+export async function FooterGlobalComponent({
+	size,
+}: {
+	size?: 'small' | 'large' | 'medium' | null
+}) {
 	const global = (await getCachedGlobal(FooterGlobalSlug, 1)()) as FooterGlobal
 
 	const stamp =
