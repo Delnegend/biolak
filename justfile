@@ -65,3 +65,29 @@ reinstall:
 
 start:
   pnpm next start
+
+backup-prod:
+  #!/usr/bin/env bash
+  set -euo pipefail
+
+  # Stop the services
+  docker compose down
+
+  # Create backup directory if it doesn't exist
+  mkdir -p ./backup
+
+  # Get current timestamp
+  TIMESTAMP=$(date +%Y-%m-%d-%H-%M-%S)
+
+  # Define the backup file name
+  BACKUP_FILE="./backup/$TIMESTAMP.tar.gz"
+
+  # Create the archive
+  tar -czvf "$BACKUP_FILE" \
+    --exclude="./public/thumbs" \
+    ./postgres-data ./public
+
+  echo "Backup created: $BACKUP_FILE"
+
+  # Start the services
+  docker compose up -d
