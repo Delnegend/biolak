@@ -1472,6 +1472,7 @@ export interface User {
  */
 export interface HowToUseProductBlockProps {
   title: string;
+  subtitle?: string | null;
   content: {
     root: {
       type: string;
@@ -2480,6 +2481,7 @@ export interface ProductsSelect<T extends boolean = true> {
  */
 export interface HowToUseProductBlockPropsSelect<T extends boolean = true> {
   title?: T;
+  subtitle?: T;
   content?: T;
   image?: T;
   id?: T;
