@@ -21,7 +21,7 @@ const prebuilds: Record<
 	(props: { label?: string }) => React.JSX.Element | Promise<React.JSX.Element>
 > = {
 	search: ({ label }: { label?: string }) => (
-		<Link href="/search" className="flex size-7 items-center justify-center">
+		<Link href="#" className="flex size-7 items-center justify-center">
 			<span className="sr-only">{label ?? 'Tìm kiếm'}</span>
 			<SearchIcon className="w-5 scale-110 text-primary" size={30} />
 		</Link>
