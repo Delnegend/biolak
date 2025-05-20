@@ -21,15 +21,24 @@ export function ProductHero({
 }): React.JSX.Element {
 	const img = p.heroMedia && typeof p.heroMedia === 'object' ? p.heroMedia : null
 
-	const subtitle = overrides?.subtitle ?? p.title
-	const title = overrides?.title ?? p.shortDescription
-	const description = overrides?.description ?? p.longDescription
+	const title = (!!overrides?.title ? overrides.title : undefined) ?? p.title
+	const description =
+		(!!overrides?.description ? overrides.description : undefined) ?? p.longDescription
+
+	const category =
+		Array.isArray(p.productCategories) && typeof p.productCategories[0] === 'object'
+			? p.productCategories[0]
+			: null
+	const subCategory =
+		Array.isArray(p.productSubCategories) && typeof p.productSubCategories[0] === 'object'
+			? p.productSubCategories[0]
+			: null
+
+	const subtitle = [category?.title, subCategory?.title].filter((c) => c).join(' • ')
 
 	return (
-		<div
-			className="relative grid grid-cols-2 text-balance"
-			style={{ gridTemplateAreas: `". content"` }}
-		>
+		<div className="relative grid min-h-[50dvw] grid-cols-2 text-balance">
+			<div />
 			<div className="absolute inset-0 z-0 overflow-hidden">
 				<Image
 					src={img?.url ?? 'https://placehold.co/1000x1000'}
@@ -40,12 +49,9 @@ export function ProductHero({
 					className="h-full w-1/2 overflow-hidden object-cover"
 				/>
 			</div>
-			<div
-				className="flex size-full flex-col justify-center p-[7rem] text-primary"
-				style={{ gridArea: 'content' }}
-			>
+			<div className="flex size-full flex-col justify-center p-[7rem] text-primary">
 				{subtitle && <div className="mb-1 text-xl font-medium">{subtitle}</div>}
-				<div className="mb-4 font-serif text-7xl font-medium">{title ?? title}</div>
+				<div className="mb-4 font-serif text-5xl font-medium">{title ?? title}</div>
 				{description && (
 					<div className="compact text-xl leading-8">
 						<RichText data={description} enableGutter={false} />
