@@ -93,7 +93,7 @@ function DropdownColumn({
 	)
 }
 
-export function ProductsDropdownClient({
+export function INTERNAL_ProductsDropdownClient({
 	categories,
 	label,
 }: {

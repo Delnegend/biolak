@@ -8,8 +8,8 @@ import type { HeaderGlobal } from '@/payload-types'
 import { getCachedGlobal } from '@/utilities/getGlobals'
 
 import biolakIcon from '../../../public/biolak-logo.svg'
-import { ContactForm } from '../ContactForm/Component'
-import { ProductsDropdown } from './components/ProductsDropdown'
+import { ContactFormGlobalComponent } from '../ContactForm/Component'
+import { INTERNAL_ProductsDropdown } from './components/ProductsDropdown'
 import { HeaderGlobalSlug } from './config'
 
 const prebuilds: Record<
@@ -26,7 +26,7 @@ const prebuilds: Record<
 			<SearchIcon className="w-5 scale-110 text-primary" size={30} />
 		</Link>
 	),
-	products: ProductsDropdown,
+	products: INTERNAL_ProductsDropdown,
 	about: ({ label }: { label?: string }) => <Link href="/about">{label ?? 'BioLAK'}</Link>,
 	events: ({ label }: { label?: string }) => <Link href="/events">{label ?? 'Sự kiện'}</Link>,
 	contact: ({ label }: { label?: string }) => (
@@ -35,7 +35,7 @@ const prebuilds: Record<
 				<div>{label ?? 'Liên hệ'}</div>
 			</DialogTrigger>
 			<DialogContent className="min-w-[932px] overflow-hidden !rounded-2xl bg-primary-foreground p-12">
-				<ContactForm inDialog={true} />
+				<ContactFormGlobalComponent inDialog={true} />
 			</DialogContent>
 		</Dialog>
 	),
