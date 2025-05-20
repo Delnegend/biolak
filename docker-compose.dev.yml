@@ -1,7 +1,7 @@
 services:
    postgres-dev:
       container_name: postgres-dev
-      image: postgres:17-alpine
+      image: docker.io/library/postgres:17-alpine
       ports:
          - '5432:5432'
       volumes:
@@ -14,7 +14,7 @@ services:
 
    pgadmin:
       container_name: pgadmin
-      image: dpage/pgadmin4
+      image: docker.io/library/pgadmin4
       restart: unless-stopped
       ports:
          - 5050:80
@@ -29,7 +29,7 @@ services:
 
    postgres-test-prod:
       container_name: biolak-postgres-test-prod
-      image: postgres:17-alpine
+      image: docker.io/library/postgres:17-alpine
       restart: unless-stopped
       volumes:
          - postgres-test-prod:/var/lib/postgresql/data
@@ -40,7 +40,7 @@ services:
 
    server-test-prod:
       container_name: biolak-server-test-prod
-      image: node:24-alpine
+      image: docker.io/library/node:24-alpine
       depends_on:
          postgres-test-prod:
             condition: service_started
