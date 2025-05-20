@@ -148,8 +148,8 @@ export const PostsCollection: CollectionConfig<typeof PostsSlug> = {
 								initCollapsed: true,
 							},
 							label: {
-								en: 'Layout',
-								vi: 'Bố cục',
+								en: 'Content',
+								vi: 'Nội dung',
 							},
 							labels: {
 								singular: {

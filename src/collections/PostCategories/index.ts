@@ -53,8 +53,8 @@ export const PostCategoriesCollection: CollectionConfig<typeof PostCategoriesSlu
 		{
 			name: 'layout',
 			label: {
-				en: 'Layout',
-				vi: 'Bố cục',
+				en: 'Content',
+				vi: 'Nội dung',
 			},
 			type: 'blocks',
 			blocks: [CallToActionPostBlockConf, PostsGridBlockConf],
