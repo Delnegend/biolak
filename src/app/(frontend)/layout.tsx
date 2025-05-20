@@ -27,8 +27,13 @@ const crimsonPro = Crimson_Pro({
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
 	const { isEnabled } = await draftMode()
-	const heads = await headers()
-	const pathname = heads.get('x-current-path')
+	let pathname
+	try {
+		const heads = await headers()
+		pathname = heads.get('x-current-path')
+	} catch (e) {
+		pathname = undefined
+	}
 
 	return (
 		<html
