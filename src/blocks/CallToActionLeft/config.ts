@@ -28,14 +28,6 @@ export const CallToActionLeftBlockConf: Block = {
 			required: true,
 		},
 		{
-			name: 'sub-title',
-			type: 'textarea',
-			label: {
-				en: 'Sub Title',
-				vi: 'Tiêu đề phụ',
-			},
-		},
-		{
 			name: 'description',
 			type: 'richText',
 			label: {
