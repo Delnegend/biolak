@@ -51,11 +51,11 @@ export const ProductsCarouselBlockConf: Block = {
 		link({
 			overrides: {
 				name: 'apb',
-				defaultValue: 'XEM TẤT CẢ SẢN PHẨM',
 				label: {
 					en: 'All Products Button',
 					vi: 'Nút xem tất cả sản phẩm',
 				},
+				defaultValue: 'XEM TẤT CẢ SẢN PHẨM',
 			},
 		}),
 	],
