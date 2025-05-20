@@ -9,7 +9,7 @@ import { RenderBlocks } from '@/blocks/RenderBlocks'
 import { PostsSlug } from '@/collections/Posts/slug'
 import { LivePreviewListener } from '@/components/LivePreviewListener'
 import { PayloadRedirects } from '@/components/PayloadRedirects'
-import { FooterComponent } from '@/globals/Footer/Component'
+import { FooterGlobalComponent } from '@/globals/Footer/Component'
 import { PostHero } from '@/heros/PostHero'
 import { generateMeta } from '@/utilities/generateMeta'
 
@@ -66,7 +66,7 @@ export default async function Post({ params: paramsPromise }: Args) {
 				)}
 			</div>
 
-			<FooterComponent size={post.footerSize} />
+			<FooterGlobalComponent size={post.footerSize} />
 		</article>
 	)
 }

@@ -8,7 +8,7 @@ import { RenderBlocks } from '@/blocks/RenderBlocks'
 import { PostCategoriesSlug } from '@/collections/PostCategories/slug'
 import { LivePreviewListener } from '@/components/LivePreviewListener'
 import { PayloadRedirects } from '@/components/PayloadRedirects'
-import { FooterComponent } from '@/globals/Footer/Component'
+import { FooterGlobalComponent } from '@/globals/Footer/Component'
 import { type PostCategory } from '@/payload-types'
 
 import PageClient from './page.client'
@@ -50,7 +50,7 @@ export default async function PostCategory({
 			<PayloadRedirects disableNotFound url={url} />
 			{draft && <LivePreviewListener />}
 			<RenderBlocks blocks={postCategory.layout} />
-			<FooterComponent size={postCategory.footerSize} />
+			<FooterGlobalComponent size={postCategory.footerSize} />
 		</article>
 	)
 }
