@@ -206,9 +206,9 @@ export interface Customer {
  */
 export interface Order {
   id: number;
-  review: {
-    rating: number;
-    content: string;
+  review?: {
+    rating?: number | null;
+    content?: string | null;
     approved?: boolean | null;
   };
   products: number | Product;
