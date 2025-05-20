@@ -4,8 +4,9 @@ import { type GlobalConfig } from 'payload'
 import { allow, Role } from '@/access/allow'
 import { link } from '@/fields/link'
 
-export const PromoGlobalConf: GlobalConfig = {
-	slug: 'promo',
+export const PromoGlobalSlug = 'promoGlobal'
+export const PromoGlobalConf: GlobalConfig<typeof PromoGlobalSlug> = {
+	slug: PromoGlobalSlug,
 	label: {
 		en: 'Promo message',
 		vi: 'Thông điệp khuyến mãi',

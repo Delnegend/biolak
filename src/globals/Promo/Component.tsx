@@ -3,7 +3,7 @@ import { DataFromGlobalSlug } from 'payload'
 import { CMSLink } from '@/components/CMSLink'
 import { getCachedGlobal } from '@/utilities/getGlobals'
 
-export async function Promo(): Promise<React.JSX.Element> {
+export async function PromoGlobalComponent(): Promise<React.JSX.Element> {
 	const global = (await getCachedGlobal('promo', 1)()) as DataFromGlobalSlug<'promo'>
 	if (!global.message) return <></>
 
