@@ -776,7 +776,6 @@ export interface BestSellerBlockProps {
  */
 export interface CallToActionLeftBlockProps {
   title: string;
-  'sub-title'?: string | null;
   description?: {
     root: {
       type: string;
@@ -2051,7 +2050,6 @@ export interface CallToActionCenterBlockPropsSelect<T extends boolean = true> {
  */
 export interface CallToActionLeftBlockPropsSelect<T extends boolean = true> {
   title?: T;
-  'sub-title'?: T;
   description?: T;
   background?: T;
   button?:
