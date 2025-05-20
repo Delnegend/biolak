@@ -1,3 +1,4 @@
+import { revalidateTag } from 'next/cache'
 import { GlobalConfig } from 'payload'
 
 import { allow, Role } from '@/access/allow'
@@ -14,4 +15,17 @@ export const PopupBannerGlobalConf: GlobalConfig<typeof PopupBannerGlobalSlug> =
 		update: allow(Role.Admin, Role.ContentManager),
 	},
 	fields: [],
+	hooks: {
+		afterChange: [
+			({ doc, req: { payload, context } }) => {
+				if (!context.disableRevalidate) {
+					payload.logger.info(`Revalidating popup banner`)
+
+					revalidateTag(PopupBannerGlobalSlug)
+				}
+
+				return doc
+			},
+		],
+	},
 }

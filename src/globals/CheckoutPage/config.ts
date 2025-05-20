@@ -1,8 +1,7 @@
+import { revalidateTag } from 'next/cache'
 import { GlobalConfig } from 'payload'
 
 import { allow, Role } from '@/access/allow'
-
-import { revalidateCheckoutPage } from './hooks/revalidateCheckoutPage'
 
 export const CheckoutPageGlobalSlug = 'checkoutPageGlobal'
 export const CheckoutPageGlobalConf: GlobalConfig<typeof CheckoutPageGlobalSlug> = {
@@ -277,6 +276,16 @@ export const CheckoutPageGlobalConf: GlobalConfig<typeof CheckoutPageGlobalSlug>
 		},
 	],
 	hooks: {
-		afterChange: [revalidateCheckoutPage],
+		afterChange: [
+			({ doc, req: { payload, context } }) => {
+				if (!context.disableRevalidate) {
+					payload.logger.info(`Revalidating checkout page labels`)
+
+					revalidateTag(CheckoutPageGlobalSlug)
+				}
+
+				return doc
+			},
+		],
 	},
 }

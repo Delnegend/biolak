@@ -1,8 +1,7 @@
+import { revalidateTag } from 'next/cache'
 import { GlobalConfig } from 'payload'
 
 import { allow, Role } from '@/access/allow'
-
-import { revalidateContactForm } from './hooks/revalidateContactForm'
 
 export const ContactFormGlobalSlug = 'contactFormGlobal'
 export const ContactFormGlobalConf: GlobalConfig<typeof ContactFormGlobalSlug> = {
@@ -65,6 +64,16 @@ export const ContactFormGlobalConf: GlobalConfig<typeof ContactFormGlobalSlug> =
 		},
 	],
 	hooks: {
-		afterChange: [revalidateContactForm],
+		afterChange: [
+			({ doc, req: { payload, context } }) => {
+				if (!context.disableRevalidate) {
+					payload.logger.info(`Revalidating contact form`)
+
+					revalidateTag(ContactFormGlobalSlug)
+				}
+
+				return doc
+			},
+		],
 	},
 }
