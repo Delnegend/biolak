@@ -7,8 +7,9 @@ import React from 'react'
 
 import { AdminBar } from '@/components/AdminBar'
 import { Toaster } from '@/components/ui/sonner'
+import { FloatingGlobalComponent } from '@/globals/Floating/Component'
 import { HeaderGlobalComponent } from '@/globals/Header/Component'
-import { Promo } from '@/globals/Promo/Component'
+import { PromoGlobalComponent } from '@/globals/Promo/Component'
 import { getServerSideURL } from '@/utilities/getURL'
 import { mergeOpenGraph } from '@/utilities/mergeOpenGraph'
 import { cn } from '@/utilities/ui'
@@ -51,8 +52,9 @@ export default async function RootLayout({ children }: { children: React.ReactNo
 					<></>
 				) : (
 					<>
-						<Promo />
+						<PromoGlobalComponent />
 						<HeaderGlobalComponent />
+						<FloatingGlobalComponent />
 					</>
 				)}
 				{children}
