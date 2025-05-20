@@ -8,7 +8,7 @@ import { RenderBlocks } from '@/blocks/RenderBlocks'
 import { PagesSlug } from '@/collections/Pages/slug'
 import { LivePreviewListener } from '@/components/LivePreviewListener'
 import { PayloadRedirects } from '@/components/PayloadRedirects'
-import { FooterComponent } from '@/globals/Footer/Component'
+import { FooterGlobalComponent } from '@/globals/Footer/Component'
 import { RenderHero } from '@/heros/RenderHero'
 import { generateMeta } from '@/utilities/generateMeta'
 
@@ -69,7 +69,7 @@ export default async function Page({ params: paramsPromise }: Args) {
 
 			<RenderHero {...hero} />
 			<RenderBlocks blocks={layout} />
-			<FooterComponent size={footerSize} />
+			<FooterGlobalComponent size={footerSize} />
 		</article>
 	)
 }
