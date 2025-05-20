@@ -94,3 +94,7 @@ backup-prod:
 
 update:
   docker compose down && git pull --rebase && docker compose up -d
+
+test-prod:
+  docker compose up postgres-test-prod server-test-prod
+  docker compose down postgres-test-prod server-test-prod
