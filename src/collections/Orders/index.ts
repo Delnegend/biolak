@@ -33,8 +33,8 @@ export const OrdersCollection: CollectionConfig<typeof OrdersSlug> = {
 				vi: 'Đánh giá',
 			},
 			access: {
-				create: allow(Role.NoOne),
-				update: allow(Role.NoOne),
+				create: allow(Role.Admin, Role.SalesManager, Role.ContentManager),
+				update: allow(Role.Admin, Role.SalesManager, Role.ContentManager),
 				read: allow(Role.Admin, Role.SalesManager, Role.ContentManager),
 			},
 			fields: [
@@ -47,6 +47,9 @@ export const OrdersCollection: CollectionConfig<typeof OrdersSlug> = {
 					},
 					min: 1,
 					max: 5,
+					access: {
+						update: allow(Role.NoOne),
+					},
 				},
 				{
 					name: 'content',
@@ -54,6 +57,9 @@ export const OrdersCollection: CollectionConfig<typeof OrdersSlug> = {
 					label: {
 						en: 'Content',
 						vi: 'Nội dung',
+					},
+					access: {
+						update: allow(Role.NoOne),
 					},
 				},
 				{
