@@ -1,8 +1,18 @@
+import { PagesSlug } from '@/collections/Pages/slug'
+import { PostCategoriesSlug } from '@/collections/PostCategories/slug'
+import { PostsSlug } from '@/collections/Posts/slug'
+import { ProductCategoriesSlug } from '@/collections/ProductCategories/slug'
+import { ProductsSlug } from '@/collections/Products/slug'
+import { ProductSubCategoriesSlug } from '@/collections/ProductSubCategories/slug'
 import { CollectionSlug, PayloadRequest } from 'payload'
 
 const collectionPrefixMap: Partial<Record<CollectionSlug, string>> = {
-	posts: '/posts',
-	pages: '',
+	[PostsSlug]: '/post',
+	[PostCategoriesSlug]: '/posts',
+	[PagesSlug]: '',
+	[ProductsSlug]: '/product',
+	[ProductCategoriesSlug]: '/category',
+	[ProductSubCategoriesSlug]: '/category',
 }
 
 type Props = {
