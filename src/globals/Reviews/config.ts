@@ -1,3 +1,4 @@
+import { revalidateTag } from 'next/cache'
 import { GlobalConfig } from 'payload'
 
 import { allow, Role } from '@/access/allow'
@@ -55,4 +56,17 @@ export const ReviewsGlobalConf: GlobalConfig<typeof ReviewsGlobalSlug> = {
 			defaultValue: 'GỬI ĐÁNH GIÁ',
 		},
 	],
+	hooks: {
+		afterChange: [
+			({ doc, req: { payload, context } }) => {
+				if (!context.disableRevalidate) {
+					payload.logger.info(`Revalidating reviews`)
+
+					revalidateTag(ReviewsGlobalSlug)
+				}
+
+				return doc
+			},
+		],
+	},
 }

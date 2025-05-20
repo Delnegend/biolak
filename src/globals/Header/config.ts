@@ -1,9 +1,8 @@
+import { revalidateTag } from 'next/cache'
 import type { Field, GlobalConfig } from 'payload'
 
 import { allow, Role } from '@/access/allow'
 import { LinkFieldRelations } from '@/fields/link'
-
-import { revalidateHeader } from './hooks/revalidateHeader'
 
 const fields: Field[] = [
 	{
@@ -178,6 +177,16 @@ export const HeaderGlobalConf: GlobalConfig<typeof HeaderGlobalSlug> = {
 		},
 	],
 	hooks: {
-		afterChange: [revalidateHeader],
+		afterChange: [
+			({ doc, req: { payload, context } }) => {
+				if (!context.disableRevalidate) {
+					payload.logger.info(`Revalidating header`)
+
+					revalidateTag(HeaderGlobalSlug)
+				}
+
+				return doc
+			},
+		],
 	},
 }

@@ -1,9 +1,8 @@
+import { revalidateTag } from 'next/cache'
 import type { GlobalConfig } from 'payload'
 
 import { allow, Role } from '@/access/allow'
 import { MediaSlug } from '@/collections/Media/slug'
-
-import { revalidateFooter } from './hooks/revalidateFooter'
 
 export const FooterGlobalSlug = 'footerGlobal'
 export const FooterGlobalConf: GlobalConfig<typeof FooterGlobalSlug> = {
@@ -103,6 +102,16 @@ TP Hà Nội, Việt Nam.
 		},
 	],
 	hooks: {
-		afterChange: [revalidateFooter],
+		afterChange: [
+			({ doc, req: { payload, context } }) => {
+				if (!context.disableRevalidate) {
+					payload.logger.info(`Revalidating footer`)
+
+					revalidateTag(FooterGlobalSlug)
+				}
+
+				return doc
+			},
+		],
 	},
 }

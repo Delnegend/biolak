@@ -1,9 +1,8 @@
+import { revalidateTag } from 'next/cache'
 import { type GlobalConfig } from 'payload'
 
 import { allow, Role } from '@/access/allow'
 import { link } from '@/fields/link'
-
-import { revalidatePromo } from './hooks/revalidatePromo'
 
 export const PromoGlobalConf: GlobalConfig = {
 	slug: 'promo',
@@ -24,6 +23,16 @@ export const PromoGlobalConf: GlobalConfig = {
 		link(),
 	],
 	hooks: {
-		afterChange: [revalidatePromo],
+		afterChange: [
+			({ doc, req: { payload, context } }) => {
+				if (!context.disableRevalidate) {
+					payload.logger.info(`Revalidating promo`)
+
+					revalidateTag(PromoGlobalSlug)
+				}
+
+				return doc
+			},
+		],
 	},
 }
