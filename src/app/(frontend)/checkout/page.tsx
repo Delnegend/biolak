@@ -150,7 +150,7 @@ export default async function Checkout(): Promise<React.JSX.Element> {
 							return (
 								<div
 									key={item.id}
-									className="grid grid-cols-5 grid-rows-2"
+									className="grid grid-cols-[4rem_1fr_1fr_1fr_1f]"
 									style={{
 										gridTemplateAreas: `"icon title title title remove"
 																				"icon reduce count add price"`,
@@ -162,15 +162,19 @@ export default async function Checkout(): Promise<React.JSX.Element> {
 										width={200}
 										height={200}
 										unoptimized={true}
-										className="mr-9 h-full w-8 object-contain"
+										className="h-full w-8 object-contain"
 										style={{ gridArea: 'icon' }}
 									/>
 									<Title style={{ gridArea: 'title' }}>{item.name}</Title>
-									<X style={{ gridArea: 'remove' }} />
+									<X style={{ gridArea: 'remove' }} className="justify-self-end" />
+
 									<CircleMinus style={{ gridArea: 'reduce' }} />
-									<div style={{ gridArea: 'count' }}>{item.amount}</div>
 									<CirclePlus style={{ gridArea: 'add' }} />
-									<div style={{ gridArea: 'price' }}>{formatPrice(item.price)}</div>
+									<div style={{ gridArea: 'count' }}>{item.amount}</div>
+
+									<div style={{ gridArea: 'price' }} className="justify-self-end">
+										{formatPrice(item.price)}
+									</div>
 								</div>
 							)
 						})}
