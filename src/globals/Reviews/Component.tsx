@@ -26,34 +26,35 @@ const mockReviews = Array.from({ length: 10 }).map((_, i) => ({
 export async function ReviewsGlobalComponent({
 	orders,
 }: {
-	orders: Order[]
+	orders: Order[] | null
 }): Promise<React.JSX.Element> {
 	const reviewGlobal = (await getCachedGlobal(ReviewsGlobalSlug, 1)()) as ReviewsGlobal
 
-	const _productReviews = orders.reduce(
-		(acc, order) => {
-			if (
-				order.review &&
-				order.review.approved &&
-				typeof order.customers === 'object' &&
-				order.review.rating
-			) {
-				acc.push({
-					customer: order.customers?.name ?? 'ẩn danh',
-					rating: order.review.rating ?? undefined,
-					content: order.review.content ?? undefined,
-					createdAt: new Date(order.createdAt),
-				})
-			}
-			return acc
-		},
-		[] as {
-			customer: string
-			rating: number
-			content?: string
-			createdAt: Date
-		}[],
-	)
+	const _productReviews =
+		orders?.reduce(
+			(acc, order) => {
+				if (
+					order.review &&
+					order.review.approved &&
+					typeof order.customers === 'object' &&
+					order.review.rating
+				) {
+					acc.push({
+						customer: order.customers?.name ?? 'ẩn danh',
+						rating: order.review.rating ?? undefined,
+						content: order.review.content ?? undefined,
+						createdAt: new Date(order.createdAt),
+					})
+				}
+				return acc
+			},
+			[] as {
+				customer: string
+				rating: number
+				content?: string
+				createdAt: Date
+			}[],
+		) ?? []
 
 	return (
 		<div className="safe-width mt-20 grid grid-cols-[auto_1fr] gap-x-20 text-primary">
