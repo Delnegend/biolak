@@ -191,6 +191,14 @@ export function INTERNAL_ProductsDropdownClient({
 									<DropdownLabel key={activeCategory?.slug}>
 										{activeCategory?.title ?? 'Danh mục sản phẩm'}
 									</DropdownLabel>
+									<DropdownItem key="allProducts" tabIndex={-1}>
+										<Link
+											href={`/category/${activeCategory?.slug}`}
+											className="group grid gap-x-4"
+										>
+											Tất cả
+										</Link>
+									</DropdownItem>
 									{activeCategory?.productSubCategories?.docs
 										?.filter((p) => typeof p === 'object')
 										.map((category, index) => (
