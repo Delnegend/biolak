@@ -28,6 +28,14 @@ export const HowToUseProductBlockConf: Block = {
 			defaultValue: 'Hướng dẫn sử dụng',
 		},
 		{
+			name: 'subtitle',
+			type: 'text',
+			label: {
+				en: 'Subtitle',
+				vi: 'Tiêu đề phụ',
+			},
+		},
+		{
 			name: 'content',
 			type: 'richText',
 			label: {
