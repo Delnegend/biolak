@@ -6,14 +6,16 @@ import { cn } from '@/utilities/ui'
 
 export function TextInput({
 	label,
+	size = 'lg',
 	type,
 	onBlur,
 	onFocus,
 	ref: providedRef,
 	classNames,
 	...props
-}: Omit<React.ComponentPropsWithRef<'input'>, 'placeholder'> & {
+}: Omit<React.ComponentPropsWithRef<'input'>, 'placeholder' | 'size'> & {
 	label: string
+	size?: 'sm' | 'lg'
 	classNames?: { container?: string; input?: string; label?: string }
 }): React.JSX.Element {
 	const [elevated, setElevated] = React.useState(false)
@@ -48,8 +50,13 @@ export function TextInput({
 			/>
 			<div
 				className={cn(
-					'pointer-events-none absolute left-0 flex whitespace-nowrap text-[#6B5A4A] transition-all',
-					elevated ? '-top-3 text-lg' : 'top-0 text-2xl',
+					'pointer-events-none absolute left-0 flex whitespace-nowrap text-muted-foreground transition-all',
+					{
+						'-top-3 text-lg': elevated && size === 'lg',
+						'top-0 text-2xl': !elevated && size === 'lg',
+						'-top-1 text-base': elevated && size === 'sm',
+						'top-0 text-xl': !elevated && size === 'sm',
+					},
 					classNames?.label,
 				)}
 			>
