@@ -124,6 +124,26 @@ export const CheckoutPageGlobalConf: GlobalConfig<typeof CheckoutPageGlobalSlug>
 							required: true,
 							defaultValue: 'Chọn Phuờng/Xã',
 						},
+						{
+							name: 'details',
+							type: 'text',
+							label: {
+								en: 'Details',
+								vi: 'Chi tiết',
+							},
+							required: true,
+							defaultValue: 'Số nhà, đường, khu vực',
+						},
+						{
+							name: 'saveForNextTime',
+							type: 'text',
+							label: {
+								en: 'Save details',
+								vi: 'Lưu chi tiết',
+							},
+							defaultValue: 'Lưu thông tin thanh toán cho những lần tiếp theo',
+							required: true,
+						},
 					],
 				},
 				{
