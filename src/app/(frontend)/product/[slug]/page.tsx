@@ -48,6 +48,17 @@ const queryProductBySlug = cache(async ({ slug }: { slug: string }) => {
 				equals: slug,
 			},
 		},
+		depth: 2,
+		joins: {
+			orders: {
+				count: true,
+				where: {
+					'review.approved': {
+						equals: true,
+					},
+				},
+			},
+		},
 	})
 
 	return result.docs?.[0] || null
@@ -80,6 +91,10 @@ export default async function Product({
 
 	if (!product) return <PayloadRedirects url={url} />
 
+	const orders = Array.isArray(product.orders?.docs)
+		? product.orders?.docs.filter((o) => typeof o === 'object')
+		: null
+
 	return (
 		<article>
 			<PageClient />
@@ -96,7 +111,7 @@ export default async function Product({
 			{product.content && <RenderBlocks blocks={product.content} />}
 
 			{/* reviews */}
-			{product.reviewsVisible === 'show' && <ReviewsGlobalComponent />}
+			{product.reviewsVisible === 'show' && orders && <ReviewsGlobalComponent orders={orders} />}
 
 			<FooterGlobalComponent size={product.footerSize} />
 		</article>
