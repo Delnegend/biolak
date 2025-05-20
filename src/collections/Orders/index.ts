@@ -33,8 +33,8 @@ export const OrdersCollection: CollectionConfig<typeof OrdersSlug> = {
 				vi: 'Đánh giá',
 			},
 			access: {
-				create: allow(Role.Admin, Role.SalesManager, Role.ContentManager),
-				update: allow(Role.Admin, Role.SalesManager, Role.ContentManager),
+				create: allow(Role.NoOne),
+				update: allow(Role.NoOne),
 				read: allow(Role.Admin, Role.SalesManager, Role.ContentManager),
 			},
 			fields: [
