@@ -45,7 +45,6 @@ export const OrdersCollection: CollectionConfig<typeof OrdersSlug> = {
 						en: 'Rating (1-5)',
 						vi: 'Đánh giá (1-5)',
 					},
-					required: true,
 					min: 1,
 					max: 5,
 				},
@@ -56,7 +55,6 @@ export const OrdersCollection: CollectionConfig<typeof OrdersSlug> = {
 						en: 'Content',
 						vi: 'Nội dung',
 					},
-					required: true,
 				},
 				{
 					name: 'approved',
