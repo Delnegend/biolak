@@ -91,3 +91,6 @@ backup-prod:
 
   # Start the services
   docker compose up -d
+
+update:
+  docker compose down && git pull --rebase && docker compose up -d
