@@ -135,8 +135,8 @@ export const ProductsCollection: CollectionConfig<typeof ProductsSlug> = {
 						{
 							name: 'reviewsVisible',
 							label: {
-								en: 'Visible',
-								vi: 'Hiển thị',
+								en: 'Reviews Visible',
+								vi: 'Hiển thị đánh giá',
 							},
 							type: 'radio',
 							options: [
