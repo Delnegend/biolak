@@ -14,7 +14,9 @@ The PosgreSQL server must be accessible during build time.
 
 ## Migrations
 
-Before committing or after creating migrations, execute `just minify-json` to compress the JSON files within the migrations directory and reduce their file sizes.
+`minify-json` is always called after creating migrations to minify the JSONs in the `src/migrations` directory.
+
+ATTENTION: ALWAYS execute `just test-prod` to check whether the migrations will run successfully before committing the migration files.
 
 ## Workaround notes
 - DO NOT modify/remove MULTIPLE fields in a global setting at once; do them individually.
