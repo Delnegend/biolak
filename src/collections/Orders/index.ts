@@ -32,6 +32,11 @@ export const OrdersCollection: CollectionConfig<typeof OrdersSlug> = {
 				en: 'Review',
 				vi: 'Đánh giá',
 			},
+			access: {
+				create: allow(Role.Admin, Role.SalesManager, Role.ContentManager),
+				update: allow(Role.Admin, Role.SalesManager, Role.ContentManager),
+				read: allow(Role.Admin, Role.SalesManager, Role.ContentManager),
+			},
 			fields: [
 				{
 					name: 'rating',
