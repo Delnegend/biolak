@@ -3,9 +3,13 @@ import { getPayload } from 'payload'
 
 import { ProductCategoriesSlug } from '@/collections/ProductCategories/slug'
 
-import { ProductsDropdownClient } from './ProductsDropdown.client'
+import { INTERNAL_ProductsDropdownClient } from './ProductsDropdown.client'
 
-export async function ProductsDropdown({ label }: { label?: string }): Promise<React.JSX.Element> {
+export async function INTERNAL_ProductsDropdown({
+	label,
+}: {
+	label?: string
+}): Promise<React.JSX.Element> {
 	const payload = await getPayload({ config: configPromise })
 	const categories = await payload.find({
 		collection: ProductCategoriesSlug,
@@ -13,5 +17,5 @@ export async function ProductsDropdown({ label }: { label?: string }): Promise<R
 		depth: 2,
 	})
 
-	return <ProductsDropdownClient categories={categories} label={label} />
+	return <INTERNAL_ProductsDropdownClient categories={categories} label={label} />
 }
