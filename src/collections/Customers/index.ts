@@ -59,9 +59,16 @@ export const CustomersCollection: CollectionConfig<typeof CustomersSlug> = {
 		{
 			name: OrdersSlug,
 			type: 'join',
+			label: {
+				en: 'Orders',
+				vi: 'Đơn hàng',
+			},
 			collection: OrdersSlug,
 			on: CustomersSlug,
 		},
 	],
+	admin: {
+		useAsTitle: 'name',
+	},
 	timestamps: true,
 }
