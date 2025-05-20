@@ -13,7 +13,7 @@ services:
 
    biolak-payload:
       container_name: biolak-payload
-      image: node:23-alpine
+      image: node:24-alpine
       ports:
          - '3000:3000'
       depends_on:
