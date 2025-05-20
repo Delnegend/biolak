@@ -54,12 +54,6 @@ db-create-migrate:
 db-dev-pg-start:
   docker compose up -d postgres-dev
 
-db-dev-pg-backup:
-  docker exec -it postgres-dev bash /postgres-dev-backup/backup.sh
-
-db-dev-pg-restore:
-  docker exec -it postgres-dev bash /postgres-dev-backup/restore.sh
-
 lint:
   pnpm next lint --fix && pnpm prettier --write .
 
