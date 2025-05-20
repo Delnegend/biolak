@@ -132,20 +132,22 @@ export interface Config {
   globals: {
     checkoutPageGlobal: CheckoutPageGlobal;
     contactFormGlobal: ContactFormGlobal;
+    floatingGlobal: FloatingGlobal;
     footerGlobal: FooterGlobal;
     headerGlobal: HeaderGlobal;
-    promo: Promo;
+    popupBannerGlobal: PopupBannerGlobal;
+    promoGlobal: PromoGlobal;
     reviewsGlobal: ReviewsGlobal;
-    'popup-banner': PopupBanner;
   };
   globalsSelect: {
     checkoutPageGlobal: CheckoutPageGlobalSelect<false> | CheckoutPageGlobalSelect<true>;
     contactFormGlobal: ContactFormGlobalSelect<false> | ContactFormGlobalSelect<true>;
+    floatingGlobal: FloatingGlobalSelect<false> | FloatingGlobalSelect<true>;
     footerGlobal: FooterGlobalSelect<false> | FooterGlobalSelect<true>;
     headerGlobal: HeaderGlobalSelect<false> | HeaderGlobalSelect<true>;
-    promo: PromoSelect<false> | PromoSelect<true>;
+    popupBannerGlobal: PopupBannerGlobalSelect<false> | PopupBannerGlobalSelect<true>;
+    promoGlobal: PromoGlobalSelect<false> | PromoGlobalSelect<true>;
     reviewsGlobal: ReviewsGlobalSelect<false> | ReviewsGlobalSelect<true>;
-    'popup-banner': PopupBannerSelect<false> | PopupBannerSelect<true>;
   };
   locale: null;
   user: User & {
@@ -207,6 +209,7 @@ export interface Order {
   review: {
     rating: number;
     content: string;
+    approved?: boolean | null;
   };
   products: number | Product;
   customers?: (number | null) | Customer;
@@ -274,6 +277,7 @@ export interface Product {
         | HighlightRightBlockProps
         | HighlightCenterBlockProps
         | HighlightLeftBlockProps
+        | HowToUseProductBlockProps
         | InfiniteScrollBlockProps
         | LatestPostsBlockProps
         | MediaBlockProps
@@ -1465,6 +1469,32 @@ export interface User {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "HowToUseProductBlockProps".
+ */
+export interface HowToUseProductBlockProps {
+  title: string;
+  content: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  image?: (number | null) | Media;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'how-to-use-product';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "contactForm".
  */
 export interface ContactForm {
@@ -2425,6 +2455,7 @@ export interface ProductsSelect<T extends boolean = true> {
         'highlight-right'?: T | HighlightRightBlockPropsSelect<T>;
         'highlight-center'?: T | HighlightCenterBlockPropsSelect<T>;
         'highlight-left'?: T | HighlightLeftBlockPropsSelect<T>;
+        'how-to-use-product'?: T | HowToUseProductBlockPropsSelect<T>;
         infiniteScroll?: T | InfiniteScrollBlockPropsSelect<T>;
         latestPosts?: T | LatestPostsBlockPropsSelect<T>;
         media?: T | MediaBlockPropsSelect<T>;
@@ -2444,6 +2475,17 @@ export interface ProductsSelect<T extends boolean = true> {
   footerSize?: T;
   updatedAt?: T;
   createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "HowToUseProductBlockProps_select".
+ */
+export interface HowToUseProductBlockPropsSelect<T extends boolean = true> {
+  title?: T;
+  content?: T;
+  image?: T;
+  id?: T;
+  blockName?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -2469,6 +2511,7 @@ export interface OrdersSelect<T extends boolean = true> {
     | {
         rating?: T;
         content?: T;
+        approved?: T;
       };
   products?: T;
   customers?: T;
@@ -2764,6 +2807,8 @@ export interface CheckoutPageGlobal {
     provinceCityInputLabel: string;
     districtInputLabel: string;
     wardInputLabel: string;
+    details: string;
+    saveForNextTime: string;
   };
   shipping: {
     title: string;
@@ -2801,6 +2846,23 @@ export interface ContactFormGlobal {
   actionSend: string;
   biolakPhoneNumber?: string | null;
   actionCall: string;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "floatingGlobal".
+ */
+export interface FloatingGlobal {
+  id: number;
+  label: string;
+  links?:
+    | {
+        link: string;
+        icon?: (number | null) | Media;
+        id?: string | null;
+      }[]
+    | null;
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -2906,9 +2968,18 @@ export interface HeaderGlobal {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "promo".
+ * via the `definition` "popupBannerGlobal".
  */
-export interface Promo {
+export interface PopupBannerGlobal {
+  id: number;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "promoGlobal".
+ */
+export interface PromoGlobal {
   id: number;
   message?: string | null;
   link: {
@@ -2960,15 +3031,6 @@ export interface ReviewsGlobal {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "popup-banner".
- */
-export interface PopupBanner {
-  id: number;
-  updatedAt?: string | null;
-  createdAt?: string | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "checkoutPageGlobal_select".
  */
 export interface CheckoutPageGlobalSelect<T extends boolean = true> {
@@ -2988,6 +3050,8 @@ export interface CheckoutPageGlobalSelect<T extends boolean = true> {
         provinceCityInputLabel?: T;
         districtInputLabel?: T;
         wardInputLabel?: T;
+        details?: T;
+        saveForNextTime?: T;
       };
   shipping?:
     | T
@@ -3033,6 +3097,23 @@ export interface ContactFormGlobalSelect<T extends boolean = true> {
   actionSend?: T;
   biolakPhoneNumber?: T;
   actionCall?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "floatingGlobal_select".
+ */
+export interface FloatingGlobalSelect<T extends boolean = true> {
+  label?: T;
+  links?:
+    | T
+    | {
+        link?: T;
+        icon?: T;
+        id?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;
@@ -3097,9 +3178,18 @@ export interface HeaderGlobalSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "promo_select".
+ * via the `definition` "popupBannerGlobal_select".
  */
-export interface PromoSelect<T extends boolean = true> {
+export interface PopupBannerGlobalSelect<T extends boolean = true> {
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "promoGlobal_select".
+ */
+export interface PromoGlobalSelect<T extends boolean = true> {
   message?: T;
   link?:
     | T
@@ -3123,15 +3213,6 @@ export interface ReviewsGlobalSelect<T extends boolean = true> {
   btnLabel?: T;
   reviewDialogTitle?: T;
   sendReviewBtnLabel?: T;
-  updatedAt?: T;
-  createdAt?: T;
-  globalType?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "popup-banner_select".
- */
-export interface PopupBannerSelect<T extends boolean = true> {
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;
