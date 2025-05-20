@@ -112,6 +112,18 @@
 	li::marker {
 		@apply !text-2xl !text-primary;
 	}
+
+	.compact hr {
+		@apply !my-4 !border-primary;
+	}
+
+	.compact p {
+		@apply !mb-1;
+	}
+
+	.compact ul {
+		@apply !mt-0;
+	}
 }
 
 html {
