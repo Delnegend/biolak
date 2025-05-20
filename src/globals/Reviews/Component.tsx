@@ -6,7 +6,7 @@ import { Fragment } from 'react'
 import { Button } from '@/components/ui/button'
 import { ReviewsGlobalSlug } from '@/globals/Reviews/config'
 import { INTERNAL_ReviewDialogContentClient } from '@/globals/Reviews/ReviewDialogContent.client'
-import { ReviewsGlobal } from '@/payload-types'
+import { Order, ReviewsGlobal } from '@/payload-types'
 import { getCachedGlobal } from '@/utilities/getGlobals'
 import { cn } from '@/utilities/ui'
 
@@ -23,8 +23,37 @@ const mockReviews = Array.from({ length: 10 }).map((_, i) => ({
 	createdAt: new Date(),
 }))
 
-export async function ReviewsGlobalComponent(): Promise<React.JSX.Element> {
+export async function ReviewsGlobalComponent({
+	orders,
+}: {
+	orders: Order[]
+}): Promise<React.JSX.Element> {
 	const reviewGlobal = (await getCachedGlobal(ReviewsGlobalSlug, 1)()) as ReviewsGlobal
+
+	const _productReviews = orders.reduce(
+		(acc, order) => {
+			if (
+				order.review &&
+				order.review.approved &&
+				typeof order.customers === 'object' &&
+				order.review.rating
+			) {
+				acc.push({
+					customer: order.customers?.name ?? 'ẩn danh',
+					rating: order.review.rating ?? undefined,
+					content: order.review.content ?? undefined,
+					createdAt: new Date(order.createdAt),
+				})
+			}
+			return acc
+		},
+		[] as {
+			customer: string
+			rating: number
+			content?: string
+			createdAt: Date
+		}[],
+	)
 
 	return (
 		<div className="safe-width mt-20 grid grid-cols-[auto_1fr] gap-x-20 text-primary">
