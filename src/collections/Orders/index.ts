@@ -58,6 +58,15 @@ export const OrdersCollection: CollectionConfig<typeof OrdersSlug> = {
 					},
 					required: true,
 				},
+				{
+					name: 'approved',
+					type: 'checkbox',
+					label: {
+						en: 'Approved',
+						vi: 'Đã duyệt',
+					},
+					defaultValue: false,
+				},
 			],
 		},
 		{
