@@ -33,7 +33,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
 	try {
 		const heads = await headers()
 		pathname = heads.get('x-current-path')
-	} catch (e) {
+	} catch {
 		pathname = undefined
 	}
 
