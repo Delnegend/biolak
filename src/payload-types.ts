@@ -149,7 +149,7 @@ export interface Config {
     promoGlobal: PromoGlobalSelect<false> | PromoGlobalSelect<true>;
     reviewsGlobal: ReviewsGlobalSelect<false> | ReviewsGlobalSelect<true>;
   };
-  locale: null;
+  locale: 'en' | 'vi';
   user: User & {
     collection: 'users';
   };
@@ -291,12 +291,14 @@ export interface Product {
     totalDocs?: number;
   };
   meta?: {
-    title?: string | null;
-    /**
-     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
-     */
-    image?: (number | null) | Media;
-    description?: string | null;
+    meta?: {
+      title?: string | null;
+      /**
+       * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
+       */
+      image?: (number | null) | Media;
+      description?: string | null;
+    };
   };
   slug?: string | null;
   slugLock?: boolean | null;
@@ -535,12 +537,14 @@ export interface Post {
   relatedPosts?: (number | Post)[] | null;
   postCategories?: (number | PostCategory)[] | null;
   meta?: {
-    title?: string | null;
-    /**
-     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
-     */
-    image?: (number | null) | Media;
-    description?: string | null;
+    meta?: {
+      title?: string | null;
+      /**
+       * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
+       */
+      image?: (number | null) | Media;
+      description?: string | null;
+    };
   };
   publishedAt?: string | null;
   authors?: (number | User)[] | null;
@@ -2358,9 +2362,13 @@ export interface PostsSelect<T extends boolean = true> {
   meta?:
     | T
     | {
-        title?: T;
-        image?: T;
-        description?: T;
+        meta?:
+          | T
+          | {
+              title?: T;
+              image?: T;
+              description?: T;
+            };
       };
   publishedAt?: T;
   authors?: T;
@@ -2465,9 +2473,13 @@ export interface ProductsSelect<T extends boolean = true> {
   meta?:
     | T
     | {
-        title?: T;
-        image?: T;
-        description?: T;
+        meta?:
+          | T
+          | {
+              title?: T;
+              image?: T;
+              description?: T;
+            };
       };
   slug?: T;
   slugLock?: T;
@@ -2898,7 +2910,7 @@ export interface HeaderGlobal {
   headerItemsLeft?:
     | {
         kind?: ('prebuilt' | 'internalUrl' | 'customUrl') | null;
-        prebuilt?: ('search' | 'products' | 'about' | 'events' | 'contact' | 'vie-en' | 'cart') | null;
+        prebuilt?: ('search' | 'products' | 'about' | 'contact' | 'vie-en' | 'cart') | null;
         customUrl?: string | null;
         internalUrl?:
           | ({
@@ -2932,7 +2944,7 @@ export interface HeaderGlobal {
   headerItemsRight?:
     | {
         kind?: ('prebuilt' | 'internalUrl' | 'customUrl') | null;
-        prebuilt?: ('search' | 'products' | 'about' | 'events' | 'contact' | 'vie-en' | 'cart') | null;
+        prebuilt?: ('search' | 'products' | 'about' | 'contact' | 'vie-en' | 'cart') | null;
         customUrl?: string | null;
         internalUrl?:
           | ({
