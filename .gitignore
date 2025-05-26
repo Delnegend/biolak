@@ -17,5 +17,6 @@ docker-compose.yml
 postgres-dev-backup/*.gz
 postgres-data/
 backup/
+.devcontainer/postgres-dev
 
 lazydocker
