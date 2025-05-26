@@ -20,7 +20,7 @@ import { ProductsCategoryBlockConf } from '@/blocks/ProductsCategory/config'
 import { ThreePhotoBlockConf } from '@/blocks/ThreePhoto/config'
 import { FooterSizeField } from '@/fields/footer'
 import { linkGroup } from '@/fields/linkGroup'
-import { SeoFieldConf } from '@/fields/seo'
+import { metaTab } from '@/fields/metaTab'
 import { slugField } from '@/fields/slug'
 
 import { adminOrPublished } from '../../access/adminOrPublished'
@@ -239,11 +239,7 @@ export const PagesCollection: CollectionConfig<typeof PagesSlug> = {
 						},
 					],
 				},
-				{
-					name: 'meta',
-					label: 'SEO',
-					fields: [SeoFieldConf],
-				},
+				metaTab,
 			],
 		},
 		{

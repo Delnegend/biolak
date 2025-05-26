@@ -1,10 +1,3 @@
-import {
-	MetaDescriptionField,
-	MetaImageField,
-	MetaTitleField,
-	OverviewField,
-	PreviewField,
-} from '@payloadcms/plugin-seo/fields'
 import { CollectionConfig } from 'payload'
 
 import { allow, Role } from '@/access/allow'
@@ -28,6 +21,7 @@ import { ProductsCarouselBlockConf } from '@/blocks/ProductsCarousel/config'
 import { ProductsCategoryBlockConf } from '@/blocks/ProductsCategory/config'
 import { ThreePhotoBlockConf } from '@/blocks/ThreePhoto/config'
 import { FooterSizeField } from '@/fields/footer'
+import { metaTab } from '@/fields/metaTab'
 import { slugField } from '@/fields/slug'
 
 import { adminOrPublished } from '../../access/adminOrPublished'
@@ -66,8 +60,10 @@ export const PostsCollection: CollectionConfig<typeof PostsSlug> = {
 		slug: true,
 		[PostCategoriesSlug]: true,
 		meta: {
-			image: true,
-			description: true,
+			meta: {
+				image: true,
+				description: true,
+			},
 		},
 	},
 	admin: {
@@ -202,33 +198,7 @@ export const PostsCollection: CollectionConfig<typeof PostsSlug> = {
 					],
 					label: 'Meta',
 				},
-				{
-					name: 'meta',
-					label: 'SEO',
-					fields: [
-						OverviewField({
-							titlePath: 'meta.title',
-							descriptionPath: 'meta.description',
-							imagePath: 'meta.image',
-						}),
-						MetaTitleField({
-							hasGenerateFn: true,
-						}),
-						MetaImageField({
-							relationTo: MediaSlug,
-						}),
-
-						MetaDescriptionField({}),
-						PreviewField({
-							// if the `generateUrl` function is configured
-							hasGenerateFn: true,
-
-							// field paths to match the target field for data
-							titlePath: 'meta.title',
-							descriptionPath: 'meta.description',
-						}),
-					],
-				},
+				metaTab,
 			],
 		},
 		{
