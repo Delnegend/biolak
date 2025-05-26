@@ -49,10 +49,9 @@ export function LatestPostsBlock(props: LatestPostsBlockProps): React.JSX.Elemen
 											<div className="font-serif text-2xl font-bold">
 												{post.title}&nbsp;→
 											</div>
-											<div className="text-xs">
-												{post.meta?.description ??
-													'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam in nisl aliquam, pharetra diam consequat, tincidunt nibh.'}
-											</div>
+											{post.meta?.meta?.description && (
+												<div className="text-xs">{post.meta.meta.description}</div>
+											)}
 										</div>
 									</CarouselItem>
 								</Link>
