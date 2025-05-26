@@ -28,7 +28,7 @@ export function Card(props: {
 		Array.isArray(props.doc.postCategories) &&
 		props.doc.postCategories.length > 0
 	const titleToUse = props.title || props.doc?.title
-	const sanitizedDescription = props.doc?.meta?.description?.replace(/\s/g, ' ') // replace non-breaking space with white space
+	const sanitizedDescription = props.doc?.meta?.meta?.description?.replace(/\s/g, ' ') // replace non-breaking space with white space
 	const href = `/${props.relationTo}/${props.doc?.slug}`
 
 	return (
@@ -40,9 +40,9 @@ export function Card(props: {
 			ref={card.ref}
 		>
 			<div className="relative w-full">
-				{!props.doc?.meta?.image && <div className="">No image</div>}
-				{props.doc?.meta?.image && typeof props.doc?.meta?.image !== 'string' && (
-					<Media resource={props.doc?.meta?.image} size="33vw" />
+				{!props.doc?.meta?.meta?.image && <div className="">No image</div>}
+				{props.doc?.meta?.meta?.image && typeof props.doc?.meta?.meta?.image !== 'string' && (
+					<Media resource={props.doc?.meta?.meta?.image} size="33vw" />
 				)}
 			</div>
 			<div className="p-4">
@@ -81,9 +81,9 @@ export function Card(props: {
 						</h3>
 					</div>
 				)}
-				{props.doc?.meta?.description && (
+				{props.doc?.meta?.meta?.description && (
 					<div className="mt-2">
-						{props.doc.meta.description && <p>{sanitizedDescription}</p>}
+						{props.doc.meta.meta.description && <p>{sanitizedDescription}</p>}
 					</div>
 				)}
 			</div>
