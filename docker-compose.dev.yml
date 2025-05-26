@@ -25,7 +25,7 @@ services:
          - PGADMIN_DEFAULT_PASSWORD=111
          - PGADMIN_CONFIG_SERVER_MODE=False
       volumes:
-         - ./pgadmin.dev.json:/pgadmin4/servers.json
+         - ./.devcontainer/pgadmin.dev.json:/pgadmin4/servers.json
 
    postgres-test-prod:
       container_name: biolak-postgres-test-prod
