@@ -30,6 +30,7 @@ import { PromoGlobalConf } from './globals/Promo/config'
 import { ReviewsGlobalConf } from './globals/Reviews/config'
 import { plugins } from './plugins'
 import { getServerSideURL } from './utilities/getURL'
+import { defaultLocale, Lang } from './utilities/lang'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -128,6 +129,19 @@ export default buildConfig({
 	},
 	i18n: {
 		supportedLanguages: { en, vi },
-		fallbackLanguage: 'en',
+		fallbackLanguage: Lang.English,
+	},
+	localization: {
+		locales: [
+			{
+				label: 'English',
+				code: Lang.English,
+			},
+			{
+				label: 'Tiếng Việt',
+				code: Lang.Vietnamese,
+			},
+		],
+		defaultLocale,
 	},
 })

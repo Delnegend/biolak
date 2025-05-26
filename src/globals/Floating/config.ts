@@ -3,13 +3,15 @@ import { GlobalConfig } from 'payload'
 
 import { allow, Role } from '@/access/allow'
 import { MediaSlug } from '@/collections/Media/slug'
+import { Lang } from '@/utilities/lang'
+import { matchLang } from '@/utilities/matchLang'
 
 export const FloatingGlobalSlug = 'floatingGlobal'
 export const FloatingGlobalConf: GlobalConfig<typeof FloatingGlobalSlug> = {
 	slug: FloatingGlobalSlug,
 	label: {
-		en: 'Floating buttons',
-		vi: 'Nút nổi',
+		en: 'Floating Contacts Buttons',
+		vi: 'Nút nổi liên hệ',
 	},
 	access: {
 		read: allow(Role.Public),
@@ -24,7 +26,11 @@ export const FloatingGlobalConf: GlobalConfig<typeof FloatingGlobalSlug> = {
 				vi: 'Nhãn',
 			},
 			required: true,
-			defaultValue: 'Liên hệ',
+			localized: true,
+			defaultValue: matchLang({
+				[Lang.English]: 'Contacts',
+				[Lang.Vietnamese]: 'Liên hệ',
+			}),
 		},
 		{
 			name: 'links',

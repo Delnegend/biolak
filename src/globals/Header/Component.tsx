@@ -5,10 +5,14 @@ import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog'
 import type { HeaderGlobal } from '@/payload-types'
+import { getClientLang } from '@/utilities/getClientLang'
 import { getCachedGlobal } from '@/utilities/getGlobals'
+import { Lang } from '@/utilities/lang'
+import { matchLang } from '@/utilities/matchLang'
 
 import biolakIcon from '../../../public/biolak-logo.svg'
 import { ContactFormGlobalComponent } from '../ContactForm/Component'
+import { INTERNAL_LanguageSwitcher } from './components/LanguageSwitcher.client'
 import { INTERNAL_ProductsDropdown } from './components/ProductsDropdown'
 import { HeaderGlobalSlug } from './config'
 
@@ -18,35 +22,46 @@ const prebuilds: Record<
 			HeaderGlobal['headerItemsLeft'] | HeaderGlobal['headerItemsRight']
 		>[number]['prebuilt']
 	>,
-	(props: { label?: string }) => React.JSX.Element | Promise<React.JSX.Element>
+	(props: { label?: string; locale: Lang }) => React.JSX.Element | Promise<React.JSX.Element>
 > = {
-	search: ({ label }: { label?: string }) => (
+	search: ({ label, locale }) => (
 		<Link href="#" className="flex size-7 items-center justify-center">
-			<span className="sr-only">{label ?? 'Tìm kiếm'}</span>
+			<span className="sr-only">
+				{label ??
+					matchLang({
+						[Lang.English]: 'Search',
+						[Lang.Vietnamese]: 'Tìm kiếm',
+					})({ locale })}
+			</span>
 			<SearchIcon className="w-5 scale-110 text-primary" size={30} />
 		</Link>
 	),
 	products: INTERNAL_ProductsDropdown,
-	about: ({ label }: { label?: string }) => <Link href="/about">{label ?? 'BioLAK'}</Link>,
-	events: ({ label }: { label?: string }) => <Link href="/events">{label ?? 'Sự kiện'}</Link>,
-	contact: ({ label }: { label?: string }) => (
+	about: ({ label }) => <Link href="/about">{label ?? 'BioLAK'}</Link>,
+	contact: ({ label, locale }) => (
 		<Dialog>
 			<DialogTrigger>
-				<div>{label ?? 'Liên hệ'}</div>
+				<div>
+					{label ??
+						matchLang({
+							[Lang.English]: 'Contacts',
+							[Lang.Vietnamese]: 'Liên hệ',
+						})({ locale })}
+				</div>
 			</DialogTrigger>
 			<DialogContent className="min-w-[932px] overflow-hidden !rounded-2xl bg-primary-foreground p-12">
 				<ContactFormGlobalComponent inDialog={true} />
 			</DialogContent>
 		</Dialog>
 	),
-	'vie-en': ({ label }: { label?: string }) => <Link href="#">{label ?? 'VIE/EN'}</Link>,
-	cart: ({ label }: { label?: string }) => (
+	'vie-en': ({ label }) => <INTERNAL_LanguageSwitcher label={label} />,
+	cart: ({ label, locale }) => (
 		<Button
 			variant="default"
 			className="relative h-14 rounded-full bg-primary px-6 !font-sans text-xl font-medium"
 			hideArrow={true}
 		>
-			{label ?? 'Giỏ hàng'}
+			{label ?? matchLang({ [Lang.English]: 'Cart', [Lang.Vietnamese]: 'Giỏ hàng' })({ locale })}
 			<div className="absolute -top-2 right-0 flex aspect-square size-7 items-center justify-center overflow-hidden rounded-full bg-[#FF8200] text-base text-primary">
 				10
 			</div>
@@ -55,7 +70,8 @@ const prebuilds: Record<
 }
 
 export async function HeaderGlobalComponent() {
-	const global: HeaderGlobal = await getCachedGlobal(HeaderGlobalSlug, 1)()
+	const locale = await getClientLang()
+	const global = await getCachedGlobal<HeaderGlobal>(HeaderGlobalSlug, 1, locale)()
 
 	function RenderNav({
 		props,
@@ -70,7 +86,11 @@ export async function HeaderGlobalComponent() {
 							if (!item.prebuilt) return null
 							const Elem = prebuilds[item.prebuilt]
 							return Elem ? (
-								<Elem key={`header-left-${index}`} label={item.label ?? undefined} />
+								<Elem
+									key={`header-left-${index}`}
+									label={item.label ?? undefined}
+									locale={locale}
+								/>
 							) : null
 						}
 						case 'internalUrl': {
@@ -101,7 +121,12 @@ export async function HeaderGlobalComponent() {
 
 							return item.internalUrl?.value ? (
 								<Link key={`header-left-${index}`} href={url ?? '#'}>
-									{item.label ?? doc?.title ?? 'Liên kết nội bộ'}
+									{item.label ??
+										doc?.title ??
+										matchLang({
+											[Lang.English]: 'Internal link',
+											[Lang.Vietnamese]: 'Liên kết nội bộ',
+										})({ locale })}
 								</Link>
 							) : null
 						}
@@ -115,7 +140,10 @@ export async function HeaderGlobalComponent() {
 								>
 									{item.label ??
 										item.customUrl?.replaceAll(/https?:\/\//, '') ??
-										'Liên kết ngoài'}
+										matchLang({
+											[Lang.English]: 'External link',
+											[Lang.Vietnamese]: 'Liên kết ngoài',
+										})({ locale })}
 								</Link>
 							)
 						}
@@ -129,7 +157,7 @@ export async function HeaderGlobalComponent() {
 		<header className="relative z-20 flex h-20 w-full items-center bg-primary-foreground px-10">
 			<div className="grid w-full grid-cols-[1fr_auto_1fr]">
 				<nav className="flex items-center gap-9 text-xl">
-					<RenderNav props={global.headerItemsLeft} />
+					<RenderNav props={global?.headerItemsLeft ?? []} />
 				</nav>
 
 				<Link href="/home">
@@ -137,7 +165,7 @@ export async function HeaderGlobalComponent() {
 				</Link>
 
 				<nav className="flex items-center justify-end gap-9 text-xl">
-					<RenderNav props={global.headerItemsRight} />
+					<RenderNav props={global?.headerItemsRight ?? []} />
 				</nav>
 			</div>
 		</header>

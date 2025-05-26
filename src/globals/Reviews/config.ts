@@ -2,6 +2,8 @@ import { revalidateTag } from 'next/cache'
 import { GlobalConfig } from 'payload'
 
 import { allow, Role } from '@/access/allow'
+import { Lang } from '@/utilities/lang'
+import { matchLang } from '@/utilities/matchLang'
 
 export const ReviewsGlobalSlug = 'reviewsGlobal'
 export const ReviewsGlobalConf: GlobalConfig<typeof ReviewsGlobalSlug> = {
@@ -23,7 +25,11 @@ export const ReviewsGlobalConf: GlobalConfig<typeof ReviewsGlobalSlug> = {
 				vi: 'Tiêu đề',
 			},
 			required: true,
-			defaultValue: 'Đánh giá từ khách hàng',
+			localized: true,
+			defaultValue: matchLang({
+				[Lang.English]: 'Reviews from customers',
+				[Lang.Vietnamese]: 'Đánh giá từ khách hàng',
+			}),
 		},
 		{
 			name: 'btnLabel',
@@ -33,7 +39,11 @@ export const ReviewsGlobalConf: GlobalConfig<typeof ReviewsGlobalSlug> = {
 				vi: 'Nhãn nút đánh giá',
 			},
 			required: true,
-			defaultValue: 'VIẾT ĐÁNH GIÁ',
+			localized: true,
+			defaultValue: matchLang({
+				[Lang.English]: 'WRITE A REVIEW',
+				[Lang.Vietnamese]: 'VIẾT ĐÁNH GIÁ',
+			}),
 		},
 		{
 			name: 'reviewDialogTitle',
@@ -43,7 +53,11 @@ export const ReviewsGlobalConf: GlobalConfig<typeof ReviewsGlobalSlug> = {
 				vi: 'Nhãn hộp thoại đánh giá',
 			},
 			required: true,
-			defaultValue: 'Viết đánh giá của bạn',
+			localized: true,
+			defaultValue: matchLang({
+				[Lang.English]: 'Write your review',
+				[Lang.Vietnamese]: 'Viết đánh giá của bạn',
+			}),
 		},
 		{
 			name: 'sendReviewBtnLabel',
@@ -53,7 +67,11 @@ export const ReviewsGlobalConf: GlobalConfig<typeof ReviewsGlobalSlug> = {
 				vi: 'Nhãn nút gửi đánh giá',
 			},
 			required: true,
-			defaultValue: 'GỬI ĐÁNH GIÁ',
+			localized: true,
+			defaultValue: matchLang({
+				[Lang.English]: 'SEND REVIEW',
+				[Lang.Vietnamese]: 'GỬI ĐÁNH GIÁ',
+			}),
 		},
 	],
 	hooks: {

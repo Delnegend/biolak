@@ -3,7 +3,10 @@ import Image from 'next/image'
 
 import { TextInput } from '@/components/ui/text-input'
 import { FooterGlobal, Media } from '@/payload-types'
+import { getClientLang } from '@/utilities/getClientLang'
 import { getCachedGlobal } from '@/utilities/getGlobals'
+import { Lang } from '@/utilities/lang'
+import { matchLang } from '@/utilities/matchLang'
 import { cn } from '@/utilities/ui'
 
 import { FooterGlobalSlug } from './config'
@@ -15,29 +18,30 @@ export async function FooterGlobalComponent({
 }: {
 	size?: 'small' | 'large' | 'medium' | null
 }) {
-	const global = (await getCachedGlobal(FooterGlobalSlug, 1)()) as FooterGlobal
+	const locale = await getClientLang()
+	const global = await getCachedGlobal<FooterGlobal>(FooterGlobalSlug, 1, locale)()
+	const {
+		legal: { stamp },
+	} = global
 
-	const stamp =
-		global.legal.stamp !== undefined &&
-		typeof global.legal.stamp === 'object' &&
-		global.legal.stamp !== null
-			? global.legal.stamp
-			: null
+	const stamp_ = stamp !== undefined && typeof stamp === 'object' && stamp !== null ? stamp : null
 
 	switch (size) {
 		case 'large':
-			return <FooterLarge global={global} stamp={stamp} />
+			return <FooterLarge global={global} stamp={stamp_} locale={locale} />
 		case 'medium':
-			return <FooterMedium global={global} stamp={stamp} />
+			return <FooterMedium global={global} stamp={stamp_} locale={locale} />
 		default:
 			return <FooterSmall global={global} />
 	}
 }
 async function FooterLarge({
 	global: { contactUs, legal, image },
+	locale,
 	stamp,
 }: {
 	global: FooterGlobal
+	locale: Lang
 	stamp?: Media | null
 }): Promise<React.JSX.Element> {
 	const img =
@@ -49,7 +53,13 @@ async function FooterLarge({
 		<footer className="relative flex overflow-hidden">
 			<Image
 				src={img?.url ?? 'https://placehold.co/1000x1000'}
-				alt={img?.alt ?? 'Lanscape'}
+				alt={
+					img?.alt ??
+					matchLang({
+						[Lang.English]: 'Lanscape Image',
+						[Lang.Vietnamese]: 'Ảnh Lanscape',
+					})({ locale })
+				}
 				width={img?.width ?? 1000}
 				height={img?.height ?? 1000}
 				className="absolute top-1/2 h-full w-1/2 -translate-y-1/2 object-cover"
@@ -95,9 +105,11 @@ async function FooterLarge({
 
 async function FooterMedium({
 	global,
+	locale,
 	stamp,
 }: {
 	global: FooterGlobal
+	locale: Lang
 	stamp?: Media | null
 }): Promise<React.JSX.Element> {
 	return (
@@ -112,7 +124,13 @@ async function FooterMedium({
 				<div className="whitespace-pre-wrap text-base">{global.legal.content}</div>
 				<Image
 					src={stamp?.url ?? 'https://placehold.co/200x100'}
-					alt={stamp?.alt ?? 'Đã thông báo bộ Công Thương'}
+					alt={
+						stamp?.alt ??
+						matchLang({
+							[Lang.English]: 'Noticed by the Board of Directors',
+							[Lang.Vietnamese]: 'Đã thông báo bộ Công Thương',
+						})({ locale })
+					}
 					width={stamp?.width ?? 200}
 					height={stamp?.height ?? 100}
 					className="my-6 h-14 w-auto object-contain"

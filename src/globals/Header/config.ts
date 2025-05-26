@@ -64,10 +64,6 @@ const fields: Field[] = [
 						value: 'about',
 					},
 					{
-						label: 'Sự kiện',
-						value: 'events',
-					},
-					{
 						label: 'Liên hệ',
 						value: 'contact',
 					},
@@ -114,6 +110,7 @@ const fields: Field[] = [
 					en: 'Label',
 					vi: 'Nhãn',
 				},
+				localized: true,
 			},
 		],
 	},
