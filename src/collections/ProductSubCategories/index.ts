@@ -45,6 +45,7 @@ export const ProductSubCategoriesCollection: CollectionConfig<typeof ProductSubC
 				en: 'Title',
 				vi: 'Tiêu đề',
 			},
+			localized: true,
 		},
 		{
 			name: ProductsSlug,

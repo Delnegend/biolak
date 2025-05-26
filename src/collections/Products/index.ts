@@ -20,7 +20,7 @@ import { MediaBlockConf } from '@/blocks/MediaBlock/config'
 import { ProductsCarouselBlockConf } from '@/blocks/ProductsCarousel/config'
 import { ThreePhotoBlockConf } from '@/blocks/ThreePhoto/config'
 import { FooterSizeField } from '@/fields/footer'
-import { SeoFieldConf } from '@/fields/seo'
+import { metaTab } from '@/fields/metaTab'
 import { slugField } from '@/fields/slug'
 import { generatePreviewPath } from '@/utilities/generatePreviewPath'
 
@@ -81,20 +81,22 @@ export const ProductsCollection: CollectionConfig<typeof ProductsSlug> = {
 						{
 							name: 'title',
 							type: 'text',
-							required: true,
 							label: {
 								en: "Product's title",
 								vi: 'Tên sản phẩm',
 							},
+							required: true,
+							localized: true,
 						},
 						{
 							name: 'shortDescription',
 							type: 'text',
-							required: true,
 							label: {
 								en: 'Short Description',
 								vi: 'Mô tả ngắn',
 							},
+							required: true,
+							localized: true,
 						},
 						{
 							name: 'longDescription',
@@ -103,6 +105,7 @@ export const ProductsCollection: CollectionConfig<typeof ProductsSlug> = {
 								en: 'Long Description',
 								vi: 'Mô tả chi tiết',
 							},
+							localized: true,
 						},
 						{
 							name: 'price',
@@ -169,6 +172,7 @@ export const ProductsCollection: CollectionConfig<typeof ProductsSlug> = {
 								en: 'Subtitle override',
 								vi: 'Ghi đè tên sản phẩm (phụ đề)',
 							},
+							localized: true,
 						},
 						{
 							name: 'heroTitle',
@@ -177,6 +181,7 @@ export const ProductsCollection: CollectionConfig<typeof ProductsSlug> = {
 								en: 'Title override',
 								vi: 'Ghi đè mô tả ngắn (tiêu đề)',
 							},
+							localized: true,
 						},
 						{
 							name: 'heroDescription',
@@ -185,6 +190,7 @@ export const ProductsCollection: CollectionConfig<typeof ProductsSlug> = {
 								en: 'Description override',
 								vi: 'Ghi đè mô tả',
 							},
+							localized: true,
 						},
 						{
 							name: 'heroMedia',
@@ -261,10 +267,7 @@ export const ProductsCollection: CollectionConfig<typeof ProductsSlug> = {
 						},
 					],
 				},
-				{
-					label: 'SEO',
-					fields: [SeoFieldConf],
-				},
+				metaTab,
 			],
 		},
 		...slugField(),
