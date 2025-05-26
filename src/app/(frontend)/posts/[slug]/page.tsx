@@ -10,11 +10,14 @@ import { LivePreviewListener } from '@/components/LivePreviewListener'
 import { PayloadRedirects } from '@/components/PayloadRedirects'
 import { FooterGlobalComponent } from '@/globals/Footer/Component'
 import { type PostCategory } from '@/payload-types'
+import { getClientLang } from '@/utilities/getClientLang'
 
 import PageClient from './page.client'
 
 export async function generateStaticParams() {
 	const payload = await getPayload({ config })
+	const locale = await getClientLang()
+
 	const postCategories = await payload.find({
 		collection: PostCategoriesSlug,
 		draft: false,
@@ -24,6 +27,7 @@ export async function generateStaticParams() {
 		select: {
 			slug: true,
 		},
+		locale,
 	})
 
 	return postCategories.docs
@@ -58,6 +62,7 @@ export default async function PostCategory({
 const queryPostCategoryBySlug = cache(
 	async ({ slug: categorySlug }: { slug: string }): Promise<PostCategory | null> => {
 		const payload = await getPayload({ config })
+		const locale = await getClientLang()
 
 		const result = await payload.find({
 			collection: PostCategoriesSlug,
@@ -67,6 +72,7 @@ const queryPostCategoryBySlug = cache(
 					equals: categorySlug,
 				},
 			},
+			locale,
 		})
 
 		return result.docs?.[0] ?? null

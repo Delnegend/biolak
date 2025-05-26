@@ -8,11 +8,14 @@ import { ProductsSlug } from '@/collections/Products/slug'
 import { ProductSubCategoriesSlug } from '@/collections/ProductSubCategories/slug'
 import { ProductCard } from '@/components/ProductCard'
 import { generateMeta } from '@/utilities/generateMeta'
+import { getClientLang } from '@/utilities/getClientLang'
 
 import PageClient from './page.client'
 
 export async function generateStaticParams() {
 	const payload = await getPayload({ config: configPromise })
+	const locale = await getClientLang()
+
 	const categories = await payload.find({
 		collection: ProductCategoriesSlug,
 		draft: false,
@@ -22,6 +25,7 @@ export async function generateStaticParams() {
 		select: {
 			slug: true,
 		},
+		locale,
 	})
 
 	return categories.docs
@@ -37,6 +41,7 @@ export default async function Category({
 }): Promise<React.JSX.Element> {
 	const { slug: categorySlug = '' } = await params
 	const payload = await getPayload({ config: configPromise })
+	const locale = await getClientLang()
 
 	const category = await queryCategoryBySlug({ slug: categorySlug })
 
@@ -57,6 +62,7 @@ export default async function Category({
 				gallery: true,
 				price: true,
 			},
+			locale,
 		})
 		if (products.docs.length === 0) {
 			products = await payload.find({
@@ -74,6 +80,7 @@ export default async function Category({
 					gallery: true,
 					price: true,
 				},
+				locale,
 			})
 		}
 	} catch (error) {
@@ -107,6 +114,7 @@ export async function generateMetadata({
 
 const queryCategoryBySlug = cache(async ({ slug: categorySlug }: { slug: string }) => {
 	const payload = await getPayload({ config: configPromise })
+	const locale = await getClientLang()
 
 	let result = await payload.find({
 		collection: ProductCategoriesSlug,
@@ -116,6 +124,7 @@ const queryCategoryBySlug = cache(async ({ slug: categorySlug }: { slug: string 
 				equals: categorySlug,
 			},
 		},
+		locale,
 	})
 
 	if (result.docs.length === 0) {
@@ -127,6 +136,7 @@ const queryCategoryBySlug = cache(async ({ slug: categorySlug }: { slug: string 
 					equals: categorySlug,
 				},
 			},
+			locale,
 		})
 	}
 
