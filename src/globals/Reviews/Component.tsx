@@ -7,7 +7,10 @@ import { Button } from '@/components/ui/button'
 import { ReviewsGlobalSlug } from '@/globals/Reviews/config'
 import { INTERNAL_ReviewDialogContentClient } from '@/globals/Reviews/ReviewDialogContent.client'
 import { Order, ReviewsGlobal } from '@/payload-types'
+import { getClientLang } from '@/utilities/getClientLang'
 import { getCachedGlobal } from '@/utilities/getGlobals'
+import { Lang } from '@/utilities/lang'
+import { matchLang } from '@/utilities/matchLang'
 import { cn } from '@/utilities/ui'
 
 const phudu = Phudu({
@@ -28,7 +31,8 @@ export async function ReviewsGlobalComponent({
 }: {
 	orders: Order[] | null
 }): Promise<React.JSX.Element> {
-	const reviewGlobal = (await getCachedGlobal(ReviewsGlobalSlug, 1)()) as ReviewsGlobal
+	const locale = await getClientLang()
+	const global = await getCachedGlobal<ReviewsGlobal>(ReviewsGlobalSlug, 1, locale)()
 
 	const _productReviews =
 		orders?.reduce(
@@ -40,7 +44,12 @@ export async function ReviewsGlobalComponent({
 					order.review.rating
 				) {
 					acc.push({
-						customer: order.customers?.name ?? 'ẩn danh',
+						customer:
+							order.customers?.name ??
+							matchLang({
+								[Lang.English]: 'Anonymous',
+								[Lang.Vietnamese]: 'Ẩn danh',
+							})({ locale }),
 						rating: order.review.rating ?? undefined,
 						content: order.review.content ?? undefined,
 						createdAt: new Date(order.createdAt),
@@ -59,7 +68,7 @@ export async function ReviewsGlobalComponent({
 	return (
 		<div className="safe-width mt-20 grid grid-cols-[auto_1fr] gap-x-20 text-primary">
 			<div>
-				<div className="font-serif text-2xl font-medium">{reviewGlobal.title}</div>
+				<div className="font-serif text-2xl font-medium">{global.title}</div>
 				<div className="font-serif text-9xl font-medium">5.0</div>
 				<div className="flex w-fit flex-row items-center justify-center gap-4">
 					<Heart />
@@ -91,10 +100,10 @@ export async function ReviewsGlobalComponent({
 				<Dialog>
 					<DialogTrigger asChild>
 						<Button className="w-full max-w-[25.5rem] self-end" hideArrow={true}>
-							{reviewGlobal.btnLabel}
+							{global.btnLabel}
 						</Button>
 					</DialogTrigger>
-					<INTERNAL_ReviewDialogContentClient global={reviewGlobal} />
+					<INTERNAL_ReviewDialogContentClient global={global} />
 				</Dialog>
 			</div>
 

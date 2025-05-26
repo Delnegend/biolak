@@ -8,7 +8,10 @@ import Link from 'next/link'
 import { useState } from 'react'
 
 import { Button } from '@/components/ui/button'
+import { useClientLang } from '@/hooks/useClientLang'
 import { FloatingGlobal } from '@/payload-types'
+import { Lang } from '@/utilities/lang'
+import { matchLang } from '@/utilities/matchLang'
 import { toFaviconUrl } from '@/utilities/toFaviconUrl'
 import { cn } from '@/utilities/ui'
 
@@ -16,6 +19,7 @@ const inter = Inter({ subsets: ['vietnamese'], weight: ['400'] })
 
 export function INTERNAL_FloatingClient({ global }: { global: FloatingGlobal }): React.JSX.Element {
 	const [open, setOpen] = useState(false)
+	const { lang: locale } = useClientLang()
 
 	return (
 		<div className={cn('fixed bottom-4 right-10 z-10 flex h-24 flex-row items-center gap-x-6')}>
@@ -37,7 +41,13 @@ export function INTERNAL_FloatingClient({ global }: { global: FloatingGlobal }):
 										src={
 											icon?.url ?? toFaviconUrl(l.link) ?? 'https://placehold.co/256x256'
 										}
-										alt={icon?.alt ?? l.link}
+										alt={
+											icon?.alt ??
+											matchLang({
+												[Lang.English]: 'Floating Contacts Icon',
+												[Lang.Vietnamese]: 'Biểu tượng nổi liên hệ',
+											})({ locale })
+										}
 										width={icon?.width ?? 256}
 										height={icon?.height ?? 256}
 										unoptimized={!icon}

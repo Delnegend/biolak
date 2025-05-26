@@ -20,6 +20,7 @@ export const PromoGlobalConf: GlobalConfig<typeof PromoGlobalSlug> = {
 			name: 'message',
 			type: 'text',
 			defaultValue: '',
+			localized: true,
 		},
 		link(),
 	],

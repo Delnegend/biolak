@@ -8,7 +8,10 @@ import { ZodError } from 'zod'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { TextInput } from '@/components/ui/text-input'
+import { useClientLang } from '@/hooks/useClientLang'
 import { ContactFormGlobal } from '@/payload-types'
+import { Lang } from '@/utilities/lang'
+import { matchLang } from '@/utilities/matchLang'
 
 import {
 	type ContactFormInputType,
@@ -17,11 +20,18 @@ import {
 
 export function INTERNAL_ContactFormClient({ global }: { global: ContactFormGlobal }) {
 	const { register, handleSubmit } = useForm<ContactFormInputType>()
+	const { lang } = useClientLang()
+
 	const onSubmit: SubmitHandler<ContactFormInputType> = (data) => {
 		void (async (): Promise<void> => {
 			const response = await submitContactFormAction(data)
 			if (response.success) {
-				toast.success('BioLAK đã nhận đuợc phản hồi của bạn')
+				toast.success(
+					matchLang({
+						[Lang.English]: 'BioLAK has received your feedback',
+						[Lang.Vietnamese]: 'BioLAK đã nhận đuợc phản hồi của bạn',
+					})({ locale: lang }),
+				)
 				return
 			}
 			let description = ''
@@ -30,9 +40,15 @@ export function INTERNAL_ContactFormClient({ global }: { global: ContactFormGlob
 			} else {
 				description = `${response.errors}`
 			}
-			toast.error('Không thể gửi biểu mẫu', {
-				description,
-			})
+			toast.error(
+				matchLang({
+					[Lang.English]: 'Unable to send feedback',
+					[Lang.Vietnamese]: 'Không thể gửi phản hồi',
+				})({ locale: lang }),
+				{
+					description,
+				},
+			)
 		})()
 	}
 

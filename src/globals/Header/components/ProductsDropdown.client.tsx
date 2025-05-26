@@ -5,12 +5,17 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { PaginatedDocs } from 'payload'
 import React, { useEffect, useRef, useState } from 'react'
+import { toast } from 'sonner'
 
+import { useClientLang } from '@/hooks/useClientLang'
 import { Product, ProductCategory, ProductSubCategory } from '@/payload-types'
 import { formatPrice } from '@/utilities/formatPrice'
 import { cn } from '@/utilities/ui'
 
-import { getProductsBySubCategory } from '../actions/getProductsBySubCategory'
+import {
+	getProductsBySubCategory,
+	GetProductsBySubCategoryInput,
+} from '../actions/getProductsBySubCategory'
 
 const panelAnimationVariants: Variants = {
 	initial: { opacity: 0, x: -30 },
@@ -100,6 +105,8 @@ export function INTERNAL_ProductsDropdownClient({
 	categories: PaginatedDocs<ProductCategory>
 	label?: string
 }): React.JSX.Element {
+	const { lang } = useClientLang()
+
 	const [open, setOpen] = useState(false)
 	const dropdownElement = useRef<HTMLDivElement | null>(null)
 
@@ -117,7 +124,20 @@ export function INTERNAL_ProductsDropdownClient({
 		setActiveSubCategory(subCategory)
 		setActiveProducts(null)
 		if (!subCategory.slug) return
-		setActiveProducts(await getProductsBySubCategory(subCategory.slug))
+		const result = await getProductsBySubCategory({
+			slug: subCategory.slug,
+			lang,
+		} satisfies GetProductsBySubCategoryInput)
+		if (!result.success) {
+			toast.error(
+				lang === 'en' ? "Can't load products list" : 'Không thể tải danh sách sản phẩm',
+				{
+					description: result.error,
+				},
+			)
+			return
+		}
+		setActiveProducts(result.data)
 	}
 
 	// find the minimum height for the dropdown for it to fill the screen perfectly

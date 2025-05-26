@@ -1,7 +1,9 @@
 import { revalidateTag } from 'next/cache'
-import { GlobalConfig } from 'payload'
+import { GlobalConfig, LabelFunction } from 'payload'
 
 import { allow, Role } from '@/access/allow'
+import { Lang } from '@/utilities/lang'
+import { matchLang } from '@/utilities/matchLang'
 
 export const CheckoutPageGlobalSlug = 'checkoutPageGlobal'
 export const CheckoutPageGlobalConf: GlobalConfig<typeof CheckoutPageGlobalSlug> = {
@@ -32,8 +34,12 @@ export const CheckoutPageGlobalConf: GlobalConfig<typeof CheckoutPageGlobalSlug>
 								en: 'Title',
 								vi: 'Tiêu đề',
 							},
-							defaultValue: 'Thông tin liên hệ của bạn',
 							required: true,
+							localized: true,
+							defaultValue: matchLang({
+								[Lang.English]: 'Contact Information',
+								[Lang.Vietnamese]: 'Thông tin liên hệ của bạn',
+							}),
 						},
 						{
 							name: 'emailInputLabel',
@@ -43,7 +49,11 @@ export const CheckoutPageGlobalConf: GlobalConfig<typeof CheckoutPageGlobalSlug>
 								vi: 'Nhãn nhập địa chỉ email',
 							},
 							required: true,
-							defaultValue: 'Nhập địa chỉ email',
+							localized: true,
+							defaultValue: matchLang({
+								[Lang.English]: 'Input email',
+								[Lang.Vietnamese]: 'Nhập địa chỉ email',
+							}),
 						},
 						{
 							name: 'acceptNewsletter',
@@ -53,7 +63,11 @@ export const CheckoutPageGlobalConf: GlobalConfig<typeof CheckoutPageGlobalSlug>
 								vi: 'Đồng ý nhận bản tin',
 							},
 							required: true,
-							defaultValue: 'Tôi đồng ý nhận mọi thông tin khuyến mãi',
+							localized: true,
+							defaultValue: matchLang({
+								[Lang.English]: 'I accept all newsletters',
+								[Lang.Vietnamese]: 'Tôi đồng ý nhận mọi thông tin khuyến mãi',
+							}),
 						},
 					],
 				},
@@ -72,7 +86,11 @@ export const CheckoutPageGlobalConf: GlobalConfig<typeof CheckoutPageGlobalSlug>
 								vi: 'Tiêu đề',
 							},
 							required: true,
-							defaultValue: 'Địa chỉ giao hàng',
+							localized: true,
+							defaultValue: matchLang({
+								[Lang.English]: 'Address',
+								[Lang.Vietnamese]: 'Địa chỉ giao hàng',
+							}),
 						},
 						{
 							name: 'nameInputLabel',
@@ -82,7 +100,11 @@ export const CheckoutPageGlobalConf: GlobalConfig<typeof CheckoutPageGlobalSlug>
 								vi: 'Nhãn nhập tên',
 							},
 							required: true,
-							defaultValue: 'Họ và tên',
+							localized: true,
+							defaultValue: matchLang({
+								[Lang.English]: 'Name',
+								[Lang.Vietnamese]: 'Họ và tên',
+							}),
 						},
 						{
 							name: 'phoneInputLabel',
@@ -92,7 +114,10 @@ export const CheckoutPageGlobalConf: GlobalConfig<typeof CheckoutPageGlobalSlug>
 								vi: 'Nhãn nhập số điện thoại',
 							},
 							required: true,
-							defaultValue: 'Số điện thoại',
+							defaultValue: matchLang({
+								[Lang.English]: 'Phone Number',
+								[Lang.Vietnamese]: 'Số điện thoại',
+							}),
 						},
 						{
 							name: 'provinceCityInputLabel',
@@ -102,7 +127,11 @@ export const CheckoutPageGlobalConf: GlobalConfig<typeof CheckoutPageGlobalSlug>
 								vi: 'Nhãn nhập Tỉnh/Thành phố',
 							},
 							required: true,
-							defaultValue: 'Chọn Tỉnh/Thành phố',
+							localized: true,
+							defaultValue: matchLang({
+								[Lang.English]: 'Select Province/City',
+								[Lang.Vietnamese]: 'Chọn Tỉnh/Thành phố',
+							}),
 						},
 						{
 							name: 'districtInputLabel',
@@ -112,7 +141,11 @@ export const CheckoutPageGlobalConf: GlobalConfig<typeof CheckoutPageGlobalSlug>
 								vi: 'Nhãn nhập Quận/Huyện',
 							},
 							required: true,
-							defaultValue: 'Chọn Quận/Huyện',
+							localized: true,
+							defaultValue: matchLang({
+								[Lang.English]: 'Select District/Ward',
+								[Lang.Vietnamese]: 'Chọn Quận/Huyện',
+							}),
 						},
 						{
 							name: 'wardInputLabel',
@@ -122,7 +155,11 @@ export const CheckoutPageGlobalConf: GlobalConfig<typeof CheckoutPageGlobalSlug>
 								vi: 'Nhãn nhập Phuờng/Xã',
 							},
 							required: true,
-							defaultValue: 'Chọn Phuờng/Xã',
+							localized: true,
+							defaultValue: matchLang({
+								[Lang.English]: 'Select Ward/Block',
+								[Lang.Vietnamese]: 'Chọn Phuờng/Xã',
+							}),
 						},
 						{
 							name: 'details',
@@ -132,7 +169,11 @@ export const CheckoutPageGlobalConf: GlobalConfig<typeof CheckoutPageGlobalSlug>
 								vi: 'Chi tiết',
 							},
 							required: true,
-							defaultValue: 'Số nhà, đường, khu vực',
+							localized: true,
+							defaultValue: matchLang({
+								[Lang.English]: 'Number of people, street, building',
+								[Lang.Vietnamese]: 'Số nhà, đường, khu vực',
+							}),
 						},
 						{
 							name: 'saveForNextTime',
@@ -141,8 +182,12 @@ export const CheckoutPageGlobalConf: GlobalConfig<typeof CheckoutPageGlobalSlug>
 								en: 'Save details',
 								vi: 'Lưu chi tiết',
 							},
-							defaultValue: 'Lưu thông tin thanh toán cho những lần tiếp theo',
 							required: true,
+							localized: true,
+							defaultValue: matchLang({
+								[Lang.English]: 'Save details for next time',
+								[Lang.Vietnamese]: 'Lưu thông tin thanh toán cho những lần tiếp theo',
+							}),
 						},
 					],
 				},
@@ -161,7 +206,11 @@ export const CheckoutPageGlobalConf: GlobalConfig<typeof CheckoutPageGlobalSlug>
 								vi: 'Tiêu đề',
 							},
 							required: true,
-							defaultValue: 'Phuơng thức vận chuyển',
+							localized: true,
+							defaultValue: matchLang({
+								[Lang.English]: 'Shipping method',
+								[Lang.Vietnamese]: 'Phuơng thức vận chuyển',
+							}),
 						},
 						{
 							name: 'standardShippingLabel',
@@ -171,7 +220,11 @@ export const CheckoutPageGlobalConf: GlobalConfig<typeof CheckoutPageGlobalSlug>
 								vi: 'Phuơng thức vận chuyển chuẩn',
 							},
 							required: true,
-							defaultValue: 'Giao hàng tiêu chuẩn (2-3 ngày)',
+							localized: true,
+							defaultValue: matchLang({
+								[Lang.English]: 'Standard shipping (2-3 days)',
+								[Lang.Vietnamese]: 'Giao hàng tiêu chuẩn (2-3 ngày)',
+							}),
 						},
 						{
 							name: 'fastShippingLabel',
@@ -181,7 +234,11 @@ export const CheckoutPageGlobalConf: GlobalConfig<typeof CheckoutPageGlobalSlug>
 								vi: 'Phuơng thức vận chuyển nhanh',
 							},
 							required: true,
-							defaultValue: 'Giao hàng nhanh (1-2 ngày)',
+							localized: true,
+							defaultValue: matchLang({
+								[Lang.English]: 'Fast shipping (1-2 days)',
+								[Lang.Vietnamese]: 'Giao hàng nhanh (1-2 ngày)',
+							}),
 						},
 					],
 				},
@@ -200,7 +257,11 @@ export const CheckoutPageGlobalConf: GlobalConfig<typeof CheckoutPageGlobalSlug>
 								vi: 'Tiêu đề',
 							},
 							required: true,
-							defaultValue: 'Phương thức thanh toán',
+							localized: true,
+							defaultValue: matchLang({
+								[Lang.English]: 'Payment method',
+								[Lang.Vietnamese]: 'Phương thức thanh toán',
+							}),
 						},
 						{
 							name: 'codLabel',
@@ -210,7 +271,11 @@ export const CheckoutPageGlobalConf: GlobalConfig<typeof CheckoutPageGlobalSlug>
 								vi: 'Nhãn COD',
 							},
 							required: true,
-							defaultValue: 'Thanh toán khi nhận hàng (COD)',
+							localized: true,
+							defaultValue: matchLang({
+								[Lang.English]: 'Cash on delivery (COD)',
+								[Lang.Vietnamese]: 'Thanh toán khi nhận hàng (COD)',
+							}),
 						},
 						{
 							name: 'bankTransferLabel',
@@ -220,7 +285,11 @@ export const CheckoutPageGlobalConf: GlobalConfig<typeof CheckoutPageGlobalSlug>
 								vi: 'Nhãn chuyển khoản ngân hàng',
 							},
 							required: true,
-							defaultValue: 'Chuyển khoản ngân hàng (QR)',
+							localized: true,
+							defaultValue: matchLang({
+								[Lang.English]: 'Bank transfer (QR)',
+								[Lang.Vietnamese]: 'Chuyển khoản ngân hàng (QR)',
+							}),
 						},
 					],
 				},
@@ -239,7 +308,11 @@ export const CheckoutPageGlobalConf: GlobalConfig<typeof CheckoutPageGlobalSlug>
 								vi: 'Tiêu đề',
 							},
 							required: true,
-							defaultValue: 'Tặng quà',
+							localized: true,
+							defaultValue: matchLang({
+								[Lang.English]: 'Gift',
+								[Lang.Vietnamese]: 'Tặng quà',
+							}),
 						},
 						{
 							name: 'senderInputLabel',
@@ -249,7 +322,11 @@ export const CheckoutPageGlobalConf: GlobalConfig<typeof CheckoutPageGlobalSlug>
 								vi: 'Nhãn nhập tên người gửi',
 							},
 							required: true,
-							defaultValue: 'Tên người gửi',
+							localized: true,
+							defaultValue: matchLang({
+								[Lang.English]: 'Sender name',
+								[Lang.Vietnamese]: 'Tên người gửi',
+							}),
 						},
 						{
 							name: 'recipientInputLabel',
@@ -259,7 +336,11 @@ export const CheckoutPageGlobalConf: GlobalConfig<typeof CheckoutPageGlobalSlug>
 								vi: 'Nhãn nhập tên người nhận',
 							},
 							required: true,
-							defaultValue: 'Tên người nhận',
+							localized: true,
+							defaultValue: matchLang({
+								[Lang.English]: 'Recipient name',
+								[Lang.Vietnamese]: 'Tên người nhận',
+							}),
 						},
 						{
 							name: 'messageInputLabel',
@@ -269,7 +350,11 @@ export const CheckoutPageGlobalConf: GlobalConfig<typeof CheckoutPageGlobalSlug>
 								vi: 'Nhãn nhập tin nhắn',
 							},
 							required: true,
-							defaultValue: 'Thông điệp. Giới hạn 1000 chữ.',
+							localized: true,
+							defaultValue: matchLang({
+								[Lang.English]: 'Message. Limit 1000 characters.',
+								[Lang.Vietnamese]: 'Thông điệp. Giới hạn 1000 chữ.',
+							}),
 						},
 					],
 				},
@@ -288,7 +373,11 @@ export const CheckoutPageGlobalConf: GlobalConfig<typeof CheckoutPageGlobalSlug>
 								vi: 'Tiêu đề',
 							},
 							required: true,
-							defaultValue: 'Chi tiết đơn hàng',
+							localized: true,
+							defaultValue: matchLang({
+								[Lang.English]: 'Order details',
+								[Lang.Vietnamese]: 'Chi tiết đơn hàng',
+							}),
 						},
 					],
 				},

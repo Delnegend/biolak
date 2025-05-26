@@ -2,6 +2,8 @@ import { revalidateTag } from 'next/cache'
 import { GlobalConfig } from 'payload'
 
 import { allow, Role } from '@/access/allow'
+import { Lang } from '@/utilities/lang'
+import { matchLang } from '@/utilities/matchLang'
 
 export const ContactFormGlobalSlug = 'contactFormGlobal'
 export const ContactFormGlobalConf: GlobalConfig<typeof ContactFormGlobalSlug> = {
@@ -18,38 +20,62 @@ export const ContactFormGlobalConf: GlobalConfig<typeof ContactFormGlobalSlug> =
 		{
 			name: 'title',
 			type: 'text',
-			defaultValue: 'Liên hệ với BioLAK',
 			required: true,
+			localized: true,
+			defaultValue: matchLang({
+				[Lang.English]: 'Contact Us',
+				[Lang.Vietnamese]: 'Liên hệ với BioLAK',
+			}),
 		},
 		{
 			name: 'name',
 			type: 'text',
-			defaultValue: 'Nhập tên của bạn',
 			required: true,
+			localized: true,
+			defaultValue: matchLang({
+				[Lang.English]: 'Input your name',
+				[Lang.Vietnamese]: 'Nhập tên của bạn',
+			}),
 		},
 		{
 			name: 'phoneNumber',
 			type: 'text',
-			defaultValue: 'Nhập số điện thoại',
 			required: true,
+			localized: true,
+			defaultValue: matchLang({
+				[Lang.English]: 'Input your phone number',
+				[Lang.Vietnamese]: 'Nhập số điện thoại',
+			}),
 		},
 		{
 			name: 'email',
 			type: 'text',
-			defaultValue: 'Nhập địa chỉ email',
 			required: true,
+			localized: true,
+			defaultValue: matchLang({
+				[Lang.English]: 'Input your email',
+				[Lang.Vietnamese]: 'Nhập địa chỉ email',
+			}),
 		},
 		{
 			name: 'question',
 			type: 'text',
-			defaultValue: 'Câu hỏi của bạn tới chúng tôi',
 			required: true,
+			localized: true,
+			defaultValue: matchLang({
+				[Lang.English]: 'Ask your question to us',
+				[Lang.Vietnamese]: 'Câu hỏi của bạn tới chúng tôi',
+			}),
 		},
 		{
 			name: 'actionSend',
 			type: 'text',
-			defaultValue: 'GỬI BIOLAK',
 			required: true,
+			localized: true,
+			defaultValue: matchLang({
+				[Lang.English]: 'SEND BIOLAK',
+				[Lang.Vietnamese]: 'GỬI BIOLAK',
+			}),
 		},
 		{
 			name: 'biolakPhoneNumber',
@@ -59,8 +85,12 @@ export const ContactFormGlobalConf: GlobalConfig<typeof ContactFormGlobalSlug> =
 		{
 			name: 'actionCall',
 			type: 'text',
-			defaultValue: 'GỌI BIOLAK',
 			required: true,
+			localized: true,
+			defaultValue: matchLang({
+				[Lang.English]: 'CALL BIOLAK',
+				[Lang.Vietnamese]: 'GỌI BIOLAK',
+			}),
 		},
 	],
 	hooks: {
