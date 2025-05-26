@@ -33,6 +33,25 @@ services:
       working_dir: /home/node/app/
       command: sh -c "npm i -g pnpm && pnpm i --frozen-lockfile && pnpm payload migrate && pnpm dev:prod"
 
+   cloudflared:
+      container_name: cloudflared
+      image: cloudflare/cloudflared:2025.5.0
+      restart: unless-stopped
+      dns:
+         - 1.1.1.1
+         - 1.0.0.1
+      environment:
+         NO_AUTOUPDATE: 'true'
+         TUNNEL_TOKEN: 'CHANGE_ME'
+         TUNNEL_TRANSPORT_PROTOCOL: 'quic'
+      networks:
+         - web
+      deploy:
+         resources:
+            limits:
+               memory: 40MB
+      command: tunnel run
+
 volumes:
    biolak-postgres-data:
    biolak-nextjs:
