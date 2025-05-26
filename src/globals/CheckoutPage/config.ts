@@ -1,5 +1,5 @@
 import { revalidateTag } from 'next/cache'
-import { GlobalConfig, LabelFunction } from 'payload'
+import { GlobalConfig } from 'payload'
 
 import { allow, Role } from '@/access/allow'
 import { Lang } from '@/utilities/lang'
