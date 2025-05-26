@@ -36,10 +36,9 @@ export function PostCard({ post }: { post: Post }): React.JSX.Element {
 					</div>
 				</Link>
 
-				<div className="text-xs">
-					{post.meta?.description ??
-						'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam in nisl aliquam, pharetra diam consequat, tincidunt nibh.'}
-				</div>
+				{post.meta?.meta?.description && (
+					<div className="text-xs">{post.meta.meta.description}</div>
+				)}
 			</div>
 		</div>
 	)
