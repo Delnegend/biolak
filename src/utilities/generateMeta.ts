@@ -22,7 +22,7 @@ export async function generateMeta(args: {
 	doc: Partial<Page> | Partial<Post> | Partial<Product> | null
 }): Promise<Metadata> {
 	const { doc } = args
-	const meta = doc?.meta
+	const meta = doc?.meta?.meta
 
 	const ogImage = getImageURL(
 		meta && 'image' in meta && meta.image && typeof meta.image === 'object' ? meta.image : null,
