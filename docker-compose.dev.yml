@@ -5,8 +5,8 @@ services:
       ports:
          - '5432:5432'
       volumes:
-         - postgres-dev:/var/lib/postgresql/data
          - ./postgres-dev-backup:/postgres-dev-backup
+         - ./.devcontainer/postgres-dev:/var/lib/postgresql/data
       environment:
          - POSTGRES_USER=postgres
          - POSTGRES_PASSWORD=postgres
