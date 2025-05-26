@@ -2,7 +2,6 @@ import { SearchIcon } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
 
-import { Button } from '@/components/ui/button'
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog'
 import type { HeaderGlobal } from '@/payload-types'
 import { getClientLang } from '@/utilities/getClientLang'
@@ -12,6 +11,7 @@ import { matchLang } from '@/utilities/matchLang'
 
 import biolakIcon from '../../../public/biolak-logo.svg'
 import { ContactFormGlobalComponent } from '../ContactForm/Component'
+import { INTERNAL_Cart } from './components/Cart'
 import { INTERNAL_LanguageSwitcher } from './components/LanguageSwitcher.client'
 import { INTERNAL_ProductsDropdown } from './components/ProductsDropdown'
 import { HeaderGlobalSlug } from './config'
@@ -55,18 +55,7 @@ const prebuilds: Record<
 		</Dialog>
 	),
 	'vie-en': ({ label }) => <INTERNAL_LanguageSwitcher label={label} />,
-	cart: ({ label, locale }) => (
-		<Button
-			variant="default"
-			className="relative h-14 rounded-full bg-primary px-6 !font-sans text-xl font-medium"
-			hideArrow={true}
-		>
-			{label ?? matchLang({ [Lang.English]: 'Cart', [Lang.Vietnamese]: 'Giỏ hàng' })({ locale })}
-			<div className="absolute -top-2 right-0 flex aspect-square size-7 items-center justify-center overflow-hidden rounded-full bg-[#FF8200] text-base text-primary">
-				10
-			</div>
-		</Button>
-	),
+	cart: (props) => <INTERNAL_Cart {...props} />,
 }
 
 export async function HeaderGlobalComponent() {
