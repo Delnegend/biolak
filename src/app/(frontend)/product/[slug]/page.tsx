@@ -11,11 +11,13 @@ import { FooterGlobalComponent } from '@/globals/Footer/Component'
 import { ReviewsGlobalComponent } from '@/globals/Reviews/Component'
 import { ProductHero } from '@/heros/ProductHero'
 import { generateMeta } from '@/utilities/generateMeta'
+import { getClientLang } from '@/utilities/getClientLang'
 
 import PageClient from './page.client'
 
 export async function generateStaticParams() {
 	const payload = await getPayload({ config: configPromise })
+	const locale = await getClientLang()
 
 	const products = await payload.find({
 		collection: ProductsSlug,
@@ -25,6 +27,7 @@ export async function generateStaticParams() {
 		select: {
 			slug: true,
 		},
+		locale,
 	})
 
 	return products.docs
@@ -36,6 +39,7 @@ export async function generateStaticParams() {
 const queryProductBySlug = cache(async ({ slug }: { slug: string }) => {
 	const { isEnabled: draft } = await draftMode()
 	const payload = await getPayload({ config: configPromise })
+	const locale = await getClientLang()
 
 	const result = await payload.find({
 		collection: ProductsSlug,
@@ -59,6 +63,7 @@ const queryProductBySlug = cache(async ({ slug }: { slug: string }) => {
 				},
 			},
 		},
+		locale,
 	})
 
 	return result.docs?.[0] || null

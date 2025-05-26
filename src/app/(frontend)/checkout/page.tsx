@@ -7,7 +7,10 @@ import { TextInput } from '@/components/ui/text-input'
 import { CheckoutPageGlobalSlug } from '@/globals/CheckoutPage/config'
 import { CheckoutPageGlobal } from '@/payload-types'
 import { formatPrice } from '@/utilities/formatPrice'
+import { getClientLang } from '@/utilities/getClientLang'
 import { getCachedGlobal } from '@/utilities/getGlobals'
+import { Lang } from '@/utilities/lang'
+import { matchLang } from '@/utilities/matchLang'
 import { cn } from '@/utilities/ui'
 
 import PageClient from './page.client'
@@ -59,7 +62,8 @@ const mockCart = Array.from({ length: 3 }).map((_, i) => ({
 }))
 
 export default async function Checkout(): Promise<React.JSX.Element> {
-	const global = (await getCachedGlobal(CheckoutPageGlobalSlug, 1)()) as CheckoutPageGlobal
+	const locale = await getClientLang()
+	const global = await getCachedGlobal<CheckoutPageGlobal>(CheckoutPageGlobalSlug, 1, locale)()
 
 	return (
 		<div className="safe-width mb-16">
@@ -68,7 +72,10 @@ export default async function Checkout(): Promise<React.JSX.Element> {
 				src="https://placehold.co/128x64"
 				width={1000}
 				height={1000}
-				alt="Brand Logo"
+				alt={matchLang({
+					[Lang.English]: 'Brand Logo',
+					[Lang.Vietnamese]: 'Logo thuơng hiệu',
+				})({ locale })}
 				className="my-16 h-16 w-32 overflow-hidden object-contain"
 				unoptimized={true}
 			/>

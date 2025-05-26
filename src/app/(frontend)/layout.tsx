@@ -10,6 +10,7 @@ import { Toaster } from '@/components/ui/sonner'
 import { FloatingGlobalComponent } from '@/globals/Floating/Component'
 import { HeaderGlobalComponent } from '@/globals/Header/Component'
 import { PromoGlobalComponent } from '@/globals/Promo/Component'
+import { LangContextProviderClient } from '@/hooks/useClientLang'
 import { getServerSideURL } from '@/utilities/getURL'
 import { mergeOpenGraph } from '@/utilities/mergeOpenGraph'
 import { cn } from '@/utilities/ui'
@@ -40,7 +41,6 @@ export default async function RootLayout({ children }: { children: React.ReactNo
 	return (
 		<html
 			className={cn(manrope.variable, crimsonPro.variable, `font-sans`)}
-			lang="vi-VN"
 			data-theme="light"
 			suppressHydrationWarning
 		>
@@ -49,22 +49,24 @@ export default async function RootLayout({ children }: { children: React.ReactNo
 				<link href="/favicon.svg" rel="icon" type="image/svg+xml" />
 			</head>
 			<body>
-				<Toaster theme="light" />
-				<AdminBar
-					adminBarProps={{
-						preview: isEnabled,
-					}}
-				/>
-				{pathname === '/checkout' ? (
-					<></>
-				) : (
-					<>
-						<PromoGlobalComponent />
-						<HeaderGlobalComponent />
-						<FloatingGlobalComponent />
-					</>
-				)}
-				{children}
+				<LangContextProviderClient>
+					<Toaster theme="light" />
+					<AdminBar
+						adminBarProps={{
+							preview: isEnabled,
+						}}
+					/>
+					{pathname === '/checkout' ? (
+						<></>
+					) : (
+						<>
+							<PromoGlobalComponent />
+							<HeaderGlobalComponent />
+							<FloatingGlobalComponent />
+						</>
+					)}
+					{children}
+				</LangContextProviderClient>
 			</body>
 		</html>
 	)

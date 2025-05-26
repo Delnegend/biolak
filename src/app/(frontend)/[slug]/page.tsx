@@ -11,11 +11,14 @@ import { PayloadRedirects } from '@/components/PayloadRedirects'
 import { FooterGlobalComponent } from '@/globals/Footer/Component'
 import { RenderHero } from '@/heros/RenderHero'
 import { generateMeta } from '@/utilities/generateMeta'
+import { getClientLang } from '@/utilities/getClientLang'
 
 import PageClient from './page.client'
 
 export async function generateStaticParams() {
 	const payload = await getPayload({ config: configPromise })
+	const locale = await getClientLang()
+
 	const pages = await payload.find({
 		collection: PagesSlug,
 		draft: false,
@@ -25,17 +28,16 @@ export async function generateStaticParams() {
 		select: {
 			slug: true,
 		},
+		locale,
 	})
 
-	const params = pages.docs
+	return pages.docs
 		?.filter((doc) => {
 			return doc.slug !== 'home'
 		})
 		.map(({ slug }) => {
 			return { slug }
 		})
-
-	return params
 }
 
 type Args = {
@@ -85,6 +87,7 @@ export async function generateMetadata({ params: paramsPromise }: Args): Promise
 
 const queryPageBySlug = cache(async ({ slug }: { slug: string }) => {
 	const { isEnabled: draft } = await draftMode()
+	const locale = await getClientLang()
 
 	const payload = await getPayload({ config: configPromise })
 
@@ -99,6 +102,7 @@ const queryPageBySlug = cache(async ({ slug }: { slug: string }) => {
 				equals: slug,
 			},
 		},
+		locale,
 	})
 
 	return result.docs?.[0] || null
