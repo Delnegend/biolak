@@ -222,8 +222,8 @@ export const CheckoutPageGlobalConf: GlobalConfig<typeof CheckoutPageGlobalSlug>
 							required: true,
 							localized: true,
 							defaultValue: matchLang({
-								[Lang.English]: 'Standard shipping (2-3 days)',
-								[Lang.Vietnamese]: 'Giao hàng tiêu chuẩn (2-3 ngày)',
+								[Lang.English]: 'Standard shipping (5-7 days)',
+								[Lang.Vietnamese]: 'Giao hàng tiêu chuẩn (5-7 ngày)',
 							}),
 						},
 						{
@@ -236,8 +236,8 @@ export const CheckoutPageGlobalConf: GlobalConfig<typeof CheckoutPageGlobalSlug>
 							required: true,
 							localized: true,
 							defaultValue: matchLang({
-								[Lang.English]: 'Fast shipping (1-2 days)',
-								[Lang.Vietnamese]: 'Giao hàng nhanh (1-2 ngày)',
+								[Lang.English]: 'Fast shipping (<3 days)',
+								[Lang.Vietnamese]: 'Giao hàng nhanh (<3 ngày)',
 							}),
 						},
 					],
