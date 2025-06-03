@@ -96,10 +96,6 @@ export default async function Product({
 
 	if (!product) return <PayloadRedirects url={url} />
 
-	const orders = Array.isArray(product.orders?.docs)
-		? product.orders?.docs.filter((o) => typeof o === 'object')
-		: null
-
 	return (
 		<article>
 			<PageClient />
@@ -116,7 +112,17 @@ export default async function Product({
 			{product.content && <RenderBlocks blocks={product.content} product={product} />}
 
 			{/* reviews */}
-			{product.reviewsVisible === 'show' && <ReviewsGlobalComponent orders={orders} />}
+			{product.reviewsVisible === 'show' && (
+				<ReviewsGlobalComponent
+					ordersWithRating={
+						product.orders?.docs
+							? product.orders?.docs
+									.filter((o) => typeof o === 'object')
+									.filter((o) => o.review?.approved)
+							: null
+					}
+				/>
+			)}
 
 			<FooterGlobalComponent size={product.footerSize} />
 		</article>
