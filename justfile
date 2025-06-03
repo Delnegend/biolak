@@ -3,15 +3,15 @@ export NODE_OPTIONS := "--no-deprecation"
 @default:
   just --choose
 
-# Minify JSON files in the migrations directory
-minify-json:
+# Minify JSON files in the migrations directory & rm trailing spaces
+minify-migrations:
   #!/usr/bin/env bash
   set -euo pipefail
 
   # Define a function to minify a single JSON file
   minify_single_json_file() {
     local file="$1"
-    echo "Minifying $file..."
+    echo "Minifying JSON: $file..."
     # Use python to load and dump the json compactly, writing to a temp file first
     # The python script takes the input file path as its first argument (sys.argv[1])
     python3 -c "import json, sys; data = json.load(open(sys.argv[1])); json.dump(data, open(sys.argv[1]+'.tmp', 'w'), separators=(',', ':'))" "$file"
@@ -19,15 +19,30 @@ minify-json:
     mv "$file.tmp" "$file"
   }
 
-  # Export the function so it's available to parallel's child processes
-  export -f minify_single_json_file
+  # Define a function to remove trailing spaces from a single TS file
+  remove_trailing_spaces_single_ts_file() {
+    local file="$1"
+    echo "Processing TypeScript file: $file"
+    # Use sed to remove trailing whitespace. -i edits files in-place.
+    sed -i 's/[[:space:]]*$//' "$file"
+  }
 
+  # Export the functions so they are available to parallel's child processes
+  export -f minify_single_json_file
+  export -f remove_trailing_spaces_single_ts_file
+
+  echo "Minifying JSON files in src/migrations/..."
   # Find all .json files in src/migrations/ and process them in parallel
   # -print0 and -0 handle filenames with spaces or special characters
   find src/migrations/ -name '*.json' -print0 | parallel -0 minify_single_json_file
-
   echo "JSON minification complete."
 
+  echo "Removing trailing spaces from .ts files in src/migrations/..."
+  # Find all .ts files in the src/migrations/ directory and its subdirectories
+  # and remove trailing whitespace from each line in parallel.
+  # -print0 and -0 handle filenames with spaces or special characters.
+  find src/migrations/ -name '*.ts' -print0 | parallel -0 remove_trailing_spaces_single_ts_file
+  echo "Trailing space removal from .ts files complete."
 
 dev:
   pnpm next dev --turbo
@@ -49,7 +64,7 @@ db-start-migrate:
 
 db-create-migrate:
   pnpm payload migrate:create
-  just minify-json
+  just minify-migrations & rm trailing spaces
 
 db-dev-pg-start:
   docker compose up -d postgres-dev
