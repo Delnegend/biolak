@@ -1,6 +1,9 @@
 import { Block } from 'payload'
 
 import { MediaSlug } from '@/collections/Media/slug'
+import { ProductsSlug } from '@/collections/Products/slug'
+import { Lang } from '@/utilities/lang'
+import { matchLang } from '@/utilities/matchLang'
 
 export const HowToUseProductBlockConf: Block = {
 	slug: 'how-to-use-product',
@@ -25,7 +28,11 @@ export const HowToUseProductBlockConf: Block = {
 				vi: 'Tiêu đề',
 			},
 			required: true,
-			defaultValue: 'Hướng dẫn sử dụng',
+			localized: true,
+			defaultValue: matchLang({
+				[Lang.English]: 'How to use',
+				[Lang.Vietnamese]: 'Huớng dẫn sử dụng',
+			}),
 		},
 		{
 			name: 'subtitle',
@@ -34,6 +41,7 @@ export const HowToUseProductBlockConf: Block = {
 				en: 'Subtitle',
 				vi: 'Tiêu đề phụ',
 			},
+			localized: true,
 		},
 		{
 			name: 'content',
