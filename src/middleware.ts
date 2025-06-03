@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 
+import { HeaderName } from './utilities/headerName'
+
 export function middleware(request: NextRequest) {
 	switch (request.nextUrl.pathname) {
 		case '/':
@@ -11,7 +13,8 @@ export function middleware(request: NextRequest) {
 		default:
 			// return undefined
 			const headers = new Headers(request.headers)
-			headers.set('x-current-path', request.nextUrl.pathname)
+			headers.set(HeaderName.CurrentPath, request.nextUrl.pathname)
+			headers.set(HeaderName.CurrentSearch, request.nextUrl.search)
 			return NextResponse.next({
 				request: {
 					headers,
