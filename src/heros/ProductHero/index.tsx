@@ -9,6 +9,9 @@ import { Product } from '@/payload-types'
 import { formatPrice } from '@/utilities/formatPrice'
 
 export function ProductHero({
+import { INTERNAL_AddToCartClient } from './AddToCart.client'
+import { INTERNAL_BuyNowClient } from './BuyNow.client'
+
 	product: p,
 	overrides,
 }: {
@@ -66,14 +69,18 @@ export function ProductHero({
 					</div>
 				)}
 
-				<Button
-					size="lg"
-					className="mt-8 flex w-fit min-w-[28rem] items-center justify-between gap-4 uppercase"
-					hideArrow={true}
-				>
-					<span>THÊM VÀO GIỎ - {formatPrice(p.price)}</span>
-					<CirclePlus />
-				</Button>
+				<div className="mt-8 grid size-full h-fit grid-cols-[repeat(auto-fill,minmax(21rem,1fr))] gap-4">
+					<INTERNAL_BuyNowClient
+						product={{
+							slug: p.slug,
+							title: p.title,
+							price: p.price,
+						}}
+					/>
+					<INTERNAL_AddToCartClient
+						product={{ slug: p.slug, title: p.title, price: p.price }}
+					/>
+				</div>
 			</div>
 		</div>
 	)
