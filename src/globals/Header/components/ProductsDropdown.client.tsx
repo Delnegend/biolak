@@ -115,7 +115,7 @@ export function INTERNAL_ProductsDropdownClient({
 			id: Product['id']
 			title: Product['title']
 			shortDescription: Product['shortDescription']
-			price: Product['price']
+			variants: Product['variants']
 			slug?: Product['slug']
 			icon?: Product['icon']
 		}>
@@ -337,7 +337,7 @@ export function INTERNAL_ProductsDropdownClient({
 														className="text-start text-base font-medium opacity-70"
 														style={{ gridArea: 'price' }}
 													>
-														{formatPrice(product.price)}
+														{formatPrice(product.variants?.[0]?.price ?? 0)}
 													</div>
 													<Image
 														src={icon?.url ?? 'https://placehold.co/200x200'}
