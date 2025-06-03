@@ -3,25 +3,6 @@
 @tailwind utilities;
 
 @layer base {
-	h1,
-	h2,
-	h3,
-	h4,
-	h5,
-	h6 {
-		font-size: unset;
-		font-weight: unset;
-		@apply font-serif;
-	}
-
-	h1 {
-		@apply !text-[4rem] !font-medium !leading-none;
-	}
-
-	h2 {
-		@apply !text-[2rem] !font-semibold;
-	}
-
 	:root {
 		--safe-width-max-width: 80rem;
 		--safe-width-width: 90%;
@@ -94,11 +75,28 @@
 		--warning: 34 51% 25%;
 		--error: 10 39% 43%;
 	}
-}
 
-@layer base {
 	* {
 		@apply border-border;
+	}
+
+	h1,
+	h2,
+	h3,
+	h4,
+	h5,
+	h6 {
+		font-size: unset;
+		font-weight: unset;
+		@apply font-serif;
+	}
+
+	h1 {
+		@apply !text-[4rem] !font-medium !leading-none;
+	}
+
+	h2 {
+		@apply !text-[2rem] !font-semibold;
 	}
 
 	body {
