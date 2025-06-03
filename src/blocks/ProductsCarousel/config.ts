@@ -2,6 +2,8 @@ import { Block } from 'payload'
 
 import { ProductsSlug } from '@/collections/Products/slug'
 import { link } from '@/fields/link'
+import { Lang } from '@/utilities/lang'
+import { matchLang } from '@/utilities/matchLang'
 
 export const ProductsCarouselBlockConf: Block = {
 	slug: 'productsCarousel',
@@ -25,8 +27,12 @@ export const ProductsCarouselBlockConf: Block = {
 				vi: 'Tiêu đề',
 			},
 			type: 'text',
-			defaultValue: 'Sản phẩm bán chạy',
 			required: true,
+			localized: true,
+			defaultValue: matchLang({
+				[Lang.English]: 'PRODUCTS BEING SOLD',
+				[Lang.Vietnamese]: 'SẢN PHẨM BÁN CHẠY',
+			}),
 		},
 		{
 			name: 'products',
@@ -45,8 +51,12 @@ export const ProductsCarouselBlockConf: Block = {
 				vi: 'Nhãn nút xem thêm',
 			},
 			type: 'text',
-			defaultValue: 'XEM THÊM',
 			required: true,
+			localized: true,
+			defaultValue: matchLang({
+				[Lang.English]: 'WATCH MORE',
+				[Lang.Vietnamese]: 'XEM THÊM',
+			}),
 		},
 		link({
 			overrides: {
@@ -55,7 +65,11 @@ export const ProductsCarouselBlockConf: Block = {
 					en: 'All Products Button',
 					vi: 'Nút xem tất cả sản phẩm',
 				},
-				defaultValue: 'XEM TẤT CẢ SẢN PHẨM',
+				localized: true,
+				defaultValue: matchLang({
+					[Lang.English]: 'VIEW ALL PRODUCTS',
+					[Lang.Vietnamese]: 'XEM TẤT CẢ SẢN PHẨM',
+				}),
 			},
 		}),
 	],
