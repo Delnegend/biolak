@@ -26,6 +26,7 @@ export default [
 			'@typescript-eslint/ban-ts-comment': 'warn',
 			'@typescript-eslint/no-empty-object-type': 'warn',
 			'@typescript-eslint/no-explicit-any': 'warn',
+			'@typescript-eslint/no-non-null-assertion': 'error',
 			'@typescript-eslint/no-unused-vars': [
 				'warn',
 				{
