@@ -10,6 +10,7 @@ import { PayloadRedirects } from '@/components/PayloadRedirects'
 import { FooterGlobalComponent } from '@/globals/Footer/Component'
 import { ReviewsGlobalComponent } from '@/globals/Reviews/Component'
 import { ProductHero } from '@/heros/ProductHero'
+import { PorductVariantContextProvider } from '@/heros/ProductHero/ProductVariantContext'
 import { generateMeta } from '@/utilities/generateMeta'
 import { getClientLang } from '@/utilities/getClientLang'
 
@@ -97,34 +98,36 @@ export default async function Product({
 	if (!product) return <PayloadRedirects url={url} />
 
 	return (
-		<article>
-			<PageClient />
-			<PayloadRedirects disableNotFound url={url} />
-			{draft && <LivePreviewListener />}
-			<ProductHero
-				product={product}
-				overrides={{
-					subtitle: product.heroSubtitle,
-					title: product.heroTitle,
-					description: product.heroDescription,
-				}}
-			/>
-			{product.content && <RenderBlocks blocks={product.content} product={product} />}
-
-			{/* reviews */}
-			{product.reviewsVisible === 'show' && (
-				<ReviewsGlobalComponent
-					ordersWithRating={
-						product.orders?.docs
-							? product.orders?.docs
-									.filter((o) => typeof o === 'object')
-									.filter((o) => o.review?.approved)
-							: null
-					}
+		<PorductVariantContextProvider>
+			<article>
+				<PageClient />
+				<PayloadRedirects disableNotFound url={url} />
+				{draft && <LivePreviewListener />}
+				<ProductHero
+					product={product}
+					overrides={{
+						subtitle: product.heroSubtitle,
+						title: product.heroTitle,
+						description: product.heroDescription,
+					}}
 				/>
-			)}
+				{product.content && <RenderBlocks blocks={product.content} product={product} />}
 
-			<FooterGlobalComponent size={product.footerSize} />
-		</article>
+				{/* reviews */}
+				{product.reviewsVisible === 'show' && (
+					<ReviewsGlobalComponent
+						ordersWithRating={
+							product.orders?.docs
+								? product.orders?.docs
+										.filter((o) => typeof o === 'object')
+										.filter((o) => o.review?.approved)
+								: null
+						}
+					/>
+				)}
+
+				<FooterGlobalComponent size={product.footerSize} />
+			</article>
+		</PorductVariantContextProvider>
 	)
 }
