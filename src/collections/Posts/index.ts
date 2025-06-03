@@ -93,6 +93,7 @@ export const PostsCollection: CollectionConfig<typeof PostsSlug> = {
 				en: 'Title',
 				vi: 'Tiêu đề',
 			},
+			localized: true,
 		},
 		{
 			type: 'tabs',
