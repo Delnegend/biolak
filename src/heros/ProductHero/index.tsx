@@ -19,6 +19,8 @@ export function ProductHero({
 		description?: DefaultTypedEditorState | null
 	}
 }): React.JSX.Element {
+	const locale = await getClientLang()
+
 	const img = p.heroMedia && typeof p.heroMedia === 'object' ? p.heroMedia : null
 
 	const title = (!!overrides?.title ? overrides.title : undefined) ?? p.title
@@ -42,7 +44,13 @@ export function ProductHero({
 			<div className="absolute inset-0 z-0 overflow-hidden">
 				<Image
 					src={img?.url ?? 'https://placehold.co/1000x1000'}
-					alt={img?.alt ?? 'Product Image'}
+					alt={
+						img?.alt ??
+						matchLang({
+							[Lang.English]: 'Product hero background image',
+							[Lang.Vietnamese]: 'Hình nền hero sản phẩm',
+						})({ locale })
+					}
 					width={img?.width ?? 1000}
 					height={img?.height ?? 1000}
 					unoptimized={!img}
