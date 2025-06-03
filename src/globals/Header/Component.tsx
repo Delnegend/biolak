@@ -11,7 +11,7 @@ import { matchLang } from '@/utilities/matchLang'
 
 import biolakIcon from '../../../public/biolak-logo.svg'
 import { ContactFormGlobalComponent } from '../ContactForm/Component'
-import { INTERNAL_Cart } from './components/Cart'
+import { INTERNAL_CartSidebar } from './components/CartSidebar'
 import { INTERNAL_LanguageSwitcher } from './components/LanguageSwitcher.client'
 import { INTERNAL_ProductsDropdown } from './components/ProductsDropdown'
 import { HeaderGlobalSlug } from './config'
@@ -55,7 +55,7 @@ const prebuilds: Record<
 		</Dialog>
 	),
 	'vie-en': ({ label }) => <INTERNAL_LanguageSwitcher label={label} />,
-	cart: (props) => <INTERNAL_Cart {...props} />,
+	cart: (props) => <INTERNAL_CartSidebar {...props} />,
 }
 
 export async function HeaderGlobalComponent() {
