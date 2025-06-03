@@ -24,7 +24,7 @@ export function BuyNowBlock(passdownProps: {
 		return (
 			<div className="safe-width flex justify-center">
 				<INTERNAL_BuyNowClient
-					productSlug={p.slug!}
+					productSlug={p.slug}
 					buttonLabel={
 						props.buttonLabel ??
 						matchLang({
