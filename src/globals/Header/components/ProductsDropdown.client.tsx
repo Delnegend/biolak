@@ -124,20 +124,35 @@ export function INTERNAL_ProductsDropdownClient({
 		setActiveSubCategory(subCategory)
 		setActiveProducts(null)
 		if (!subCategory.slug) return
-		const result = await getProductsBySubCategory({
-			slug: subCategory.slug,
-			lang,
-		} satisfies GetProductsBySubCategoryInput)
-		if (!result.success) {
+
+		let error: string | undefined
+		try {
+			await fetch(
+				`/api/sub-category/${subCategory.slug}` satisfies GetProductsBySubCategorySlug['Path'],
+			)
+				.then((res) => res.json())
+				.then((data: GetProductsBySubCategorySlug['Response']) => {
+					if (!data.success) {
+						error = data.error
+						return
+					}
+					setActiveProducts(data.data)
+				})
+		} catch (e) {
+			if (e instanceof Error) error = e.message
+			else error = String(e)
+		}
+
+		if (error)
 			toast.error(
-				lang === 'en' ? "Can't load products list" : 'Không thể tải danh sách sản phẩm',
+				matchLang({
+					[Lang.English]: "Can't load products list",
+					[Lang.Vietnamese]: 'Không thể tải danh sách sản phẩm',
+				})({ locale }),
 				{
-					description: result.error,
+					description: error,
 				},
 			)
-			return
-		}
-		setActiveProducts(result.data)
 	}
 
 	// find the minimum height for the dropdown for it to fill the screen perfectly
