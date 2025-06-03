@@ -144,16 +144,22 @@ export default buildConfig({
 		],
 		defaultLocale,
 	},
-	email: nodemailerAdapter({
-		defaultFromAddress: process.env.SMTP_FROM ?? 'noreply@example.com',
-		defaultFromName: 'BioLAK',
-		transportOptions: {
-			host: process.env.SMTP_HOST,
-			port: parseInt(process.env.SMTP_PORT || '587', 10),
-			auth: {
-				user: process.env.SMTP_USER,
-				pass: process.env.SMTP_PASS,
-			},
-		},
-	}),
+	email:
+		process.env.SMTP_HOST &&
+		process.env.SMTP_PORT &&
+		process.env.SMTP_USER &&
+		process.env.SMTP_PASS
+			? nodemailerAdapter({
+					defaultFromAddress: process.env.SMTP_FROM ?? 'noreply@example.com',
+					defaultFromName: 'BioLAK',
+					transportOptions: {
+						host: process.env.SMTP_HOST,
+						port: parseInt(process.env.SMTP_PORT || '587', 10),
+						auth: {
+							user: process.env.SMTP_USER,
+							pass: process.env.SMTP_PASS,
+						},
+					},
+				})
+			: undefined,
 })
