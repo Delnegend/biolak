@@ -94,9 +94,7 @@ export default async function Category({
 				{category?.title ?? 'Sản phẩm'}
 			</div>
 			<div className="flex flex-row flex-wrap gap-6">
-				{products?.docs.map((product) => (
-					<ProductCard product={product} key={product.slug} size="sm" />
-				))}
+				{products?.docs.map((p) => <ProductCard product={p} key={p.slug} size="sm" />)}
 			</div>
 		</div>
 	)
