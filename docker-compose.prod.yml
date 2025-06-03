@@ -59,7 +59,6 @@ services:
       command: tunnel run
 
 volumes:
-   biolak-postgres-data:
    biolak-nextjs:
    biolak-pnpm-store:
    biolak-node_modules:
