@@ -2,7 +2,8 @@ import './globals.css'
 
 import type { Metadata } from 'next'
 import { Crimson_Pro, Manrope } from 'next/font/google'
-import { draftMode, headers } from 'next/headers'
+import { draftMode } from 'next/headers'
+import { headers as getHeaders } from 'next/headers'
 import React from 'react'
 
 import { AdminBar } from '@/components/AdminBar'
@@ -10,8 +11,9 @@ import { Toaster } from '@/components/ui/sonner'
 import { FloatingGlobalComponent } from '@/globals/Floating/Component'
 import { HeaderGlobalComponent } from '@/globals/Header/Component'
 import { PromoGlobalComponent } from '@/globals/Promo/Component'
-import { LangContextProviderClient } from '@/hooks/useClientLang'
+import { ClientLangContextProvider } from '@/hooks/useClientLang'
 import { getServerSideURL } from '@/utilities/getURL'
+import { HeaderName } from '@/utilities/headerName'
 import { mergeOpenGraph } from '@/utilities/mergeOpenGraph'
 import { cn } from '@/utilities/ui'
 
@@ -29,14 +31,8 @@ const crimsonPro = Crimson_Pro({
 export const dynamic = 'force-dynamic'
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
-	const { isEnabled } = await draftMode()
-	let pathname
-	try {
-		const heads = await headers()
-		pathname = heads.get('x-current-path')
-	} catch {
-		pathname = undefined
-	}
+	const [{ isEnabled }, headers] = await Promise.all([draftMode(), getHeaders()])
+	const pathname = headers.get(HeaderName.CurrentPath)
 
 	return (
 		<html
@@ -49,7 +45,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
 				<link href="/favicon.svg" rel="icon" type="image/svg+xml" />
 			</head>
 			<body>
-				<LangContextProviderClient>
+				<ClientLangContextProvider>
 					<Toaster theme="light" />
 					<AdminBar
 						adminBarProps={{
@@ -62,11 +58,11 @@ export default async function RootLayout({ children }: { children: React.ReactNo
 						<>
 							<PromoGlobalComponent />
 							<HeaderGlobalComponent />
-							<FloatingGlobalComponent />
 						</>
 					)}
+					<FloatingGlobalComponent />
 					{children}
-				</LangContextProviderClient>
+				</ClientLangContextProvider>
 			</body>
 		</html>
 	)
