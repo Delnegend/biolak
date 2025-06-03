@@ -30,6 +30,7 @@ export function INTERNAL_VariantsClient({
 					size="sm"
 					variant="outline"
 					className={cn(product.variant?.sku === variant.sku && 'border-black text-black')}
+					disabled={variant.stock <= 0}
 				>
 					{variant.title}
 				</Button>
