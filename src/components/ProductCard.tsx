@@ -3,12 +3,15 @@ import Image from 'next/image'
 import Link from 'next/link'
 
 import { Product } from '@/payload-types'
+import { getClientLang } from '@/utilities/getClientLang'
 import { getPriceRange } from '@/utilities/getPriceRange'
+import { Lang } from '@/utilities/lang'
+import { matchLang } from '@/utilities/matchLang'
 import { cn } from '@/utilities/ui'
 
 import { Button } from './ui/button'
 
-export function ProductCard({
+export async function ProductCard({
 	product: p,
 	size = 'lg',
 	component,
@@ -26,9 +29,10 @@ export function ProductCard({
 	}
 	size?: 'lg' | 'sm'
 	component?: React.ElementType
-}): React.JSX.Element {
+}): Promise<React.JSX.Element> {
 	const Comp = component ?? 'div'
 	const img = p.gallery?.[0] && typeof p.gallery[0] === 'object' ? p.gallery[0] : null
+	const locale = await getClientLang()
 
 	return (
 		<Comp
@@ -68,7 +72,13 @@ export function ProductCard({
 			<div style={{ gridArea: 'desc' }} className="mb-[1.375rem] text-xs uppercase">
 				{p.shortDescription}
 			</div>
-			<div style={{ gridArea: 'price' }}>{getPriceRange(p)}</div>
+			<div style={{ gridArea: 'price' }}>
+				{getPriceRange(p) ??
+					matchLang({
+						[Lang.English]: 'Out of stock',
+						[Lang.Vietnamese]: 'Hết hàng',
+					})({ locale })}
+			</div>
 			<div style={{ gridArea: 'add-to-cart' }}>
 				<Button
 					hideArrow={true}
