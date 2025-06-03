@@ -105,7 +105,7 @@ export function INTERNAL_ProductsDropdownClient({
 	categories: PaginatedDocs<ProductCategory>
 	label?: string
 }): React.JSX.Element {
-	const { lang } = useClientLang()
+	const { lang: locale } = useClientLang()
 
 	const [open, setOpen] = useState(false)
 	const dropdownElement = useRef<HTMLDivElement | null>(null)
