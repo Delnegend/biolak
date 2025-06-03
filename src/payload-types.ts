@@ -212,7 +212,7 @@ export interface Order {
     approved?: boolean | null;
   };
   products: number | Product;
-  customers?: (number | null) | Customer;
+  customers: number | Customer;
   updatedAt: string;
   createdAt: string;
 }
@@ -241,7 +241,15 @@ export interface Product {
     };
     [k: string]: unknown;
   } | null;
-  price: number;
+  variants: {
+    title: string;
+    sku: string;
+    stock: number;
+    price: number;
+    defaultVariant?: boolean | null;
+    image?: (number | null) | Media;
+    id?: string | null;
+  }[];
   icon?: (number | null) | Media;
   gallery?: (number | Media)[] | null;
   reviewsVisible?: ('show' | 'hide') | null;
@@ -529,9 +537,7 @@ export interface Post {
     | InfiniteScrollBlockProps
     | MediaBlockProps
     | ProductsCarouselBlockProps
-    | ProductsCarouselBlockProps
     | ProductsCategoryBlockProps
-    | ThreePhotoBlockProps
     | ThreePhotoBlockProps
   )[];
   relatedPosts?: (number | Post)[] | null;
@@ -567,6 +573,7 @@ export interface Post {
  */
 export interface BuyNowBlockProps {
   buttonLabel?: string | null;
+  products?: (number | null) | Product;
   id?: string | null;
   blockName?: string | null;
   blockType: 'buy-now';
@@ -934,6 +941,7 @@ export interface CallToAddToCartBlockProps {
     [k: string]: unknown;
   } | null;
   buttonLabel: string;
+  products?: (number | null) | Product;
   id?: string | null;
   blockName?: string | null;
   blockType: 'call-to-add-to-cart';
@@ -1493,6 +1501,7 @@ export interface HowToUseProductBlockProps {
     [k: string]: unknown;
   };
   image?: (number | null) | Media;
+  products?: (number | null) | Product;
   id?: string | null;
   blockName?: string | null;
   blockType: 'how-to-use-product';
@@ -2021,6 +2030,7 @@ export interface BestSellerBlockPropsSelect<T extends boolean = true> {
  */
 export interface BuyNowBlockPropsSelect<T extends boolean = true> {
   buttonLabel?: T;
+  products?: T;
   id?: T;
   blockName?: T;
 }
@@ -2124,6 +2134,7 @@ export interface CallToAddToCartBlockPropsSelect<T extends boolean = true> {
   image?: T;
   content?: T;
   buttonLabel?: T;
+  products?: T;
   id?: T;
   blockName?: T;
 }
@@ -2439,7 +2450,17 @@ export interface ProductsSelect<T extends boolean = true> {
   title?: T;
   shortDescription?: T;
   longDescription?: T;
-  price?: T;
+  variants?:
+    | T
+    | {
+        title?: T;
+        sku?: T;
+        stock?: T;
+        price?: T;
+        defaultVariant?: T;
+        image?: T;
+        id?: T;
+      };
   icon?: T;
   gallery?: T;
   reviewsVisible?: T;
@@ -2496,6 +2517,7 @@ export interface HowToUseProductBlockPropsSelect<T extends boolean = true> {
   subtitle?: T;
   content?: T;
   image?: T;
+  products?: T;
   id?: T;
   blockName?: T;
 }
