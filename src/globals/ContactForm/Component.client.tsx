@@ -20,7 +20,7 @@ import {
 
 export function INTERNAL_ContactFormClient({ global }: { global: ContactFormGlobal }) {
 	const { register, handleSubmit } = useForm<ContactFormInputType>()
-	const { lang } = useClientLang()
+	const { lang: locale } = useClientLang()
 
 	const onSubmit: SubmitHandler<ContactFormInputType> = (data) => {
 		void (async (): Promise<void> => {
@@ -30,7 +30,7 @@ export function INTERNAL_ContactFormClient({ global }: { global: ContactFormGlob
 					matchLang({
 						[Lang.English]: 'BioLAK has received your feedback',
 						[Lang.Vietnamese]: 'BioLAK đã nhận đuợc phản hồi của bạn',
-					})({ locale: lang }),
+					})({ locale }),
 				)
 				return
 			}
@@ -44,7 +44,7 @@ export function INTERNAL_ContactFormClient({ global }: { global: ContactFormGlob
 				matchLang({
 					[Lang.English]: 'Unable to send feedback',
 					[Lang.Vietnamese]: 'Không thể gửi phản hồi',
-				})({ locale: lang }),
+				})({ locale }),
 				{
 					description,
 				},
