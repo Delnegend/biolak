@@ -2,16 +2,19 @@
 
 import { Button } from '@/components/ui/button'
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet'
+import { useCartManager } from '@/hooks/useCartManager'
 import { Lang } from '@/utilities/lang'
 import { matchLang } from '@/utilities/matchLang'
 
-export function INTERNAL_Cart({
+export function INTERNAL_CartSidebar({
 	label,
 	locale,
 }: {
 	label?: string
 	locale: Lang
 }): React.JSX.Element {
+	const { cart } = useCartManager({ syncWithLocalStorage: true })
+
 	return (
 		<Sheet>
 			<SheetTrigger asChild>
@@ -23,7 +26,7 @@ export function INTERNAL_Cart({
 					{label ??
 						matchLang({ [Lang.English]: 'Cart', [Lang.Vietnamese]: 'Giỏ hàng' })({ locale })}
 					<div className="absolute -top-2 right-0 flex aspect-square size-7 items-center justify-center overflow-hidden rounded-full bg-[#FF8200] text-base text-primary">
-						10
+						{cart.length > 0 ? cart.length : ''}
 					</div>
 				</Button>
 			</SheetTrigger>
