@@ -1,11 +1,16 @@
 'use server'
 
+import config from '@payload-config'
+import { getPayload } from 'payload'
 import { z } from 'zod'
+
+import { OrdersSlug } from '@/collections/Orders/slug'
+import { tryCatch, tryCatchSync } from '@/utilities/tryCatch'
 
 const SendReviewSchema = z.object({
 	invoiceId: z.string(),
 	rating: z.number().min(1, 'Rating is required').max(5, 'Rating is too long'),
-	content: z.string().min(1, 'Content is required').max(1000, 'Content is too long'),
+	content: z.string().min(0, 'Content is required').max(1000, 'Content is too long'),
 })
 
 export type SendReviewInputType = z.infer<typeof SendReviewSchema>
@@ -19,21 +24,34 @@ export async function sendReviewAction(input: unknown): Promise<
 			error: string
 	  }
 > {
-	try {
-		const parsedInput = SendReviewSchema.parse(input)
-
-		// Process the validated data here
-		console.log('Form submission:', parsedInput)
-
-		return { success: true }
-	} catch (error) {
-		if (error instanceof z.ZodError) {
-			// Return validation errors to be displayed in the UI
-			return { success: false, error: error.message }
+	const parsed = tryCatchSync(() => SendReviewSchema.parse(input))
+	if (!parsed.success) {
+		return {
+			success: false,
+			error: parsed.error instanceof z.ZodError ? parsed.error.message : `${parsed.error}`,
 		}
-
-		// Handle other types of errors
-		console.error('Unexpected error during form submission:', error)
-		throw error
 	}
+
+	const payload = await getPayload({ config })
+	const result = await tryCatch(() =>
+		payload.update({
+			collection: OrdersSlug,
+			id: parsed.data.invoiceId,
+			data: {
+				review: {
+					...parsed.data,
+					approved: false,
+				},
+			},
+			overrideAccess: true,
+		}),
+	)
+	if (!result.success) {
+		return {
+			success: false,
+			error: result.error instanceof Error ? result.error.message : `${result.error}`,
+		}
+	}
+
+	return { success: true }
 }
