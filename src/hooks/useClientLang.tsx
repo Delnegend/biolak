@@ -1,51 +1,61 @@
 'use client'
 
-import { createContext, useContext, useEffect, useState } from 'react'
+import React, { createContext, useContext, useEffect, useState } from 'react'
 
 import { defaultLocale, Lang, PreferredLocaleCookieName } from '@/utilities/lang'
 
-const LangContext = createContext<{
+const clientLangContext = createContext<{
 	lang: Lang
-	setLang: (lang: Lang) => void
+	setLang: (newLang: Lang) => void
 } | null>(null)
 
-/** ONLY FOR CLIENT SIDE */
-export function useClientLang() {
-	const context = useContext(LangContext)
-	if (!context) throw new Error('useClientLang must be used within a LangContextProvider')
-	return context
-}
-
-export function LangContextProviderClient({
+export function ClientLangContextProvider({
 	children,
 }: {
 	children: React.ReactNode
 }): React.JSX.Element {
-	const [lang, setLang_] = useState<Lang>(defaultLocale)
+	const [lang, setLang] = useState(defaultLocale)
 
 	useEffect(() => {
-		const cookie = document.cookie
-			.split('; ')
-			.find((row) => row.startsWith(`${PreferredLocaleCookieName}=`))
-		if (cookie) {
-			const lang = cookie.split('=')[1]
-			setLang(lang as Lang)
+		try {
+			const langInCookie = document.cookie
+				.split('; ')
+				.find((row) => row.startsWith(`${PreferredLocaleCookieName}=`))
+				?.split('=')[1] as Lang | undefined
+
+			if (langInCookie && [Lang.Vietnamese, Lang.English].includes(langInCookie)) {
+				setLang(langInCookie)
+			}
+		} catch {
+			setLang(defaultLocale)
+			document.cookie = `${PreferredLocaleCookieName}=${defaultLocale}; path=/`
 		}
 	}, [])
 
-	function setLang(lang: Lang): void {
-		setLang_(lang)
-		document.cookie = `${PreferredLocaleCookieName}=${lang}`
-	}
-
 	return (
-		<LangContext.Provider
+		<clientLangContext.Provider
 			value={{
 				lang,
-				setLang,
+				setLang(newLang: Lang) {
+					if (!newLang || ![Lang.Vietnamese, Lang.English].includes(newLang)) return
+					document.cookie = `${PreferredLocaleCookieName}=${newLang}; path=/`
+					window.location.reload()
+				},
 			}}
 		>
 			{children}
-		</LangContext.Provider>
+		</clientLangContext.Provider>
 	)
+}
+
+/** ONLY FOR CLIENT SIDE */
+export function useClientLang(): {
+	lang: Lang
+	setLang: (newLang: Lang) => void
+} {
+	const context = useContext(clientLangContext)
+	if (!context) {
+		throw new Error('useClientLang must be used within a ClientLangContextProvider')
+	}
+	return context
 }
