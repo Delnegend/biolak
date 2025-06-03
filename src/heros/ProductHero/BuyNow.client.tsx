@@ -6,11 +6,11 @@ import { formatPrice } from '@/utilities/formatPrice'
 import { Lang } from '@/utilities/lang'
 import { matchLang } from '@/utilities/matchLang'
 
-import { useProductVariantContext } from './ProductVariantContext'
+import { useSelectProductVariant } from './ProductVariantContext'
 
 export function INTERNAL_BuyNowClient(): React.JSX.Element {
 	const { lang: locale } = useClientLang()
-	const { product } = useProductVariantContext()
+	const { product } = useSelectProductVariant()
 
 	return (
 		<Button
