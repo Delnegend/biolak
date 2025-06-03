@@ -9,9 +9,12 @@ import { useClientLang } from '@/hooks/useClientLang'
 import { Lang } from '@/utilities/lang'
 import { matchLang } from '@/utilities/matchLang'
 
-export function INTERNAL_AddToCartClient(props: { product: BasicProduct }): React.JSX.Element {
+import { useVariantContext } from './VariantContext'
+
+export function INTERNAL_AddToCartClient(): React.JSX.Element {
 	const { lang: locale } = useClientLang()
 	const { loadProduct } = useCartManager({ syncWithLocalStorage: true })
+	const { product } = useVariantContext()
 
 	return (
 		<Button
@@ -20,17 +23,30 @@ export function INTERNAL_AddToCartClient(props: { product: BasicProduct }): Reac
 			hideArrow={true}
 			variant="outline"
 			onClick={() => {
-				loadProduct(props.product, 1)
+				loadProduct(
+					{
+						slug: product.slug,
+						title:
+							product.title ??
+							matchLang({
+								[Lang.English]: 'Untitled Product',
+								[Lang.Vietnamese]: 'Sản phẩm không tên',
+							})({ locale }),
+						variant: product.variant!,
+					},
+					1,
+				)
 				toast.success(
 					matchLang({
-						[Lang.English]: `Added ${props.product.title} to cart`,
-						[Lang.Vietnamese]: `Đã thêm ${props.product.title} vào giỏ hàng`,
+						[Lang.English]: `Added ${product.title} variant ${product.variant?.title} to cart`,
+						[Lang.Vietnamese]: `Đã thêm ${product.title} loại ${product.variant?.title} vào giỏ hàng`,
 					})({ locale }),
 				)
 			}}
+			disabled={!product.variant}
 			aria-label={matchLang({
-				[Lang.English]: `Add ${props.product.title} to cart`,
-				[Lang.Vietnamese]: `Thêm ${props.product.title} vào giỏ hàng`,
+				[Lang.English]: `Add ${product.title} variant ${product.variant?.title} to cart`,
+				[Lang.Vietnamese]: `Thêm ${product.title} loại ${product.variant?.title} vào giỏ hàng`,
 			})({ locale })}
 		>
 			<span>
