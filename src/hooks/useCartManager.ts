@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react'
 
-import { Product } from '@/payload-types'
+import { type Product } from '@/payload-types'
 import { tryCatchSync } from '@/utilities/tryCatch'
 
 export type BasicProduct = {
 	slug: Product['slug']
 	title: Product['title']
-	price: Product['price']
+	variant: NonNullable<Product['variants']>[number]
 }
 
 export type BasicProductInCart = BasicProduct & {
@@ -56,7 +56,9 @@ export function useCartManager({
 		loadProduct(product: BasicProduct, quantity: number = 1): void {
 			if (quantity < 1) return
 			setCart((prev) => {
-				const existingProductIndex = prev?.findIndex((item) => item.slug === product.slug)
+				const existingProductIndex = prev?.findIndex(
+					(item) => item.slug === product.slug && item.variant.id === product.variant.id,
+				)
 
 				const updatedCart = [...prev]
 
@@ -74,10 +76,12 @@ export function useCartManager({
 			})
 		},
 
-		unloadProduct(productSlug: Product['slug'], quantity: number = 1): void {
+		unloadProduct(product: BasicProduct, quantity: number = 1): void {
 			if (quantity < 1) return
 			setCart((prev) => {
-				const existingProductIndex = prev?.findIndex((item) => item.slug === productSlug)
+				const existingProductIndex = prev?.findIndex(
+					(item) => item.slug === product.slug && item.variant.id === product.variant.id,
+				)
 
 				const updatedCart = [...prev]
 
