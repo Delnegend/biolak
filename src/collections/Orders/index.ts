@@ -1,6 +1,7 @@
 import { CollectionConfig } from 'payload'
 
 import { allow, Role } from '@/access/allow'
+import { tryCatch } from '@/utilities/tryCatch'
 
 import { CustomersSlug } from '../Customers/slug'
 import { ProductsSlug } from '../Products/slug'
@@ -49,6 +50,7 @@ export const OrdersCollection: CollectionConfig<typeof OrdersSlug> = {
 					max: 5,
 					access: {
 						update: allow(Role.NoOne),
+						create: allow(Role.NoOne),
 					},
 				},
 				{
@@ -60,6 +62,7 @@ export const OrdersCollection: CollectionConfig<typeof OrdersSlug> = {
 					},
 					access: {
 						update: allow(Role.NoOne),
+						create: allow(Role.NoOne),
 					},
 				},
 				{
@@ -68,6 +71,9 @@ export const OrdersCollection: CollectionConfig<typeof OrdersSlug> = {
 					label: {
 						en: 'Approved',
 						vi: 'Đã duyệt',
+					},
+					access: {
+						update: allow(Role.Admin, Role.SalesManager, Role.ContentManager),
 					},
 					defaultValue: false,
 				},
@@ -91,6 +97,7 @@ export const OrdersCollection: CollectionConfig<typeof OrdersSlug> = {
 				en: 'Customer',
 				vi: 'Khách hàng',
 			},
+			required: true,
 		},
 	],
 	timestamps: true,
