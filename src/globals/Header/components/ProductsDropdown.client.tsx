@@ -167,7 +167,13 @@ export function INTERNAL_ProductsDropdownClient({
 
 	return (
 		<div className="relative">
-			<button onClick={() => setOpen(!open)}>{label ?? 'Sản phẩm'}</button>
+			<button onClick={() => setOpen(!open)}>
+				{label ??
+					matchLang({
+						[Lang.English]: 'Products',
+						[Lang.Vietnamese]: 'Sản phẩm',
+					})({ locale })}
+			</button>
 			<AnimatePresence>
 				{open && (
 					<motion.div
@@ -187,7 +193,12 @@ export function INTERNAL_ProductsDropdownClient({
 					>
 						{/* categories */}
 						<DropdownColumn className="z-50 border-r" key="categories">
-							<DropdownLabel key="categories">Sản phẩm</DropdownLabel>
+							<DropdownLabel key="categories">
+								{matchLang({
+									[Lang.English]: 'Products',
+									[Lang.Vietnamese]: 'Sản phẩm',
+								})({ locale })}
+							</DropdownLabel>
 							{categories.docs.map((category, index) => (
 								<DropdownItem
 									key={category.slug}
@@ -209,14 +220,21 @@ export function INTERNAL_ProductsDropdownClient({
 							{activeCategory?.productSubCategories?.docs?.length && (
 								<DropdownColumn className="z-40 border-r" key="subCategoryPanel">
 									<DropdownLabel key={activeCategory?.slug}>
-										{activeCategory?.title ?? 'Danh mục sản phẩm'}
+										{activeCategory?.title ??
+											matchLang({
+												[Lang.English]: 'Product category',
+												[Lang.Vietnamese]: 'Danh mục sản phẩm',
+											})({ locale })}
 									</DropdownLabel>
 									<DropdownItem key="allProducts" tabIndex={-1}>
 										<Link
 											href={`/category/${activeCategory?.slug}`}
 											className="group grid gap-x-4"
 										>
-											Tất cả
+											{matchLang({
+												[Lang.English]: 'All',
+												[Lang.Vietnamese]: 'Tất cả',
+											})({ locale })}
 										</Link>
 									</DropdownItem>
 									{activeCategory?.productSubCategories?.docs
@@ -248,7 +266,11 @@ export function INTERNAL_ProductsDropdownClient({
 							{(activeProducts?.length ?? 0) > 0 && (
 								<DropdownColumn className="z-30" key="productsPanel">
 									<DropdownLabel key={activeSubCategory?.slug}>
-										{activeSubCategory?.title ?? 'Danh mục sản phẩm'}
+										{activeSubCategory?.title ??
+											matchLang({
+												[Lang.English]: 'Product category',
+												[Lang.Vietnamese]: 'Danh mục sản phẩm',
+											})({ locale })}
 									</DropdownLabel>
 									{activeProducts?.map((product, index) => {
 										const icon =
@@ -297,7 +319,13 @@ export function INTERNAL_ProductsDropdownClient({
 													</div>
 													<Image
 														src={icon?.url ?? 'https://placehold.co/200x200'}
-														alt={icon?.alt ?? 'Product Icon'}
+														alt={
+															icon?.alt ??
+															matchLang({
+																[Lang.English]: 'Product Icon',
+																[Lang.Vietnamese]: 'Biểu tượng sản phẩm',
+															})({ locale })
+														}
 														width={icon?.width ?? 200}
 														height={icon?.height ?? 200}
 														unoptimized={!icon}
