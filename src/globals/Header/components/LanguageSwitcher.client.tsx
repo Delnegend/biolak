@@ -7,6 +7,7 @@ import { Lang } from '@/utilities/lang'
 
 export function INTERNAL_LanguageSwitcher({ label }: { label?: string }): React.JSX.Element {
 	const { lang, setLang } = useClientLang()
+
 	return (
 		<button
 			onClick={() => {
@@ -15,7 +16,6 @@ export function INTERNAL_LanguageSwitcher({ label }: { label?: string }): React.
 				} else {
 					setLang(Lang.Vietnamese)
 				}
-				window.location.reload()
 			}}
 		>
 			{label ?? <>{lang === Lang.Vietnamese ? 'English' : 'Tiếng Việt'}</>}
