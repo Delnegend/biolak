@@ -1,17 +1,17 @@
 import { DefaultTypedEditorState } from '@payloadcms/richtext-lexical'
-import { CirclePlus } from 'lucide-react'
 import Image from 'next/image'
 import React from 'react'
 
 import RichText from '@/components/RichText'
-import { Button } from '@/components/ui/button'
 import { Product } from '@/payload-types'
-import { formatPrice } from '@/utilities/formatPrice'
+import { getClientLang } from '@/utilities/getClientLang'
+import { Lang } from '@/utilities/lang'
+import { matchLang } from '@/utilities/matchLang'
 
-export function ProductHero({
 import { INTERNAL_AddToCartClient } from './AddToCart.client'
 import { INTERNAL_BuyNowClient } from './BuyNow.client'
 
+export async function ProductHero({
 	product: p,
 	overrides,
 }: {
@@ -21,7 +21,7 @@ import { INTERNAL_BuyNowClient } from './BuyNow.client'
 		title?: string | null
 		description?: DefaultTypedEditorState | null
 	}
-}): React.JSX.Element {
+}): Promise<React.JSX.Element> {
 	const locale = await getClientLang()
 
 	const img = p.heroMedia && typeof p.heroMedia === 'object' ? p.heroMedia : null
