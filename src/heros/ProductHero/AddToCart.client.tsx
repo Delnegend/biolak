@@ -9,12 +9,12 @@ import { useClientLang } from '@/hooks/useClientLang'
 import { Lang } from '@/utilities/lang'
 import { matchLang } from '@/utilities/matchLang'
 
-import { useProductVariantContext } from './ProductVariantContext'
+import { useSelectProductVariant } from './ProductVariantContext'
 
 export function INTERNAL_AddToCartClient(): React.JSX.Element {
 	const { lang: locale } = useClientLang()
 	const { loadProduct } = useCartManager({ syncWithLocalStorage: true })
-	const { product } = useProductVariantContext()
+	const { product } = useSelectProductVariant()
 
 	return (
 		<Button
