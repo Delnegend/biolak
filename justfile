@@ -55,7 +55,7 @@ db-dev-pg-start:
   docker compose up -d postgres-dev
 
 lint:
-  pnpm next lint --fix && pnpm prettier --write .
+  pnpm next lint --fix && pnpm prettier --write --list-different .
 
 payload:
   pnpm payload
