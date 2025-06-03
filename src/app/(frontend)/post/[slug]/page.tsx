@@ -61,7 +61,7 @@ export default async function Post({ params: paramsPromise }: Args) {
 			<PostHero post={post} />
 
 			<div className="mt-8 items-center">
-				<RenderBlocks blocks={post.layout} />
+				<RenderBlocks blocks={post.layout} post={post} />
 				{post.relatedPosts && post.relatedPosts.length > 0 && (
 					<RelatedPosts
 						className="col-span-3 col-start-1 mt-12 max-w-[52rem] grid-rows-[2fr] lg:grid lg:grid-cols-subgrid"

@@ -113,7 +113,7 @@ export default async function Product({
 					description: product.heroDescription,
 				}}
 			/>
-			{product.content && <RenderBlocks blocks={product.content} />}
+			{product.content && <RenderBlocks blocks={product.content} product={product} />}
 
 			{/* reviews */}
 			{product.reviewsVisible === 'show' && <ReviewsGlobalComponent orders={orders} />}
