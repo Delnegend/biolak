@@ -41,7 +41,7 @@ export function ProductHero({
 	return (
 		<div className="relative grid min-h-[50dvw] grid-cols-2 text-balance">
 			<div />
-			<div className="absolute inset-0 z-0 overflow-hidden">
+			<div className="pointer-events-none absolute inset-0 z-0 overflow-hidden">
 				<Image
 					src={img?.url ?? 'https://placehold.co/1000x1000'}
 					alt={
