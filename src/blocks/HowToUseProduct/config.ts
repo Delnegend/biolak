@@ -53,5 +53,14 @@ export const HowToUseProductBlockConf: Block = {
 				vi: 'Ảnh minh họa',
 			},
 		},
+		{
+			name: ProductsSlug,
+			type: 'relationship',
+			relationTo: ProductsSlug,
+			label: {
+				en: 'Product',
+				vi: 'Sản phẩm',
+			},
+		},
 	],
 }
