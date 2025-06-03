@@ -1,5 +1,7 @@
 import { Block } from 'payload'
 
+import { ProductsSlug } from '@/collections/Products/slug'
+
 export const BuyNowBlockConf: Block = {
 	slug: 'buy-now',
 	interfaceName: 'BuyNowBlockProps',
@@ -23,6 +25,15 @@ export const BuyNowBlockConf: Block = {
 				vi: 'Nhãn nút',
 			},
 			defaultValue: 'MUA NGAY',
+		},
+		{
+			name: ProductsSlug,
+			type: 'relationship',
+			relationTo: ProductsSlug,
+			label: {
+				en: 'Product',
+				vi: 'Sản phẩm',
+			},
 		},
 	],
 }
