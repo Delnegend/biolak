@@ -1,4 +1,5 @@
 import { postgresAdapter } from '@payloadcms/db-postgres'
+import { nodemailerAdapter } from '@payloadcms/email-nodemailer'
 import { en } from '@payloadcms/translations/languages/en'
 import { vi } from '@payloadcms/translations/languages/vi'
 import path from 'path'
@@ -31,7 +32,6 @@ import { ReviewsGlobalConf } from './globals/Reviews/config'
 import { plugins } from './plugins'
 import { getServerSideURL } from './utilities/getURL'
 import { defaultLocale, Lang } from './utilities/lang'
-
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
@@ -144,4 +144,16 @@ export default buildConfig({
 		],
 		defaultLocale,
 	},
+	email: nodemailerAdapter({
+		defaultFromAddress: process.env.SMTP_FROM ?? 'noreply@example.com',
+		defaultFromName: 'BioLAK',
+		transportOptions: {
+			host: process.env.SMTP_HOST,
+			port: parseInt(process.env.SMTP_PORT || '587', 10),
+			auth: {
+				user: process.env.SMTP_USER,
+				pass: process.env.SMTP_PASS,
+			},
+		},
+	}),
 })
