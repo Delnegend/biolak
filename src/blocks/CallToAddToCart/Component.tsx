@@ -2,12 +2,12 @@ import Image from 'next/image'
 
 import { ProductsSlug } from '@/collections/Products/slug'
 import RichText from '@/components/RichText'
-import { Button } from '@/components/ui/button'
-import { useCartManager } from '@/hooks/useCartManager'
 import { CallToAddToCartBlockProps, Product } from '@/payload-types'
 import { getClientLang } from '@/utilities/getClientLang'
 import { Lang } from '@/utilities/lang'
 import { matchLang } from '@/utilities/matchLang'
+
+import { INTERNAL_AddToCartClient } from './AddToCart.client'
 
 export function CallToAddToCartBlockComponent(passdownProps: {
 	product?: Product | null
@@ -16,7 +16,6 @@ export function CallToAddToCartBlockComponent(passdownProps: {
 		props: CallToAddToCartBlockProps,
 	): Promise<React.JSX.Element> {
 		const locale = await getClientLang()
-		const { loadProduct } = useCartManager({ syncWithLocalStorage: true })
 
 		const img = props.image && typeof props.image === 'object' ? props.image : null
 		const p =
@@ -28,6 +27,10 @@ export function CallToAddToCartBlockComponent(passdownProps: {
 				'CallToAddToCartBlock must be used within a product page or specified with a product prop',
 			)
 		}
+
+		const variant =
+			p.variants?.find((v) => v.defaultVariant && v.stock > 0) ??
+			p.variants.find((v) => v.stock > 0)
 
 		return (
 			<div className="safe-width my-28 flex !max-w-[50rem] flex-col items-center text-primary">
@@ -52,23 +55,14 @@ export function CallToAddToCartBlockComponent(passdownProps: {
 						className="mt-4 [&_li]:text-xl"
 					/>
 				)}
-				<Button
-					size="lg"
-					variant="outline"
-					className="mt-6 w-full max-w-[47rem] border-primary text-primary"
-					onClick={() => {
-						loadProduct(
-							{
-								slug: p.slug,
-								title: p.title,
-								price: p.price,
-							},
-							1,
-						)
+				<INTERNAL_AddToCartClient
+					buttonLabel={props.buttonLabel}
+					product={{
+						slug: p.slug,
+						title: p.title,
+						variant,
 					}}
-				>
-					{props.buttonLabel}
-				</Button>
+				/>
 			</div>
 		)
 	}
