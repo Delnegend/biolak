@@ -73,7 +73,6 @@ export async function ProductHero({
 					<INTERNAL_BuyNowClient
 						product={{
 							slug: p.slug,
-							title: p.title,
 							price: p.price,
 						}}
 					/>

@@ -2,12 +2,19 @@
 
 import { Button } from '@/components/ui/button'
 import { useClientLang } from '@/hooks/useClientLang'
-import { BasicProduct } from '@/utilities/cartManager'
+import { Product } from '@/payload-types'
 import { formatPrice } from '@/utilities/formatPrice'
 import { Lang } from '@/utilities/lang'
 import { matchLang } from '@/utilities/matchLang'
 
-export function INTERNAL_BuyNowClient({ product }: { product: BasicProduct }): React.JSX.Element {
+export function INTERNAL_BuyNowClient({
+	product,
+}: {
+	product: {
+		slug: Product['slug']
+		price: Product['price']
+	}
+}): React.JSX.Element {
 	const { lang: locale } = useClientLang()
 
 	return (
