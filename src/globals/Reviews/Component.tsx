@@ -1,9 +1,8 @@
-import { Dialog, DialogTrigger } from '@radix-ui/react-dialog'
 import { Heart } from 'lucide-react'
 import { Phudu } from 'next/font/google'
 import { Fragment } from 'react'
 
-import { Button } from '@/components/ui/button'
+import { HeartsRow } from '@/components/HeartsRow'
 import { ReviewsGlobalSlug } from '@/globals/Reviews/config'
 import { INTERNAL_ReviewDialogContentClient } from '@/globals/Reviews/ReviewDialogContent.client'
 import { Order, ReviewsGlobal } from '@/payload-types'
@@ -18,105 +17,102 @@ const phudu = Phudu({
 	weight: ['600'],
 })
 
-const mockReviews = Array.from({ length: 10 }).map((_, i) => ({
-	id: i,
-	title: 'Trang Linh',
-	content: 'Nếu bạn muốn đánh giá từ khách hàng, hãy nhấn vào nút đánh giá từ khách hàng.',
-	rating: Math.floor(Math.random() * 5) + 1,
-	createdAt: new Date(),
-}))
+interface Review {
+	id: number
+	customer: string
+	rating: number
+	content?: string
+	createdAt: Date
+}
 
 export async function ReviewsGlobalComponent({
-	orders,
+	ordersWithRating,
 }: {
-	orders: Order[] | null
+	ordersWithRating: Order[] | null
 }): Promise<React.JSX.Element> {
 	const locale = await getClientLang()
 	const global = await getCachedGlobal<ReviewsGlobal>(ReviewsGlobalSlug, 1, locale)()
 
-	const _productReviews =
-		orders?.reduce(
-			(acc, order) => {
+	const avgRating =
+		(ordersWithRating &&
+			ordersWithRating.reduce((acc, order) => {
 				if (
 					order.review &&
 					order.review.approved &&
 					typeof order.customers === 'object' &&
 					order.review.rating
 				) {
-					acc.push({
-						customer:
-							order.customers?.name ??
-							matchLang({
-								[Lang.English]: 'Anonymous',
-								[Lang.Vietnamese]: 'Ẩn danh',
-							})({ locale }),
-						rating: order.review.rating ?? undefined,
-						content: order.review.content ?? undefined,
-						createdAt: new Date(order.createdAt),
-					})
+					acc += order.review.rating
 				}
 				return acc
-			},
-			[] as {
-				customer: string
-				rating: number
-				content?: string
-				createdAt: Date
-			}[],
-		) ?? []
+			}, 0) / ordersWithRating.length) ??
+		5
+
+	const reviews =
+		ordersWithRating?.reduce((acc, order) => {
+			if (order.review && typeof order.customers === 'object' && order.review.rating) {
+				acc.push({
+					id: order.id,
+					customer:
+						order.customers?.name ??
+						matchLang({
+							[Lang.English]: 'Anonymous',
+							[Lang.Vietnamese]: 'Ẩn danh',
+						})({ locale }),
+					rating: order.review.rating ?? undefined,
+					content: order.review.content ?? undefined,
+					createdAt: new Date(order.createdAt),
+				} satisfies Review)
+			}
+			return acc
+		}, [] as Review[]) ?? []
+
+	const ratingCounts: Record<number, number> = reviews.reduce(
+		(acc, review) => {
+			if (review.rating) {
+				acc[review.rating] = (acc[review.rating] ?? 0) + 1
+			}
+			return acc
+		},
+		{} as Record<number, number>,
+	)
 
 	return (
 		<div className="safe-width mt-20 grid grid-cols-[auto_1fr] gap-x-20 text-primary">
 			<div>
 				<div className="font-serif text-2xl font-medium">{global.title}</div>
-				<div className="font-serif text-9xl font-medium">5.0</div>
+				<div className="font-serif text-9xl font-medium">{Math.round(avgRating * 10) / 10}</div>
 				<div className="flex w-fit flex-row items-center justify-center gap-4">
-					<Heart />
-					<Heart />
-					<Heart />
-					<Heart />
-					<Heart />
-					<span className="ml-2 text-xl">(10)</span>
+					<HeartsRow rating={avgRating} />
+					<span className="ml-2 text-xl">{}</span>
 				</div>
 			</div>
 
 			<div className="flex justify-between">
-				<div className="grid grid-cols-6 gap-x-[0.875rem] gap-y-3">
-					{Array.from({ length: 30 }).map((_, i) => {
-						const fill = [0, 1, 2, 3, 4, 6, 7, 8, 9, 12, 13, 14, 18, 19, 24].includes(i)
-						if (i % 6 === 5) {
-							return <div key={i}>(1)</div>
-						}
+				<div className="flex flex-col gap-y-3">
+					{Array.from({ length: 5 }).map((_, i) => {
 						return (
-							<Heart
-								key={i}
-								fill={fill ? '#925E12' : 'transparent'}
-								className={cn(fill && 'text-[#925E12]')}
-							/>
+							<div key={i} className="flex items-center">
+								<HeartsRow size={16} rating={5 - i} locale={locale} />
+								<span className="ml-5 text-2xl">{ratingCounts[5 - i] ?? 0}</span>
+							</div>
 						)
 					})}
 				</div>
 
-				<Dialog>
-					<DialogTrigger asChild>
-						<Button className="w-full max-w-[25.5rem] self-end" hideArrow={true}>
-							{global.btnLabel}
-						</Button>
-					</DialogTrigger>
-					<INTERNAL_ReviewDialogContentClient global={global} />
-				</Dialog>
+				<INTERNAL_ReviewDialogContentClient global={global} />
 			</div>
 
 			<hr className="col-span-2 mb-10 mt-20 border-border" />
 
-			{mockReviews.map((review) => {
+			{reviews.map((review) => {
 				return (
 					<Fragment key={review.id}>
 						<div
 							key={`${review.id}-name`}
 							className={cn('mb-10 min-h-60 text-[1.75rem] font-semibold', phudu.className)}
 						>
-							{review.title}
+							{review.customer}
 						</div>
 
 						<div key={`${review.id}-content`} className="mb-10">
