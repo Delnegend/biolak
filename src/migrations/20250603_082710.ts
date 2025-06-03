@@ -8,7 +8,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"_locale" "_locales" NOT NULL,
   	"_parent_id" varchar NOT NULL
   );
-  
+
   CREATE TABLE IF NOT EXISTS "pages_blocks_products_carousel_locales" (
   	"title" varchar,
   	"watch_more_btn_label" varchar,
@@ -20,14 +20,14 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"_locale" "_locales" NOT NULL,
   	"_parent_id" varchar NOT NULL
   );
-  
+
   CREATE TABLE IF NOT EXISTS "_pages_v_blocks_best_seller_locales" (
   	"title" varchar,
   	"id" serial PRIMARY KEY NOT NULL,
   	"_locale" "_locales" NOT NULL,
   	"_parent_id" integer NOT NULL
   );
-  
+
   CREATE TABLE IF NOT EXISTS "_pages_v_blocks_products_carousel_locales" (
   	"title" varchar,
   	"watch_more_btn_label" varchar,
@@ -39,14 +39,14 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"_locale" "_locales" NOT NULL,
   	"_parent_id" integer NOT NULL
   );
-  
+
   CREATE TABLE IF NOT EXISTS "posts_blocks_focus_right_large_image_locales" (
   	"content" jsonb,
   	"id" serial PRIMARY KEY NOT NULL,
   	"_locale" "_locales" NOT NULL,
   	"_parent_id" varchar NOT NULL
   );
-  
+
   CREATE TABLE IF NOT EXISTS "posts_blocks_products_carousel_locales" (
   	"title" varchar,
   	"watch_more_btn_label" varchar,
@@ -58,14 +58,14 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"_locale" "_locales" NOT NULL,
   	"_parent_id" varchar NOT NULL
   );
-  
+
   CREATE TABLE IF NOT EXISTS "_posts_v_blocks_focus_right_large_image_locales" (
   	"content" jsonb,
   	"id" serial PRIMARY KEY NOT NULL,
   	"_locale" "_locales" NOT NULL,
   	"_parent_id" integer NOT NULL
   );
-  
+
   CREATE TABLE IF NOT EXISTS "_posts_v_blocks_products_carousel_locales" (
   	"title" varchar,
   	"watch_more_btn_label" varchar,
@@ -77,7 +77,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"_locale" "_locales" NOT NULL,
   	"_parent_id" integer NOT NULL
   );
-  
+
   CREATE TABLE IF NOT EXISTS "products_blocks_how_to_use_product_locales" (
   	"title" varchar NOT NULL,
   	"subtitle" varchar,
@@ -85,7 +85,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"_locale" "_locales" NOT NULL,
   	"_parent_id" varchar NOT NULL
   );
-  
+
   CREATE TABLE IF NOT EXISTS "products_blocks_products_carousel_locales" (
   	"title" varchar NOT NULL,
   	"watch_more_btn_label" varchar NOT NULL,
@@ -97,7 +97,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"_locale" "_locales" NOT NULL,
   	"_parent_id" varchar NOT NULL
   );
-  
+
   DROP INDEX IF EXISTS "pages_rels_pages_id_idx";
   DROP INDEX IF EXISTS "pages_rels_post_categories_id_idx";
   DROP INDEX IF EXISTS "pages_rels_posts_id_idx";
@@ -161,61 +161,61 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "pages_blocks_products_carousel_locales" ADD CONSTRAINT "pages_blocks_products_carousel_locales_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."pages_blocks_products_carousel"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "_pages_v_blocks_best_seller_locales" ADD CONSTRAINT "_pages_v_blocks_best_seller_locales_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_pages_v_blocks_best_seller"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "_pages_v_blocks_products_carousel_locales" ADD CONSTRAINT "_pages_v_blocks_products_carousel_locales_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_pages_v_blocks_products_carousel"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "posts_blocks_focus_right_large_image_locales" ADD CONSTRAINT "posts_blocks_focus_right_large_image_locales_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."posts_blocks_focus_right_large_image"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "posts_blocks_products_carousel_locales" ADD CONSTRAINT "posts_blocks_products_carousel_locales_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."posts_blocks_products_carousel"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "_posts_v_blocks_focus_right_large_image_locales" ADD CONSTRAINT "_posts_v_blocks_focus_right_large_image_locales_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_posts_v_blocks_focus_right_large_image"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "_posts_v_blocks_products_carousel_locales" ADD CONSTRAINT "_posts_v_blocks_products_carousel_locales_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_posts_v_blocks_products_carousel"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "products_blocks_how_to_use_product_locales" ADD CONSTRAINT "products_blocks_how_to_use_product_locales_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."products_blocks_how_to_use_product"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "products_blocks_products_carousel_locales" ADD CONSTRAINT "products_blocks_products_carousel_locales_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."products_blocks_products_carousel"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   CREATE UNIQUE INDEX IF NOT EXISTS "pages_blocks_best_seller_locales_locale_parent_id_unique" ON "pages_blocks_best_seller_locales" USING btree ("_locale","_parent_id");
   CREATE UNIQUE INDEX IF NOT EXISTS "pages_blocks_products_carousel_locales_locale_parent_id_unique" ON "pages_blocks_products_carousel_locales" USING btree ("_locale","_parent_id");
   CREATE UNIQUE INDEX IF NOT EXISTS "_pages_v_blocks_best_seller_locales_locale_parent_id_unique" ON "_pages_v_blocks_best_seller_locales" USING btree ("_locale","_parent_id");
@@ -231,67 +231,67 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "pages_blocks_call_to_add_to_cart" ADD CONSTRAINT "pages_blocks_call_to_add_to_cart_products_id_products_id_fk" FOREIGN KEY ("products_id") REFERENCES "public"."products"("id") ON DELETE set null ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "_pages_v_blocks_buy_now" ADD CONSTRAINT "_pages_v_blocks_buy_now_products_id_products_id_fk" FOREIGN KEY ("products_id") REFERENCES "public"."products"("id") ON DELETE set null ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "_pages_v_blocks_call_to_add_to_cart" ADD CONSTRAINT "_pages_v_blocks_call_to_add_to_cart_products_id_products_id_fk" FOREIGN KEY ("products_id") REFERENCES "public"."products"("id") ON DELETE set null ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "posts_blocks_buy_now" ADD CONSTRAINT "posts_blocks_buy_now_products_id_products_id_fk" FOREIGN KEY ("products_id") REFERENCES "public"."products"("id") ON DELETE set null ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "posts_blocks_call_to_add_to_cart" ADD CONSTRAINT "posts_blocks_call_to_add_to_cart_products_id_products_id_fk" FOREIGN KEY ("products_id") REFERENCES "public"."products"("id") ON DELETE set null ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "_posts_v_blocks_buy_now" ADD CONSTRAINT "_posts_v_blocks_buy_now_products_id_products_id_fk" FOREIGN KEY ("products_id") REFERENCES "public"."products"("id") ON DELETE set null ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "_posts_v_blocks_call_to_add_to_cart" ADD CONSTRAINT "_posts_v_blocks_call_to_add_to_cart_products_id_products_id_fk" FOREIGN KEY ("products_id") REFERENCES "public"."products"("id") ON DELETE set null ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "products_blocks_buy_now" ADD CONSTRAINT "products_blocks_buy_now_products_id_products_id_fk" FOREIGN KEY ("products_id") REFERENCES "public"."products"("id") ON DELETE set null ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "products_blocks_call_to_add_to_cart" ADD CONSTRAINT "products_blocks_call_to_add_to_cart_products_id_products_id_fk" FOREIGN KEY ("products_id") REFERENCES "public"."products"("id") ON DELETE set null ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "products_blocks_how_to_use_product" ADD CONSTRAINT "products_blocks_how_to_use_product_products_id_products_id_fk" FOREIGN KEY ("products_id") REFERENCES "public"."products"("id") ON DELETE set null ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   CREATE INDEX IF NOT EXISTS "pages_blocks_buy_now_products_idx" ON "pages_blocks_buy_now" USING btree ("products_id");
   CREATE INDEX IF NOT EXISTS "pages_blocks_call_to_add_to_cart_products_idx" ON "pages_blocks_call_to_add_to_cart" USING btree ("products_id");
   CREATE INDEX IF NOT EXISTS "pages_rels_locale_idx" ON "pages_rels" USING btree ("locale");
@@ -404,27 +404,27 @@ export async function down({ db, payload, req }: MigrateDownArgs): Promise<void>
   DROP TABLE "products_blocks_how_to_use_product_locales" CASCADE;
   DROP TABLE "products_blocks_products_carousel_locales" CASCADE;
   ALTER TABLE "pages_blocks_buy_now" DROP CONSTRAINT "pages_blocks_buy_now_products_id_products_id_fk";
-  
+
   ALTER TABLE "pages_blocks_call_to_add_to_cart" DROP CONSTRAINT "pages_blocks_call_to_add_to_cart_products_id_products_id_fk";
-  
+
   ALTER TABLE "_pages_v_blocks_buy_now" DROP CONSTRAINT "_pages_v_blocks_buy_now_products_id_products_id_fk";
-  
+
   ALTER TABLE "_pages_v_blocks_call_to_add_to_cart" DROP CONSTRAINT "_pages_v_blocks_call_to_add_to_cart_products_id_products_id_fk";
-  
+
   ALTER TABLE "posts_blocks_buy_now" DROP CONSTRAINT "posts_blocks_buy_now_products_id_products_id_fk";
-  
+
   ALTER TABLE "posts_blocks_call_to_add_to_cart" DROP CONSTRAINT "posts_blocks_call_to_add_to_cart_products_id_products_id_fk";
-  
+
   ALTER TABLE "_posts_v_blocks_buy_now" DROP CONSTRAINT "_posts_v_blocks_buy_now_products_id_products_id_fk";
-  
+
   ALTER TABLE "_posts_v_blocks_call_to_add_to_cart" DROP CONSTRAINT "_posts_v_blocks_call_to_add_to_cart_products_id_products_id_fk";
-  
+
   ALTER TABLE "products_blocks_buy_now" DROP CONSTRAINT "products_blocks_buy_now_products_id_products_id_fk";
-  
+
   ALTER TABLE "products_blocks_call_to_add_to_cart" DROP CONSTRAINT "products_blocks_call_to_add_to_cart_products_id_products_id_fk";
-  
+
   ALTER TABLE "products_blocks_how_to_use_product" DROP CONSTRAINT "products_blocks_how_to_use_product_products_id_products_id_fk";
-  
+
   DROP INDEX IF EXISTS "pages_blocks_buy_now_products_idx";
   DROP INDEX IF EXISTS "pages_blocks_call_to_add_to_cart_products_idx";
   DROP INDEX IF EXISTS "pages_rels_locale_idx";

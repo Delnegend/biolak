@@ -86,7 +86,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"updated_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
   	"created_at" timestamp(3) with time zone DEFAULT now() NOT NULL
   );
-  
+
   CREATE TABLE IF NOT EXISTS "contact_form" (
   	"id" serial PRIMARY KEY NOT NULL,
   	"username" varchar NOT NULL,
@@ -96,7 +96,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"updated_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
   	"created_at" timestamp(3) with time zone DEFAULT now() NOT NULL
   );
-  
+
   CREATE TABLE IF NOT EXISTS "media" (
   	"id" serial PRIMARY KEY NOT NULL,
   	"alt" varchar,
@@ -155,7 +155,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"sizes_og_filesize" numeric,
   	"sizes_og_filename" varchar
   );
-  
+
   CREATE TABLE IF NOT EXISTS "pages_hero_links" (
   	"_order" integer NOT NULL,
   	"_parent_id" integer NOT NULL,
@@ -165,7 +165,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"link_url" varchar,
   	"link_label" varchar
   );
-  
+
   CREATE TABLE IF NOT EXISTS "pages_blocks_archive" (
   	"_order" integer NOT NULL,
   	"_parent_id" integer NOT NULL,
@@ -177,7 +177,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"limit" numeric DEFAULT 10,
   	"block_name" varchar
   );
-  
+
   CREATE TABLE IF NOT EXISTS "pages_blocks_banner" (
   	"_order" integer NOT NULL,
   	"_parent_id" integer NOT NULL,
@@ -187,7 +187,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"content" jsonb,
   	"block_name" varchar
   );
-  
+
   CREATE TABLE IF NOT EXISTS "pages_blocks_best_seller" (
   	"_order" integer NOT NULL,
   	"_parent_id" integer NOT NULL,
@@ -197,7 +197,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"description" varchar,
   	"block_name" varchar
   );
-  
+
   CREATE TABLE IF NOT EXISTS "pages_blocks_buy_now" (
   	"_order" integer NOT NULL,
   	"_parent_id" integer NOT NULL,
@@ -206,7 +206,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"button_label" varchar DEFAULT 'MUA NGAY',
   	"block_name" varchar
   );
-  
+
   CREATE TABLE IF NOT EXISTS "pages_blocks_cta_center" (
   	"_order" integer NOT NULL,
   	"_parent_id" integer NOT NULL,
@@ -222,7 +222,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"button_link_url" varchar,
   	"block_name" varchar
   );
-  
+
   CREATE TABLE IF NOT EXISTS "pages_blocks_cta_left" (
   	"_order" integer NOT NULL,
   	"_parent_id" integer NOT NULL,
@@ -238,7 +238,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"button_link_url" varchar,
   	"block_name" varchar
   );
-  
+
   CREATE TABLE IF NOT EXISTS "pages_blocks_call_to_action_post" (
   	"_order" integer NOT NULL,
   	"_parent_id" integer NOT NULL,
@@ -250,7 +250,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"button_label" varchar DEFAULT 'ĐỌC BÀI VIẾT',
   	"block_name" varchar
   );
-  
+
   CREATE TABLE IF NOT EXISTS "pages_blocks_cta_right_gallery" (
   	"_order" integer NOT NULL,
   	"_parent_id" varchar NOT NULL,
@@ -258,7 +258,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"title" varchar,
   	"image_id" integer
   );
-  
+
   CREATE TABLE IF NOT EXISTS "pages_blocks_cta_right" (
   	"_order" integer NOT NULL,
   	"_parent_id" integer NOT NULL,
@@ -273,7 +273,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"button_link_url" varchar,
   	"block_name" varchar
   );
-  
+
   CREATE TABLE IF NOT EXISTS "pages_blocks_call_to_add_to_cart" (
   	"_order" integer NOT NULL,
   	"_parent_id" integer NOT NULL,
@@ -284,7 +284,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"button_label" varchar DEFAULT 'MUA NGAY',
   	"block_name" varchar
   );
-  
+
   CREATE TABLE IF NOT EXISTS "pages_blocks_certificates_organizations" (
   	"_order" integer NOT NULL,
   	"_parent_id" varchar NOT NULL,
@@ -293,7 +293,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"description" varchar,
   	"logo_id" integer
   );
-  
+
   CREATE TABLE IF NOT EXISTS "pages_blocks_certificates" (
   	"_order" integer NOT NULL,
   	"_parent_id" integer NOT NULL,
@@ -302,7 +302,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"title" varchar DEFAULT 'Chứng nhận bởi các tổ chức quốc tế',
   	"block_name" varchar
   );
-  
+
   CREATE TABLE IF NOT EXISTS "pages_blocks_content_columns" (
   	"_order" integer NOT NULL,
   	"_parent_id" varchar NOT NULL,
@@ -317,7 +317,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"link_url" varchar,
   	"link_label" varchar
   );
-  
+
   CREATE TABLE IF NOT EXISTS "pages_blocks_content" (
   	"_order" integer NOT NULL,
   	"_parent_id" integer NOT NULL,
@@ -325,7 +325,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"id" varchar PRIMARY KEY NOT NULL,
   	"block_name" varchar
   );
-  
+
   CREATE TABLE IF NOT EXISTS "pages_blocks_form_block" (
   	"_order" integer NOT NULL,
   	"_parent_id" integer NOT NULL,
@@ -336,7 +336,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"intro_content" jsonb,
   	"block_name" varchar
   );
-  
+
   CREATE TABLE IF NOT EXISTS "pages_blocks_highlight_right" (
   	"_order" integer NOT NULL,
   	"_parent_id" integer NOT NULL,
@@ -348,7 +348,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"image_id" integer,
   	"block_name" varchar
   );
-  
+
   CREATE TABLE IF NOT EXISTS "pages_blocks_highlight_center" (
   	"_order" integer NOT NULL,
   	"_parent_id" integer NOT NULL,
@@ -360,7 +360,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"image_id" integer,
   	"block_name" varchar
   );
-  
+
   CREATE TABLE IF NOT EXISTS "pages_blocks_highlight_left" (
   	"_order" integer NOT NULL,
   	"_parent_id" integer NOT NULL,
@@ -372,7 +372,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"image_id" integer,
   	"block_name" varchar
   );
-  
+
   CREATE TABLE IF NOT EXISTS "pages_blocks_infinite_scroll" (
   	"_order" integer NOT NULL,
   	"_parent_id" integer NOT NULL,
@@ -382,7 +382,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"animation_duration" numeric DEFAULT 5,
   	"block_name" varchar
   );
-  
+
   CREATE TABLE IF NOT EXISTS "pages_blocks_latest_posts" (
   	"_order" integer NOT NULL,
   	"_parent_id" integer NOT NULL,
@@ -392,7 +392,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"button_label" varchar DEFAULT 'TẤT CẢ BÀI VIẾT',
   	"block_name" varchar
   );
-  
+
   CREATE TABLE IF NOT EXISTS "pages_blocks_media" (
   	"_order" integer NOT NULL,
   	"_parent_id" integer NOT NULL,
@@ -401,7 +401,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"media_id" integer,
   	"block_name" varchar
   );
-  
+
   CREATE TABLE IF NOT EXISTS "pages_blocks_posts_grid" (
   	"_order" integer NOT NULL,
   	"_parent_id" integer NOT NULL,
@@ -410,7 +410,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"post_categories_id" integer,
   	"block_name" varchar
   );
-  
+
   CREATE TABLE IF NOT EXISTS "pages_blocks_products_carousel" (
   	"_order" integer NOT NULL,
   	"_parent_id" integer NOT NULL,
@@ -424,7 +424,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"apb_label" varchar,
   	"block_name" varchar
   );
-  
+
   CREATE TABLE IF NOT EXISTS "pages_blocks_products_category" (
   	"_order" integer NOT NULL,
   	"_parent_id" integer NOT NULL,
@@ -433,7 +433,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"button_label" varchar DEFAULT 'XEM TẤT CẢ CÁC SẢN PHẨM',
   	"block_name" varchar
   );
-  
+
   CREATE TABLE IF NOT EXISTS "pages_blocks_three_photo" (
   	"_order" integer NOT NULL,
   	"_parent_id" integer NOT NULL,
@@ -444,7 +444,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"photo_right_id" integer,
   	"block_name" varchar
   );
-  
+
   CREATE TABLE IF NOT EXISTS "pages" (
   	"id" serial PRIMARY KEY NOT NULL,
   	"title" varchar,
@@ -464,7 +464,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"created_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
   	"_status" "enum_pages_status" DEFAULT 'draft'
   );
-  
+
   CREATE TABLE IF NOT EXISTS "pages_rels" (
   	"id" serial PRIMARY KEY NOT NULL,
   	"order" integer,
@@ -477,7 +477,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"products_id" integer,
   	"product_sub_categories_id" integer
   );
-  
+
   CREATE TABLE IF NOT EXISTS "_pages_v_version_hero_links" (
   	"_order" integer NOT NULL,
   	"_parent_id" integer NOT NULL,
@@ -488,7 +488,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"link_label" varchar,
   	"_uuid" varchar
   );
-  
+
   CREATE TABLE IF NOT EXISTS "_pages_v_blocks_archive" (
   	"_order" integer NOT NULL,
   	"_parent_id" integer NOT NULL,
@@ -501,7 +501,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"_uuid" varchar,
   	"block_name" varchar
   );
-  
+
   CREATE TABLE IF NOT EXISTS "_pages_v_blocks_banner" (
   	"_order" integer NOT NULL,
   	"_parent_id" integer NOT NULL,
@@ -512,7 +512,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"_uuid" varchar,
   	"block_name" varchar
   );
-  
+
   CREATE TABLE IF NOT EXISTS "_pages_v_blocks_best_seller" (
   	"_order" integer NOT NULL,
   	"_parent_id" integer NOT NULL,
@@ -523,7 +523,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"_uuid" varchar,
   	"block_name" varchar
   );
-  
+
   CREATE TABLE IF NOT EXISTS "_pages_v_blocks_buy_now" (
   	"_order" integer NOT NULL,
   	"_parent_id" integer NOT NULL,
@@ -533,7 +533,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"_uuid" varchar,
   	"block_name" varchar
   );
-  
+
   CREATE TABLE IF NOT EXISTS "_pages_v_blocks_cta_center" (
   	"_order" integer NOT NULL,
   	"_parent_id" integer NOT NULL,
@@ -550,7 +550,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"_uuid" varchar,
   	"block_name" varchar
   );
-  
+
   CREATE TABLE IF NOT EXISTS "_pages_v_blocks_cta_left" (
   	"_order" integer NOT NULL,
   	"_parent_id" integer NOT NULL,
@@ -567,7 +567,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"_uuid" varchar,
   	"block_name" varchar
   );
-  
+
   CREATE TABLE IF NOT EXISTS "_pages_v_blocks_call_to_action_post" (
   	"_order" integer NOT NULL,
   	"_parent_id" integer NOT NULL,
@@ -580,7 +580,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"_uuid" varchar,
   	"block_name" varchar
   );
-  
+
   CREATE TABLE IF NOT EXISTS "_pages_v_blocks_cta_right_gallery" (
   	"_order" integer NOT NULL,
   	"_parent_id" integer NOT NULL,
@@ -589,7 +589,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"image_id" integer,
   	"_uuid" varchar
   );
-  
+
   CREATE TABLE IF NOT EXISTS "_pages_v_blocks_cta_right" (
   	"_order" integer NOT NULL,
   	"_parent_id" integer NOT NULL,
@@ -605,7 +605,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"_uuid" varchar,
   	"block_name" varchar
   );
-  
+
   CREATE TABLE IF NOT EXISTS "_pages_v_blocks_call_to_add_to_cart" (
   	"_order" integer NOT NULL,
   	"_parent_id" integer NOT NULL,
@@ -617,7 +617,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"_uuid" varchar,
   	"block_name" varchar
   );
-  
+
   CREATE TABLE IF NOT EXISTS "_pages_v_blocks_certificates_organizations" (
   	"_order" integer NOT NULL,
   	"_parent_id" integer NOT NULL,
@@ -627,7 +627,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"logo_id" integer,
   	"_uuid" varchar
   );
-  
+
   CREATE TABLE IF NOT EXISTS "_pages_v_blocks_certificates" (
   	"_order" integer NOT NULL,
   	"_parent_id" integer NOT NULL,
@@ -637,7 +637,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"_uuid" varchar,
   	"block_name" varchar
   );
-  
+
   CREATE TABLE IF NOT EXISTS "_pages_v_blocks_content_columns" (
   	"_order" integer NOT NULL,
   	"_parent_id" integer NOT NULL,
@@ -653,7 +653,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"link_label" varchar,
   	"_uuid" varchar
   );
-  
+
   CREATE TABLE IF NOT EXISTS "_pages_v_blocks_content" (
   	"_order" integer NOT NULL,
   	"_parent_id" integer NOT NULL,
@@ -662,7 +662,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"_uuid" varchar,
   	"block_name" varchar
   );
-  
+
   CREATE TABLE IF NOT EXISTS "_pages_v_blocks_form_block" (
   	"_order" integer NOT NULL,
   	"_parent_id" integer NOT NULL,
@@ -674,7 +674,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"_uuid" varchar,
   	"block_name" varchar
   );
-  
+
   CREATE TABLE IF NOT EXISTS "_pages_v_blocks_highlight_right" (
   	"_order" integer NOT NULL,
   	"_parent_id" integer NOT NULL,
@@ -687,7 +687,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"_uuid" varchar,
   	"block_name" varchar
   );
-  
+
   CREATE TABLE IF NOT EXISTS "_pages_v_blocks_highlight_center" (
   	"_order" integer NOT NULL,
   	"_parent_id" integer NOT NULL,
@@ -700,7 +700,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"_uuid" varchar,
   	"block_name" varchar
   );
-  
+
   CREATE TABLE IF NOT EXISTS "_pages_v_blocks_highlight_left" (
   	"_order" integer NOT NULL,
   	"_parent_id" integer NOT NULL,
@@ -713,7 +713,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"_uuid" varchar,
   	"block_name" varchar
   );
-  
+
   CREATE TABLE IF NOT EXISTS "_pages_v_blocks_infinite_scroll" (
   	"_order" integer NOT NULL,
   	"_parent_id" integer NOT NULL,
@@ -724,7 +724,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"_uuid" varchar,
   	"block_name" varchar
   );
-  
+
   CREATE TABLE IF NOT EXISTS "_pages_v_blocks_latest_posts" (
   	"_order" integer NOT NULL,
   	"_parent_id" integer NOT NULL,
@@ -735,7 +735,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"_uuid" varchar,
   	"block_name" varchar
   );
-  
+
   CREATE TABLE IF NOT EXISTS "_pages_v_blocks_media" (
   	"_order" integer NOT NULL,
   	"_parent_id" integer NOT NULL,
@@ -745,7 +745,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"_uuid" varchar,
   	"block_name" varchar
   );
-  
+
   CREATE TABLE IF NOT EXISTS "_pages_v_blocks_posts_grid" (
   	"_order" integer NOT NULL,
   	"_parent_id" integer NOT NULL,
@@ -755,7 +755,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"_uuid" varchar,
   	"block_name" varchar
   );
-  
+
   CREATE TABLE IF NOT EXISTS "_pages_v_blocks_products_carousel" (
   	"_order" integer NOT NULL,
   	"_parent_id" integer NOT NULL,
@@ -770,7 +770,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"_uuid" varchar,
   	"block_name" varchar
   );
-  
+
   CREATE TABLE IF NOT EXISTS "_pages_v_blocks_products_category" (
   	"_order" integer NOT NULL,
   	"_parent_id" integer NOT NULL,
@@ -780,7 +780,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"_uuid" varchar,
   	"block_name" varchar
   );
-  
+
   CREATE TABLE IF NOT EXISTS "_pages_v_blocks_three_photo" (
   	"_order" integer NOT NULL,
   	"_parent_id" integer NOT NULL,
@@ -792,7 +792,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"_uuid" varchar,
   	"block_name" varchar
   );
-  
+
   CREATE TABLE IF NOT EXISTS "_pages_v" (
   	"id" serial PRIMARY KEY NOT NULL,
   	"parent_id" integer,
@@ -817,7 +817,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"latest" boolean,
   	"autosave" boolean
   );
-  
+
   CREATE TABLE IF NOT EXISTS "_pages_v_rels" (
   	"id" serial PRIMARY KEY NOT NULL,
   	"order" integer,
@@ -830,7 +830,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"products_id" integer,
   	"product_sub_categories_id" integer
   );
-  
+
   CREATE TABLE IF NOT EXISTS "post_categories_blocks_call_to_action_post" (
   	"_order" integer NOT NULL,
   	"_parent_id" integer NOT NULL,
@@ -842,7 +842,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"button_label" varchar DEFAULT 'ĐỌC BÀI VIẾT' NOT NULL,
   	"block_name" varchar
   );
-  
+
   CREATE TABLE IF NOT EXISTS "post_categories_blocks_posts_grid" (
   	"_order" integer NOT NULL,
   	"_parent_id" integer NOT NULL,
@@ -851,7 +851,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"post_categories_id" integer,
   	"block_name" varchar
   );
-  
+
   CREATE TABLE IF NOT EXISTS "post_categories_breadcrumbs" (
   	"_order" integer NOT NULL,
   	"_parent_id" integer NOT NULL,
@@ -860,7 +860,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"url" varchar,
   	"label" varchar
   );
-  
+
   CREATE TABLE IF NOT EXISTS "post_categories" (
   	"id" serial PRIMARY KEY NOT NULL,
   	"title" varchar NOT NULL,
@@ -871,7 +871,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"updated_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
   	"created_at" timestamp(3) with time zone DEFAULT now() NOT NULL
   );
-  
+
   CREATE TABLE IF NOT EXISTS "posts_blocks_archive" (
   	"_order" integer NOT NULL,
   	"_parent_id" integer NOT NULL,
@@ -883,7 +883,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"limit" numeric DEFAULT 10,
   	"block_name" varchar
   );
-  
+
   CREATE TABLE IF NOT EXISTS "posts_blocks_buy_now" (
   	"_order" integer NOT NULL,
   	"_parent_id" integer NOT NULL,
@@ -892,7 +892,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"button_label" varchar DEFAULT 'MUA NGAY',
   	"block_name" varchar
   );
-  
+
   CREATE TABLE IF NOT EXISTS "posts_blocks_cta_center" (
   	"_order" integer NOT NULL,
   	"_parent_id" integer NOT NULL,
@@ -908,7 +908,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"button_link_url" varchar,
   	"block_name" varchar
   );
-  
+
   CREATE TABLE IF NOT EXISTS "posts_blocks_cta_left" (
   	"_order" integer NOT NULL,
   	"_parent_id" integer NOT NULL,
@@ -924,7 +924,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"button_link_url" varchar,
   	"block_name" varchar
   );
-  
+
   CREATE TABLE IF NOT EXISTS "posts_blocks_cta_right_gallery" (
   	"_order" integer NOT NULL,
   	"_parent_id" varchar NOT NULL,
@@ -932,7 +932,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"title" varchar,
   	"image_id" integer
   );
-  
+
   CREATE TABLE IF NOT EXISTS "posts_blocks_cta_right" (
   	"_order" integer NOT NULL,
   	"_parent_id" integer NOT NULL,
@@ -947,7 +947,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"button_link_url" varchar,
   	"block_name" varchar
   );
-  
+
   CREATE TABLE IF NOT EXISTS "posts_blocks_call_to_add_to_cart" (
   	"_order" integer NOT NULL,
   	"_parent_id" integer NOT NULL,
@@ -958,7 +958,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"button_label" varchar DEFAULT 'MUA NGAY',
   	"block_name" varchar
   );
-  
+
   CREATE TABLE IF NOT EXISTS "posts_blocks_certificates_organizations" (
   	"_order" integer NOT NULL,
   	"_parent_id" varchar NOT NULL,
@@ -967,7 +967,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"description" varchar,
   	"logo_id" integer
   );
-  
+
   CREATE TABLE IF NOT EXISTS "posts_blocks_certificates" (
   	"_order" integer NOT NULL,
   	"_parent_id" integer NOT NULL,
@@ -976,7 +976,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"title" varchar DEFAULT 'Chứng nhận bởi các tổ chức quốc tế',
   	"block_name" varchar
   );
-  
+
   CREATE TABLE IF NOT EXISTS "posts_blocks_content_columns" (
   	"_order" integer NOT NULL,
   	"_parent_id" varchar NOT NULL,
@@ -991,7 +991,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"link_url" varchar,
   	"link_label" varchar
   );
-  
+
   CREATE TABLE IF NOT EXISTS "posts_blocks_content" (
   	"_order" integer NOT NULL,
   	"_parent_id" integer NOT NULL,
@@ -999,7 +999,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"id" varchar PRIMARY KEY NOT NULL,
   	"block_name" varchar
   );
-  
+
   CREATE TABLE IF NOT EXISTS "posts_blocks_focus_left_small_image" (
   	"_order" integer NOT NULL,
   	"_parent_id" integer NOT NULL,
@@ -1009,7 +1009,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"content" jsonb,
   	"block_name" varchar
   );
-  
+
   CREATE TABLE IF NOT EXISTS "posts_blocks_focus_right_large_image" (
   	"_order" integer NOT NULL,
   	"_parent_id" integer NOT NULL,
@@ -1019,7 +1019,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"content" jsonb,
   	"block_name" varchar
   );
-  
+
   CREATE TABLE IF NOT EXISTS "posts_blocks_focus_right_small_image" (
   	"_order" integer NOT NULL,
   	"_parent_id" integer NOT NULL,
@@ -1029,7 +1029,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"content" jsonb,
   	"block_name" varchar
   );
-  
+
   CREATE TABLE IF NOT EXISTS "posts_blocks_form_block" (
   	"_order" integer NOT NULL,
   	"_parent_id" integer NOT NULL,
@@ -1040,7 +1040,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"intro_content" jsonb,
   	"block_name" varchar
   );
-  
+
   CREATE TABLE IF NOT EXISTS "posts_blocks_highlight_right" (
   	"_order" integer NOT NULL,
   	"_parent_id" integer NOT NULL,
@@ -1052,7 +1052,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"image_id" integer,
   	"block_name" varchar
   );
-  
+
   CREATE TABLE IF NOT EXISTS "posts_blocks_highlight_center" (
   	"_order" integer NOT NULL,
   	"_parent_id" integer NOT NULL,
@@ -1064,7 +1064,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"image_id" integer,
   	"block_name" varchar
   );
-  
+
   CREATE TABLE IF NOT EXISTS "posts_blocks_highlight_left" (
   	"_order" integer NOT NULL,
   	"_parent_id" integer NOT NULL,
@@ -1076,7 +1076,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"image_id" integer,
   	"block_name" varchar
   );
-  
+
   CREATE TABLE IF NOT EXISTS "posts_blocks_infinite_scroll" (
   	"_order" integer NOT NULL,
   	"_parent_id" integer NOT NULL,
@@ -1086,7 +1086,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"animation_duration" numeric DEFAULT 5,
   	"block_name" varchar
   );
-  
+
   CREATE TABLE IF NOT EXISTS "posts_blocks_media" (
   	"_order" integer NOT NULL,
   	"_parent_id" integer NOT NULL,
@@ -1095,7 +1095,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"media_id" integer,
   	"block_name" varchar
   );
-  
+
   CREATE TABLE IF NOT EXISTS "posts_blocks_products_carousel" (
   	"_order" integer NOT NULL,
   	"_parent_id" integer NOT NULL,
@@ -1109,7 +1109,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"apb_label" varchar,
   	"block_name" varchar
   );
-  
+
   CREATE TABLE IF NOT EXISTS "posts_blocks_products_category" (
   	"_order" integer NOT NULL,
   	"_parent_id" integer NOT NULL,
@@ -1118,7 +1118,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"button_label" varchar DEFAULT 'XEM TẤT CẢ CÁC SẢN PHẨM',
   	"block_name" varchar
   );
-  
+
   CREATE TABLE IF NOT EXISTS "posts_blocks_three_photo" (
   	"_order" integer NOT NULL,
   	"_parent_id" integer NOT NULL,
@@ -1129,14 +1129,14 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"photo_right_id" integer,
   	"block_name" varchar
   );
-  
+
   CREATE TABLE IF NOT EXISTS "posts_populated_authors" (
   	"_order" integer NOT NULL,
   	"_parent_id" integer NOT NULL,
   	"id" varchar PRIMARY KEY NOT NULL,
   	"name" varchar
   );
-  
+
   CREATE TABLE IF NOT EXISTS "posts" (
   	"id" serial PRIMARY KEY NOT NULL,
   	"title" varchar,
@@ -1152,7 +1152,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"created_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
   	"_status" "enum_posts_status" DEFAULT 'draft'
   );
-  
+
   CREATE TABLE IF NOT EXISTS "posts_rels" (
   	"id" serial PRIMARY KEY NOT NULL,
   	"order" integer,
@@ -1166,7 +1166,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"product_sub_categories_id" integer,
   	"users_id" integer
   );
-  
+
   CREATE TABLE IF NOT EXISTS "_posts_v_blocks_archive" (
   	"_order" integer NOT NULL,
   	"_parent_id" integer NOT NULL,
@@ -1179,7 +1179,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"_uuid" varchar,
   	"block_name" varchar
   );
-  
+
   CREATE TABLE IF NOT EXISTS "_posts_v_blocks_buy_now" (
   	"_order" integer NOT NULL,
   	"_parent_id" integer NOT NULL,
@@ -1189,7 +1189,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"_uuid" varchar,
   	"block_name" varchar
   );
-  
+
   CREATE TABLE IF NOT EXISTS "_posts_v_blocks_cta_center" (
   	"_order" integer NOT NULL,
   	"_parent_id" integer NOT NULL,
@@ -1206,7 +1206,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"_uuid" varchar,
   	"block_name" varchar
   );
-  
+
   CREATE TABLE IF NOT EXISTS "_posts_v_blocks_cta_left" (
   	"_order" integer NOT NULL,
   	"_parent_id" integer NOT NULL,
@@ -1223,7 +1223,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"_uuid" varchar,
   	"block_name" varchar
   );
-  
+
   CREATE TABLE IF NOT EXISTS "_posts_v_blocks_cta_right_gallery" (
   	"_order" integer NOT NULL,
   	"_parent_id" integer NOT NULL,
@@ -1232,7 +1232,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"image_id" integer,
   	"_uuid" varchar
   );
-  
+
   CREATE TABLE IF NOT EXISTS "_posts_v_blocks_cta_right" (
   	"_order" integer NOT NULL,
   	"_parent_id" integer NOT NULL,
@@ -1248,7 +1248,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"_uuid" varchar,
   	"block_name" varchar
   );
-  
+
   CREATE TABLE IF NOT EXISTS "_posts_v_blocks_call_to_add_to_cart" (
   	"_order" integer NOT NULL,
   	"_parent_id" integer NOT NULL,
@@ -1260,7 +1260,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"_uuid" varchar,
   	"block_name" varchar
   );
-  
+
   CREATE TABLE IF NOT EXISTS "_posts_v_blocks_certificates_organizations" (
   	"_order" integer NOT NULL,
   	"_parent_id" integer NOT NULL,
@@ -1270,7 +1270,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"logo_id" integer,
   	"_uuid" varchar
   );
-  
+
   CREATE TABLE IF NOT EXISTS "_posts_v_blocks_certificates" (
   	"_order" integer NOT NULL,
   	"_parent_id" integer NOT NULL,
@@ -1280,7 +1280,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"_uuid" varchar,
   	"block_name" varchar
   );
-  
+
   CREATE TABLE IF NOT EXISTS "_posts_v_blocks_content_columns" (
   	"_order" integer NOT NULL,
   	"_parent_id" integer NOT NULL,
@@ -1296,7 +1296,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"link_label" varchar,
   	"_uuid" varchar
   );
-  
+
   CREATE TABLE IF NOT EXISTS "_posts_v_blocks_content" (
   	"_order" integer NOT NULL,
   	"_parent_id" integer NOT NULL,
@@ -1305,7 +1305,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"_uuid" varchar,
   	"block_name" varchar
   );
-  
+
   CREATE TABLE IF NOT EXISTS "_posts_v_blocks_focus_left_small_image" (
   	"_order" integer NOT NULL,
   	"_parent_id" integer NOT NULL,
@@ -1316,7 +1316,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"_uuid" varchar,
   	"block_name" varchar
   );
-  
+
   CREATE TABLE IF NOT EXISTS "_posts_v_blocks_focus_right_large_image" (
   	"_order" integer NOT NULL,
   	"_parent_id" integer NOT NULL,
@@ -1327,7 +1327,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"_uuid" varchar,
   	"block_name" varchar
   );
-  
+
   CREATE TABLE IF NOT EXISTS "_posts_v_blocks_focus_right_small_image" (
   	"_order" integer NOT NULL,
   	"_parent_id" integer NOT NULL,
@@ -1338,7 +1338,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"_uuid" varchar,
   	"block_name" varchar
   );
-  
+
   CREATE TABLE IF NOT EXISTS "_posts_v_blocks_form_block" (
   	"_order" integer NOT NULL,
   	"_parent_id" integer NOT NULL,
@@ -1350,7 +1350,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"_uuid" varchar,
   	"block_name" varchar
   );
-  
+
   CREATE TABLE IF NOT EXISTS "_posts_v_blocks_highlight_right" (
   	"_order" integer NOT NULL,
   	"_parent_id" integer NOT NULL,
@@ -1363,7 +1363,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"_uuid" varchar,
   	"block_name" varchar
   );
-  
+
   CREATE TABLE IF NOT EXISTS "_posts_v_blocks_highlight_center" (
   	"_order" integer NOT NULL,
   	"_parent_id" integer NOT NULL,
@@ -1376,7 +1376,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"_uuid" varchar,
   	"block_name" varchar
   );
-  
+
   CREATE TABLE IF NOT EXISTS "_posts_v_blocks_highlight_left" (
   	"_order" integer NOT NULL,
   	"_parent_id" integer NOT NULL,
@@ -1389,7 +1389,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"_uuid" varchar,
   	"block_name" varchar
   );
-  
+
   CREATE TABLE IF NOT EXISTS "_posts_v_blocks_infinite_scroll" (
   	"_order" integer NOT NULL,
   	"_parent_id" integer NOT NULL,
@@ -1400,7 +1400,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"_uuid" varchar,
   	"block_name" varchar
   );
-  
+
   CREATE TABLE IF NOT EXISTS "_posts_v_blocks_media" (
   	"_order" integer NOT NULL,
   	"_parent_id" integer NOT NULL,
@@ -1410,7 +1410,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"_uuid" varchar,
   	"block_name" varchar
   );
-  
+
   CREATE TABLE IF NOT EXISTS "_posts_v_blocks_products_carousel" (
   	"_order" integer NOT NULL,
   	"_parent_id" integer NOT NULL,
@@ -1425,7 +1425,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"_uuid" varchar,
   	"block_name" varchar
   );
-  
+
   CREATE TABLE IF NOT EXISTS "_posts_v_blocks_products_category" (
   	"_order" integer NOT NULL,
   	"_parent_id" integer NOT NULL,
@@ -1435,7 +1435,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"_uuid" varchar,
   	"block_name" varchar
   );
-  
+
   CREATE TABLE IF NOT EXISTS "_posts_v_blocks_three_photo" (
   	"_order" integer NOT NULL,
   	"_parent_id" integer NOT NULL,
@@ -1447,7 +1447,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"_uuid" varchar,
   	"block_name" varchar
   );
-  
+
   CREATE TABLE IF NOT EXISTS "_posts_v_version_populated_authors" (
   	"_order" integer NOT NULL,
   	"_parent_id" integer NOT NULL,
@@ -1455,7 +1455,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"_uuid" varchar,
   	"name" varchar
   );
-  
+
   CREATE TABLE IF NOT EXISTS "_posts_v" (
   	"id" serial PRIMARY KEY NOT NULL,
   	"parent_id" integer,
@@ -1476,7 +1476,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"latest" boolean,
   	"autosave" boolean
   );
-  
+
   CREATE TABLE IF NOT EXISTS "_posts_v_rels" (
   	"id" serial PRIMARY KEY NOT NULL,
   	"order" integer,
@@ -1490,7 +1490,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"product_sub_categories_id" integer,
   	"users_id" integer
   );
-  
+
   CREATE TABLE IF NOT EXISTS "product_categories" (
   	"id" serial PRIMARY KEY NOT NULL,
   	"title" varchar NOT NULL,
@@ -1500,7 +1500,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"updated_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
   	"created_at" timestamp(3) with time zone DEFAULT now() NOT NULL
   );
-  
+
   CREATE TABLE IF NOT EXISTS "products_blocks_archive" (
   	"_order" integer NOT NULL,
   	"_parent_id" integer NOT NULL,
@@ -1512,7 +1512,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"limit" numeric DEFAULT 10,
   	"block_name" varchar
   );
-  
+
   CREATE TABLE IF NOT EXISTS "products_blocks_buy_now" (
   	"_order" integer NOT NULL,
   	"_parent_id" integer NOT NULL,
@@ -1521,7 +1521,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"button_label" varchar DEFAULT 'MUA NGAY',
   	"block_name" varchar
   );
-  
+
   CREATE TABLE IF NOT EXISTS "products_blocks_cta_center" (
   	"_order" integer NOT NULL,
   	"_parent_id" integer NOT NULL,
@@ -1537,7 +1537,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"button_link_url" varchar,
   	"block_name" varchar
   );
-  
+
   CREATE TABLE IF NOT EXISTS "products_blocks_cta_left" (
   	"_order" integer NOT NULL,
   	"_parent_id" integer NOT NULL,
@@ -1553,7 +1553,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"button_link_url" varchar,
   	"block_name" varchar
   );
-  
+
   CREATE TABLE IF NOT EXISTS "products_blocks_cta_right_gallery" (
   	"_order" integer NOT NULL,
   	"_parent_id" varchar NOT NULL,
@@ -1561,7 +1561,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"title" varchar NOT NULL,
   	"image_id" integer
   );
-  
+
   CREATE TABLE IF NOT EXISTS "products_blocks_cta_right" (
   	"_order" integer NOT NULL,
   	"_parent_id" integer NOT NULL,
@@ -1576,7 +1576,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"button_link_url" varchar,
   	"block_name" varchar
   );
-  
+
   CREATE TABLE IF NOT EXISTS "products_blocks_call_to_add_to_cart" (
   	"_order" integer NOT NULL,
   	"_parent_id" integer NOT NULL,
@@ -1587,7 +1587,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"button_label" varchar DEFAULT 'MUA NGAY' NOT NULL,
   	"block_name" varchar
   );
-  
+
   CREATE TABLE IF NOT EXISTS "products_blocks_certificates_organizations" (
   	"_order" integer NOT NULL,
   	"_parent_id" varchar NOT NULL,
@@ -1596,7 +1596,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"description" varchar NOT NULL,
   	"logo_id" integer
   );
-  
+
   CREATE TABLE IF NOT EXISTS "products_blocks_certificates" (
   	"_order" integer NOT NULL,
   	"_parent_id" integer NOT NULL,
@@ -1605,7 +1605,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"title" varchar DEFAULT 'Chứng nhận bởi các tổ chức quốc tế' NOT NULL,
   	"block_name" varchar
   );
-  
+
   CREATE TABLE IF NOT EXISTS "products_blocks_content_columns" (
   	"_order" integer NOT NULL,
   	"_parent_id" varchar NOT NULL,
@@ -1620,7 +1620,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"link_url" varchar,
   	"link_label" varchar
   );
-  
+
   CREATE TABLE IF NOT EXISTS "products_blocks_content" (
   	"_order" integer NOT NULL,
   	"_parent_id" integer NOT NULL,
@@ -1628,7 +1628,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"id" varchar PRIMARY KEY NOT NULL,
   	"block_name" varchar
   );
-  
+
   CREATE TABLE IF NOT EXISTS "products_blocks_form_block" (
   	"_order" integer NOT NULL,
   	"_parent_id" integer NOT NULL,
@@ -1639,7 +1639,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"intro_content" jsonb,
   	"block_name" varchar
   );
-  
+
   CREATE TABLE IF NOT EXISTS "products_blocks_highlight_right" (
   	"_order" integer NOT NULL,
   	"_parent_id" integer NOT NULL,
@@ -1651,7 +1651,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"image_id" integer,
   	"block_name" varchar
   );
-  
+
   CREATE TABLE IF NOT EXISTS "products_blocks_highlight_center" (
   	"_order" integer NOT NULL,
   	"_parent_id" integer NOT NULL,
@@ -1663,7 +1663,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"image_id" integer,
   	"block_name" varchar
   );
-  
+
   CREATE TABLE IF NOT EXISTS "products_blocks_highlight_left" (
   	"_order" integer NOT NULL,
   	"_parent_id" integer NOT NULL,
@@ -1675,7 +1675,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"image_id" integer,
   	"block_name" varchar
   );
-  
+
   CREATE TABLE IF NOT EXISTS "products_blocks_how_to_use_product" (
   	"_order" integer NOT NULL,
   	"_parent_id" integer NOT NULL,
@@ -1686,7 +1686,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"image_id" integer,
   	"block_name" varchar
   );
-  
+
   CREATE TABLE IF NOT EXISTS "products_blocks_infinite_scroll" (
   	"_order" integer NOT NULL,
   	"_parent_id" integer NOT NULL,
@@ -1696,7 +1696,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"animation_duration" numeric DEFAULT 5,
   	"block_name" varchar
   );
-  
+
   CREATE TABLE IF NOT EXISTS "products_blocks_latest_posts" (
   	"_order" integer NOT NULL,
   	"_parent_id" integer NOT NULL,
@@ -1706,7 +1706,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"button_label" varchar DEFAULT 'TẤT CẢ BÀI VIẾT' NOT NULL,
   	"block_name" varchar
   );
-  
+
   CREATE TABLE IF NOT EXISTS "products_blocks_media" (
   	"_order" integer NOT NULL,
   	"_parent_id" integer NOT NULL,
@@ -1715,7 +1715,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"media_id" integer NOT NULL,
   	"block_name" varchar
   );
-  
+
   CREATE TABLE IF NOT EXISTS "products_blocks_products_carousel" (
   	"_order" integer NOT NULL,
   	"_parent_id" integer NOT NULL,
@@ -1729,7 +1729,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"apb_label" varchar NOT NULL,
   	"block_name" varchar
   );
-  
+
   CREATE TABLE IF NOT EXISTS "products_blocks_three_photo" (
   	"_order" integer NOT NULL,
   	"_parent_id" integer NOT NULL,
@@ -1740,7 +1740,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"photo_right_id" integer,
   	"block_name" varchar
   );
-  
+
   CREATE TABLE IF NOT EXISTS "products" (
   	"id" serial PRIMARY KEY NOT NULL,
   	"title" varchar NOT NULL,
@@ -1762,7 +1762,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"updated_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
   	"created_at" timestamp(3) with time zone DEFAULT now() NOT NULL
   );
-  
+
   CREATE TABLE IF NOT EXISTS "products_rels" (
   	"id" serial PRIMARY KEY NOT NULL,
   	"order" integer,
@@ -1776,7 +1776,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"pages_id" integer,
   	"products_id" integer
   );
-  
+
   CREATE TABLE IF NOT EXISTS "product_sub_categories" (
   	"id" serial PRIMARY KEY NOT NULL,
   	"product_categories_id" integer NOT NULL,
@@ -1787,7 +1787,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"updated_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
   	"created_at" timestamp(3) with time zone DEFAULT now() NOT NULL
   );
-  
+
   CREATE TABLE IF NOT EXISTS "orders" (
   	"id" serial PRIMARY KEY NOT NULL,
   	"review_rating" numeric NOT NULL,
@@ -1798,7 +1798,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"updated_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
   	"created_at" timestamp(3) with time zone DEFAULT now() NOT NULL
   );
-  
+
   CREATE TABLE IF NOT EXISTS "users" (
   	"id" serial PRIMARY KEY NOT NULL,
   	"name" varchar,
@@ -1813,7 +1813,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"login_attempts" numeric DEFAULT 0,
   	"lock_until" timestamp(3) with time zone
   );
-  
+
   CREATE TABLE IF NOT EXISTS "redirects" (
   	"id" serial PRIMARY KEY NOT NULL,
   	"from" varchar NOT NULL,
@@ -1822,7 +1822,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"updated_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
   	"created_at" timestamp(3) with time zone DEFAULT now() NOT NULL
   );
-  
+
   CREATE TABLE IF NOT EXISTS "redirects_rels" (
   	"id" serial PRIMARY KEY NOT NULL,
   	"order" integer,
@@ -1831,7 +1831,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"pages_id" integer,
   	"posts_id" integer
   );
-  
+
   CREATE TABLE IF NOT EXISTS "forms_blocks_checkbox" (
   	"_order" integer NOT NULL,
   	"_parent_id" integer NOT NULL,
@@ -1844,7 +1844,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"default_value" boolean,
   	"block_name" varchar
   );
-  
+
   CREATE TABLE IF NOT EXISTS "forms_blocks_country" (
   	"_order" integer NOT NULL,
   	"_parent_id" integer NOT NULL,
@@ -1856,7 +1856,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"required" boolean,
   	"block_name" varchar
   );
-  
+
   CREATE TABLE IF NOT EXISTS "forms_blocks_email" (
   	"_order" integer NOT NULL,
   	"_parent_id" integer NOT NULL,
@@ -1868,7 +1868,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"required" boolean,
   	"block_name" varchar
   );
-  
+
   CREATE TABLE IF NOT EXISTS "forms_blocks_message" (
   	"_order" integer NOT NULL,
   	"_parent_id" integer NOT NULL,
@@ -1877,7 +1877,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"message" jsonb,
   	"block_name" varchar
   );
-  
+
   CREATE TABLE IF NOT EXISTS "forms_blocks_number" (
   	"_order" integer NOT NULL,
   	"_parent_id" integer NOT NULL,
@@ -1890,7 +1890,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"required" boolean,
   	"block_name" varchar
   );
-  
+
   CREATE TABLE IF NOT EXISTS "forms_blocks_select_options" (
   	"_order" integer NOT NULL,
   	"_parent_id" varchar NOT NULL,
@@ -1898,7 +1898,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"label" varchar NOT NULL,
   	"value" varchar NOT NULL
   );
-  
+
   CREATE TABLE IF NOT EXISTS "forms_blocks_select" (
   	"_order" integer NOT NULL,
   	"_parent_id" integer NOT NULL,
@@ -1912,7 +1912,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"required" boolean,
   	"block_name" varchar
   );
-  
+
   CREATE TABLE IF NOT EXISTS "forms_blocks_state" (
   	"_order" integer NOT NULL,
   	"_parent_id" integer NOT NULL,
@@ -1924,7 +1924,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"required" boolean,
   	"block_name" varchar
   );
-  
+
   CREATE TABLE IF NOT EXISTS "forms_blocks_text" (
   	"_order" integer NOT NULL,
   	"_parent_id" integer NOT NULL,
@@ -1937,7 +1937,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"required" boolean,
   	"block_name" varchar
   );
-  
+
   CREATE TABLE IF NOT EXISTS "forms_blocks_textarea" (
   	"_order" integer NOT NULL,
   	"_parent_id" integer NOT NULL,
@@ -1950,7 +1950,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"required" boolean,
   	"block_name" varchar
   );
-  
+
   CREATE TABLE IF NOT EXISTS "forms_emails" (
   	"_order" integer NOT NULL,
   	"_parent_id" integer NOT NULL,
@@ -1963,7 +1963,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"subject" varchar DEFAULT 'You''''ve received a new message.' NOT NULL,
   	"message" jsonb
   );
-  
+
   CREATE TABLE IF NOT EXISTS "forms" (
   	"id" serial PRIMARY KEY NOT NULL,
   	"title" varchar NOT NULL,
@@ -1974,7 +1974,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"updated_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
   	"created_at" timestamp(3) with time zone DEFAULT now() NOT NULL
   );
-  
+
   CREATE TABLE IF NOT EXISTS "form_submissions_submission_data" (
   	"_order" integer NOT NULL,
   	"_parent_id" integer NOT NULL,
@@ -1982,14 +1982,14 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"field" varchar NOT NULL,
   	"value" varchar NOT NULL
   );
-  
+
   CREATE TABLE IF NOT EXISTS "form_submissions" (
   	"id" serial PRIMARY KEY NOT NULL,
   	"form_id" integer NOT NULL,
   	"updated_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
   	"created_at" timestamp(3) with time zone DEFAULT now() NOT NULL
   );
-  
+
   CREATE TABLE IF NOT EXISTS "search_categories" (
   	"_order" integer NOT NULL,
   	"_parent_id" integer NOT NULL,
@@ -1997,7 +1997,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"relation_to" varchar,
   	"title" varchar
   );
-  
+
   CREATE TABLE IF NOT EXISTS "search" (
   	"id" serial PRIMARY KEY NOT NULL,
   	"title" varchar,
@@ -2009,7 +2009,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"updated_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
   	"created_at" timestamp(3) with time zone DEFAULT now() NOT NULL
   );
-  
+
   CREATE TABLE IF NOT EXISTS "search_rels" (
   	"id" serial PRIMARY KEY NOT NULL,
   	"order" integer,
@@ -2017,7 +2017,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"path" varchar NOT NULL,
   	"posts_id" integer
   );
-  
+
   CREATE TABLE IF NOT EXISTS "payload_jobs_log" (
   	"_order" integer NOT NULL,
   	"_parent_id" integer NOT NULL,
@@ -2031,7 +2031,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"state" "enum_payload_jobs_log_state" NOT NULL,
   	"error" jsonb
   );
-  
+
   CREATE TABLE IF NOT EXISTS "payload_jobs" (
   	"id" serial PRIMARY KEY NOT NULL,
   	"input" jsonb,
@@ -2046,14 +2046,14 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"updated_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
   	"created_at" timestamp(3) with time zone DEFAULT now() NOT NULL
   );
-  
+
   CREATE TABLE IF NOT EXISTS "payload_locked_documents" (
   	"id" serial PRIMARY KEY NOT NULL,
   	"global_slug" varchar,
   	"updated_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
   	"created_at" timestamp(3) with time zone DEFAULT now() NOT NULL
   );
-  
+
   CREATE TABLE IF NOT EXISTS "payload_locked_documents_rels" (
   	"id" serial PRIMARY KEY NOT NULL,
   	"order" integer,
@@ -2076,7 +2076,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"search_id" integer,
   	"payload_jobs_id" integer
   );
-  
+
   CREATE TABLE IF NOT EXISTS "payload_preferences" (
   	"id" serial PRIMARY KEY NOT NULL,
   	"key" varchar,
@@ -2084,7 +2084,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"updated_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
   	"created_at" timestamp(3) with time zone DEFAULT now() NOT NULL
   );
-  
+
   CREATE TABLE IF NOT EXISTS "payload_preferences_rels" (
   	"id" serial PRIMARY KEY NOT NULL,
   	"order" integer,
@@ -2092,7 +2092,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"path" varchar NOT NULL,
   	"users_id" integer
   );
-  
+
   CREATE TABLE IF NOT EXISTS "payload_migrations" (
   	"id" serial PRIMARY KEY NOT NULL,
   	"name" varchar,
@@ -2100,7 +2100,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"updated_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
   	"created_at" timestamp(3) with time zone DEFAULT now() NOT NULL
   );
-  
+
   CREATE TABLE IF NOT EXISTS "checkout_page_global" (
   	"id" serial PRIMARY KEY NOT NULL,
   	"contacts_title" varchar DEFAULT 'Thông tin liên hệ của bạn' NOT NULL,
@@ -2128,7 +2128,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"updated_at" timestamp(3) with time zone,
   	"created_at" timestamp(3) with time zone
   );
-  
+
   CREATE TABLE IF NOT EXISTS "contact_form_global" (
   	"id" serial PRIMARY KEY NOT NULL,
   	"title" varchar DEFAULT 'Liên hệ với BioLAK' NOT NULL,
@@ -2142,7 +2142,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"updated_at" timestamp(3) with time zone,
   	"created_at" timestamp(3) with time zone
   );
-  
+
   CREATE TABLE IF NOT EXISTS "floating_global_links" (
   	"_order" integer NOT NULL,
   	"_parent_id" integer NOT NULL,
@@ -2150,14 +2150,14 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"link" varchar NOT NULL,
   	"icon_id" integer
   );
-  
+
   CREATE TABLE IF NOT EXISTS "floating_global" (
   	"id" serial PRIMARY KEY NOT NULL,
   	"label" varchar DEFAULT 'Liên hệ' NOT NULL,
   	"updated_at" timestamp(3) with time zone,
   	"created_at" timestamp(3) with time zone
   );
-  
+
   CREATE TABLE IF NOT EXISTS "footer_global" (
   	"id" serial PRIMARY KEY NOT NULL,
   	"image_image_id" integer,
@@ -2176,7 +2176,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"updated_at" timestamp(3) with time zone,
   	"created_at" timestamp(3) with time zone
   );
-  
+
   CREATE TABLE IF NOT EXISTS "header_global_header_items_left" (
   	"_order" integer NOT NULL,
   	"_parent_id" integer NOT NULL,
@@ -2186,7 +2186,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"custom_url" varchar,
   	"label" varchar
   );
-  
+
   CREATE TABLE IF NOT EXISTS "header_global_header_items_right" (
   	"_order" integer NOT NULL,
   	"_parent_id" integer NOT NULL,
@@ -2196,13 +2196,13 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"custom_url" varchar,
   	"label" varchar
   );
-  
+
   CREATE TABLE IF NOT EXISTS "header_global" (
   	"id" serial PRIMARY KEY NOT NULL,
   	"updated_at" timestamp(3) with time zone,
   	"created_at" timestamp(3) with time zone
   );
-  
+
   CREATE TABLE IF NOT EXISTS "header_global_rels" (
   	"id" serial PRIMARY KEY NOT NULL,
   	"order" integer,
@@ -2215,13 +2215,13 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"products_id" integer,
   	"product_sub_categories_id" integer
   );
-  
+
   CREATE TABLE IF NOT EXISTS "popup_banner_global" (
   	"id" serial PRIMARY KEY NOT NULL,
   	"updated_at" timestamp(3) with time zone,
   	"created_at" timestamp(3) with time zone
   );
-  
+
   CREATE TABLE IF NOT EXISTS "promo_global" (
   	"id" serial PRIMARY KEY NOT NULL,
   	"message" varchar DEFAULT '',
@@ -2232,7 +2232,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"updated_at" timestamp(3) with time zone,
   	"created_at" timestamp(3) with time zone
   );
-  
+
   CREATE TABLE IF NOT EXISTS "promo_global_rels" (
   	"id" serial PRIMARY KEY NOT NULL,
   	"order" integer,
@@ -2245,7 +2245,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"products_id" integer,
   	"product_sub_categories_id" integer
   );
-  
+
   CREATE TABLE IF NOT EXISTS "reviews_global" (
   	"id" serial PRIMARY KEY NOT NULL,
   	"title" varchar DEFAULT 'Đánh giá từ khách hàng' NOT NULL,
@@ -2255,1945 +2255,1945 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"updated_at" timestamp(3) with time zone,
   	"created_at" timestamp(3) with time zone
   );
-  
+
   DO $$ BEGIN
    ALTER TABLE "pages_hero_links" ADD CONSTRAINT "pages_hero_links_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."pages"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "pages_blocks_archive" ADD CONSTRAINT "pages_blocks_archive_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."pages"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "pages_blocks_banner" ADD CONSTRAINT "pages_blocks_banner_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."pages"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "pages_blocks_best_seller" ADD CONSTRAINT "pages_blocks_best_seller_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."pages"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "pages_blocks_buy_now" ADD CONSTRAINT "pages_blocks_buy_now_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."pages"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "pages_blocks_cta_center" ADD CONSTRAINT "pages_blocks_cta_center_background_id_media_id_fk" FOREIGN KEY ("background_id") REFERENCES "public"."media"("id") ON DELETE set null ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "pages_blocks_cta_center" ADD CONSTRAINT "pages_blocks_cta_center_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."pages"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "pages_blocks_cta_left" ADD CONSTRAINT "pages_blocks_cta_left_background_id_media_id_fk" FOREIGN KEY ("background_id") REFERENCES "public"."media"("id") ON DELETE set null ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "pages_blocks_cta_left" ADD CONSTRAINT "pages_blocks_cta_left_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."pages"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "pages_blocks_call_to_action_post" ADD CONSTRAINT "pages_blocks_call_to_action_post_post_id_posts_id_fk" FOREIGN KEY ("post_id") REFERENCES "public"."posts"("id") ON DELETE set null ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "pages_blocks_call_to_action_post" ADD CONSTRAINT "pages_blocks_call_to_action_post_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."pages"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "pages_blocks_cta_right_gallery" ADD CONSTRAINT "pages_blocks_cta_right_gallery_image_id_media_id_fk" FOREIGN KEY ("image_id") REFERENCES "public"."media"("id") ON DELETE set null ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "pages_blocks_cta_right_gallery" ADD CONSTRAINT "pages_blocks_cta_right_gallery_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."pages_blocks_cta_right"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "pages_blocks_cta_right" ADD CONSTRAINT "pages_blocks_cta_right_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."pages"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "pages_blocks_call_to_add_to_cart" ADD CONSTRAINT "pages_blocks_call_to_add_to_cart_image_id_media_id_fk" FOREIGN KEY ("image_id") REFERENCES "public"."media"("id") ON DELETE set null ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "pages_blocks_call_to_add_to_cart" ADD CONSTRAINT "pages_blocks_call_to_add_to_cart_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."pages"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "pages_blocks_certificates_organizations" ADD CONSTRAINT "pages_blocks_certificates_organizations_logo_id_media_id_fk" FOREIGN KEY ("logo_id") REFERENCES "public"."media"("id") ON DELETE set null ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "pages_blocks_certificates_organizations" ADD CONSTRAINT "pages_blocks_certificates_organizations_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."pages_blocks_certificates"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "pages_blocks_certificates" ADD CONSTRAINT "pages_blocks_certificates_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."pages"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "pages_blocks_content_columns" ADD CONSTRAINT "pages_blocks_content_columns_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."pages_blocks_content"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "pages_blocks_content" ADD CONSTRAINT "pages_blocks_content_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."pages"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "pages_blocks_form_block" ADD CONSTRAINT "pages_blocks_form_block_form_id_forms_id_fk" FOREIGN KEY ("form_id") REFERENCES "public"."forms"("id") ON DELETE set null ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "pages_blocks_form_block" ADD CONSTRAINT "pages_blocks_form_block_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."pages"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "pages_blocks_highlight_right" ADD CONSTRAINT "pages_blocks_highlight_right_image_id_media_id_fk" FOREIGN KEY ("image_id") REFERENCES "public"."media"("id") ON DELETE set null ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "pages_blocks_highlight_right" ADD CONSTRAINT "pages_blocks_highlight_right_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."pages"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "pages_blocks_highlight_center" ADD CONSTRAINT "pages_blocks_highlight_center_image_id_media_id_fk" FOREIGN KEY ("image_id") REFERENCES "public"."media"("id") ON DELETE set null ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "pages_blocks_highlight_center" ADD CONSTRAINT "pages_blocks_highlight_center_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."pages"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "pages_blocks_highlight_left" ADD CONSTRAINT "pages_blocks_highlight_left_image_id_media_id_fk" FOREIGN KEY ("image_id") REFERENCES "public"."media"("id") ON DELETE set null ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "pages_blocks_highlight_left" ADD CONSTRAINT "pages_blocks_highlight_left_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."pages"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "pages_blocks_infinite_scroll" ADD CONSTRAINT "pages_blocks_infinite_scroll_graphic_id_media_id_fk" FOREIGN KEY ("graphic_id") REFERENCES "public"."media"("id") ON DELETE set null ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "pages_blocks_infinite_scroll" ADD CONSTRAINT "pages_blocks_infinite_scroll_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."pages"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "pages_blocks_latest_posts" ADD CONSTRAINT "pages_blocks_latest_posts_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."pages"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "pages_blocks_media" ADD CONSTRAINT "pages_blocks_media_media_id_media_id_fk" FOREIGN KEY ("media_id") REFERENCES "public"."media"("id") ON DELETE set null ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "pages_blocks_media" ADD CONSTRAINT "pages_blocks_media_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."pages"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "pages_blocks_posts_grid" ADD CONSTRAINT "pages_blocks_posts_grid_post_categories_id_post_categories_id_fk" FOREIGN KEY ("post_categories_id") REFERENCES "public"."post_categories"("id") ON DELETE set null ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "pages_blocks_posts_grid" ADD CONSTRAINT "pages_blocks_posts_grid_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."pages"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "pages_blocks_products_carousel" ADD CONSTRAINT "pages_blocks_products_carousel_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."pages"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "pages_blocks_products_category" ADD CONSTRAINT "pages_blocks_products_category_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."pages"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "pages_blocks_three_photo" ADD CONSTRAINT "pages_blocks_three_photo_photo_left_id_media_id_fk" FOREIGN KEY ("photo_left_id") REFERENCES "public"."media"("id") ON DELETE set null ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "pages_blocks_three_photo" ADD CONSTRAINT "pages_blocks_three_photo_photo_center_id_media_id_fk" FOREIGN KEY ("photo_center_id") REFERENCES "public"."media"("id") ON DELETE set null ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "pages_blocks_three_photo" ADD CONSTRAINT "pages_blocks_three_photo_photo_right_id_media_id_fk" FOREIGN KEY ("photo_right_id") REFERENCES "public"."media"("id") ON DELETE set null ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "pages_blocks_three_photo" ADD CONSTRAINT "pages_blocks_three_photo_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."pages"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "pages" ADD CONSTRAINT "pages_hero_media_id_media_id_fk" FOREIGN KEY ("hero_media_id") REFERENCES "public"."media"("id") ON DELETE set null ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "pages" ADD CONSTRAINT "pages_meta_meta_image_id_media_id_fk" FOREIGN KEY ("meta_meta_image_id") REFERENCES "public"."media"("id") ON DELETE set null ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "pages_rels" ADD CONSTRAINT "pages_rels_parent_fk" FOREIGN KEY ("parent_id") REFERENCES "public"."pages"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "pages_rels" ADD CONSTRAINT "pages_rels_pages_fk" FOREIGN KEY ("pages_id") REFERENCES "public"."pages"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "pages_rels" ADD CONSTRAINT "pages_rels_post_categories_fk" FOREIGN KEY ("post_categories_id") REFERENCES "public"."post_categories"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "pages_rels" ADD CONSTRAINT "pages_rels_posts_fk" FOREIGN KEY ("posts_id") REFERENCES "public"."posts"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "pages_rels" ADD CONSTRAINT "pages_rels_product_categories_fk" FOREIGN KEY ("product_categories_id") REFERENCES "public"."product_categories"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "pages_rels" ADD CONSTRAINT "pages_rels_products_fk" FOREIGN KEY ("products_id") REFERENCES "public"."products"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "pages_rels" ADD CONSTRAINT "pages_rels_product_sub_categories_fk" FOREIGN KEY ("product_sub_categories_id") REFERENCES "public"."product_sub_categories"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "_pages_v_version_hero_links" ADD CONSTRAINT "_pages_v_version_hero_links_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_pages_v"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "_pages_v_blocks_archive" ADD CONSTRAINT "_pages_v_blocks_archive_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_pages_v"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "_pages_v_blocks_banner" ADD CONSTRAINT "_pages_v_blocks_banner_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_pages_v"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "_pages_v_blocks_best_seller" ADD CONSTRAINT "_pages_v_blocks_best_seller_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_pages_v"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "_pages_v_blocks_buy_now" ADD CONSTRAINT "_pages_v_blocks_buy_now_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_pages_v"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "_pages_v_blocks_cta_center" ADD CONSTRAINT "_pages_v_blocks_cta_center_background_id_media_id_fk" FOREIGN KEY ("background_id") REFERENCES "public"."media"("id") ON DELETE set null ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "_pages_v_blocks_cta_center" ADD CONSTRAINT "_pages_v_blocks_cta_center_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_pages_v"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "_pages_v_blocks_cta_left" ADD CONSTRAINT "_pages_v_blocks_cta_left_background_id_media_id_fk" FOREIGN KEY ("background_id") REFERENCES "public"."media"("id") ON DELETE set null ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "_pages_v_blocks_cta_left" ADD CONSTRAINT "_pages_v_blocks_cta_left_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_pages_v"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "_pages_v_blocks_call_to_action_post" ADD CONSTRAINT "_pages_v_blocks_call_to_action_post_post_id_posts_id_fk" FOREIGN KEY ("post_id") REFERENCES "public"."posts"("id") ON DELETE set null ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "_pages_v_blocks_call_to_action_post" ADD CONSTRAINT "_pages_v_blocks_call_to_action_post_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_pages_v"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "_pages_v_blocks_cta_right_gallery" ADD CONSTRAINT "_pages_v_blocks_cta_right_gallery_image_id_media_id_fk" FOREIGN KEY ("image_id") REFERENCES "public"."media"("id") ON DELETE set null ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "_pages_v_blocks_cta_right_gallery" ADD CONSTRAINT "_pages_v_blocks_cta_right_gallery_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_pages_v_blocks_cta_right"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "_pages_v_blocks_cta_right" ADD CONSTRAINT "_pages_v_blocks_cta_right_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_pages_v"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "_pages_v_blocks_call_to_add_to_cart" ADD CONSTRAINT "_pages_v_blocks_call_to_add_to_cart_image_id_media_id_fk" FOREIGN KEY ("image_id") REFERENCES "public"."media"("id") ON DELETE set null ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "_pages_v_blocks_call_to_add_to_cart" ADD CONSTRAINT "_pages_v_blocks_call_to_add_to_cart_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_pages_v"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "_pages_v_blocks_certificates_organizations" ADD CONSTRAINT "_pages_v_blocks_certificates_organizations_logo_id_media_id_fk" FOREIGN KEY ("logo_id") REFERENCES "public"."media"("id") ON DELETE set null ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "_pages_v_blocks_certificates_organizations" ADD CONSTRAINT "_pages_v_blocks_certificates_organizations_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_pages_v_blocks_certificates"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "_pages_v_blocks_certificates" ADD CONSTRAINT "_pages_v_blocks_certificates_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_pages_v"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "_pages_v_blocks_content_columns" ADD CONSTRAINT "_pages_v_blocks_content_columns_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_pages_v_blocks_content"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "_pages_v_blocks_content" ADD CONSTRAINT "_pages_v_blocks_content_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_pages_v"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "_pages_v_blocks_form_block" ADD CONSTRAINT "_pages_v_blocks_form_block_form_id_forms_id_fk" FOREIGN KEY ("form_id") REFERENCES "public"."forms"("id") ON DELETE set null ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "_pages_v_blocks_form_block" ADD CONSTRAINT "_pages_v_blocks_form_block_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_pages_v"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "_pages_v_blocks_highlight_right" ADD CONSTRAINT "_pages_v_blocks_highlight_right_image_id_media_id_fk" FOREIGN KEY ("image_id") REFERENCES "public"."media"("id") ON DELETE set null ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "_pages_v_blocks_highlight_right" ADD CONSTRAINT "_pages_v_blocks_highlight_right_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_pages_v"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "_pages_v_blocks_highlight_center" ADD CONSTRAINT "_pages_v_blocks_highlight_center_image_id_media_id_fk" FOREIGN KEY ("image_id") REFERENCES "public"."media"("id") ON DELETE set null ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "_pages_v_blocks_highlight_center" ADD CONSTRAINT "_pages_v_blocks_highlight_center_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_pages_v"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "_pages_v_blocks_highlight_left" ADD CONSTRAINT "_pages_v_blocks_highlight_left_image_id_media_id_fk" FOREIGN KEY ("image_id") REFERENCES "public"."media"("id") ON DELETE set null ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "_pages_v_blocks_highlight_left" ADD CONSTRAINT "_pages_v_blocks_highlight_left_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_pages_v"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "_pages_v_blocks_infinite_scroll" ADD CONSTRAINT "_pages_v_blocks_infinite_scroll_graphic_id_media_id_fk" FOREIGN KEY ("graphic_id") REFERENCES "public"."media"("id") ON DELETE set null ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "_pages_v_blocks_infinite_scroll" ADD CONSTRAINT "_pages_v_blocks_infinite_scroll_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_pages_v"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "_pages_v_blocks_latest_posts" ADD CONSTRAINT "_pages_v_blocks_latest_posts_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_pages_v"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "_pages_v_blocks_media" ADD CONSTRAINT "_pages_v_blocks_media_media_id_media_id_fk" FOREIGN KEY ("media_id") REFERENCES "public"."media"("id") ON DELETE set null ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "_pages_v_blocks_media" ADD CONSTRAINT "_pages_v_blocks_media_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_pages_v"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "_pages_v_blocks_posts_grid" ADD CONSTRAINT "_pages_v_blocks_posts_grid_post_categories_id_post_categories_id_fk" FOREIGN KEY ("post_categories_id") REFERENCES "public"."post_categories"("id") ON DELETE set null ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "_pages_v_blocks_posts_grid" ADD CONSTRAINT "_pages_v_blocks_posts_grid_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_pages_v"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "_pages_v_blocks_products_carousel" ADD CONSTRAINT "_pages_v_blocks_products_carousel_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_pages_v"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "_pages_v_blocks_products_category" ADD CONSTRAINT "_pages_v_blocks_products_category_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_pages_v"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "_pages_v_blocks_three_photo" ADD CONSTRAINT "_pages_v_blocks_three_photo_photo_left_id_media_id_fk" FOREIGN KEY ("photo_left_id") REFERENCES "public"."media"("id") ON DELETE set null ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "_pages_v_blocks_three_photo" ADD CONSTRAINT "_pages_v_blocks_three_photo_photo_center_id_media_id_fk" FOREIGN KEY ("photo_center_id") REFERENCES "public"."media"("id") ON DELETE set null ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "_pages_v_blocks_three_photo" ADD CONSTRAINT "_pages_v_blocks_three_photo_photo_right_id_media_id_fk" FOREIGN KEY ("photo_right_id") REFERENCES "public"."media"("id") ON DELETE set null ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "_pages_v_blocks_three_photo" ADD CONSTRAINT "_pages_v_blocks_three_photo_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_pages_v"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "_pages_v" ADD CONSTRAINT "_pages_v_parent_id_pages_id_fk" FOREIGN KEY ("parent_id") REFERENCES "public"."pages"("id") ON DELETE set null ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "_pages_v" ADD CONSTRAINT "_pages_v_version_hero_media_id_media_id_fk" FOREIGN KEY ("version_hero_media_id") REFERENCES "public"."media"("id") ON DELETE set null ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "_pages_v" ADD CONSTRAINT "_pages_v_version_meta_meta_image_id_media_id_fk" FOREIGN KEY ("version_meta_meta_image_id") REFERENCES "public"."media"("id") ON DELETE set null ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "_pages_v_rels" ADD CONSTRAINT "_pages_v_rels_parent_fk" FOREIGN KEY ("parent_id") REFERENCES "public"."_pages_v"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "_pages_v_rels" ADD CONSTRAINT "_pages_v_rels_pages_fk" FOREIGN KEY ("pages_id") REFERENCES "public"."pages"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "_pages_v_rels" ADD CONSTRAINT "_pages_v_rels_post_categories_fk" FOREIGN KEY ("post_categories_id") REFERENCES "public"."post_categories"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "_pages_v_rels" ADD CONSTRAINT "_pages_v_rels_posts_fk" FOREIGN KEY ("posts_id") REFERENCES "public"."posts"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "_pages_v_rels" ADD CONSTRAINT "_pages_v_rels_product_categories_fk" FOREIGN KEY ("product_categories_id") REFERENCES "public"."product_categories"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "_pages_v_rels" ADD CONSTRAINT "_pages_v_rels_products_fk" FOREIGN KEY ("products_id") REFERENCES "public"."products"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "_pages_v_rels" ADD CONSTRAINT "_pages_v_rels_product_sub_categories_fk" FOREIGN KEY ("product_sub_categories_id") REFERENCES "public"."product_sub_categories"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "post_categories_blocks_call_to_action_post" ADD CONSTRAINT "post_categories_blocks_call_to_action_post_post_id_posts_id_fk" FOREIGN KEY ("post_id") REFERENCES "public"."posts"("id") ON DELETE set null ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "post_categories_blocks_call_to_action_post" ADD CONSTRAINT "post_categories_blocks_call_to_action_post_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."post_categories"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "post_categories_blocks_posts_grid" ADD CONSTRAINT "post_categories_blocks_posts_grid_post_categories_id_post_categories_id_fk" FOREIGN KEY ("post_categories_id") REFERENCES "public"."post_categories"("id") ON DELETE set null ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "post_categories_blocks_posts_grid" ADD CONSTRAINT "post_categories_blocks_posts_grid_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."post_categories"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "post_categories_breadcrumbs" ADD CONSTRAINT "post_categories_breadcrumbs_doc_id_post_categories_id_fk" FOREIGN KEY ("doc_id") REFERENCES "public"."post_categories"("id") ON DELETE set null ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "post_categories_breadcrumbs" ADD CONSTRAINT "post_categories_breadcrumbs_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."post_categories"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "post_categories" ADD CONSTRAINT "post_categories_parent_id_post_categories_id_fk" FOREIGN KEY ("parent_id") REFERENCES "public"."post_categories"("id") ON DELETE set null ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "posts_blocks_archive" ADD CONSTRAINT "posts_blocks_archive_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."posts"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "posts_blocks_buy_now" ADD CONSTRAINT "posts_blocks_buy_now_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."posts"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "posts_blocks_cta_center" ADD CONSTRAINT "posts_blocks_cta_center_background_id_media_id_fk" FOREIGN KEY ("background_id") REFERENCES "public"."media"("id") ON DELETE set null ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "posts_blocks_cta_center" ADD CONSTRAINT "posts_blocks_cta_center_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."posts"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "posts_blocks_cta_left" ADD CONSTRAINT "posts_blocks_cta_left_background_id_media_id_fk" FOREIGN KEY ("background_id") REFERENCES "public"."media"("id") ON DELETE set null ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "posts_blocks_cta_left" ADD CONSTRAINT "posts_blocks_cta_left_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."posts"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "posts_blocks_cta_right_gallery" ADD CONSTRAINT "posts_blocks_cta_right_gallery_image_id_media_id_fk" FOREIGN KEY ("image_id") REFERENCES "public"."media"("id") ON DELETE set null ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "posts_blocks_cta_right_gallery" ADD CONSTRAINT "posts_blocks_cta_right_gallery_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."posts_blocks_cta_right"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "posts_blocks_cta_right" ADD CONSTRAINT "posts_blocks_cta_right_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."posts"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "posts_blocks_call_to_add_to_cart" ADD CONSTRAINT "posts_blocks_call_to_add_to_cart_image_id_media_id_fk" FOREIGN KEY ("image_id") REFERENCES "public"."media"("id") ON DELETE set null ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "posts_blocks_call_to_add_to_cart" ADD CONSTRAINT "posts_blocks_call_to_add_to_cart_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."posts"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "posts_blocks_certificates_organizations" ADD CONSTRAINT "posts_blocks_certificates_organizations_logo_id_media_id_fk" FOREIGN KEY ("logo_id") REFERENCES "public"."media"("id") ON DELETE set null ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "posts_blocks_certificates_organizations" ADD CONSTRAINT "posts_blocks_certificates_organizations_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."posts_blocks_certificates"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "posts_blocks_certificates" ADD CONSTRAINT "posts_blocks_certificates_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."posts"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "posts_blocks_content_columns" ADD CONSTRAINT "posts_blocks_content_columns_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."posts_blocks_content"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "posts_blocks_content" ADD CONSTRAINT "posts_blocks_content_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."posts"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "posts_blocks_focus_left_small_image" ADD CONSTRAINT "posts_blocks_focus_left_small_image_image_id_media_id_fk" FOREIGN KEY ("image_id") REFERENCES "public"."media"("id") ON DELETE set null ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "posts_blocks_focus_left_small_image" ADD CONSTRAINT "posts_blocks_focus_left_small_image_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."posts"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "posts_blocks_focus_right_large_image" ADD CONSTRAINT "posts_blocks_focus_right_large_image_image_id_media_id_fk" FOREIGN KEY ("image_id") REFERENCES "public"."media"("id") ON DELETE set null ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "posts_blocks_focus_right_large_image" ADD CONSTRAINT "posts_blocks_focus_right_large_image_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."posts"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "posts_blocks_focus_right_small_image" ADD CONSTRAINT "posts_blocks_focus_right_small_image_image_id_media_id_fk" FOREIGN KEY ("image_id") REFERENCES "public"."media"("id") ON DELETE set null ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "posts_blocks_focus_right_small_image" ADD CONSTRAINT "posts_blocks_focus_right_small_image_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."posts"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "posts_blocks_form_block" ADD CONSTRAINT "posts_blocks_form_block_form_id_forms_id_fk" FOREIGN KEY ("form_id") REFERENCES "public"."forms"("id") ON DELETE set null ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "posts_blocks_form_block" ADD CONSTRAINT "posts_blocks_form_block_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."posts"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "posts_blocks_highlight_right" ADD CONSTRAINT "posts_blocks_highlight_right_image_id_media_id_fk" FOREIGN KEY ("image_id") REFERENCES "public"."media"("id") ON DELETE set null ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "posts_blocks_highlight_right" ADD CONSTRAINT "posts_blocks_highlight_right_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."posts"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "posts_blocks_highlight_center" ADD CONSTRAINT "posts_blocks_highlight_center_image_id_media_id_fk" FOREIGN KEY ("image_id") REFERENCES "public"."media"("id") ON DELETE set null ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "posts_blocks_highlight_center" ADD CONSTRAINT "posts_blocks_highlight_center_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."posts"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "posts_blocks_highlight_left" ADD CONSTRAINT "posts_blocks_highlight_left_image_id_media_id_fk" FOREIGN KEY ("image_id") REFERENCES "public"."media"("id") ON DELETE set null ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "posts_blocks_highlight_left" ADD CONSTRAINT "posts_blocks_highlight_left_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."posts"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "posts_blocks_infinite_scroll" ADD CONSTRAINT "posts_blocks_infinite_scroll_graphic_id_media_id_fk" FOREIGN KEY ("graphic_id") REFERENCES "public"."media"("id") ON DELETE set null ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "posts_blocks_infinite_scroll" ADD CONSTRAINT "posts_blocks_infinite_scroll_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."posts"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "posts_blocks_media" ADD CONSTRAINT "posts_blocks_media_media_id_media_id_fk" FOREIGN KEY ("media_id") REFERENCES "public"."media"("id") ON DELETE set null ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "posts_blocks_media" ADD CONSTRAINT "posts_blocks_media_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."posts"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "posts_blocks_products_carousel" ADD CONSTRAINT "posts_blocks_products_carousel_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."posts"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "posts_blocks_products_category" ADD CONSTRAINT "posts_blocks_products_category_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."posts"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "posts_blocks_three_photo" ADD CONSTRAINT "posts_blocks_three_photo_photo_left_id_media_id_fk" FOREIGN KEY ("photo_left_id") REFERENCES "public"."media"("id") ON DELETE set null ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "posts_blocks_three_photo" ADD CONSTRAINT "posts_blocks_three_photo_photo_center_id_media_id_fk" FOREIGN KEY ("photo_center_id") REFERENCES "public"."media"("id") ON DELETE set null ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "posts_blocks_three_photo" ADD CONSTRAINT "posts_blocks_three_photo_photo_right_id_media_id_fk" FOREIGN KEY ("photo_right_id") REFERENCES "public"."media"("id") ON DELETE set null ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "posts_blocks_three_photo" ADD CONSTRAINT "posts_blocks_three_photo_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."posts"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "posts_populated_authors" ADD CONSTRAINT "posts_populated_authors_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."posts"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "posts" ADD CONSTRAINT "posts_hero_image_id_media_id_fk" FOREIGN KEY ("hero_image_id") REFERENCES "public"."media"("id") ON DELETE set null ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "posts" ADD CONSTRAINT "posts_meta_image_id_media_id_fk" FOREIGN KEY ("meta_image_id") REFERENCES "public"."media"("id") ON DELETE set null ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "posts_rels" ADD CONSTRAINT "posts_rels_parent_fk" FOREIGN KEY ("parent_id") REFERENCES "public"."posts"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "posts_rels" ADD CONSTRAINT "posts_rels_post_categories_fk" FOREIGN KEY ("post_categories_id") REFERENCES "public"."post_categories"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "posts_rels" ADD CONSTRAINT "posts_rels_posts_fk" FOREIGN KEY ("posts_id") REFERENCES "public"."posts"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "posts_rels" ADD CONSTRAINT "posts_rels_pages_fk" FOREIGN KEY ("pages_id") REFERENCES "public"."pages"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "posts_rels" ADD CONSTRAINT "posts_rels_product_categories_fk" FOREIGN KEY ("product_categories_id") REFERENCES "public"."product_categories"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "posts_rels" ADD CONSTRAINT "posts_rels_products_fk" FOREIGN KEY ("products_id") REFERENCES "public"."products"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "posts_rels" ADD CONSTRAINT "posts_rels_product_sub_categories_fk" FOREIGN KEY ("product_sub_categories_id") REFERENCES "public"."product_sub_categories"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "posts_rels" ADD CONSTRAINT "posts_rels_users_fk" FOREIGN KEY ("users_id") REFERENCES "public"."users"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "_posts_v_blocks_archive" ADD CONSTRAINT "_posts_v_blocks_archive_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_posts_v"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "_posts_v_blocks_buy_now" ADD CONSTRAINT "_posts_v_blocks_buy_now_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_posts_v"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "_posts_v_blocks_cta_center" ADD CONSTRAINT "_posts_v_blocks_cta_center_background_id_media_id_fk" FOREIGN KEY ("background_id") REFERENCES "public"."media"("id") ON DELETE set null ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "_posts_v_blocks_cta_center" ADD CONSTRAINT "_posts_v_blocks_cta_center_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_posts_v"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "_posts_v_blocks_cta_left" ADD CONSTRAINT "_posts_v_blocks_cta_left_background_id_media_id_fk" FOREIGN KEY ("background_id") REFERENCES "public"."media"("id") ON DELETE set null ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "_posts_v_blocks_cta_left" ADD CONSTRAINT "_posts_v_blocks_cta_left_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_posts_v"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "_posts_v_blocks_cta_right_gallery" ADD CONSTRAINT "_posts_v_blocks_cta_right_gallery_image_id_media_id_fk" FOREIGN KEY ("image_id") REFERENCES "public"."media"("id") ON DELETE set null ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "_posts_v_blocks_cta_right_gallery" ADD CONSTRAINT "_posts_v_blocks_cta_right_gallery_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_posts_v_blocks_cta_right"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "_posts_v_blocks_cta_right" ADD CONSTRAINT "_posts_v_blocks_cta_right_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_posts_v"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "_posts_v_blocks_call_to_add_to_cart" ADD CONSTRAINT "_posts_v_blocks_call_to_add_to_cart_image_id_media_id_fk" FOREIGN KEY ("image_id") REFERENCES "public"."media"("id") ON DELETE set null ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "_posts_v_blocks_call_to_add_to_cart" ADD CONSTRAINT "_posts_v_blocks_call_to_add_to_cart_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_posts_v"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "_posts_v_blocks_certificates_organizations" ADD CONSTRAINT "_posts_v_blocks_certificates_organizations_logo_id_media_id_fk" FOREIGN KEY ("logo_id") REFERENCES "public"."media"("id") ON DELETE set null ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "_posts_v_blocks_certificates_organizations" ADD CONSTRAINT "_posts_v_blocks_certificates_organizations_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_posts_v_blocks_certificates"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "_posts_v_blocks_certificates" ADD CONSTRAINT "_posts_v_blocks_certificates_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_posts_v"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "_posts_v_blocks_content_columns" ADD CONSTRAINT "_posts_v_blocks_content_columns_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_posts_v_blocks_content"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "_posts_v_blocks_content" ADD CONSTRAINT "_posts_v_blocks_content_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_posts_v"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "_posts_v_blocks_focus_left_small_image" ADD CONSTRAINT "_posts_v_blocks_focus_left_small_image_image_id_media_id_fk" FOREIGN KEY ("image_id") REFERENCES "public"."media"("id") ON DELETE set null ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "_posts_v_blocks_focus_left_small_image" ADD CONSTRAINT "_posts_v_blocks_focus_left_small_image_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_posts_v"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "_posts_v_blocks_focus_right_large_image" ADD CONSTRAINT "_posts_v_blocks_focus_right_large_image_image_id_media_id_fk" FOREIGN KEY ("image_id") REFERENCES "public"."media"("id") ON DELETE set null ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "_posts_v_blocks_focus_right_large_image" ADD CONSTRAINT "_posts_v_blocks_focus_right_large_image_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_posts_v"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "_posts_v_blocks_focus_right_small_image" ADD CONSTRAINT "_posts_v_blocks_focus_right_small_image_image_id_media_id_fk" FOREIGN KEY ("image_id") REFERENCES "public"."media"("id") ON DELETE set null ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "_posts_v_blocks_focus_right_small_image" ADD CONSTRAINT "_posts_v_blocks_focus_right_small_image_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_posts_v"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "_posts_v_blocks_form_block" ADD CONSTRAINT "_posts_v_blocks_form_block_form_id_forms_id_fk" FOREIGN KEY ("form_id") REFERENCES "public"."forms"("id") ON DELETE set null ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "_posts_v_blocks_form_block" ADD CONSTRAINT "_posts_v_blocks_form_block_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_posts_v"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "_posts_v_blocks_highlight_right" ADD CONSTRAINT "_posts_v_blocks_highlight_right_image_id_media_id_fk" FOREIGN KEY ("image_id") REFERENCES "public"."media"("id") ON DELETE set null ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "_posts_v_blocks_highlight_right" ADD CONSTRAINT "_posts_v_blocks_highlight_right_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_posts_v"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "_posts_v_blocks_highlight_center" ADD CONSTRAINT "_posts_v_blocks_highlight_center_image_id_media_id_fk" FOREIGN KEY ("image_id") REFERENCES "public"."media"("id") ON DELETE set null ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "_posts_v_blocks_highlight_center" ADD CONSTRAINT "_posts_v_blocks_highlight_center_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_posts_v"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "_posts_v_blocks_highlight_left" ADD CONSTRAINT "_posts_v_blocks_highlight_left_image_id_media_id_fk" FOREIGN KEY ("image_id") REFERENCES "public"."media"("id") ON DELETE set null ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "_posts_v_blocks_highlight_left" ADD CONSTRAINT "_posts_v_blocks_highlight_left_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_posts_v"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "_posts_v_blocks_infinite_scroll" ADD CONSTRAINT "_posts_v_blocks_infinite_scroll_graphic_id_media_id_fk" FOREIGN KEY ("graphic_id") REFERENCES "public"."media"("id") ON DELETE set null ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "_posts_v_blocks_infinite_scroll" ADD CONSTRAINT "_posts_v_blocks_infinite_scroll_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_posts_v"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "_posts_v_blocks_media" ADD CONSTRAINT "_posts_v_blocks_media_media_id_media_id_fk" FOREIGN KEY ("media_id") REFERENCES "public"."media"("id") ON DELETE set null ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "_posts_v_blocks_media" ADD CONSTRAINT "_posts_v_blocks_media_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_posts_v"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "_posts_v_blocks_products_carousel" ADD CONSTRAINT "_posts_v_blocks_products_carousel_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_posts_v"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "_posts_v_blocks_products_category" ADD CONSTRAINT "_posts_v_blocks_products_category_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_posts_v"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "_posts_v_blocks_three_photo" ADD CONSTRAINT "_posts_v_blocks_three_photo_photo_left_id_media_id_fk" FOREIGN KEY ("photo_left_id") REFERENCES "public"."media"("id") ON DELETE set null ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "_posts_v_blocks_three_photo" ADD CONSTRAINT "_posts_v_blocks_three_photo_photo_center_id_media_id_fk" FOREIGN KEY ("photo_center_id") REFERENCES "public"."media"("id") ON DELETE set null ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "_posts_v_blocks_three_photo" ADD CONSTRAINT "_posts_v_blocks_three_photo_photo_right_id_media_id_fk" FOREIGN KEY ("photo_right_id") REFERENCES "public"."media"("id") ON DELETE set null ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "_posts_v_blocks_three_photo" ADD CONSTRAINT "_posts_v_blocks_three_photo_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_posts_v"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "_posts_v_version_populated_authors" ADD CONSTRAINT "_posts_v_version_populated_authors_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_posts_v"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "_posts_v" ADD CONSTRAINT "_posts_v_parent_id_posts_id_fk" FOREIGN KEY ("parent_id") REFERENCES "public"."posts"("id") ON DELETE set null ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "_posts_v" ADD CONSTRAINT "_posts_v_version_hero_image_id_media_id_fk" FOREIGN KEY ("version_hero_image_id") REFERENCES "public"."media"("id") ON DELETE set null ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "_posts_v" ADD CONSTRAINT "_posts_v_version_meta_image_id_media_id_fk" FOREIGN KEY ("version_meta_image_id") REFERENCES "public"."media"("id") ON DELETE set null ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "_posts_v_rels" ADD CONSTRAINT "_posts_v_rels_parent_fk" FOREIGN KEY ("parent_id") REFERENCES "public"."_posts_v"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "_posts_v_rels" ADD CONSTRAINT "_posts_v_rels_post_categories_fk" FOREIGN KEY ("post_categories_id") REFERENCES "public"."post_categories"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "_posts_v_rels" ADD CONSTRAINT "_posts_v_rels_posts_fk" FOREIGN KEY ("posts_id") REFERENCES "public"."posts"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "_posts_v_rels" ADD CONSTRAINT "_posts_v_rels_pages_fk" FOREIGN KEY ("pages_id") REFERENCES "public"."pages"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "_posts_v_rels" ADD CONSTRAINT "_posts_v_rels_product_categories_fk" FOREIGN KEY ("product_categories_id") REFERENCES "public"."product_categories"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "_posts_v_rels" ADD CONSTRAINT "_posts_v_rels_products_fk" FOREIGN KEY ("products_id") REFERENCES "public"."products"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "_posts_v_rels" ADD CONSTRAINT "_posts_v_rels_product_sub_categories_fk" FOREIGN KEY ("product_sub_categories_id") REFERENCES "public"."product_sub_categories"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "_posts_v_rels" ADD CONSTRAINT "_posts_v_rels_users_fk" FOREIGN KEY ("users_id") REFERENCES "public"."users"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "products_blocks_archive" ADD CONSTRAINT "products_blocks_archive_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."products"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "products_blocks_buy_now" ADD CONSTRAINT "products_blocks_buy_now_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."products"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "products_blocks_cta_center" ADD CONSTRAINT "products_blocks_cta_center_background_id_media_id_fk" FOREIGN KEY ("background_id") REFERENCES "public"."media"("id") ON DELETE set null ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "products_blocks_cta_center" ADD CONSTRAINT "products_blocks_cta_center_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."products"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "products_blocks_cta_left" ADD CONSTRAINT "products_blocks_cta_left_background_id_media_id_fk" FOREIGN KEY ("background_id") REFERENCES "public"."media"("id") ON DELETE set null ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "products_blocks_cta_left" ADD CONSTRAINT "products_blocks_cta_left_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."products"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "products_blocks_cta_right_gallery" ADD CONSTRAINT "products_blocks_cta_right_gallery_image_id_media_id_fk" FOREIGN KEY ("image_id") REFERENCES "public"."media"("id") ON DELETE set null ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "products_blocks_cta_right_gallery" ADD CONSTRAINT "products_blocks_cta_right_gallery_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."products_blocks_cta_right"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "products_blocks_cta_right" ADD CONSTRAINT "products_blocks_cta_right_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."products"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "products_blocks_call_to_add_to_cart" ADD CONSTRAINT "products_blocks_call_to_add_to_cart_image_id_media_id_fk" FOREIGN KEY ("image_id") REFERENCES "public"."media"("id") ON DELETE set null ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "products_blocks_call_to_add_to_cart" ADD CONSTRAINT "products_blocks_call_to_add_to_cart_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."products"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "products_blocks_certificates_organizations" ADD CONSTRAINT "products_blocks_certificates_organizations_logo_id_media_id_fk" FOREIGN KEY ("logo_id") REFERENCES "public"."media"("id") ON DELETE set null ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "products_blocks_certificates_organizations" ADD CONSTRAINT "products_blocks_certificates_organizations_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."products_blocks_certificates"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "products_blocks_certificates" ADD CONSTRAINT "products_blocks_certificates_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."products"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "products_blocks_content_columns" ADD CONSTRAINT "products_blocks_content_columns_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."products_blocks_content"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "products_blocks_content" ADD CONSTRAINT "products_blocks_content_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."products"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "products_blocks_form_block" ADD CONSTRAINT "products_blocks_form_block_form_id_forms_id_fk" FOREIGN KEY ("form_id") REFERENCES "public"."forms"("id") ON DELETE set null ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "products_blocks_form_block" ADD CONSTRAINT "products_blocks_form_block_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."products"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "products_blocks_highlight_right" ADD CONSTRAINT "products_blocks_highlight_right_image_id_media_id_fk" FOREIGN KEY ("image_id") REFERENCES "public"."media"("id") ON DELETE set null ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "products_blocks_highlight_right" ADD CONSTRAINT "products_blocks_highlight_right_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."products"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "products_blocks_highlight_center" ADD CONSTRAINT "products_blocks_highlight_center_image_id_media_id_fk" FOREIGN KEY ("image_id") REFERENCES "public"."media"("id") ON DELETE set null ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "products_blocks_highlight_center" ADD CONSTRAINT "products_blocks_highlight_center_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."products"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "products_blocks_highlight_left" ADD CONSTRAINT "products_blocks_highlight_left_image_id_media_id_fk" FOREIGN KEY ("image_id") REFERENCES "public"."media"("id") ON DELETE set null ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "products_blocks_highlight_left" ADD CONSTRAINT "products_blocks_highlight_left_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."products"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "products_blocks_how_to_use_product" ADD CONSTRAINT "products_blocks_how_to_use_product_image_id_media_id_fk" FOREIGN KEY ("image_id") REFERENCES "public"."media"("id") ON DELETE set null ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "products_blocks_how_to_use_product" ADD CONSTRAINT "products_blocks_how_to_use_product_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."products"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "products_blocks_infinite_scroll" ADD CONSTRAINT "products_blocks_infinite_scroll_graphic_id_media_id_fk" FOREIGN KEY ("graphic_id") REFERENCES "public"."media"("id") ON DELETE set null ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "products_blocks_infinite_scroll" ADD CONSTRAINT "products_blocks_infinite_scroll_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."products"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "products_blocks_latest_posts" ADD CONSTRAINT "products_blocks_latest_posts_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."products"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "products_blocks_media" ADD CONSTRAINT "products_blocks_media_media_id_media_id_fk" FOREIGN KEY ("media_id") REFERENCES "public"."media"("id") ON DELETE set null ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "products_blocks_media" ADD CONSTRAINT "products_blocks_media_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."products"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "products_blocks_products_carousel" ADD CONSTRAINT "products_blocks_products_carousel_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."products"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "products_blocks_three_photo" ADD CONSTRAINT "products_blocks_three_photo_photo_left_id_media_id_fk" FOREIGN KEY ("photo_left_id") REFERENCES "public"."media"("id") ON DELETE set null ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "products_blocks_three_photo" ADD CONSTRAINT "products_blocks_three_photo_photo_center_id_media_id_fk" FOREIGN KEY ("photo_center_id") REFERENCES "public"."media"("id") ON DELETE set null ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "products_blocks_three_photo" ADD CONSTRAINT "products_blocks_three_photo_photo_right_id_media_id_fk" FOREIGN KEY ("photo_right_id") REFERENCES "public"."media"("id") ON DELETE set null ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "products_blocks_three_photo" ADD CONSTRAINT "products_blocks_three_photo_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."products"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "products" ADD CONSTRAINT "products_icon_id_media_id_fk" FOREIGN KEY ("icon_id") REFERENCES "public"."media"("id") ON DELETE set null ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "products" ADD CONSTRAINT "products_hero_media_id_media_id_fk" FOREIGN KEY ("hero_media_id") REFERENCES "public"."media"("id") ON DELETE set null ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "products" ADD CONSTRAINT "products_meta_image_id_media_id_fk" FOREIGN KEY ("meta_image_id") REFERENCES "public"."media"("id") ON DELETE set null ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "products_rels" ADD CONSTRAINT "products_rels_parent_fk" FOREIGN KEY ("parent_id") REFERENCES "public"."products"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "products_rels" ADD CONSTRAINT "products_rels_product_categories_fk" FOREIGN KEY ("product_categories_id") REFERENCES "public"."product_categories"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "products_rels" ADD CONSTRAINT "products_rels_product_sub_categories_fk" FOREIGN KEY ("product_sub_categories_id") REFERENCES "public"."product_sub_categories"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "products_rels" ADD CONSTRAINT "products_rels_media_fk" FOREIGN KEY ("media_id") REFERENCES "public"."media"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "products_rels" ADD CONSTRAINT "products_rels_post_categories_fk" FOREIGN KEY ("post_categories_id") REFERENCES "public"."post_categories"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "products_rels" ADD CONSTRAINT "products_rels_posts_fk" FOREIGN KEY ("posts_id") REFERENCES "public"."posts"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "products_rels" ADD CONSTRAINT "products_rels_pages_fk" FOREIGN KEY ("pages_id") REFERENCES "public"."pages"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "products_rels" ADD CONSTRAINT "products_rels_products_fk" FOREIGN KEY ("products_id") REFERENCES "public"."products"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "product_sub_categories" ADD CONSTRAINT "product_sub_categories_product_categories_id_product_categories_id_fk" FOREIGN KEY ("product_categories_id") REFERENCES "public"."product_categories"("id") ON DELETE set null ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "orders" ADD CONSTRAINT "orders_products_id_products_id_fk" FOREIGN KEY ("products_id") REFERENCES "public"."products"("id") ON DELETE set null ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "orders" ADD CONSTRAINT "orders_customers_id_customers_id_fk" FOREIGN KEY ("customers_id") REFERENCES "public"."customers"("id") ON DELETE set null ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "redirects_rels" ADD CONSTRAINT "redirects_rels_parent_fk" FOREIGN KEY ("parent_id") REFERENCES "public"."redirects"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "redirects_rels" ADD CONSTRAINT "redirects_rels_pages_fk" FOREIGN KEY ("pages_id") REFERENCES "public"."pages"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "redirects_rels" ADD CONSTRAINT "redirects_rels_posts_fk" FOREIGN KEY ("posts_id") REFERENCES "public"."posts"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "forms_blocks_checkbox" ADD CONSTRAINT "forms_blocks_checkbox_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."forms"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "forms_blocks_country" ADD CONSTRAINT "forms_blocks_country_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."forms"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "forms_blocks_email" ADD CONSTRAINT "forms_blocks_email_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."forms"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "forms_blocks_message" ADD CONSTRAINT "forms_blocks_message_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."forms"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "forms_blocks_number" ADD CONSTRAINT "forms_blocks_number_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."forms"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "forms_blocks_select_options" ADD CONSTRAINT "forms_blocks_select_options_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."forms_blocks_select"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "forms_blocks_select" ADD CONSTRAINT "forms_blocks_select_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."forms"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "forms_blocks_state" ADD CONSTRAINT "forms_blocks_state_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."forms"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "forms_blocks_text" ADD CONSTRAINT "forms_blocks_text_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."forms"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "forms_blocks_textarea" ADD CONSTRAINT "forms_blocks_textarea_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."forms"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "forms_emails" ADD CONSTRAINT "forms_emails_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."forms"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "form_submissions_submission_data" ADD CONSTRAINT "form_submissions_submission_data_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."form_submissions"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "form_submissions" ADD CONSTRAINT "form_submissions_form_id_forms_id_fk" FOREIGN KEY ("form_id") REFERENCES "public"."forms"("id") ON DELETE set null ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "search_categories" ADD CONSTRAINT "search_categories_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."search"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "search" ADD CONSTRAINT "search_meta_image_id_media_id_fk" FOREIGN KEY ("meta_image_id") REFERENCES "public"."media"("id") ON DELETE set null ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "search_rels" ADD CONSTRAINT "search_rels_parent_fk" FOREIGN KEY ("parent_id") REFERENCES "public"."search"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "search_rels" ADD CONSTRAINT "search_rels_posts_fk" FOREIGN KEY ("posts_id") REFERENCES "public"."posts"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "payload_jobs_log" ADD CONSTRAINT "payload_jobs_log_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."payload_jobs"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "payload_locked_documents_rels" ADD CONSTRAINT "payload_locked_documents_rels_parent_fk" FOREIGN KEY ("parent_id") REFERENCES "public"."payload_locked_documents"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "payload_locked_documents_rels" ADD CONSTRAINT "payload_locked_documents_rels_customers_fk" FOREIGN KEY ("customers_id") REFERENCES "public"."customers"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "payload_locked_documents_rels" ADD CONSTRAINT "payload_locked_documents_rels_contact_form_fk" FOREIGN KEY ("contact_form_id") REFERENCES "public"."contact_form"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "payload_locked_documents_rels" ADD CONSTRAINT "payload_locked_documents_rels_media_fk" FOREIGN KEY ("media_id") REFERENCES "public"."media"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "payload_locked_documents_rels" ADD CONSTRAINT "payload_locked_documents_rels_pages_fk" FOREIGN KEY ("pages_id") REFERENCES "public"."pages"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "payload_locked_documents_rels" ADD CONSTRAINT "payload_locked_documents_rels_post_categories_fk" FOREIGN KEY ("post_categories_id") REFERENCES "public"."post_categories"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "payload_locked_documents_rels" ADD CONSTRAINT "payload_locked_documents_rels_posts_fk" FOREIGN KEY ("posts_id") REFERENCES "public"."posts"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "payload_locked_documents_rels" ADD CONSTRAINT "payload_locked_documents_rels_product_categories_fk" FOREIGN KEY ("product_categories_id") REFERENCES "public"."product_categories"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "payload_locked_documents_rels" ADD CONSTRAINT "payload_locked_documents_rels_products_fk" FOREIGN KEY ("products_id") REFERENCES "public"."products"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "payload_locked_documents_rels" ADD CONSTRAINT "payload_locked_documents_rels_product_sub_categories_fk" FOREIGN KEY ("product_sub_categories_id") REFERENCES "public"."product_sub_categories"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "payload_locked_documents_rels" ADD CONSTRAINT "payload_locked_documents_rels_orders_fk" FOREIGN KEY ("orders_id") REFERENCES "public"."orders"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "payload_locked_documents_rels" ADD CONSTRAINT "payload_locked_documents_rels_users_fk" FOREIGN KEY ("users_id") REFERENCES "public"."users"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "payload_locked_documents_rels" ADD CONSTRAINT "payload_locked_documents_rels_redirects_fk" FOREIGN KEY ("redirects_id") REFERENCES "public"."redirects"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "payload_locked_documents_rels" ADD CONSTRAINT "payload_locked_documents_rels_forms_fk" FOREIGN KEY ("forms_id") REFERENCES "public"."forms"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "payload_locked_documents_rels" ADD CONSTRAINT "payload_locked_documents_rels_form_submissions_fk" FOREIGN KEY ("form_submissions_id") REFERENCES "public"."form_submissions"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "payload_locked_documents_rels" ADD CONSTRAINT "payload_locked_documents_rels_search_fk" FOREIGN KEY ("search_id") REFERENCES "public"."search"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "payload_locked_documents_rels" ADD CONSTRAINT "payload_locked_documents_rels_payload_jobs_fk" FOREIGN KEY ("payload_jobs_id") REFERENCES "public"."payload_jobs"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "payload_preferences_rels" ADD CONSTRAINT "payload_preferences_rels_parent_fk" FOREIGN KEY ("parent_id") REFERENCES "public"."payload_preferences"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "payload_preferences_rels" ADD CONSTRAINT "payload_preferences_rels_users_fk" FOREIGN KEY ("users_id") REFERENCES "public"."users"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "floating_global_links" ADD CONSTRAINT "floating_global_links_icon_id_media_id_fk" FOREIGN KEY ("icon_id") REFERENCES "public"."media"("id") ON DELETE set null ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "floating_global_links" ADD CONSTRAINT "floating_global_links_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."floating_global"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "footer_global" ADD CONSTRAINT "footer_global_image_image_id_media_id_fk" FOREIGN KEY ("image_image_id") REFERENCES "public"."media"("id") ON DELETE set null ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "footer_global" ADD CONSTRAINT "footer_global_legal_stamp_id_media_id_fk" FOREIGN KEY ("legal_stamp_id") REFERENCES "public"."media"("id") ON DELETE set null ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "header_global_header_items_left" ADD CONSTRAINT "header_global_header_items_left_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."header_global"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "header_global_header_items_right" ADD CONSTRAINT "header_global_header_items_right_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."header_global"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "header_global_rels" ADD CONSTRAINT "header_global_rels_parent_fk" FOREIGN KEY ("parent_id") REFERENCES "public"."header_global"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "header_global_rels" ADD CONSTRAINT "header_global_rels_pages_fk" FOREIGN KEY ("pages_id") REFERENCES "public"."pages"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "header_global_rels" ADD CONSTRAINT "header_global_rels_post_categories_fk" FOREIGN KEY ("post_categories_id") REFERENCES "public"."post_categories"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "header_global_rels" ADD CONSTRAINT "header_global_rels_posts_fk" FOREIGN KEY ("posts_id") REFERENCES "public"."posts"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "header_global_rels" ADD CONSTRAINT "header_global_rels_product_categories_fk" FOREIGN KEY ("product_categories_id") REFERENCES "public"."product_categories"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "header_global_rels" ADD CONSTRAINT "header_global_rels_products_fk" FOREIGN KEY ("products_id") REFERENCES "public"."products"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "header_global_rels" ADD CONSTRAINT "header_global_rels_product_sub_categories_fk" FOREIGN KEY ("product_sub_categories_id") REFERENCES "public"."product_sub_categories"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "promo_global_rels" ADD CONSTRAINT "promo_global_rels_parent_fk" FOREIGN KEY ("parent_id") REFERENCES "public"."promo_global"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "promo_global_rels" ADD CONSTRAINT "promo_global_rels_pages_fk" FOREIGN KEY ("pages_id") REFERENCES "public"."pages"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "promo_global_rels" ADD CONSTRAINT "promo_global_rels_post_categories_fk" FOREIGN KEY ("post_categories_id") REFERENCES "public"."post_categories"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "promo_global_rels" ADD CONSTRAINT "promo_global_rels_posts_fk" FOREIGN KEY ("posts_id") REFERENCES "public"."posts"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "promo_global_rels" ADD CONSTRAINT "promo_global_rels_product_categories_fk" FOREIGN KEY ("product_categories_id") REFERENCES "public"."product_categories"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "promo_global_rels" ADD CONSTRAINT "promo_global_rels_products_fk" FOREIGN KEY ("products_id") REFERENCES "public"."products"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   DO $$ BEGIN
    ALTER TABLE "promo_global_rels" ADD CONSTRAINT "promo_global_rels_product_sub_categories_fk" FOREIGN KEY ("product_sub_categories_id") REFERENCES "public"."product_sub_categories"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
-  
+
   CREATE INDEX IF NOT EXISTS "customers_updated_at_idx" ON "customers" USING btree ("updated_at");
   CREATE INDEX IF NOT EXISTS "customers_created_at_idx" ON "customers" USING btree ("created_at");
   CREATE INDEX IF NOT EXISTS "contact_form_updated_at_idx" ON "contact_form" USING btree ("updated_at");
