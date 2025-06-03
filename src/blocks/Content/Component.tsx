@@ -25,7 +25,7 @@ export function ContentBlock({ columns }: ContentBlockProps): React.JSX.Element 
 
 						return (
 							<div
-								className={cn(`col-span-4 lg:col-span-${colsSpanClasses[size!]}`, {
+								className={cn(`col-span-4 lg:col-span-${colsSpanClasses[size ?? 'full']}`, {
 									'md:col-span-2': size !== 'full',
 									'font-serif': font === 'serif',
 									'font-sans': font === 'sans-serif',
