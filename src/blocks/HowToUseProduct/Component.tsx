@@ -1,29 +1,65 @@
 import Image from 'next/image'
 
+import { ProductsSlug } from '@/collections/Products/slug'
 import RichText from '@/components/RichText'
-import { HowToUseProductBlockProps } from '@/payload-types'
+import { HowToUseProductBlockProps, Product } from '@/payload-types'
+import { getClientLang } from '@/utilities/getClientLang'
+import { Lang } from '@/utilities/lang'
+import { matchLang } from '@/utilities/matchLang'
 
-export function HowToUseProductBlockComponent(props: HowToUseProductBlockProps): React.JSX.Element {
-	const img = typeof props.image === 'object' ? props.image : null
+export function HowToUseProductBlockComponent(passdownProps: {
+	product?: Product | null
+}): (_: HowToUseProductBlockProps) => Promise<React.JSX.Element> {
+	return async function HowToUseProductBlockComponentInner(
+		props: HowToUseProductBlockProps,
+	): Promise<React.JSX.Element> {
+		const locale = await getClientLang()
+		const img = typeof props.image === 'object' ? props.image : null
 
-	return (
-		<div className="relative grid min-h-[50dvw] grid-cols-2">
-			<div />
-			<div className="absolute inset-0 z-0">
-				<Image
-					src={img?.url ?? 'https://placehold.co/1000x1000'}
-					alt={img?.alt ?? 'Product Image'}
-					width={img?.width ?? 1000}
-					height={img?.height ?? 1000}
-					unoptimized={!img}
-					className="h-full w-1/2 overflow-hidden object-cover"
-				/>
+		const p =
+			typeof props[ProductsSlug] === 'object' && !!props[ProductsSlug]
+				? props[ProductsSlug]
+				: passdownProps.product
+
+		const subtitle =
+			props.subtitle ??
+			[
+				p?.productCategories?.[0] && typeof p.productCategories[0] === 'object'
+					? p.productCategories[0].title
+					: null,
+				p?.productSubCategories?.[0] && typeof p.productSubCategories[0] === 'object'
+					? p.productSubCategories[0].title
+					: null,
+				p?.title,
+			]
+				.filter(Boolean)
+				.join(' • ')
+
+		return (
+			<div className="relative grid min-h-[50dvw] grid-cols-2">
+				<div />
+				<div className="absolute inset-0 z-0">
+					<Image
+						src={img?.url ?? 'https://placehold.co/1000x1000'}
+						alt={
+							img?.alt ??
+							matchLang({
+								[Lang.English]: 'How to use product background image',
+								[Lang.Vietnamese]: 'Hình nền hướng dẫn sử dụng sản phẩm',
+							})({ locale })
+						}
+						width={img?.width ?? 1000}
+						height={img?.height ?? 1000}
+						unoptimized={!img}
+						className="h-full w-1/2 overflow-hidden object-cover"
+					/>
+				</div>
+				<div className='text-primary" flex size-full flex-col justify-center p-[7rem]'>
+					<div className="text-xl font-medium">{subtitle}</div>
+					<div className="mb-4 mt-1 font-serif text-5xl font-medium">{props.title}</div>
+					<RichText className="compact" data={props.content} enableGutter={false} />
+				</div>
 			</div>
-			<div className='text-primary" flex size-full flex-col justify-center p-[7rem]'>
-				<div className="text-xl font-medium">{props.subtitle}</div>
-				<div className="mb-4 mt-1 font-serif text-5xl font-medium">{props.title}</div>
-				<RichText className="compact" data={props.content} enableGutter={false} />
-			</div>
-		</div>
-	)
+		)
+	}
 }
