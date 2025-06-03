@@ -59,44 +59,54 @@ export const ProductsCollection: CollectionConfig<typeof ProductsSlug> = {
 					},
 					fields: [
 						{
-							name: ProductCategoriesSlug,
-							type: 'relationship',
-							relationTo: ProductCategoriesSlug,
-							label: {
-								en: 'Product Categories',
-								vi: 'Danh mục sản phẩm',
-							},
-							hasMany: true,
+							type: 'row',
+							fields: [
+								{
+									name: ProductCategoriesSlug,
+									type: 'relationship',
+									relationTo: ProductCategoriesSlug,
+									label: {
+										en: 'Product Categories',
+										vi: 'Danh mục sản phẩm',
+									},
+									hasMany: true,
+								},
+								{
+									name: ProductSubCategoriesSlug,
+									type: 'relationship',
+									relationTo: ProductSubCategoriesSlug,
+									label: {
+										en: 'Product Subcategories',
+										vi: 'Danh mục con sản phẩm',
+									},
+									hasMany: true,
+								},
+							],
 						},
 						{
-							name: ProductSubCategoriesSlug,
-							type: 'relationship',
-							relationTo: ProductSubCategoriesSlug,
-							label: {
-								en: 'Product Subcategories',
-								vi: 'Danh mục con sản phẩm',
-							},
-							hasMany: true,
-						},
-						{
-							name: 'title',
-							type: 'text',
-							label: {
-								en: "Product's title",
-								vi: 'Tên sản phẩm',
-							},
-							required: true,
-							localized: true,
-						},
-						{
-							name: 'shortDescription',
-							type: 'text',
-							label: {
-								en: 'Short Description',
-								vi: 'Mô tả ngắn',
-							},
-							required: true,
-							localized: true,
+							type: 'row',
+							fields: [
+								{
+									name: 'title',
+									type: 'text',
+									label: {
+										en: "Product's title",
+										vi: 'Tên sản phẩm',
+									},
+									required: true,
+									localized: true,
+								},
+								{
+									name: 'shortDescription',
+									type: 'text',
+									label: {
+										en: 'Short Description',
+										vi: 'Mô tả ngắn',
+									},
+									required: true,
+									localized: true,
+								},
+							],
 						},
 						{
 							name: 'longDescription',
@@ -108,13 +118,80 @@ export const ProductsCollection: CollectionConfig<typeof ProductsSlug> = {
 							localized: true,
 						},
 						{
-							name: 'price',
-							type: 'number',
-							required: true,
+							name: 'variants',
+							type: 'array',
 							label: {
-								en: 'Price (in Vietnamese dong)',
-								vi: 'Giá (đơn vị: đồng)',
+								en: 'Variants',
+								vi: 'Loại',
 							},
+							labels: {
+								singular: {
+									en: 'Variant',
+									vi: 'Loại',
+								},
+								plural: {
+									en: 'Variants',
+									vi: 'Các loại',
+								},
+							},
+							fields: [
+								{
+									type: 'row',
+									fields: [
+										{
+											name: 'title',
+											type: 'text',
+											label: {
+												en: "Variant's title",
+												vi: 'Tên loại',
+											},
+											required: true,
+											localized: true,
+										},
+										{
+											name: 'sku',
+											type: 'text',
+											label: {
+												en: "Variant's SKU",
+												vi: 'Mã SKU loại',
+											},
+											required: true,
+										},
+									],
+								},
+								{
+									type: 'row',
+									fields: [
+										{
+											name: 'stock',
+											type: 'number',
+											label: {
+												en: "Variant's stock",
+												vi: 'Số lượng tồn kho',
+											},
+											required: true,
+										},
+										{
+											name: 'price',
+											type: 'number',
+											label: {
+												en: "Variant's price",
+												vi: 'Giá loại',
+											},
+											required: true,
+										},
+									],
+								},
+								{
+									name: 'image',
+									type: 'upload',
+									label: {
+										en: "Variant's image",
+										vi: 'Ảnh loại',
+									},
+									relationTo: MediaSlug,
+								},
+							],
 						},
 						{
 							name: 'icon',
