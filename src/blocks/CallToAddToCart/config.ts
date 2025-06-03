@@ -1,6 +1,7 @@
 import { Block } from 'payload'
 
 import { MediaSlug } from '@/collections/Media/slug'
+import { ProductsSlug } from '@/collections/Products/slug'
 
 export const CallToAddToCartBlockConf: Block = {
 	slug: 'call-to-add-to-cart',
@@ -43,6 +44,15 @@ export const CallToAddToCartBlockConf: Block = {
 			},
 			defaultValue: 'MUA NGAY',
 			required: true,
+		},
+		{
+			name: ProductsSlug,
+			type: 'relationship',
+			relationTo: ProductsSlug,
+			label: {
+				en: 'Product',
+				vi: 'Sản phẩm',
+			},
 		},
 	],
 }
