@@ -4,17 +4,17 @@ import { ShoppingCart } from 'lucide-react'
 import { toast } from 'sonner'
 
 import { Button } from '@/components/ui/button'
-import { BasicProduct, useCartManager } from '@/hooks/useCartManager'
+import { useCartManager } from '@/hooks/useCartManager'
 import { useClientLang } from '@/hooks/useClientLang'
 import { Lang } from '@/utilities/lang'
 import { matchLang } from '@/utilities/matchLang'
 
-import { useVariantContext } from './VariantContext'
+import { useProductVariantContext } from './ProductVariantContext'
 
 export function INTERNAL_AddToCartClient(): React.JSX.Element {
 	const { lang: locale } = useClientLang()
 	const { loadProduct } = useCartManager({ syncWithLocalStorage: true })
-	const { product } = useVariantContext()
+	const { product } = useProductVariantContext()
 
 	return (
 		<Button
@@ -23,16 +23,12 @@ export function INTERNAL_AddToCartClient(): React.JSX.Element {
 			hideArrow={true}
 			variant="outline"
 			onClick={() => {
+				if (!product.slug || !product.title || !product.variant) return
 				loadProduct(
 					{
 						slug: product.slug,
-						title:
-							product.title ??
-							matchLang({
-								[Lang.English]: 'Untitled Product',
-								[Lang.Vietnamese]: 'Sản phẩm không tên',
-							})({ locale }),
-						variant: product.variant!,
+						title: product.title,
+						variant: product.variant,
 					},
 					1,
 				)
@@ -43,7 +39,7 @@ export function INTERNAL_AddToCartClient(): React.JSX.Element {
 					})({ locale }),
 				)
 			}}
-			disabled={!product.variant}
+			disabled={!product.slug || !product.title || !product.variant}
 			aria-label={matchLang({
 				[Lang.English]: `Add ${product.title} variant ${product.variant?.title} to cart`,
 				[Lang.Vietnamese]: `Thêm ${product.title} loại ${product.variant?.title} vào giỏ hàng`,
