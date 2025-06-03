@@ -7,15 +7,13 @@ import { PaginatedDocs } from 'payload'
 import React, { useEffect, useRef, useState } from 'react'
 import { toast } from 'sonner'
 
+import { GetProductsBySubCategorySlug } from '@/app/api/sub-category/[slug]/route'
 import { useClientLang } from '@/hooks/useClientLang'
 import { Product, ProductCategory, ProductSubCategory } from '@/payload-types'
 import { formatPrice } from '@/utilities/formatPrice'
+import { Lang } from '@/utilities/lang'
+import { matchLang } from '@/utilities/matchLang'
 import { cn } from '@/utilities/ui'
-
-import {
-	getProductsBySubCategory,
-	GetProductsBySubCategoryInput,
-} from '../actions/getProductsBySubCategory'
 
 const panelAnimationVariants: Variants = {
 	initial: { opacity: 0, x: -30 },
