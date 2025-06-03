@@ -14,7 +14,7 @@ export function middleware(request: NextRequest) {
 			// return undefined
 			const headers = new Headers(request.headers)
 			headers.set(HeaderName.CurrentPath, request.nextUrl.pathname)
-			headers.set(HeaderName.CurrentSearch, request.nextUrl.search)
+			headers.set(HeaderName.RequestQuery, request.nextUrl.search)
 			return NextResponse.next({
 				request: {
 					headers,
