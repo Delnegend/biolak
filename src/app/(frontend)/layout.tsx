@@ -11,6 +11,7 @@ import { Toaster } from '@/components/ui/sonner'
 import { FloatingGlobalComponent } from '@/globals/Floating/Component'
 import { HeaderGlobalComponent } from '@/globals/Header/Component'
 import { PromoGlobalComponent } from '@/globals/Promo/Component'
+import { CartContextProvider } from '@/hooks/useCartManager'
 import { ClientLangContextProvider } from '@/hooks/useClientLang'
 import { getServerSideURL } from '@/utilities/getURL'
 import { HeaderName } from '@/utilities/headerName'
@@ -45,24 +46,26 @@ export default async function RootLayout({ children }: { children: React.ReactNo
 				<link href="/favicon.svg" rel="icon" type="image/svg+xml" />
 			</head>
 			<body>
-				<ClientLangContextProvider>
-					<Toaster theme="light" />
-					<AdminBar
-						adminBarProps={{
-							preview: isEnabled,
-						}}
-					/>
-					{pathname === '/checkout' ? (
-						<></>
-					) : (
-						<>
-							<PromoGlobalComponent />
-							<HeaderGlobalComponent />
-						</>
-					)}
-					<FloatingGlobalComponent />
-					{children}
-				</ClientLangContextProvider>
+				<CartContextProvider>
+					<ClientLangContextProvider>
+						<Toaster theme="light" />
+						<AdminBar
+							adminBarProps={{
+								preview: isEnabled,
+							}}
+						/>
+						{pathname === '/checkout' ? (
+							<></>
+						) : (
+							<>
+								<PromoGlobalComponent />
+								<HeaderGlobalComponent />
+							</>
+						)}
+						<FloatingGlobalComponent />
+						{children}
+					</ClientLangContextProvider>
+				</CartContextProvider>
 			</body>
 		</html>
 	)
