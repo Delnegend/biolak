@@ -10,6 +10,6 @@ It is recommended to get familiar with the core concepts of [Payload CMS](https:
 - [fzf](https://github.com/junegunn/fzf) (Fuzzy finder, used by `just` recipes)
 - Docker Engine (To run the development PostgreSQL server)
 
-## Development, deployment, and more
-
-For more documentation, see the [docs directory](./docs/).
+## Documentation
+- [Deployment](./docs/deployment.md)
+- [Development](./docs/development.md)
