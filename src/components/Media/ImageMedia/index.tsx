@@ -25,8 +25,8 @@ export function ImageMedia(props: MediaProps): React.JSX.Element {
 	if (!src && props.resource && typeof props.resource === 'object') {
 		const { alt: altFromResource, height: fullHeight, url, width: fullWidth } = props.resource
 
-		width = fullWidth!
-		height = fullHeight!
+		width = fullWidth ?? 0
+		height = fullHeight ?? 0
 		alt = altFromResource || ''
 
 		const cacheTag = props.resource.updatedAt
