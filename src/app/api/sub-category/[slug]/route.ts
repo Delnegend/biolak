@@ -18,7 +18,7 @@ export type GetProductsBySubCategorySlug = {
 					slug?: Product['slug']
 					title: Product['title']
 					shortDescription: Product['shortDescription']
-					price: Product['price']
+					variants: Product['variants']
 					icon?: Product['icon']
 				}[]
 		  }

@@ -15,7 +15,7 @@ export type GetProductBySlug = {
 				data: {
 					title: Product['title']
 					shortDescription: Product['shortDescription']
-					price: Product['price']
+					variants: Product['variants']
 					icon: Product['icon']
 				}
 		  }
@@ -49,7 +49,7 @@ export async function GET(
 				select: {
 					title: true,
 					shortDescription: true,
-					price: true,
+					variants: true,
 					icon: true,
 				},
 				locale,
@@ -64,7 +64,7 @@ export async function GET(
 							data: {
 								title: product.title,
 								shortDescription: product.shortDescription,
-								price: product.price,
+								variants: product.variants,
 								icon: product.icon,
 							},
 						}
