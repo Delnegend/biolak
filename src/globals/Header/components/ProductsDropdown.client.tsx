@@ -112,17 +112,26 @@ export function INTERNAL_ProductsDropdownClient({
 
 	const [activeCategory, setActiveCategory] = useState<ProductCategory | null>(null)
 	const [activeSubCategory, setActiveSubCategory] = useState<ProductSubCategory | null>(null)
-	const [activeProducts, setActiveProducts] = useState<Product[] | null>(null)
+	const [activeProducts, setActiveProducts] = useState<
+		Array<{
+			id: Product['id']
+			title: Product['title']
+			shortDescription: Product['shortDescription']
+			price: Product['price']
+			slug?: Product['slug']
+			icon?: Product['icon']
+		}>
+	>([])
 
 	function handleCategoryLoad(category: ProductCategory) {
 		setActiveCategory(category)
 		setActiveSubCategory(null)
-		setActiveProducts(null)
+		setActiveProducts([])
 	}
 
 	async function handleSubcategoryLoad(subCategory: ProductSubCategory) {
 		setActiveSubCategory(subCategory)
-		setActiveProducts(null)
+		setActiveProducts([])
 		if (!subCategory.slug) return
 
 		let error: string | undefined
@@ -171,7 +180,7 @@ export function INTERNAL_ProductsDropdownClient({
 
 		setActiveCategory(null)
 		setActiveSubCategory(null)
-		setActiveProducts(null)
+		setActiveProducts([])
 	}, [open])
 
 	// close on route change
