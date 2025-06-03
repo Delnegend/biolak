@@ -4,13 +4,14 @@ import { ShoppingCart } from 'lucide-react'
 import { toast } from 'sonner'
 
 import { Button } from '@/components/ui/button'
+import { BasicProduct, useCartManager } from '@/hooks/useCartManager'
 import { useClientLang } from '@/hooks/useClientLang'
-import { BasicProduct, cartManager } from '@/utilities/cartManager'
 import { Lang } from '@/utilities/lang'
 import { matchLang } from '@/utilities/matchLang'
 
 export function INTERNAL_AddToCartClient(props: { product: BasicProduct }): React.JSX.Element {
 	const { lang: locale } = useClientLang()
+	const { loadProduct } = useCartManager({ syncWithLocalStorage: true })
 
 	return (
 		<Button
@@ -19,7 +20,7 @@ export function INTERNAL_AddToCartClient(props: { product: BasicProduct }): Reac
 			hideArrow={true}
 			variant="outline"
 			onClick={() => {
-				cartManager.load(props.product)
+				loadProduct(props.product, 1)
 				toast.success(
 					matchLang({
 						[Lang.English]: `Added ${props.product.title} to cart`,
