@@ -101,4 +101,24 @@ export const OrdersCollection: CollectionConfig<typeof OrdersSlug> = {
 		},
 	],
 	timestamps: true,
+	hooks: {
+		afterChange: [
+			async ({ doc, req: { payload } }) => {
+				const result = await tryCatch(() =>
+					payload.sendEmail({
+						from: process.env.SMTP_FROM,
+						to: 'bar@example.com, baz@example.com',
+						subject: 'Hello ✔',
+						text: 'BioLAK có đơn hàng mới từ ' + doc[CustomersSlug]?.name,
+					}),
+				)
+				if (!result.success) {
+					console.error('Error sending email:', result.error)
+					return doc
+				}
+				console.log('Message sent:', result.data)
+				return doc
+			},
+		],
+	},
 }
