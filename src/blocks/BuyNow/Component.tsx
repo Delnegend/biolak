@@ -1,5 +1,6 @@
 import { ProductsSlug } from '@/collections/Products/slug'
 import { BuyNowBlockProps, Product } from '@/payload-types'
+import { findValidProductVariant } from '@/utilities/findValidProductVariant'
 import { getClientLang } from '@/utilities/getClientLang'
 import { Lang } from '@/utilities/lang'
 import { matchLang } from '@/utilities/matchLang'
@@ -25,6 +26,7 @@ export function BuyNowBlock(passdownProps: {
 			<div className="safe-width flex justify-center">
 				<INTERNAL_BuyNowClient
 					productSlug={p.slug}
+					fallbackVariantSku={findValidProductVariant(p.variants)?.sku}
 					buttonLabel={
 						props.buttonLabel ??
 						matchLang({
