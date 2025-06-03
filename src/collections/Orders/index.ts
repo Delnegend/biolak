@@ -16,7 +16,7 @@ export const OrdersCollection: CollectionConfig<typeof OrdersSlug> = {
 		},
 		plural: {
 			en: 'Orders',
-			vi: 'Các đơn hàng',
+			vi: 'Đơn hàng',
 		},
 	},
 	access: {
