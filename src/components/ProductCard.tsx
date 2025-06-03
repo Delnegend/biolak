@@ -2,8 +2,8 @@ import { CirclePlus } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
 
-import { Media } from '@/payload-types'
-import { formatPrice } from '@/utilities/formatPrice'
+import { Product } from '@/payload-types'
+import { getPriceRange } from '@/utilities/getPriceRange'
 import { cn } from '@/utilities/ui'
 
 import { Button } from './ui/button'
@@ -14,12 +14,15 @@ export function ProductCard({
 	component,
 }: {
 	product: {
-		id: number
-		title: string
-		slug?: string | null
-		shortDescription: string
-		price: number
-		gallery?: (number | Media)[] | null
+		id: Product['id']
+		title: Product['title']
+		slug?: Product['slug']
+		shortDescription: Product['shortDescription']
+		gallery?: Product['gallery']
+		variants: Array<{
+			price: Product['variants'][number]['price']
+			stock: Product['variants'][number]['stock']
+		}>
 	}
 	size?: 'lg' | 'sm'
 	component?: React.ElementType
@@ -65,7 +68,7 @@ export function ProductCard({
 			<div style={{ gridArea: 'desc' }} className="mb-[1.375rem] text-xs uppercase">
 				{p.shortDescription}
 			</div>
-			<div style={{ gridArea: 'price' }}>{formatPrice(p.price)}</div>
+			<div style={{ gridArea: 'price' }}>{getPriceRange(p)}</div>
 			<div style={{ gridArea: 'add-to-cart' }}>
 				<Button
 					hideArrow={true}
