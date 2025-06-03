@@ -183,6 +183,14 @@ export const ProductsCollection: CollectionConfig<typeof ProductsSlug> = {
 									],
 								},
 								{
+									name: 'defaultVariant',
+									type: 'checkbox',
+									label: {
+										en: 'Default variant',
+										vi: 'Loại mặc định',
+									},
+								},
+								{
 									name: 'image',
 									type: 'upload',
 									label: {
@@ -192,6 +200,8 @@ export const ProductsCollection: CollectionConfig<typeof ProductsSlug> = {
 									relationTo: MediaSlug,
 								},
 							],
+							required: true,
+							minRows: 1,
 						},
 						{
 							name: 'icon',
