@@ -16,8 +16,8 @@ const fields: Field[] = [
 			{
 				value: 'prebuilt',
 				label: {
-					en: 'Link to prebuilt',
-					vi: 'Liên kết chức năng',
+					en: 'Functional button',
+					vi: 'Nút chức năng',
 				},
 			},
 			{
