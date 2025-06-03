@@ -13,7 +13,7 @@ services:
 
    pgadmin:
       container_name: pgadmin
-      image: docker.io/library/pgadmin4
+      image: docker.io/dpage/pgadmin4
       restart: unless-stopped
       ports:
          - 5050:80
