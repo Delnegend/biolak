@@ -274,7 +274,13 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   ALTER TABLE "checkout_page_global" ALTER COLUMN "address_phone_input_label" DROP DEFAULT;
   ALTER TABLE "_pages_v" ADD COLUMN "snapshot" boolean;
   ALTER TABLE "_pages_v" ADD COLUMN "published_locale" "enum__pages_v_published_locale";
-  ALTER TABLE "post_categories_breadcrumbs" ADD COLUMN "_locale" "_locales" NOT NULL;
+
+  ALTER TABLE "post_categories_breadcrumbs" ADD COLUMN "_locale" "_locales";
+  UPDATE "post_categories_breadcrumbs"
+  SET "_locale" = 'vi';
+  ALTER TABLE "post_categories_breadcrumbs"
+
+  ALTER COLUMN "_locale" SET NOT NULL;
   ALTER TABLE "_posts_v" ADD COLUMN "snapshot" boolean;
   ALTER TABLE "_posts_v" ADD COLUMN "published_locale" "enum__posts_v_published_locale";
   DO $$ BEGIN
