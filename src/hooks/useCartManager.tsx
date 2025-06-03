@@ -1,4 +1,6 @@
-import { useEffect, useState } from 'react'
+'use client'
+
+import { createContext, useContext, useEffect, useState } from 'react'
 
 import { type Product } from '@/payload-types'
 import { tryCatchSync } from '@/utilities/tryCatch'
@@ -14,6 +16,20 @@ export type BasicProductInCart = BasicProduct & {
 	checked: boolean
 }
 
+const CartContext = createContext<{
+	cart: BasicProductInCart[]
+	setCart: React.Dispatch<React.SetStateAction<BasicProductInCart[]>>
+} | null>(null)
+
+export function CartContextProvider({
+	children,
+}: {
+	children: React.ReactNode
+}): React.JSX.Element {
+	const [cart, setCart] = useState<BasicProductInCart[]>([])
+	return <CartContext.Provider value={{ cart, setCart }}>{children}</CartContext.Provider>
+}
+
 const cartKey = 'cart'
 
 export function useCartManager({
@@ -21,7 +37,12 @@ export function useCartManager({
 }: {
 	syncWithLocalStorage?: boolean
 }) {
-	const [cart, setCart_] = useState<BasicProductInCart[]>([])
+	const cartCtx = useContext(CartContext)
+	if (!cartCtx) {
+		throw new Error('useCartManager must be used within a CartContextProvider')
+	}
+	const { cart, setCart: setCart_ } = cartCtx
+
 	function setCart(
 		newCart: BasicProductInCart[] | ((prev: BasicProductInCart[]) => BasicProductInCart[]),
 	) {
