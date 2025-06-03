@@ -18,7 +18,8 @@ const variantContext = createContext<{
 	>
 } | null>(null)
 
-export function VariantContextProvider({
+/** Use this in the entire product page to provide the product slug and variant to all components. */
+export function PorductVariantContextProvider({
 	children,
 }: {
 	children: React.ReactNode
@@ -44,7 +45,7 @@ export function VariantContextProvider({
 	)
 }
 
-export function useVariantContext() {
+export function useProductVariantContext() {
 	const context = useContext(variantContext)
 	if (!context) {
 		throw new Error('useVariantContext must be used within a VariantContextProvider')
