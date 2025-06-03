@@ -35,9 +35,12 @@ export async function getMeUser(args?: {
 		redirect(nullUserRedirect)
 	}
 
-	// Token will exist here because if it doesn't the user will be redirected
+	if (!token) {
+		throw new Error('No token found in cookies, user should already be redirected')
+	}
+
 	return {
-		token: token!,
+		token,
 		user,
 	}
 }
