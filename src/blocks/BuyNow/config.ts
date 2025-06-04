@@ -40,6 +40,17 @@ export const BuyNowBlockConf: Block = {
 				en: 'Product',
 				vi: 'Sản phẩm',
 			},
+			admin: {
+				condition: (data) => {
+					const isProductDocument =
+						!!data.reviewsVisible &&
+						!!data.variants &&
+						!!data.productCategories &&
+						data.productSubCategories
+					return !isProductDocument
+				},
+			},
+			required: true,
 		},
 	],
 }
