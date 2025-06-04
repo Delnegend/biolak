@@ -116,7 +116,7 @@ export function INTERNAL_ReviewDialogContentClient({
 				</DialogTrigger>
 				<DialogContent
 					className="w-full max-w-[60rem] overflow-hidden p-20"
-					aria-description={matchLang({
+					aria-label={matchLang({
 						[Lang.English]: 'Send a review for your order dialog',
 						[Lang.Vietnamese]: 'Hộp thoại gửi đánh giá cho đơn hàng của bạn',
 					})({ locale })}
