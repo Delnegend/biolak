@@ -4,6 +4,7 @@ import React from 'react'
 
 import RichText from '@/components/RichText'
 import { Product } from '@/payload-types'
+import { findValidProductVariant } from '@/utilities/findValidProductVariant'
 import { getClientLang } from '@/utilities/getClientLang'
 import { Lang } from '@/utilities/lang'
 import { matchLang } from '@/utilities/matchLang'
@@ -70,10 +71,13 @@ export async function ProductHero({
 					</div>
 				)}
 
-				<INTERNAL_ProductVariantsClient variants={p.variants} productSlug={p.slug} />
+				<INTERNAL_ProductVariantsClient
+					variants={p.variants}
+					product={{ slug: p.slug, title: p.title }}
+				/>
 
-				<div className="mt-8 grid size-full h-fit grid-cols-[repeat(auto-fill,minmax(21rem,1fr))] gap-4">
-					<INTERNAL_BuyNowClient />
+				<div className="mt-8 grid size-full h-fit grid-cols-[repeat(auto-fill,minmax(14rem,1fr))] gap-4">
+					<INTERNAL_BuyNowClient fallbackVariant={findValidProductVariant(p.variants)} />
 					<INTERNAL_AddToCartClient />
 				</div>
 			</div>
