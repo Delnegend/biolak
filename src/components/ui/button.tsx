@@ -34,12 +34,19 @@ export const buttonVariants = cva(
 	},
 )
 
-export interface ButtonProps
-	extends React.ButtonHTMLAttributes<HTMLButtonElement>,
-		VariantProps<typeof buttonVariants> {
-	asChild?: boolean
-	hideArrow?: boolean
-}
+type BaseButtonProps = VariantProps<typeof buttonVariants> &
+	React.ComponentPropsWithRef<'button'> & {
+		asChild?: boolean
+	}
+
+export type ButtonProps =
+	| (BaseButtonProps & {
+			asChild: true
+	  })
+	| (BaseButtonProps & {
+			asChild?: false
+			hideArrow?: boolean
+	  })
 
 const phudu = Phudu({ subsets: ['vietnamese'], weight: '600' })
 
@@ -48,22 +55,30 @@ export function Button({
 	className,
 	size,
 	variant,
-	hideArrow = false,
 	...props
-}: React.ComponentPropsWithRef<'button'> & ButtonProps): React.JSX.Element {
+}: ButtonProps): React.JSX.Element {
 	const Comp = asChild ? Slot : 'button'
+
 	if (asChild) {
-		return <Comp className={cn(buttonVariants({ size, variant }), className)} {...props} />
+		return (
+			<Comp
+				className={cn(buttonVariants({ size, variant }), phudu.className, className)}
+				{...props}
+			/>
+		)
 	}
 
-	const { children, ...rest } = props
+	const { children, hideArrow, ...rest } = props as ButtonProps & {
+		hideArrow?: boolean
+	}
 
 	return (
 		<button
 			className={cn(
 				buttonVariants({ className, size, variant }),
 				'font-semibold',
-				phudu.className,
+				!(className?.includes('font-sans') || className?.includes('font-serif')) &&
+					phudu.className,
 				hideArrow ? 'justify-center' : 'justify-between',
 				className,
 			)}
