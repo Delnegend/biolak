@@ -1,3 +1,4 @@
+import { ArrowRight } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
 
@@ -18,9 +19,12 @@ export function CallToActionPostBlock(props: CallToActionPostBlockProps): React.
 				<div className="text-xl font-semibold">
 					{props.overwriteDescription ?? post?.meta?.meta?.description}
 				</div>
-				<Link href={post?.slug ? `/post/${post.slug}` : '#'} className="w-full">
-					<Button size="lg">{props.buttonLabel}</Button>
-				</Link>
+				<Button size="lg" className="justify-between" asChild>
+					<Link href={post?.slug ? `/post/${post.slug}` : '#'} className="w-full">
+						{props.buttonLabel}
+					</Link>
+					<ArrowRight />
+				</Button>
 			</div>
 			<div className="w-full lg:relative">
 				<Image
