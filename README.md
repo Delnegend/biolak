@@ -11,5 +11,6 @@ It is recommended to get familiar with the core concepts of [Payload CMS](https:
 - Docker Engine (To run the development PostgreSQL server)
 
 ## Documentation
+
 - [Deployment](./docs/deployment.md)
 - [Development](./docs/development.md)
