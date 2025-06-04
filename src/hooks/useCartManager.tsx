@@ -70,10 +70,6 @@ export function useCartManager({
 	return {
 		cart,
 
-		clearCart(): void {
-			setCart([])
-		},
-
 		loadProduct(product: BasicProduct): void {
 			setCart((prev) => {
 				const existingProductIndex = prev?.findIndex(
