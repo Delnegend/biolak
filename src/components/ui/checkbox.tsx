@@ -9,7 +9,7 @@ import { cn } from '@/utilities/ui'
 export function Checkbox({
 	className,
 	...props
-}: React.ComponentPropsWithRef<'button'>): React.JSX.Element {
+}: React.ComponentPropsWithRef<typeof CheckboxPrimitive.Root>): React.JSX.Element {
 	return (
 		<CheckboxPrimitive.Root
 			className={cn(
