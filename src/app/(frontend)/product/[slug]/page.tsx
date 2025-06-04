@@ -10,7 +10,7 @@ import { PayloadRedirects } from '@/components/PayloadRedirects'
 import { FooterGlobalComponent } from '@/globals/Footer/Component'
 import { ReviewsGlobalComponent } from '@/globals/Reviews/Component'
 import { ProductHero } from '@/heros/ProductHero'
-import { PorductVariantContextProvider } from '@/heros/ProductHero/ProductVariantContext'
+import { ProductVariantContextProvider } from '@/heros/ProductHero/ProductVariantContext'
 import { generateMeta } from '@/utilities/generateMeta'
 import { getClientLang } from '@/utilities/getClientLang'
 
@@ -98,7 +98,7 @@ export default async function Product({
 	if (!product) return <PayloadRedirects url={url} />
 
 	return (
-		<PorductVariantContextProvider>
+		<ProductVariantContextProvider>
 			<article>
 				<PageClient />
 				<PayloadRedirects disableNotFound url={url} />
@@ -128,6 +128,6 @@ export default async function Product({
 
 				<FooterGlobalComponent size={product.footerSize} />
 			</article>
-		</PorductVariantContextProvider>
+		</ProductVariantContextProvider>
 	)
 }
