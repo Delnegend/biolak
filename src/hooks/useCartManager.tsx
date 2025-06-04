@@ -74,56 +74,60 @@ export function useCartManager({
 			setCart([])
 		},
 
-		loadProduct(product: BasicProduct, quantity: number = 1): void {
-			if (quantity < 1) return
+		loadProduct(product: BasicProduct): void {
 			setCart((prev) => {
 				const existingProductIndex = prev?.findIndex(
 					(item) => item.slug === product.slug && item.variant.id === product.variant.id,
 				)
 
-				const updatedCart = [...prev]
+				const updatedCart = structuredClone(prev ?? [])
 
 				if (
 					existingProductIndex !== undefined &&
 					existingProductIndex > -1 &&
 					updatedCart[existingProductIndex]
 				) {
-					updatedCart[existingProductIndex].quantity += quantity
+					updatedCart[existingProductIndex].quantity += 1
 				} else {
-					updatedCart.push({ ...product, quantity, checked: true })
+					updatedCart.push({ ...product, quantity: 1, checked: true })
 				}
 
 				return updatedCart
 			})
 		},
 
-		unloadProduct(product: BasicProduct, quantity: number = 1): void {
-			if (quantity < 1) return
+		unloadProduct(product: BasicProduct): void {
 			setCart((prev) => {
 				const existingProductIndex = prev?.findIndex(
 					(item) => item.slug === product.slug && item.variant.id === product.variant.id,
 				)
 
-				const updatedCart = [...prev]
+				const updatedCart = structuredClone(prev ?? [])
 
 				if (
 					existingProductIndex !== undefined &&
 					existingProductIndex > -1 &&
 					updatedCart[existingProductIndex]
 				) {
-					updatedCart[existingProductIndex].quantity -= quantity
-					if (updatedCart[existingProductIndex].quantity < 1) {
-						updatedCart.splice(existingProductIndex, 1)
+					if (updatedCart[existingProductIndex].quantity === 1) {
+						return updatedCart
 					}
+					updatedCart[existingProductIndex].quantity -= 1
 				}
 
 				return updatedCart
 			})
 		},
 
-		removeProduct(productSlug: Product['slug']): void {
+		removeProduct(
+			productSlug: Product['slug'],
+			variantSku: Product['variants'][number]['sku'],
+		): void {
 			setCart((prev) => {
-				const updatedCart = prev?.filter((item) => item.slug !== productSlug)
+				const updatedCart =
+					prev?.filter(
+						(item) => !(item.slug === productSlug && item.variant.sku === variantSku),
+					) ?? []
 
 				return updatedCart
 			})
