@@ -19,6 +19,7 @@ export const buttonVariants = cva(
 				icon: 'h-10 w-10',
 				lg: 'h-[5.25rem] rounded-[10px] px-8 text-[28px]',
 				sm: 'h-9 rounded px-3',
+				md: 'h-[4.375rem] text-xl rounded-[0.5rem] px-6',
 			},
 			variant: {
 				default: 'bg-black text-primary-foreground hover:bg-primary/90',
