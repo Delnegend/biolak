@@ -7,7 +7,7 @@ import { formatPrice } from '@/utilities/formatPrice'
 import { Lang } from '@/utilities/lang'
 import { matchLang } from '@/utilities/matchLang'
 
-import { useSelectProductVariant } from './ProductVariantContext'
+import { useSelectedProductVariant } from './ProductVariantContext'
 
 export function INTERNAL_BuyNowClient({
 	fallbackVariant,
@@ -15,7 +15,7 @@ export function INTERNAL_BuyNowClient({
 	fallbackVariant?: Product['variants'][number] | null
 }): React.JSX.Element {
 	const { lang: locale } = useClientLang()
-	const { selectedProductVariant } = useSelectProductVariant()
+	const { selectedProductVariant } = useSelectedProductVariant()
 
 	const variant = selectedProductVariant?.variant ?? fallbackVariant ?? undefined
 
