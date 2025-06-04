@@ -38,11 +38,13 @@ export function useCartManager({
 	syncWithLocalStorage?: boolean
 }) {
 	const cartCtx = useContext(CartContext)
+	const [loadedFromLocalStorageDone, setLoadedFromLocalStorageDone] = useState(false)
+
 	if (!cartCtx) {
 		throw new Error('useCartManager must be used within a CartContextProvider')
 	}
-	const { cart, setCart: setCart_ } = cartCtx
 
+	const { cart, setCart: setCart_ } = cartCtx
 	function setCart(
 		newCart: BasicProductInCart[] | ((prev: BasicProductInCart[]) => BasicProductInCart[]),
 	) {
@@ -59,16 +61,21 @@ export function useCartManager({
 	}
 
 	useEffect(() => {
-		if (!syncWithLocalStorage) return
+		if (!syncWithLocalStorage) {
+			setLoadedFromLocalStorageDone(true)
+			return
+		}
 		const result = tryCatchSync(
 			() => JSON.parse(localStorage.getItem(cartKey) || '[]') as BasicProductInCart[],
 		)
 		if (result.success) setCart(result.data)
+		setLoadedFromLocalStorageDone(true)
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [])
 
 	return {
 		cart,
+		loadedFromLocalStorageDone,
 
 		loadProduct(product: BasicProduct): void {
 			setCart((prev) => {
