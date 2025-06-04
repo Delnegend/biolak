@@ -5,39 +5,37 @@ import { createContext, useContext, useState } from 'react'
 import type { Product } from '@/payload-types'
 
 const variantContext = createContext<{
-	product: {
+	selectedProductVariant: {
 		slug: Product['slug']
-		title?: Product['title']
-		variant?: NonNullable<Product['variants']>[number]
-	}
-	setProductSlugAndVariant: React.Dispatch<
+		title: Product['title']
+		variant: NonNullable<Product['variants']>[number]
+	} | null
+	setSelectedProductVariant: React.Dispatch<
 		React.SetStateAction<{
-			productSlug: Product['slug']
+			slug: Product['slug']
+			title: Product['title']
 			variant: NonNullable<Product['variants']>[number]
 		} | null>
 	>
 } | null>(null)
 
 /** Use this in the entire product page to provide the product slug and variant to all components. */
-export function PorductVariantContextProvider({
+export function ProductVariantContextProvider({
 	children,
 }: {
 	children: React.ReactNode
 }): React.JSX.Element {
-	const [productSlugAndVariant, setProductSlugAndVariant] = useState<{
-		productSlug: Product['slug']
+	const [selectedProductVariant, setSelectedProductVariant] = useState<{
+		slug: Product['slug']
+		title: Product['title']
 		variant: NonNullable<Product['variants']>[number]
 	} | null>(null)
 
 	return (
 		<variantContext.Provider
 			value={{
-				product: {
-					slug: productSlugAndVariant?.productSlug,
-					title: productSlugAndVariant?.variant.title,
-					variant: productSlugAndVariant?.variant,
-				},
-				setProductSlugAndVariant,
+				selectedProductVariant,
+				setSelectedProductVariant,
 			}}
 		>
 			{children}
