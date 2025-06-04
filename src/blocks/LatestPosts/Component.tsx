@@ -1,10 +1,10 @@
+import { ArrowRight } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
 
+import { Button } from '@/components/ui/button'
 import { Carousel, CarouselContent, CarouselItem } from '@/components/ui/carousel'
 import { LatestPostsBlockProps } from '@/payload-types'
-
-import { AllPostsButton } from './AllPostsButton.client'
 
 export function LatestPostsBlock(props: LatestPostsBlockProps): React.JSX.Element {
 	const posts = props.posts.filter((post) => typeof post === 'object') ?? []
@@ -14,9 +14,10 @@ export function LatestPostsBlock(props: LatestPostsBlockProps): React.JSX.Elemen
 			<div className="safe-width">
 				<div className="mb-12 flex flex-row items-center justify-between font-semibold italic">
 					<div className="font-serif text-7xl">{props.title}</div>
-					<Link href={'/events'} className="">
-						<AllPostsButton buttonLabel={props.buttonLabel} />
-					</Link>
+					<Button size="lg" className="justify-between" variant="outline" asChild>
+						<Link href={'/events'}>{props.buttonLabel}</Link>
+						<ArrowRight />
+					</Button>
 				</div>
 
 				<Carousel opts={{ dragFree: true }}>
