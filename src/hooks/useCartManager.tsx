@@ -119,10 +119,13 @@ export function useCartManager({
 			})
 		},
 
-		removeProduct(
-			productSlug: Product['slug'],
-			variantSku: Product['variants'][number]['sku'],
-		): void {
+		removeProduct({
+			productSlug,
+			variantSku,
+		}: {
+			productSlug: Product['slug']
+			variantSku: Product['variants'][number]['sku']
+		}): void {
 			setCart((prev) => {
 				const updatedCart =
 					prev?.filter(
