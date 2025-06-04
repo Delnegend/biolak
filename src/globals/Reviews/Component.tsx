@@ -3,6 +3,7 @@ import { Phudu } from 'next/font/google'
 import { Fragment } from 'react'
 
 import { HeartsRow } from '@/components/HeartsRow'
+import { Button } from '@/components/ui/button'
 import { ReviewsGlobalSlug } from '@/globals/Reviews/config'
 import { INTERNAL_ReviewDialogContentClient } from '@/globals/Reviews/ReviewDialogContent.client'
 import { Order, ReviewsGlobal } from '@/payload-types'
@@ -76,6 +77,32 @@ export async function ReviewsGlobalComponent({
 		},
 		{} as Record<number, number>,
 	)
+
+	if (reviews.length === 0) {
+		return (
+			<div className="safe-width mt-20 flex h-[26rem] flex-col items-center justify-between py-20 text-center text-2xl font-medium text-primary">
+				<div>
+					<h1 className="mb-8 text-8xl font-semibold uppercase text-muted-foreground">
+						{matchLang({
+							[Lang.English]: 'Oh',
+							[Lang.Vietnamese]: 'Ồ',
+						})({ locale })}
+					</h1>
+					<div>
+						{matchLang({
+							[Lang.English]: 'There are no reviews yet',
+							[Lang.Vietnamese]: 'Chưa có đánh giá nào cả',
+						})({ locale })}
+					</div>
+				</div>
+
+				<INTERNAL_ReviewDialogContentClient
+					global={global}
+					className={{ triggerButton: 'self-center' }}
+				/>
+			</div>
+		)
+	}
 
 	return (
 		<div className="safe-width mt-20 grid grid-cols-[auto_1fr] gap-x-20 text-primary">
