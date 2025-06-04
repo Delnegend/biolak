@@ -55,8 +55,50 @@ export const ReviewsGlobalConf: GlobalConfig<typeof ReviewsGlobalSlug> = {
 			required: true,
 			localized: true,
 			defaultValue: matchLang({
-				[Lang.English]: 'Write your review',
-				[Lang.Vietnamese]: 'Viết đánh giá của bạn',
+				[Lang.English]: 'Your review',
+				[Lang.Vietnamese]: 'Đánh giá của bạn',
+			}),
+		},
+		{
+			name: 'heartsSelectionLabel',
+			type: 'text',
+			label: {
+				en: 'Hearts selection label',
+				vi: 'Nhãn lựa chọn đánh giá',
+			},
+			required: true,
+			localized: true,
+			defaultValue: matchLang({
+				[Lang.English]: 'Review for this product',
+				[Lang.Vietnamese]: 'Đánh giá cho sản phẩm này',
+			}),
+		},
+		{
+			name: 'invoiceIdLabel',
+			type: 'text',
+			label: {
+				en: 'Invoice ID label',
+				vi: 'Nhãn mã đơn hàng',
+			},
+			required: true,
+			localized: true,
+			defaultValue: matchLang({
+				[Lang.English]: 'Your order ID',
+				[Lang.Vietnamese]: 'Mã đơn hàng của bạn',
+			}),
+		},
+		{
+			name: 'contentLabel',
+			type: 'text',
+			label: {
+				en: 'Content label',
+				vi: 'Nhãn nội dung đánh giá',
+			},
+			required: true,
+			localized: true,
+			defaultValue: matchLang({
+				[Lang.English]: 'Product review',
+				[Lang.Vietnamese]: 'Cảm nhận về sản phẩm',
 			}),
 		},
 		{
@@ -69,8 +111,8 @@ export const ReviewsGlobalConf: GlobalConfig<typeof ReviewsGlobalSlug> = {
 			required: true,
 			localized: true,
 			defaultValue: matchLang({
-				[Lang.English]: 'SEND REVIEW',
-				[Lang.Vietnamese]: 'GỬI ĐÁNH GIÁ',
+				[Lang.English]: 'WRITE REVIEW',
+				[Lang.Vietnamese]: 'VIẾT ĐÁNH GIÁ',
 			}),
 		},
 	],
