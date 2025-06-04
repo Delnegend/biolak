@@ -1,7 +1,7 @@
 'use client'
 
-import { Heart } from 'lucide-react'
-import { useState } from 'react'
+import { CirclePlus, Heart, X } from 'lucide-react'
+import { useEffect, useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 
@@ -18,13 +18,19 @@ import { sendReviewAction, SendReviewInputType } from './actions/sendReviewActio
 
 export function INTERNAL_ReviewDialogContentClient({
 	global,
+	className,
 }: {
 	global: ReviewsGlobal
+	className?: {
+		triggerButton?: string
+	}
 }): React.JSX.Element {
 	const { lang: locale } = useClientLang()
 	const [dialogOpen, setDialogOpen] = useState(false)
+	const [dialogOpenOnce, setDialogOpenOnce] = useState(false)
 	const { register, handleSubmit } = useForm<SendReviewInputType>()
 	const [rating, setRating] = useState<number>(5)
+	const [reviewImages, setReviewImages] = useState<File[]>([])
 
 	const onSubmit: SubmitHandler<SendReviewInputType> = async (data) => {
 		const response = await sendReviewAction({ ...data, rating })
@@ -50,49 +56,176 @@ export function INTERNAL_ReviewDialogContentClient({
 		)
 	}
 
+	useEffect(() => {
+		const controller = new AbortController()
+
+		const ghostInput = document.getElementById('ghost-input') as HTMLInputElement
+		if (!ghostInput) return
+
+		ghostInput.addEventListener(
+			'change',
+			(e) => {
+				const inputReviewImages = document.getElementById(
+					'review-image-upload',
+				) as HTMLInputElement
+
+				const target = e.target as HTMLInputElement
+				if (!target.files) return
+
+				const filesArray = Array.from(target.files)
+				setReviewImages((prev) => [...prev, ...filesArray])
+
+				const dataTransfer = new DataTransfer()
+				if (inputReviewImages.files) {
+					Array.from(inputReviewImages.files).forEach((file) => {
+						dataTransfer.items.add(file)
+					})
+				}
+				filesArray.forEach((file) => {
+					dataTransfer.items.add(file)
+				})
+
+				inputReviewImages.files = dataTransfer.files
+				target.value = ''
+			},
+			{ signal: controller.signal },
+		)
+
+		return () => {
+			controller.abort()
+		}
+	}, [])
+
 	return (
-		<Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-			<DialogTrigger asChild>
-				<Button className="w-full max-w-[25.5rem] self-end" hideArrow={true}>
-					{global.btnLabel}
-				</Button>
-			</DialogTrigger>
-			<DialogContent className="w-full max-w-3xl">
-				<form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-10 p-20">
-					<DialogTitle>{global.reviewDialogTitle}</DialogTitle>
-
-					<div className="flex flex-row justify-center gap-x-[0.875rem]">
-						{Array.from({ length: 5 }).map((_, i) => {
-							return (
-								<button
-									key={i}
-									onClick={(e) => {
-										e.preventDefault()
-										setRating(i + 1)
-									}}
-									className="rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
-									aria-label={matchLang({
-										[Lang.English]: `Set rating to ${i + 1} over 5`,
-										[Lang.Vietnamese]: `Đặt đánh giá tới ${i + 1} trên 5`,
-									})({ locale })}
-								>
-									<Heart
-										fill={rating >= i + 1 ? '#925E12' : 'transparent'}
-										className={cn(rating >= i + 1 && 'text-[#925E12]')}
-										size={36}
-									/>
-								</button>
-							)
-						})}
-					</div>
-
-					<TextInput label="Mã đơn hàng" {...register('invoiceId')}></TextInput>
-					<TextInput label="Nội dung" {...register('content')}></TextInput>
-					<Button type="submit" className="w-full" hideArrow={true}>
-						{global.sendReviewBtnLabel}
+		<>
+			<input
+				type="file"
+				accept="image/*"
+				className="hidden"
+				id="ghost-input"
+				multiple
+				tabIndex={-1}
+			/>
+			<Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+				<DialogTrigger asChild>
+					<Button
+						className={cn('w-full max-w-[25.5rem] self-end', className?.triggerButton)}
+						hideArrow={true}
+					>
+						{global.btnLabel}
 					</Button>
-				</form>
-			</DialogContent>
-		</Dialog>
+				</DialogTrigger>
+				<DialogContent
+					className="w-full max-w-[60rem] overflow-hidden p-20"
+					aria-description={matchLang({
+						[Lang.English]: 'Send a review for your order dialog',
+						[Lang.Vietnamese]: 'Hộp thoại gửi đánh giá cho đơn hàng của bạn',
+					})({ locale })}
+				>
+					<form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-9">
+						<DialogTitle>{global.reviewDialogTitle}</DialogTitle>
+
+						<div>
+							<div className="mb-6 text-xl text-muted-foreground">
+								{global.heartsSelectionLabel ?? '???'}
+							</div>
+							<div className="flex flex-row gap-x-[0.875rem]">
+								{Array.from({ length: 5 }).map((_, i) => {
+									return (
+										<button
+											key={i}
+											onClick={(e) => {
+												e.preventDefault()
+												setRating(i + 1)
+											}}
+											className="rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+											aria-label={matchLang({
+												[Lang.English]: `Set rating to ${i + 1} over 5`,
+												[Lang.Vietnamese]: `Đặt đánh giá tới ${i + 1} trên 5`,
+											})({ locale })}
+										>
+											<Heart
+												fill={rating >= i + 1 ? '#925E12' : 'transparent'}
+												className={cn(rating >= i + 1 && 'text-[#925E12]')}
+												size={36}
+											/>
+										</button>
+									)
+								})}
+							</div>
+						</div>
+
+						<TextInput size="sm" label="Mã đơn hàng" {...register('invoiceId')}></TextInput>
+						<TextInput size="sm" label="Nội dung" {...register('content')}></TextInput>
+
+						<div className="flex flex-row gap-6 overflow-auto">
+							{reviewImages?.map((image, index) => (
+								<div
+									key={index}
+									className="relative flex aspect-square size-[12.5rem] items-center justify-center overflow-clip rounded-xl border-2"
+								>
+									{/* eslint-disable-next-line @next/next/no-img-element */}
+									<img
+										src={URL.createObjectURL(image)}
+										alt={matchLang({
+											[Lang.English]: `Review image ${index + 1}`,
+											[Lang.Vietnamese]: `Hình ảnh đánh giá ${index + 1}`,
+										})({ locale })}
+										className="size-full overflow-hidden object-cover"
+									/>
+									<button
+										onClick={(e) => {
+											e.preventDefault()
+											setReviewImages((prev) => {
+												const newImages = [...prev]
+												newImages.splice(index, 1)
+												return newImages
+											})
+											const reviewImageUpload = document.getElementById(
+												'review-image-upload',
+											) as HTMLInputElement
+											if (!reviewImageUpload) return
+
+											const dataTransfer = new DataTransfer()
+											if (reviewImageUpload.files) {
+												Array.from(reviewImageUpload.files).forEach((file, idx) => {
+													if (idx !== index) dataTransfer.items.add(file)
+												})
+											}
+
+											reviewImageUpload.files = dataTransfer.files
+										}}
+									>
+										<X className="absolute right-2 top-2" color="white" />
+									</button>
+								</div>
+							))}
+							<input
+								type="file"
+								accept="image/*"
+								multiple
+								className="hidden"
+								id="review-image-upload"
+								{...register('images')}
+							/>
+							<label
+								className="flex size-[12.5rem] min-w-[12.5rem] cursor-pointer items-center justify-center overflow-clip rounded-xl border-2"
+								aria-label={matchLang({
+									[Lang.English]: 'Add a review image',
+									[Lang.Vietnamese]: 'Thêm hình ảnh đánh giá',
+								})({ locale })}
+								htmlFor="ghost-input"
+							>
+								<CirclePlus size={40} />
+							</label>
+						</div>
+
+						<Button type="submit" className="w-full">
+							{global.sendReviewBtnLabel}
+						</Button>
+					</form>
+				</DialogContent>
+			</Dialog>
+		</>
 	)
 }
