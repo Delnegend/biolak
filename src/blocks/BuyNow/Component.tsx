@@ -23,7 +23,7 @@ export function BuyNowBlock(passdownProps: {
 		}
 
 		return (
-			<div className="safe-width flex justify-center">
+			<div className="safe-width mb-24 flex justify-center">
 				<INTERNAL_BuyNowClient
 					productSlug={p.slug}
 					fallbackVariantSku={findValidProductVariant(p.variants)?.sku}
