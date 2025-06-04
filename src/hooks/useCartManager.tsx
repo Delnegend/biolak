@@ -135,5 +135,38 @@ export function useCartManager({
 				return updatedCart
 			})
 		},
+
+		toggleCheck({
+			productSlug,
+			variantSku,
+			checked,
+		}: {
+			productSlug: Product['slug']
+			variantSku: Product['variants'][number]['sku']
+			checked: boolean
+		}) {
+			setCart((prev) => {
+				const updatedCart = structuredClone(prev ?? [])
+				const existingProductIndex = updatedCart.findIndex(
+					(item) => item.slug === productSlug && item.variant.sku === variantSku,
+				)
+
+				if (existingProductIndex > -1 && updatedCart[existingProductIndex]) {
+					updatedCart[existingProductIndex].checked = checked
+				}
+
+				return updatedCart
+			})
+		},
+
+		uncheckAll(): void {
+			setCart((prev) => {
+				const updatedCart = structuredClone(prev ?? [])
+				updatedCart.forEach((item) => {
+					item.checked = false
+				})
+				return updatedCart
+			})
+		},
 	}
 }
