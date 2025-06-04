@@ -4,7 +4,7 @@ import { ArrowRight } from 'lucide-react'
 import Link from 'next/link'
 import { type SubmitHandler, useForm } from 'react-hook-form'
 import { toast } from 'sonner'
-import { ZodError } from 'zod'
+import { ZodError } from 'zod/v4'
 
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
