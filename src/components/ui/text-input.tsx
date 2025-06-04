@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useRef } from 'react'
+import React from 'react'
 
 import { cn } from '@/utilities/ui'
 
@@ -10,7 +10,6 @@ export function TextInput({
 	type,
 	onBlur,
 	onFocus,
-	ref: providedRef,
 	classNames,
 	...props
 }: Omit<React.ComponentPropsWithRef<'input'>, 'placeholder' | 'size'> & {
@@ -19,13 +18,11 @@ export function TextInput({
 	classNames?: { container?: string; input?: string; label?: string }
 }): React.JSX.Element {
 	const [elevated, setElevated] = React.useState(false)
-	const internalRef = useRef<HTMLInputElement>(null)
-	const ref = providedRef ?? internalRef
 
 	return (
 		<div
 			className={cn(
-				'relative flex h-14 items-end border-b border-b-[#6b5a4a] transition-colors focus-within:border-b-black',
+				'relative flex h-14 items-end border-b border-b-[#6b5a4a] transition-all focus-within:border-b-2 focus-within:border-b-black',
 				classNames?.container,
 			)}
 		>
@@ -46,7 +43,6 @@ export function TextInput({
 					onBlur?.(e)
 				}}
 				{...props}
-				ref={ref}
 			/>
 			<div
 				className={cn(
