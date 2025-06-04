@@ -11,6 +11,11 @@ const SendReviewSchema = z.object({
 	invoiceId: z.string(),
 	rating: z.number().min(1, 'Rating is required').max(5, 'Rating is too long'),
 	content: z.string().min(0, 'Content is required').max(1000, 'Content is too long'),
+	images: z.array(
+		z.instanceof(File).refine((file) => file.size <= 5 * 1024 * 1024, {
+			message: 'File size must be less than 5MB',
+		}),
+	),
 })
 
 export type SendReviewInputType = z.infer<typeof SendReviewSchema>
