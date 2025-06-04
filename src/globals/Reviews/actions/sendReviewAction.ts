@@ -2,7 +2,7 @@
 
 import config from '@payload-config'
 import { getPayload } from 'payload'
-import { z } from 'zod'
+import { z } from 'zod/v4'
 
 import { OrdersSlug } from '@/collections/Orders/slug'
 import { tryCatch, tryCatchSync } from '@/utilities/tryCatch'
