@@ -8,12 +8,15 @@ import { useSelectProductVariant } from './ProductVariantContext'
 
 export function INTERNAL_ProductVariantsClient({
 	variants,
-	productSlug,
+	product: { slug, title },
 }: {
 	variants: Product['variants']
-	productSlug?: Product['slug']
+	product: {
+		slug: Product['slug']
+		title: Product['title']
+	}
 }): React.JSX.Element {
-	const { product, setProductSlugAndVariant } = useSelectProductVariant()
+	const { selectedProductVariant, setSelectedProductVariant } = useSelectProductVariant()
 
 	return (
 		<div className="mt-2 flex flex-wrap gap-2">
@@ -21,15 +24,18 @@ export function INTERNAL_ProductVariantsClient({
 				<Button
 					key={variant.id}
 					onClick={() =>
-						setProductSlugAndVariant({
-							productSlug,
+						setSelectedProductVariant({
+							slug,
+							title,
 							variant,
 						})
 					}
 					hideArrow={true}
 					size="sm"
 					variant="outline"
-					className={cn(product.variant?.sku === variant.sku && 'border-black text-black')}
+					className={cn(
+						selectedProductVariant?.variant?.sku === variant.sku && 'border-black text-black',
+					)}
 					disabled={variant.stock <= 0}
 				>
 					{variant.title}
