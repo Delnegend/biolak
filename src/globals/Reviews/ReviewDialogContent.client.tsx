@@ -27,7 +27,6 @@ export function INTERNAL_ReviewDialogContentClient({
 }): React.JSX.Element {
 	const { lang: locale } = useClientLang()
 	const [dialogOpen, setDialogOpen] = useState(false)
-	const [dialogOpenOnce, setDialogOpenOnce] = useState(false)
 	const { register, handleSubmit } = useForm<SendReviewInputType>()
 	const [rating, setRating] = useState<number>(5)
 	const [reviewImages, setReviewImages] = useState<File[]>([])
