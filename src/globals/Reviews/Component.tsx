@@ -3,7 +3,6 @@ import { Phudu } from 'next/font/google'
 import { Fragment } from 'react'
 
 import { HeartsRow } from '@/components/HeartsRow'
-import { Button } from '@/components/ui/button'
 import { ReviewsGlobalSlug } from '@/globals/Reviews/config'
 import { INTERNAL_ReviewDialogContentClient } from '@/globals/Reviews/ReviewDialogContent.client'
 import { Order, ReviewsGlobal } from '@/payload-types'
