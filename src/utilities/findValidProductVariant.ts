@@ -9,11 +9,13 @@ export function findValidProductVariant(
 	if (!variants || variants.length === 0) return null
 
 	// Find the first variant that is in stock
-	const inStockVariant = variants.find((variant) => variant.stock > 0)
+	const inStockVariant = variants.filter((v) => v.stock > 0)
 
 	// If no in-stock variant is found, return null
-	if (!inStockVariant) return null
+	if (inStockVariant.length === 0) return null
 
 	// Return the first default variant if it exists, otherwise return the first in-stock variant
-	return inStockVariant.defaultVariant ? inStockVariant : (variants[0] ?? null)
+	const defaultInStock = inStockVariant.find((v) => v.defaultVariant)
+
+	return defaultInStock ?? inStockVariant[0] ?? null
 }
