@@ -1,3 +1,5 @@
+'use client'
+
 import { Button } from '@/components/ui/button'
 import { useSelectProductVariantUnsafe } from '@/heros/ProductHero/ProductVariantContext'
 
@@ -7,13 +9,13 @@ export function INTERNAL_BuyNowClient(props: {
 	buttonLabel: string
 }): React.JSX.Element {
 	const tmp = useSelectProductVariantUnsafe()
-	const variantSku = tmp?.product.variant?.sku
+	const variantSku = tmp?.selectedProductVariant?.variant?.sku
 
 	return (
 		<Button
 			size="lg"
 			variant="outline"
-			className="mb-[6rem] w-full max-w-[47rem] border-primary text-primary"
+			className="w-full max-w-[47rem] border-primary text-primary"
 			tabIndex={-1}
 			disabled={!props.productSlug || !variantSku}
 		>
