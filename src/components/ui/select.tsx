@@ -3,30 +3,70 @@
 import * as SelectPrimitive from '@radix-ui/react-select'
 import { Check, ChevronDown, ChevronUp } from 'lucide-react'
 import * as React from 'react'
+import { createContext, useContext } from 'react'
 
 import { cn } from '@/utilities/ui'
 
-export const Select = SelectPrimitive.Root
+const SelectContext = createContext<string | undefined>(undefined)
+
+export function Select({
+	value,
+	onValueChange,
+	...props
+}: React.ComponentPropsWithRef<typeof SelectPrimitive.Root>): React.JSX.Element {
+	const [selectedValue, setSelectedValue] = React.useState<string | undefined>(value)
+
+	return (
+		<SelectContext.Provider value={selectedValue}>
+			<SelectPrimitive.Root
+				{...props}
+				onValueChange={(value) => {
+					setSelectedValue(value)
+					onValueChange?.(value ?? '')
+				}}
+			/>
+		</SelectContext.Provider>
+	)
+}
+
 export const SelectGroup = SelectPrimitive.Group
 export const SelectValue = SelectPrimitive.Value
 
 export function SelectTrigger({
 	children,
 	className,
+	label,
 	...props
-}: React.ComponentPropsWithRef<typeof SelectPrimitive.Trigger>): React.JSX.Element {
+}: React.ComponentPropsWithRef<typeof SelectPrimitive.Trigger> & {
+	label: React.ReactNode
+}): React.JSX.Element {
+	const selectCtx = useContext(SelectContext)
+
 	return (
 		<SelectPrimitive.Trigger
 			className={cn(
-				'flex h-10 w-full items-center justify-between rounded border border-input bg-background px-3 py-2 text-inherit ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 [&>span]:line-clamp-1',
+				'relative flex h-14 w-full border-b border-b-[#6b5a4a] text-inherit ring-offset-background transition-all placeholder:text-muted-foreground focus-within:border-b-2 focus-within:border-b-black focus:outline-none disabled:cursor-not-allowed disabled:opacity-50 [&>span]:line-clamp-1',
 				className,
 			)}
 			{...props}
 		>
-			{children}
-			<SelectPrimitive.Icon asChild>
-				<ChevronDown className="h-4 w-4 opacity-50" />
-			</SelectPrimitive.Icon>
+			<div className="flex h-10 w-full items-center justify-between self-end">
+				<div className="text-xl">{children}</div>
+				<SelectPrimitive.Icon asChild>
+					<ChevronDown className="h-4 w-4 opacity-50" />
+				</SelectPrimitive.Icon>
+				<div
+					className={cn(
+						'pointer-events-none absolute left-0 whitespace-nowrap text-muted-foreground transition-all',
+						{
+							'-top-1 text-base': !!selectCtx,
+							'top-0 text-xl': !selectCtx,
+						},
+					)}
+				>
+					{label}
+				</div>
+			</div>
 		</SelectPrimitive.Trigger>
 	)
 }
