@@ -1,5 +1,6 @@
 'use client'
 
+import { ArrowRight } from 'lucide-react'
 import Link from 'next/link'
 import { type SubmitHandler, useForm } from 'react-hook-form'
 import { toast } from 'sonner'
@@ -79,11 +80,17 @@ export function INTERNAL_ContactFormClient({ global }: { global: ContactFormGlob
 					<Button size="lg" type="submit">
 						{global.actionSend}
 					</Button>
-					<Link href={`tel:${global.biolakPhoneNumber}`} tabIndex={-1}>
-						<Button className="pointer-events-none w-full" variant="outline" size="lg">
+					<Button
+						className="pointer-events-none w-full justify-between"
+						variant="outline"
+						size="lg"
+						asChild
+					>
+						<Link href={`tel:${global.biolakPhoneNumber}`} tabIndex={-1}>
 							{global.actionCall}
-						</Button>
-					</Link>
+						</Link>
+						<ArrowRight />
+					</Button>
 				</CardFooter>
 			</Card>
 		</form>
