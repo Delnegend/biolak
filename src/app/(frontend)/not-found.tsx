@@ -1,3 +1,4 @@
+import { ArrowRight } from 'lucide-react'
 import Link from 'next/link'
 
 import { Button } from '@/components/ui/button'
@@ -19,13 +20,13 @@ export default async function NotFound(): Promise<React.JSX.Element> {
 					})({ locale })}
 				</p>
 			</div>
-			<Button asChild variant="default">
-				{/* <Link href="/">Quay về trang chủ</Link> */}
+			<Button asChild className="justify-between">
 				<Link href="/">
 					{matchLang({
 						[Lang.English]: 'Back to Homepage',
 						[Lang.Vietnamese]: 'Quay về trang chủ',
 					})({ locale })}
+					<ArrowRight />
 				</Link>
 			</Button>
 		</div>
