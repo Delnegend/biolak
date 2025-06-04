@@ -1,3 +1,4 @@
+import { ArrowRight } from 'lucide-react'
 import { Phudu } from 'next/font/google'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -43,11 +44,16 @@ export function ProductsCarouselBlock(props: ProductsCarouselBlockProps): React.
 										<div className="font-serif text-7xl font-bold">{p.title}</div>
 										<div className="my-5">{p.shortDescription}</div>
 
-										<Link href="/[slug]" as={p.slug ? `/product/${p.slug}` : '#'}>
-											<Button size="lg" className="w-[26rem]">
+										<Button
+											size="lg"
+											className="w-full max-w-[26rem] justify-between"
+											asChild
+										>
+											<Link href="/[slug]" as={p.slug ? `/product/${p.slug}` : '#'}>
 												{props.watchMoreBtnLabel}
-											</Button>
-										</Link>
+												<ArrowRight />
+											</Link>
+										</Button>
 
 										<div className="my-3 flex flex-row gap-3">
 											{products.map((pDot, index) => (
