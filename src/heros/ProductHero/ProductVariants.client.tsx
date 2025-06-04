@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button'
 import { Product } from '@/payload-types'
 import { cn } from '@/utilities/ui'
 
-import { useSelectProductVariant } from './ProductVariantContext'
+import { useSelectedProductVariant } from './ProductVariantContext'
 
 export function INTERNAL_ProductVariantsClient({
 	variants,
@@ -16,7 +16,7 @@ export function INTERNAL_ProductVariantsClient({
 		title: Product['title']
 	}
 }): React.JSX.Element {
-	const { selectedProductVariant, setSelectedProductVariant } = useSelectProductVariant()
+	const { selectedProductVariant, setSelectedProductVariant } = useSelectedProductVariant()
 
 	return (
 		<div className="mt-2 flex flex-wrap gap-2">

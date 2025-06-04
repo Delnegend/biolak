@@ -46,7 +46,7 @@ export function ProductVariantContextProvider({
 /**
  * Stores the user's selected product variant
  */
-export function useSelectProductVariant() {
+export function useSelectedProductVariant() {
 	const context = useContext(variantContext)
 	if (!context) {
 		throw new Error('useVariantContext must be used within a VariantContextProvider')
@@ -54,4 +54,4 @@ export function useSelectProductVariant() {
 	return context
 }
 
-export const useSelectProductVariantUnsafe = () => useContext(variantContext)
+export const useNullableSelectedProductVariant = () => useContext(variantContext)
