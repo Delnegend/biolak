@@ -9,6 +9,8 @@ import { ProductSubCategoriesSlug } from '@/collections/ProductSubCategories/slu
 import { ProductCard } from '@/components/ProductCard'
 import { generateMeta } from '@/utilities/generateMeta'
 import { getClientLang } from '@/utilities/getClientLang'
+import { Lang } from '@/utilities/lang'
+import { matchLang } from '@/utilities/matchLang'
 
 import PageClient from './page.client'
 
@@ -91,7 +93,11 @@ export default async function Category({
 		<div className="safe-width mb-12 mt-24 flex flex-row">
 			<PageClient />
 			<div className="mr-[8.75rem] font-serif text-5xl font-semibold italic text-primary">
-				{category?.title ?? 'Sản phẩm'}
+				{category?.title ??
+					matchLang({
+						[Lang.English]: 'Category not found',
+						[Lang.Vietnamese]: 'Không tìm thấy danh mục',
+					})(locale)}
 			</div>
 			<div className="flex flex-row flex-wrap gap-6">
 				{products?.docs.map((p) => <ProductCard product={p} key={p.slug} size="sm" />)}
