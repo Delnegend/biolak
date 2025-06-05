@@ -36,7 +36,6 @@ export const MediaCollection: CollectionConfig<typeof MediaSlug> = {
 		{
 			name: 'alt',
 			type: 'text',
-			//required: true,
 			label: {
 				en: 'Alt Text',
 				vi: 'Văn bản thay thế',
