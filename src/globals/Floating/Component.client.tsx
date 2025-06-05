@@ -15,6 +15,8 @@ import { matchLang } from '@/utilities/matchLang'
 import { toFaviconUrl } from '@/utilities/toFaviconUrl'
 import { cn } from '@/utilities/ui'
 
+import { FloatingGlobalDefaults as defaults } from './defaults'
+
 const inter = Inter({ subsets: ['vietnamese'], weight: ['400'] })
 
 export function INTERNAL_FloatingClient({ global }: { global: FloatingGlobal }): React.JSX.Element {
@@ -46,7 +48,7 @@ export function INTERNAL_FloatingClient({ global }: { global: FloatingGlobal }):
 											matchLang({
 												[Lang.English]: 'Floating Contacts Icon',
 												[Lang.Vietnamese]: 'Biểu tượng nổi liên hệ',
-											})({ locale })
+											})(locale)
 										}
 										width={icon?.width ?? 256}
 										height={icon?.height ?? 256}
@@ -87,7 +89,7 @@ export function INTERNAL_FloatingClient({ global }: { global: FloatingGlobal }):
 							exit={{ opacity: 0 }}
 							transition={{ duration: 0.2 }}
 						>
-							{global.label}
+							{global.label ?? defaults.contact(locale)}
 						</motion.div>
 					)}
 				</AnimatePresence>
