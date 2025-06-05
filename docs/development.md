@@ -33,3 +33,4 @@ ATTENTION: ALWAYS execute `just test-prod` to check whether the migrations will 
 
 ## Misc
 - If a component is prefixed with `INTERNAL_`, the reason for it being a separated one instead of inline, (mainly) is because it needs to be a client component.
+- Always fill in the `defaultValue` and `admin.placeholder` if possible.
