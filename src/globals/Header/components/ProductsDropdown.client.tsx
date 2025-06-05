@@ -10,7 +10,7 @@ import { toast } from 'sonner'
 import { GetProductsBySubCategorySlug } from '@/app/api/sub-category/[slug]/route'
 import { useClientLang } from '@/hooks/useClientLang'
 import { Product, ProductCategory, ProductSubCategory } from '@/payload-types'
-import { formatPrice } from '@/utilities/formatPrice'
+import { getPriceRange } from '@/utilities/getPriceRange'
 import { Lang } from '@/utilities/lang'
 import { matchLang } from '@/utilities/matchLang'
 import { cn } from '@/utilities/ui'
@@ -314,7 +314,7 @@ export function INTERNAL_ProductsDropdownClient({
 												<Link
 													href={`/product/${product.slug}`}
 													tabIndex={-1}
-													className="group grid gap-x-4"
+													className="group grid grid-cols-[1fr_auto] gap-x-4"
 													style={{
 														gridTemplateAreas: `"title image"
 																			"description image"
@@ -337,7 +337,7 @@ export function INTERNAL_ProductsDropdownClient({
 														className="text-start text-base font-medium opacity-70"
 														style={{ gridArea: 'price' }}
 													>
-														{formatPrice(product.variants?.[0]?.price ?? 0)}
+														{getPriceRange(product)}
 													</div>
 													<Image
 														src={icon?.url ?? 'https://placehold.co/200x200'}
