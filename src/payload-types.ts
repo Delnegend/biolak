@@ -225,7 +225,7 @@ export interface Product {
   productCategories?: (number | ProductCategory)[] | null;
   productSubCategories?: (number | ProductSubCategory)[] | null;
   title: string;
-  shortDescription: string;
+  shortDescription?: string | null;
   longDescription?: {
     root: {
       type: string;
@@ -601,38 +601,36 @@ export interface CallToActionCenterBlockProps {
     [k: string]: unknown;
   } | null;
   background?: (number | null) | Media;
-  button: {
-    text: string;
-    link?: {
-      type?: ('reference' | 'custom') | null;
-      newTab?: boolean | null;
-      reference?:
-        | ({
-            relationTo: 'pages';
-            value: number | Page;
-          } | null)
-        | ({
-            relationTo: 'postCategories';
-            value: number | PostCategory;
-          } | null)
-        | ({
-            relationTo: 'posts';
-            value: number | Post;
-          } | null)
-        | ({
-            relationTo: 'productCategories';
-            value: number | ProductCategory;
-          } | null)
-        | ({
-            relationTo: 'products';
-            value: number | Product;
-          } | null)
-        | ({
-            relationTo: 'productSubCategories';
-            value: number | ProductSubCategory;
-          } | null);
-      url?: string | null;
-    };
+  link: {
+    type?: ('reference' | 'custom') | null;
+    newTab?: boolean | null;
+    reference?:
+      | ({
+          relationTo: 'pages';
+          value: number | Page;
+        } | null)
+      | ({
+          relationTo: 'postCategories';
+          value: number | PostCategory;
+        } | null)
+      | ({
+          relationTo: 'posts';
+          value: number | Post;
+        } | null)
+      | ({
+          relationTo: 'productCategories';
+          value: number | ProductCategory;
+        } | null)
+      | ({
+          relationTo: 'products';
+          value: number | Product;
+        } | null)
+      | ({
+          relationTo: 'productSubCategories';
+          value: number | ProductSubCategory;
+        } | null);
+    url?: string | null;
+    label?: string | null;
   };
   id?: string | null;
   blockName?: string | null;
@@ -774,7 +772,7 @@ export interface BannerBlockProps {
  * via the `definition` "BestSellerBlockProps".
  */
 export interface BestSellerBlockProps {
-  title: string;
+  title?: string | null;
   description?: string | null;
   products?: (number | Product)[] | null;
   id?: string | null;
@@ -803,38 +801,36 @@ export interface CallToActionLeftBlockProps {
     [k: string]: unknown;
   } | null;
   background?: (number | null) | Media;
-  button: {
-    text: string;
-    link?: {
-      type?: ('reference' | 'custom') | null;
-      newTab?: boolean | null;
-      reference?:
-        | ({
-            relationTo: 'pages';
-            value: number | Page;
-          } | null)
-        | ({
-            relationTo: 'postCategories';
-            value: number | PostCategory;
-          } | null)
-        | ({
-            relationTo: 'posts';
-            value: number | Post;
-          } | null)
-        | ({
-            relationTo: 'productCategories';
-            value: number | ProductCategory;
-          } | null)
-        | ({
-            relationTo: 'products';
-            value: number | Product;
-          } | null)
-        | ({
-            relationTo: 'productSubCategories';
-            value: number | ProductSubCategory;
-          } | null);
-      url?: string | null;
-    };
+  link: {
+    type?: ('reference' | 'custom') | null;
+    newTab?: boolean | null;
+    reference?:
+      | ({
+          relationTo: 'pages';
+          value: number | Page;
+        } | null)
+      | ({
+          relationTo: 'postCategories';
+          value: number | PostCategory;
+        } | null)
+      | ({
+          relationTo: 'posts';
+          value: number | Post;
+        } | null)
+      | ({
+          relationTo: 'productCategories';
+          value: number | ProductCategory;
+        } | null)
+      | ({
+          relationTo: 'products';
+          value: number | Product;
+        } | null)
+      | ({
+          relationTo: 'productSubCategories';
+          value: number | ProductSubCategory;
+        } | null);
+    url?: string | null;
+    label?: string | null;
   };
   id?: string | null;
   blockName?: string | null;
@@ -848,7 +844,37 @@ export interface CallToActionPostBlockProps {
   post: number | Post;
   overwriteTitle?: string | null;
   overwriteDescription?: string | null;
-  buttonLabel: string;
+  link: {
+    type?: ('reference' | 'custom') | null;
+    newTab?: boolean | null;
+    reference?:
+      | ({
+          relationTo: 'pages';
+          value: number | Page;
+        } | null)
+      | ({
+          relationTo: 'postCategories';
+          value: number | PostCategory;
+        } | null)
+      | ({
+          relationTo: 'posts';
+          value: number | Post;
+        } | null)
+      | ({
+          relationTo: 'productCategories';
+          value: number | ProductCategory;
+        } | null)
+      | ({
+          relationTo: 'products';
+          value: number | Product;
+        } | null)
+      | ({
+          relationTo: 'productSubCategories';
+          value: number | ProductSubCategory;
+        } | null);
+    url?: string | null;
+    label?: string | null;
+  };
   id?: string | null;
   blockName?: string | null;
   blockType: 'call-to-action-post';
@@ -882,38 +908,36 @@ export interface CallToActionRightBlockProps {
         id?: string | null;
       }[]
     | null;
-  button: {
-    text: string;
-    link?: {
-      type?: ('reference' | 'custom') | null;
-      newTab?: boolean | null;
-      reference?:
-        | ({
-            relationTo: 'pages';
-            value: number | Page;
-          } | null)
-        | ({
-            relationTo: 'postCategories';
-            value: number | PostCategory;
-          } | null)
-        | ({
-            relationTo: 'posts';
-            value: number | Post;
-          } | null)
-        | ({
-            relationTo: 'productCategories';
-            value: number | ProductCategory;
-          } | null)
-        | ({
-            relationTo: 'products';
-            value: number | Product;
-          } | null)
-        | ({
-            relationTo: 'productSubCategories';
-            value: number | ProductSubCategory;
-          } | null);
-      url?: string | null;
-    };
+  link: {
+    type?: ('reference' | 'custom') | null;
+    newTab?: boolean | null;
+    reference?:
+      | ({
+          relationTo: 'pages';
+          value: number | Page;
+        } | null)
+      | ({
+          relationTo: 'postCategories';
+          value: number | PostCategory;
+        } | null)
+      | ({
+          relationTo: 'posts';
+          value: number | Post;
+        } | null)
+      | ({
+          relationTo: 'productCategories';
+          value: number | ProductCategory;
+        } | null)
+      | ({
+          relationTo: 'products';
+          value: number | Product;
+        } | null)
+      | ({
+          relationTo: 'productSubCategories';
+          value: number | ProductSubCategory;
+        } | null);
+    url?: string | null;
+    label?: string | null;
   };
   id?: string | null;
   blockName?: string | null;
@@ -940,7 +964,7 @@ export interface CallToAddToCartBlockProps {
     };
     [k: string]: unknown;
   } | null;
-  buttonLabel: string;
+  buttonLabel?: string | null;
   products?: (number | null) | Product;
   id?: string | null;
   blockName?: string | null;
@@ -951,11 +975,11 @@ export interface CallToAddToCartBlockProps {
  * via the `definition` "CertificatesBlockProps".
  */
 export interface CertificatesBlockProps {
-  title: string;
+  title?: string | null;
   organizations?:
     | {
         title: string;
-        description: string;
+        description?: string | null;
         logo?: (number | null) | Media;
         id?: string | null;
       }[]
@@ -1283,8 +1307,8 @@ export interface InfiniteScrollBlockProps {
  * via the `definition` "LatestPostsBlockProps".
  */
 export interface LatestPostsBlockProps {
-  title: string;
-  buttonLabel: string;
+  title?: string | null;
+  buttonLabel?: string | null;
   posts: (number | Post)[];
   id?: string | null;
   blockName?: string | null;
@@ -1315,9 +1339,9 @@ export interface PostsGridBlockProps {
  * via the `definition` "ProductsCarouselBlockProps".
  */
 export interface ProductsCarouselBlockProps {
-  title: string;
+  title?: string | null;
   products?: (number | Product)[] | null;
-  watchMoreBtnLabel: string;
+  watchMoreBtnLabel?: string | null;
   apb: {
     type?: ('reference' | 'custom') | null;
     newTab?: boolean | null;
@@ -1347,7 +1371,7 @@ export interface ProductsCarouselBlockProps {
           value: number | ProductSubCategory;
         } | null);
     url?: string | null;
-    label: string;
+    label?: string | null;
   };
   id?: string | null;
   blockName?: string | null;
@@ -1367,7 +1391,7 @@ export interface ProductsCategoryBlockProps {
         relationTo: 'productSubCategories';
         value: number | ProductSubCategory;
       };
-  buttonLabel: string;
+  buttonLabel?: string | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'productsCategory';
@@ -1483,7 +1507,7 @@ export interface User {
  * via the `definition` "HowToUseProductBlockProps".
  */
 export interface HowToUseProductBlockProps {
-  title: string;
+  title?: string | null;
   subtitle?: string | null;
   content: {
     root: {
@@ -1513,7 +1537,7 @@ export interface HowToUseProductBlockProps {
 export interface ContactForm {
   id: number;
   username: string;
-  email: string;
+  email?: string | null;
   phoneNumber: string;
   message: string;
   updatedAt: string;
@@ -2043,18 +2067,14 @@ export interface CallToActionCenterBlockPropsSelect<T extends boolean = true> {
   'sub-title'?: T;
   description?: T;
   background?: T;
-  button?:
+  link?:
     | T
     | {
-        text?: T;
-        link?:
-          | T
-          | {
-              type?: T;
-              newTab?: T;
-              reference?: T;
-              url?: T;
-            };
+        type?: T;
+        newTab?: T;
+        reference?: T;
+        url?: T;
+        label?: T;
       };
   id?: T;
   blockName?: T;
@@ -2067,18 +2087,14 @@ export interface CallToActionLeftBlockPropsSelect<T extends boolean = true> {
   title?: T;
   description?: T;
   background?: T;
-  button?:
+  link?:
     | T
     | {
-        text?: T;
-        link?:
-          | T
-          | {
-              type?: T;
-              newTab?: T;
-              reference?: T;
-              url?: T;
-            };
+        type?: T;
+        newTab?: T;
+        reference?: T;
+        url?: T;
+        label?: T;
       };
   id?: T;
   blockName?: T;
@@ -2091,7 +2107,15 @@ export interface CallToActionPostBlockPropsSelect<T extends boolean = true> {
   post?: T;
   overwriteTitle?: T;
   overwriteDescription?: T;
-  buttonLabel?: T;
+  link?:
+    | T
+    | {
+        type?: T;
+        newTab?: T;
+        reference?: T;
+        url?: T;
+        label?: T;
+      };
   id?: T;
   blockName?: T;
 }
@@ -2110,18 +2134,14 @@ export interface CallToActionRightBlockPropsSelect<T extends boolean = true> {
         image?: T;
         id?: T;
       };
-  button?:
+  link?:
     | T
     | {
-        text?: T;
-        link?:
-          | T
-          | {
-              type?: T;
-              newTab?: T;
-              reference?: T;
-              url?: T;
-            };
+        type?: T;
+        newTab?: T;
+        reference?: T;
+        url?: T;
+        label?: T;
       };
   id?: T;
   blockName?: T;
@@ -2829,39 +2849,52 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
  */
 export interface CheckoutPageGlobal {
   id: number;
-  contacts: {
-    title: string;
-    emailInputLabel: string;
-    acceptNewsletter: string;
+  contacts?: {
+    title?: string | null;
+    emailInputLabel?: string | null;
+    acceptNewsletter?: string | null;
   };
-  address: {
-    title: string;
-    nameInputLabel: string;
-    phoneInputLabel: string;
-    provinceCityInputLabel: string;
-    districtInputLabel: string;
-    wardInputLabel: string;
-    details: string;
-    saveForNextTime: string;
+  address?: {
+    title?: string | null;
+    nameInputLabel?: string | null;
+    phoneInputLabel?: string | null;
+    provinceCityInputLabel?: string | null;
+    districtInputLabel?: string | null;
+    wardInputLabel?: string | null;
+    details?: string | null;
+    saveForNextTime?: string | null;
   };
-  shipping: {
-    title: string;
-    standardShippingLabel: string;
-    fastShippingLabel: string;
+  shipping?: {
+    title?: string | null;
+    standardShippingLabel?: string | null;
+    fastShippingLabel?: string | null;
   };
-  payment: {
-    title: string;
-    codLabel: string;
-    bankTransferLabel: string;
+  payment?: {
+    title?: string | null;
+    codLabel?: string | null;
+    bankTransferLabel?: string | null;
   };
-  gift: {
-    title: string;
-    senderInputLabel: string;
-    recipientInputLabel: string;
-    messageInputLabel: string;
+  gift?: {
+    title?: string | null;
+    senderInputLabel?: string | null;
+    recipientInputLabel?: string | null;
+    messageInputLabel?: string | null;
   };
-  order: {
-    title: string;
+  order?: {
+    title?: string | null;
+  };
+  discount?: {
+    title?: string | null;
+    inputPlaceholder?: string | null;
+    applyButtonLabel?: string | null;
+  };
+  orderSummary?: {
+    provisional?: string | null;
+    discount?: string | null;
+    shipping?: string | null;
+    total?: string | null;
+    acknowledgment?: string | null;
+    orderButtonLabel?: string | null;
   };
   updatedAt?: string | null;
   createdAt?: string | null;
@@ -2872,14 +2905,14 @@ export interface CheckoutPageGlobal {
  */
 export interface ContactFormGlobal {
   id: number;
-  title: string;
-  name: string;
-  phoneNumber: string;
-  email: string;
-  question: string;
-  actionSend: string;
+  title?: string | null;
+  name?: string | null;
+  phoneNumber?: string | null;
+  email?: string | null;
+  question?: string | null;
+  actionSend?: string | null;
   biolakPhoneNumber?: string | null;
-  actionCall: string;
+  actionCall?: string | null;
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -2889,7 +2922,7 @@ export interface ContactFormGlobal {
  */
 export interface FloatingGlobal {
   id: number;
-  label: string;
+  label?: string | null;
   links?:
     | {
         link: string;
@@ -2909,16 +2942,16 @@ export interface FooterGlobal {
   image?: {
     image?: (number | null) | Media;
   };
-  contactUs: {
-    title: string;
-    emailInputLabel: string;
-    description: string;
+  contactUs?: {
+    title?: string | null;
+    emailInputLabel?: string | null;
+    description?: string | null;
   };
-  legal: {
-    title: string;
-    content: string;
-    stamp: number | Media;
-    copyright: string;
+  legal?: {
+    title?: string | null;
+    content?: string | null;
+    stamp?: (number | null) | Media;
+    copyright?: string | null;
   };
   updatedAt?: string | null;
   createdAt?: string | null;
@@ -3056,10 +3089,13 @@ export interface PromoGlobal {
  */
 export interface ReviewsGlobal {
   id: number;
-  title: string;
-  btnLabel: string;
-  reviewDialogTitle: string;
-  sendReviewBtnLabel: string;
+  title?: string | null;
+  btnLabel?: string | null;
+  reviewDialogTitle?: string | null;
+  heartsSelectionLabel?: string | null;
+  invoiceIdLabel?: string | null;
+  contentLabel?: string | null;
+  sendReviewBtnLabel?: string | null;
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -3113,6 +3149,23 @@ export interface CheckoutPageGlobalSelect<T extends boolean = true> {
     | T
     | {
         title?: T;
+      };
+  discount?:
+    | T
+    | {
+        title?: T;
+        inputPlaceholder?: T;
+        applyButtonLabel?: T;
+      };
+  orderSummary?:
+    | T
+    | {
+        provisional?: T;
+        discount?: T;
+        shipping?: T;
+        total?: T;
+        acknowledgment?: T;
+        orderButtonLabel?: T;
       };
   updatedAt?: T;
   createdAt?: T;
@@ -3246,6 +3299,9 @@ export interface ReviewsGlobalSelect<T extends boolean = true> {
   title?: T;
   btnLabel?: T;
   reviewDialogTitle?: T;
+  heartsSelectionLabel?: T;
+  invoiceIdLabel?: T;
+  contentLabel?: T;
   sendReviewBtnLabel?: T;
   updatedAt?: T;
   createdAt?: T;
