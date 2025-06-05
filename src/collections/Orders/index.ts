@@ -112,11 +112,11 @@ export const OrdersCollection: CollectionConfig<typeof OrdersSlug> = {
 						text: 'BioLAK có đơn hàng mới từ ' + doc[CustomersSlug]?.name,
 					}),
 				)
-				if (!result.success) {
+				if (!result.tryCatchSuccess) {
 					console.error('Error sending email:', result.error)
 					return doc
 				}
-				console.log('Message sent:', result.data)
+				console.log('Message sent:', result)
 				return doc
 			},
 		],
