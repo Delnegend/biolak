@@ -17,7 +17,7 @@ export default async function NotFound(): Promise<React.JSX.Element> {
 					{matchLang({
 						[Lang.English]: 'This page does not exist.',
 						[Lang.Vietnamese]: 'Trang này không tồn tại.',
-					})({ locale })}
+					})(locale)}
 				</p>
 			</div>
 			<Button asChild className="justify-between">
@@ -25,7 +25,7 @@ export default async function NotFound(): Promise<React.JSX.Element> {
 					{matchLang({
 						[Lang.English]: 'Back to Homepage',
 						[Lang.Vietnamese]: 'Quay về trang chủ',
-					})({ locale })}
+					})(locale)}
 					<ArrowRight />
 				</Link>
 			</Button>
