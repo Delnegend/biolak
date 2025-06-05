@@ -4,7 +4,8 @@ import type { GlobalConfig } from 'payload'
 import { allow, Role } from '@/access/allow'
 import { MediaSlug } from '@/collections/Media/slug'
 import { Lang } from '@/utilities/lang'
-import { matchLang } from '@/utilities/matchLang'
+
+import { FooterGlobalDefaults as defaults } from './defaults'
 
 export const FooterGlobalSlug = 'footerGlobal'
 export const FooterGlobalConf: GlobalConfig<typeof FooterGlobalSlug> = {
@@ -40,39 +41,32 @@ export const FooterGlobalConf: GlobalConfig<typeof FooterGlobalSlug> = {
 						{
 							name: 'title',
 							type: 'text',
-							label: 'Title',
-							required: true,
+							label: false,
 							localized: true,
-							defaultValue: matchLang({
-								[Lang.English]:
-									'Register to receive the latest news and updates from BioLAK',
-								[Lang.Vietnamese]:
-									'Đăng kí để nhận thông tin khuyến mãi sớm nhất từ BioLAK',
-							}),
+							defaultValue: defaults.contactUs.title,
+							admin: {
+								placeholder: defaults.contactUs.title(Lang.Vietnamese),
+							},
 						},
 						{
 							name: 'emailInputLabel',
 							type: 'text',
-							label: 'Email Input Label',
-							required: true,
+							label: false,
 							localized: true,
-							defaultValue: matchLang({
-								[Lang.English]: 'Enter your email address',
-								[Lang.Vietnamese]: 'Nhập địa chỉ Email',
-							}),
+							defaultValue: defaults.contactUs.emailInputLabel,
+							admin: {
+								placeholder: defaults.contactUs.emailInputLabel(Lang.Vietnamese),
+							},
 						},
 						{
 							name: 'description',
 							type: 'text',
-							label: 'Description',
-							required: true,
+							label: false,
 							localized: true,
-							defaultValue: matchLang({
-								[Lang.English]:
-									'Register to receive the latest news about products, services, events, and other information from BioLAK.',
-								[Lang.Vietnamese]:
-									'Đăng kí để nhận thông tin liên lạc về các sản phẩm, dịch vụ, cửa hàng, sự kiện và các vấn đề đáng quan tâm của BioLAK.',
-							}),
+							defaultValue: defaults.contactUs.description,
+							admin: {
+								placeholder: defaults.contactUs.description(Lang.Vietnamese),
+							},
 						},
 					],
 				},
@@ -83,55 +77,41 @@ export const FooterGlobalConf: GlobalConfig<typeof FooterGlobalSlug> = {
 						{
 							name: 'title',
 							type: 'text',
-							label: 'Title',
-							required: true,
-							// defaultValue: 'Website thuộc quyền của công ty trách nhiệm hữu hạn ELAK',
+							label: false,
 							localized: true,
-							defaultValue: matchLang({
-								[Lang.English]: 'Website owned by the ELAK company',
-								[Lang.Vietnamese]:
-									'Website thuộc quyền của công ty trách nhiệm hữu hạn ELAK',
-							}),
+							defaultValue: defaults.legal.title,
+							admin: {
+								placeholder: defaults.legal.title(Lang.Vietnamese),
+							},
 						},
 						{
 							name: 'content',
 							type: 'textarea',
-							label: 'Content',
-							required: true,
+							label: false,
 							localized: true,
-							defaultValue: matchLang({
-								[Lang.Vietnamese]: `GCNDKKD 0107874681 | Sở kế hoạch và đầu tư TP. Hà Nội
-cấp ngày 05/06/2017,
-đăng ký thay đổi lần 2 ngày 12/01/2024
-Địa chỉ: Xóm 5 thôn Long Phú, xã Hòa Thạch, huyện Quốc Oai,
-TP Hà Nội, Việt Nam.
-Điện thoại: 0983335596 - Email: info@biolak.vn`,
-								[Lang.English]: `
-Business Registration Certificate 0107874681 | Hanoi Department of Planning and Investment
-issued on June 5, 2017,
-registered for the second change on January 12, 2024
-Address: Hamlet 5, Long Phu village, Hoa Thach commune, Quoc Oai district,
-Hanoi, Vietnam.
-Phone: 0983335596 - Email: info@biolak.vn`,
-							}),
+							defaultValue: defaults.legal.content,
+							admin: {
+								placeholder: defaults.legal.content(Lang.Vietnamese),
+							},
 						},
 						{
 							name: 'stamp',
 							type: 'upload',
 							relationTo: MediaSlug,
-							label: 'Stamp',
-							required: true,
+							label: {
+								[Lang.English]: 'Stamp',
+								[Lang.Vietnamese]: 'Dấu',
+							},
 						},
 						{
 							name: 'copyright',
 							type: 'text',
-							label: 'Copyright',
-							required: true,
+							label: false,
 							localized: true,
-							defaultValue: matchLang({
-								[Lang.English]: '© 2025 BioLAK Vietnam. All rights reserved.',
-								[Lang.Vietnamese]: '© 2025 BioLAK Việt Nam. Mọi quyền được bảo lưu.',
-							}),
+							defaultValue: defaults.legal.copyright,
+							admin: {
+								placeholder: defaults.legal.copyright(Lang.Vietnamese),
+							},
 						},
 					],
 				},
