@@ -5,6 +5,7 @@ import { getCachedGlobal } from '@/utilities/getGlobals'
 
 import { INTERNAL_ContactFormClient } from './Component.client'
 import { ContactFormGlobalSlug } from './config'
+import { ContactFormGlobalDefaults as defaults } from './defaults'
 
 export async function ContactFormGlobalComponent({ inDialog }: { inDialog?: boolean }) {
 	const locale = await getClientLang()
@@ -13,7 +14,7 @@ export async function ContactFormGlobalComponent({ inDialog }: { inDialog?: bool
 	if (inDialog) {
 		return (
 			<>
-				<DialogTitle className="sr-only">{global.title}</DialogTitle>
+				<DialogTitle className="sr-only">{global.title ?? defaults.title(locale)}</DialogTitle>
 				<INTERNAL_ContactFormClient global={global} />
 			</>
 		)
