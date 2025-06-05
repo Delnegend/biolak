@@ -15,13 +15,18 @@ import {
 import { Error } from '../Error'
 import { Width } from '../Width'
 import { countryOptions } from './options'
+import { matchLang } from '@/utilities/matchLang'
+import { Lang } from '@/utilities/lang'
+import { getClientLang } from '@/utilities/getClientLang'
 
-export function Country(
+export async function Country(
 	props: CountryField & {
 		control: Control
 		errors: Partial<FieldErrorsImpl>
 	},
-): React.JSX.Element {
+): Promise<React.JSX.Element> {
+	const locale = await getClientLang()
+
 	return (
 		<Width width={props.width}>
 			<Label className="" htmlFor={props.name}>
@@ -42,13 +47,33 @@ export function Country(
 
 					return (
 						<Select onValueChange={(val) => onChange(val)} value={controlledValue?.value}>
-							<SelectTrigger className="w-full" id={props.name}>
-								<SelectValue placeholder={props.label} />
+							<SelectTrigger
+								className="w-full"
+								id={props.name}
+								label={props.label}
+								aria-label={matchLang({
+									[Lang.English]: 'Select a country dropdown trigger',
+									[Lang.Vietnamese]: 'Kích hoạt hộp thoại thả xuống chọn quốc gia',
+								})({ locale })}
+							>
+								<SelectValue />
 							</SelectTrigger>
-							<SelectContent>
+							<SelectContent
+								aria-label={matchLang({
+									[Lang.English]: 'Select a country',
+									[Lang.Vietnamese]: 'Chọn một quốc gia',
+								})({ locale })}
+							>
 								{countryOptions.map(({ label, value }) => {
 									return (
-										<SelectItem key={value} value={value}>
+										<SelectItem
+											key={value}
+											value={value}
+											aria-label={matchLang({
+												[Lang.English]: label,
+												[Lang.Vietnamese]: label,
+											})({ locale })}
+										>
 											{label}
 										</SelectItem>
 									)
