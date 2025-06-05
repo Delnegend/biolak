@@ -22,7 +22,15 @@ export default [
 		},
 	},
 	{
+		// files: ['**/*.ts', '**/*.tsx', '**/*.cts', '**/*.mts'], // Specify that this config applies to TS/TSX files
+		// languageOptions: {
+		// 	parserOptions: {
+		// 		project: true, // Enable type-aware linting
+		// 		tsconfigRootDir: __dirname, // Root directory for tsconfig.json
+		// 	},
+		// },
 		rules: {
+			// '@typescript-eslint/no-unnecessary-condition': 'error',
 			'@typescript-eslint/ban-ts-comment': 'warn',
 			'@typescript-eslint/no-empty-object-type': 'warn',
 			'@typescript-eslint/no-explicit-any': 'warn',
