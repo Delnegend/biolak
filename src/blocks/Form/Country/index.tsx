@@ -11,13 +11,13 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from '@/components/ui/select'
+import { getClientLang } from '@/utilities/getClientLang'
+import { Lang } from '@/utilities/lang'
+import { matchLang } from '@/utilities/matchLang'
 
 import { Error } from '../Error'
 import { Width } from '../Width'
 import { countryOptions } from './options'
-import { matchLang } from '@/utilities/matchLang'
-import { Lang } from '@/utilities/lang'
-import { getClientLang } from '@/utilities/getClientLang'
 
 export async function Country(
 	props: CountryField & {
