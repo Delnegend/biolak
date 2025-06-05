@@ -46,7 +46,7 @@ export async function confirmDetailsAction(input: unknown): Promise<
 	  }
 > {
 	const parsedInput = tryCatchSync(() => ConfirmDetailsActionSchema.safeParse(input))
-	if (!parsedInput.success) {
+	if (!parsedInput.tryCatchSuccess) {
 		if (parsedInput.error instanceof z.ZodError) {
 			return {
 				success: false,
@@ -60,17 +60,17 @@ export async function confirmDetailsAction(input: unknown): Promise<
 	}
 
 	const locale = await getClientLang()
-	if (!parsedInput.data.data) {
+	if (!parsedInput.data) {
 		return {
 			success: false,
 			error: matchLang({
 				[Lang.English]: 'Invalid input data',
 				[Lang.Vietnamese]: 'Dữ liệu đầu vào không hợp lệ',
-			})({ locale }),
+			})(locale),
 		}
 	}
 
-	const { personalDetails } = parsedInput.data.data
+	const { personalDetails } = parsedInput.data
 	const { city, district, ward } = personalDetails
 	const cityDistrictWard: CityDistrictWard = CITY_DISTRICT_WARD as CityDistrictWard
 	if (
@@ -83,7 +83,7 @@ export async function confirmDetailsAction(input: unknown): Promise<
 			error: matchLang({
 				[Lang.English]: 'Invalid district or ward for the selected city',
 				[Lang.Vietnamese]: 'Quận hoặc phường không hợp lệ cho thành phố đã chọn',
-			})({ locale }),
+			})(locale),
 		}
 	}
 
