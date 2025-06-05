@@ -1,3 +1,4 @@
+import { ArrowRight } from 'lucide-react'
 import { Phudu } from 'next/font/google'
 import Image from 'next/image'
 import React from 'react'
@@ -7,11 +8,20 @@ import RichText from '@/components/RichText'
 import { Button } from '@/components/ui/button'
 import { Carousel, CarouselContent, CarouselItem } from '@/components/ui/carousel'
 import type { CallToActionRightBlockProps } from '@/payload-types'
+import { getClientLang } from '@/utilities/getClientLang'
+import { Lang } from '@/utilities/lang'
+import { matchLang } from '@/utilities/matchLang'
 import { cn } from '@/utilities/ui'
+
+import { CallToActionRightBlockDefaults as defaults } from './defaults'
 
 const phudu = Phudu({ subsets: ['vietnamese'], weight: ['400', '600'] })
 
-export function CallToActionRightBlock(props: CallToActionRightBlockProps): React.JSX.Element {
+export async function CallToActionRightBlock(
+	props: CallToActionRightBlockProps,
+): Promise<React.JSX.Element> {
+	const locale = await getClientLang()
+
 	return (
 		<div className="safe-width flex h-[48rem] justify-between bg-background">
 			<Carousel opts={{ dragFree: true }} className="place-self-center">
@@ -22,7 +32,10 @@ export function CallToActionRightBlock(props: CallToActionRightBlockProps): Reac
 							<CarouselItem className="max-w-fit" key={item.id ?? `${idx}-${item.title}`}>
 								<Image
 									src={img?.url ?? 'https://placehold.co/380x460'}
-									alt={`Ảnh sản phẩm ${item.title}`}
+									alt={matchLang({
+										[Lang.English]: `${item.title} product image`,
+										[Lang.Vietnamese]: `Ảnh sản phẩm ${item.title}`,
+									})(locale)}
 									width={img?.width ?? 380}
 									height={img?.height ?? 460}
 									className="mb-4 h-[28.75rem] w-[23.75rem] rounded-[0.5rem] object-cover"
@@ -56,11 +69,20 @@ export function CallToActionRightBlock(props: CallToActionRightBlockProps): Reac
 						className="text-balance text-xl leading-8 text-primary"
 					/>
 				)}
-				<CMSLink {...props.button.link} type={props.button.link?.type ?? undefined}>
-					<Button className="w-full" variant="outline" size="lg">
-						{props.button.text}
-					</Button>
-				</CMSLink>
+				<Button
+					className="flex w-full items-center justify-between gap-2"
+					variant="outline"
+					size="lg"
+					asChild
+				>
+					<CMSLink
+						{...props.link}
+						type={props.link.type ?? undefined}
+						label={props.link.label ?? defaults.buttonLabel(locale)}
+					>
+						<ArrowRight />
+					</CMSLink>
+				</Button>
 			</div>
 		</div>
 	)

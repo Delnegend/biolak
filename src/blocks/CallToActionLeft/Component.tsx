@@ -1,11 +1,18 @@
+import { ArrowRight } from 'lucide-react'
 import React from 'react'
 
 import { CMSLink } from '@/components/CMSLink'
 import RichText from '@/components/RichText'
 import { Button } from '@/components/ui/button'
 import type { CallToActionLeftBlockProps } from '@/payload-types'
+import { getClientLang } from '@/utilities/getClientLang'
 
-export function CallToActionLeftBlock(props: CallToActionLeftBlockProps): React.JSX.Element {
+import { CallToActionLeftBlockDefaults as defaults } from './defaults'
+
+export async function CallToActionLeftBlock(
+	props: CallToActionLeftBlockProps,
+): Promise<React.JSX.Element> {
+	const locale = await getClientLang()
 	const bgUrl =
 		props.background && typeof props.background === 'object' && props.background.url
 			? props.background.url
@@ -32,11 +39,15 @@ export function CallToActionLeftBlock(props: CallToActionLeftBlockProps): React.
 							className="mx-0 text-balance text-xl leading-8 text-white"
 						/>
 					)}
-					<CMSLink {...props.button.link} type={props.button.link?.type ?? undefined}>
-						<Button className="w-full" size="lg">
-							{props.button.text}
-						</Button>
-					</CMSLink>
+					<Button className="w-full justify-between" size="lg" asChild>
+						<CMSLink
+							{...props.link}
+							type={props.link.type ?? undefined}
+							label={props.link.label ?? defaults.buttonLabel(locale)}
+						>
+							<ArrowRight />
+						</CMSLink>
+					</Button>
 				</div>
 			</div>
 		</div>

@@ -34,6 +34,7 @@ export const HighlightCenterBlockConf: Block = {
 				vi: 'Tiêu đề',
 			},
 			required: true,
+			localized: true,
 		},
 		{
 			name: 'description',
@@ -43,6 +44,7 @@ export const HighlightCenterBlockConf: Block = {
 				vi: 'Mô tả',
 			},
 			required: true,
+			localized: true,
 		},
 		{
 			name: 'image',

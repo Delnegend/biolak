@@ -54,7 +54,7 @@ export async function Country(
 								aria-label={matchLang({
 									[Lang.English]: 'Select a country dropdown trigger',
 									[Lang.Vietnamese]: 'Kích hoạt hộp thoại thả xuống chọn quốc gia',
-								})({ locale })}
+								})(locale)}
 							>
 								<SelectValue />
 							</SelectTrigger>
@@ -62,7 +62,7 @@ export async function Country(
 								aria-label={matchLang({
 									[Lang.English]: 'Select a country',
 									[Lang.Vietnamese]: 'Chọn một quốc gia',
-								})({ locale })}
+								})(locale)}
 							>
 								{countryOptions.map(({ label, value }) => {
 									return (
@@ -72,7 +72,7 @@ export async function Country(
 											aria-label={matchLang({
 												[Lang.English]: label,
 												[Lang.Vietnamese]: label,
-											})({ locale })}
+											})(locale)}
 										>
 											{label}
 										</SelectItem>

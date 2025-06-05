@@ -2,6 +2,9 @@ import type { Block } from 'payload'
 
 import { MediaSlug } from '@/collections/Media/slug'
 import { link } from '@/fields/link'
+import { Lang } from '@/utilities/lang'
+
+import { CallToActionRightBlockDefaults as defaults } from './defaults'
 
 export const CallToActionRightBlockConf: Block = {
 	slug: 'cta-right',
@@ -26,6 +29,7 @@ export const CallToActionRightBlockConf: Block = {
 				vi: 'Tiêu đề',
 			},
 			required: true,
+			localized: true,
 		},
 		{
 			name: 'sub-title',
@@ -34,6 +38,7 @@ export const CallToActionRightBlockConf: Block = {
 				en: 'Sub Title',
 				vi: 'Tiêu đề phụ',
 			},
+			localized: true,
 		},
 		{
 			name: 'description',
@@ -42,6 +47,7 @@ export const CallToActionRightBlockConf: Block = {
 				en: 'Description',
 				vi: 'Mô tả',
 			},
+			localized: true,
 		},
 		{
 			name: 'gallery',
@@ -69,6 +75,7 @@ export const CallToActionRightBlockConf: Block = {
 						vi: 'Tiêu đề hình ảnh',
 					},
 					required: true,
+					localized: true,
 				},
 				{
 					name: 'image',
@@ -81,25 +88,20 @@ export const CallToActionRightBlockConf: Block = {
 				},
 			],
 		},
-		{
-			name: 'button',
-			type: 'group',
-			label: {
-				en: 'Button',
-				vi: 'Nút',
-			},
-			fields: [
-				{
-					name: 'text',
-					type: 'text',
-					label: {
-						en: 'Button Label',
-						vi: 'Nhãn nút',
-					},
-					required: true,
+		link({
+			overrides: {
+				label: {
+					en: 'Button Label',
+					vi: 'Nhãn nút',
 				},
-				link({ disableLabel: true }),
-			],
-		},
+				defaultValue: defaults.buttonLabel,
+				required: true,
+				localized: true,
+			},
+			label: {
+				placeholder: defaults.buttonLabel(Lang.Vietnamese),
+				required: false,
+			},
+		}),
 	],
 }

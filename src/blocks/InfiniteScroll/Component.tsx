@@ -10,5 +10,5 @@ export function InfiniteScrollBlock({
 		return <></>
 	}
 
-	return <InfiniteScrollBlockCC graphic={graphic} animationDuration={animationDuration ?? 5} />
+	return <InfiniteScrollBlockCC graphic={graphic} animationDuration={animationDuration ?? 10} />
 }

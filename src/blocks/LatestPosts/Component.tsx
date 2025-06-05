@@ -5,18 +5,26 @@ import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { Carousel, CarouselContent, CarouselItem } from '@/components/ui/carousel'
 import { LatestPostsBlockProps } from '@/payload-types'
+import { getClientLang } from '@/utilities/getClientLang'
+import { Lang } from '@/utilities/lang'
+import { matchLang } from '@/utilities/matchLang'
 
-export function LatestPostsBlock(props: LatestPostsBlockProps): React.JSX.Element {
+import { LatestPostsBlockDefaults as defaults } from './defaults'
+
+export async function LatestPostsBlock(props: LatestPostsBlockProps): Promise<React.JSX.Element> {
 	const posts = props.posts.filter((post) => typeof post === 'object') ?? []
+	const locale = await getClientLang()
 
 	return (
 		<div className="border-t py-14">
 			<div className="safe-width">
 				<div className="mb-12 flex flex-row items-center justify-between font-semibold italic">
-					<div className="font-serif text-7xl">{props.title}</div>
+					<div className="font-serif text-7xl">{props.title ?? defaults.title(locale)}</div>
 					<Button size="lg" className="justify-between" variant="outline" asChild>
-						<Link href={'/events'}>{props.buttonLabel}</Link>
-						<ArrowRight />
+						<Link href={'/events'}>
+							{props.buttonLabel ?? defaults.buttonLabel(locale)}
+							<ArrowRight />
+						</Link>
 					</Button>
 				</div>
 
@@ -34,7 +42,13 @@ export function LatestPostsBlock(props: LatestPostsBlockProps): React.JSX.Elemen
 									<CarouselItem key={index} className="max-w-[25rem]">
 										<Image
 											src={img?.url || 'https://placehold.co/460x400'}
-											alt={img?.alt || ''}
+											alt={
+												img?.alt ||
+												matchLang({
+													[Lang.English]: 'Post hero image',
+													[Lang.Vietnamese]: 'Hình ảnh bài viết',
+												})(locale)
+											}
 											width={img?.width || 0}
 											height={img?.height || 0}
 											className="h-[25rem] w-[28.75rem] rounded-[0.5rem] object-cover"

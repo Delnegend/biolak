@@ -3,7 +3,8 @@ import { Block } from 'payload'
 import { MediaSlug } from '@/collections/Media/slug'
 import { ProductsSlug } from '@/collections/Products/slug'
 import { Lang } from '@/utilities/lang'
-import { matchLang } from '@/utilities/matchLang'
+
+import { HowToUseProductBlockDefaults as defaults } from './defaults'
 
 export const HowToUseProductBlockConf: Block = {
 	slug: 'how-to-use-product',
@@ -27,12 +28,11 @@ export const HowToUseProductBlockConf: Block = {
 				en: 'Title',
 				vi: 'Tiêu đề',
 			},
-			required: true,
 			localized: true,
-			defaultValue: matchLang({
-				[Lang.English]: 'How to use',
-				[Lang.Vietnamese]: 'Huớng dẫn sử dụng',
-			}),
+			defaultValue: defaults.title,
+			admin: {
+				placeholder: defaults.title(Lang.Vietnamese),
+			},
 		},
 		{
 			name: 'subtitle',
@@ -42,6 +42,16 @@ export const HowToUseProductBlockConf: Block = {
 				vi: 'Tiêu đề phụ',
 			},
 			localized: true,
+			admin: {
+				condition: (data) => {
+					const isProductDocument =
+						!!data.reviewsVisible &&
+						!!data.variants &&
+						!!data.productCategories &&
+						data.productSubCategories
+					return !isProductDocument
+				},
+			},
 		},
 		{
 			name: 'content',
@@ -51,6 +61,7 @@ export const HowToUseProductBlockConf: Block = {
 				vi: 'Nội dung',
 			},
 			required: true,
+			localized: true,
 		},
 		{
 			name: 'image',
@@ -68,6 +79,16 @@ export const HowToUseProductBlockConf: Block = {
 			label: {
 				en: 'Product',
 				vi: 'Sản phẩm',
+			},
+			admin: {
+				condition: (data) => {
+					const isProductDocument =
+						!!data.reviewsVisible &&
+						!!data.variants &&
+						!!data.productCategories &&
+						data.productSubCategories
+					return !isProductDocument
+				},
 			},
 		},
 	],

@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react'
+import React from 'react'
 
 import { ArchiveBlock } from '@/blocks/ArchiveBlock/Component'
 import { CallToActionCenterBlock } from '@/blocks/CallToActionCenter/Component'
@@ -21,7 +21,7 @@ import { CallToActionPostBlock } from './CallToActionPost/Component'
 import { CallToActionPostBlockConf } from './CallToActionPost/config'
 import { CallToActionRightBlock } from './CallToActionRight/Component'
 import { CallToActionRightBlockConf } from './CallToActionRight/config'
-import { CallToAddToCartBlockComponent } from './CallToAddToCart/Component'
+import { CallToAddToCartBlock } from './CallToAddToCart/Component'
 import { CallToAddToCartBlockConf } from './CallToAddToCart/config'
 import { CertificatesBlock } from './Certificates/Component'
 import { CertificatesBlockConf } from './Certificates/config'
@@ -39,7 +39,7 @@ import { HighlightLeftBlock } from './HighlightLeft/Component'
 import { HighlightLeftBlockConf } from './HighlightLeft/config'
 import { HighlightRightBlock } from './HighlightRight/Component'
 import { HighlighRightBlockConf as HighlightRightBlockConf } from './HighlightRight/config'
-import { HowToUseProductBlockComponent } from './HowToUseProduct/Component'
+import { HowToUseProductBlock } from './HowToUseProduct/Component'
 import { HowToUseProductBlockConf } from './HowToUseProduct/config'
 import { InfiniteScrollBlock } from './InfiniteScroll/Component'
 import { InfiniteScrollBlockConf } from './InfiniteScroll/config'
@@ -56,42 +56,40 @@ import { ThreePhotoBlock } from './ThreePhoto/Component'
 import { ThreePhotoBlockConf } from './ThreePhoto/config'
 
 const blockComponents = {
-	[ArchiveBlockConf.slug]: () => ArchiveBlock,
-	[BannerBlockConf.slug]: () => BannerBlock,
-	[BestSellerBlockConf.slug]: () => BestSellerBlock,
-	[BestSellerBlockConf.slug]: () => BestSellerBlock,
-	[BuyNowBlockConf.slug]: (props: { product?: Product | null }) => BuyNowBlock(props),
-	[CallToActionCenterBlockConf.slug]: () => CallToActionCenterBlock,
-	[CallToActionLeftBlockConf.slug]: () => CallToActionLeftBlock,
-	[CallToActionPostBlockConf.slug]: () => CallToActionPostBlock,
-	[CallToActionRightBlockConf.slug]: () => CallToActionRightBlock,
-	[CallToAddToCartBlockConf.slug]: (props: { product?: Product | null }) =>
-		CallToAddToCartBlockComponent(props),
-	[CertificatesBlockConf.slug]: () => CertificatesBlock,
-	[ContentBlockConf.slug]: () => ContentBlock,
-	[FocusLeftSmallImageBlockConf.slug]: () => FocusLeftSmallImageBlock,
-	[FocusRightLargeImageBlockConf.slug]: () => FocusRightLargeImageBlock,
-	[FocusRightSmallImageBlockConf.slug]: () => FocusRightSmallImageBlock,
-	[FormBlockConf.slug]: () => FormBlock,
-	[HighlightCenterBlockConf.slug]: () => HighlightCenterBlock,
-	[HighlightLeftBlockConf.slug]: () => HighlightLeftBlock,
-	[HighlightRightBlockConf.slug]: () => HighlightRightBlock,
-	[HowToUseProductBlockConf.slug]: (props: { product?: Product | null }) =>
-		HowToUseProductBlockComponent(props),
-	[InfiniteScrollBlockConf.slug]: () => InfiniteScrollBlock,
-	[LatestPostsBlockConf.slug]: () => LatestPostsBlock,
-	[MediaBlockConf.slug]: () => MediaBlockComponent,
-	[PostsGridBlockConf.slug]: () => PostsGridBlock,
-	[ProductsCarouselBlockConf.slug]: () => ProductsCarouselBlock,
-	[ProductsCategoryBlockConf.slug]: () => ProductsCategoryBlock,
-	[ThreePhotoBlockConf.slug]: () => ThreePhotoBlock,
+	[ArchiveBlockConf.slug]: ArchiveBlock,
+	[BannerBlockConf.slug]: BannerBlock,
+	[BestSellerBlockConf.slug]: BestSellerBlock,
+	[BuyNowBlockConf.slug]: BuyNowBlock,
+	[CallToActionCenterBlockConf.slug]: CallToActionCenterBlock,
+	[CallToActionLeftBlockConf.slug]: CallToActionLeftBlock,
+	[CallToActionPostBlockConf.slug]: CallToActionPostBlock,
+	[CallToActionRightBlockConf.slug]: CallToActionRightBlock,
+	[CallToAddToCartBlockConf.slug]: CallToAddToCartBlock,
+	[CertificatesBlockConf.slug]: CertificatesBlock,
+	[ContentBlockConf.slug]: ContentBlock,
+	[FocusLeftSmallImageBlockConf.slug]: FocusLeftSmallImageBlock,
+	[FocusRightLargeImageBlockConf.slug]: FocusRightLargeImageBlock,
+	[FocusRightSmallImageBlockConf.slug]: FocusRightSmallImageBlock,
+	[FormBlockConf.slug]: FormBlock,
+	[HighlightCenterBlockConf.slug]: HighlightCenterBlock,
+	[HighlightLeftBlockConf.slug]: HighlightLeftBlock,
+	[HighlightRightBlockConf.slug]: HighlightRightBlock,
+	[HowToUseProductBlockConf.slug]: HowToUseProductBlock,
+	[InfiniteScrollBlockConf.slug]: InfiniteScrollBlock,
+	[LatestPostsBlockConf.slug]: LatestPostsBlock,
+	[MediaBlockConf.slug]: MediaBlockComponent,
+	[PostsGridBlockConf.slug]: PostsGridBlock,
+	[ProductsCarouselBlockConf.slug]: ProductsCarouselBlock,
+	[ProductsCategoryBlockConf.slug]: ProductsCategoryBlock,
+	[ThreePhotoBlockConf.slug]: ThreePhotoBlock,
 }
 
 export function RenderBlocks({
 	blocks,
 	product,
-	post,
-	postCategory,
+	// TODO: might need these in the future
+	post: _post,
+	postCategory: _postCategory,
 }: {
 	blocks: Page['layout'][0][] | Post['layout'][0][] | Product['content']
 	product?: Product | null
@@ -103,23 +101,23 @@ export function RenderBlocks({
 	}
 
 	return (
-		<Fragment>
+		<>
 			{blocks.map((block, index) => {
 				const { blockType } = block
 				if (!(blockType && blockType in blockComponents)) {
 					return null
 				}
 
-				const Block = blockComponents[blockType]?.({ product })
-				if (!Block) {
+				const BlockToRender = blockComponents[blockType]
+				if (!BlockToRender) {
 					return null
 				}
 
 				return (
 					// @ts-expect-error there may be some mismatch between the expected types here
-					<Block {...block} key={index} disableInnerContainer />
+					<BlockToRender {...block} key={index} disableInnerContainer __product={product} />
 				)
 			})}
-		</Fragment>
+		</>
 	)
 }

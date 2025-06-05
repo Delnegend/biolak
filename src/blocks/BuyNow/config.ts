@@ -2,7 +2,8 @@ import { Block } from 'payload'
 
 import { ProductsSlug } from '@/collections/Products/slug'
 import { Lang } from '@/utilities/lang'
-import { matchLang } from '@/utilities/matchLang'
+
+import { BuyNowBlockDefaults as defaults } from './defaults'
 
 export const BuyNowBlockConf: Block = {
 	slug: 'buy-now',
@@ -27,12 +28,9 @@ export const BuyNowBlockConf: Block = {
 				vi: 'Nhãn nút',
 			},
 			localized: true,
-			defaultValue: matchLang({
-				[Lang.English]: 'BUY NOW',
-				[Lang.Vietnamese]: 'MUA NGAY',
-			}),
+			defaultValue: defaults.buttonLabel,
 			admin: {
-				placeholder: 'Mua ngay',
+				placeholder: defaults.buttonLabel(Lang.Vietnamese),
 			},
 		},
 		{

@@ -41,7 +41,7 @@ export function State(
 
 					return (
 						<Select onValueChange={(val) => onChange(val)} value={controlledValue?.value}>
-							<SelectTrigger className="w-full" id={props.name}>
+							<SelectTrigger className="w-full" id={props.name} label={props.label}>
 								<SelectValue placeholder={props.label} />
 							</SelectTrigger>
 							<SelectContent>

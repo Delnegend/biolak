@@ -107,7 +107,7 @@ const columnFields: Field[] = [
 		overrides: {
 			admin: {
 				condition: (_data, siblingData) => {
-					return Boolean(siblingData?.enableLink)
+					return !!siblingData?.enableLink
 				},
 			},
 		},
@@ -149,6 +149,7 @@ export const ContentBlockConf: Block = {
 				initCollapsed: true,
 			},
 			fields: columnFields,
+			localized: true,
 		},
 	],
 }

@@ -1,3 +1,4 @@
+import { ArrowRight } from 'lucide-react'
 import React from 'react'
 
 import { CMSLink } from '@/components/CMSLink'
@@ -5,8 +6,14 @@ import RichText from '@/components/RichText'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import type { CallToActionCenterBlockProps } from '@/payload-types'
+import { getClientLang } from '@/utilities/getClientLang'
 
-export function CallToActionCenterBlock(props: CallToActionCenterBlockProps): React.JSX.Element {
+import { CallToActionCenterBlockDefaults as defaults } from './defaults'
+
+export async function CallToActionCenterBlock(
+	props: CallToActionCenterBlockProps,
+): Promise<React.JSX.Element> {
+	const locale = await getClientLang()
 	const bgUrl =
 		props.background && typeof props.background === 'object' && props.background.url
 			? props.background.url
@@ -41,15 +48,20 @@ export function CallToActionCenterBlock(props: CallToActionCenterBlockProps): Re
 					)}
 				</CardHeader>
 				<CardContent className="grid max-w-[38.5rem]">
-					<CMSLink
-						className="grid"
-						{...props.button.link}
-						type={props.button.link?.type ?? undefined}
+					<Button
+						size="lg"
+						className="w-full max-w-[28rem] justify-between place-self-center"
+						asChild
 					>
-						<Button size="lg" className="w-full max-w-[28rem] place-self-center">
-							{props.button.text}
-						</Button>
-					</CMSLink>
+						<CMSLink
+							className="grid"
+							{...props.link}
+							type={props.link?.type ?? undefined}
+							label={props.link?.label ?? defaults.buttonLabel(locale)}
+						>
+							<ArrowRight />
+						</CMSLink>
+					</Button>
 				</CardContent>
 			</Card>
 		</div>

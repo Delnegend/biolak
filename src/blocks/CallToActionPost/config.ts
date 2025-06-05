@@ -1,6 +1,10 @@
 import { Block } from 'payload'
 
 import { PostsSlug } from '@/collections/Posts/slug'
+import { link } from '@/fields/link'
+import { Lang } from '@/utilities/lang'
+
+import { CallToActionPostBlockDefaults as defaults } from './defaults'
 
 export const CallToActionPostBlockConf: Block = {
 	slug: 'call-to-action-post',
@@ -34,6 +38,7 @@ export const CallToActionPostBlockConf: Block = {
 				en: 'Overwrite Title',
 				vi: 'Ghi đè tiêu đề',
 			},
+			localized: true,
 		},
 		{
 			name: 'overwriteDescription',
@@ -42,16 +47,22 @@ export const CallToActionPostBlockConf: Block = {
 				en: 'Overwrite Description',
 				vi: 'Ghi đè mô tả',
 			},
+			localized: true,
 		},
-		{
-			name: 'buttonLabel',
-			type: 'text',
-			label: {
-				en: 'Button Label',
-				vi: 'Nhãn nút',
+		link({
+			overrides: {
+				label: {
+					en: 'Button Label',
+					vi: 'Nhãn nút',
+				},
+				defaultValue: defaults.buttonLabel,
+				required: true,
+				localized: true,
 			},
-			required: true,
-			defaultValue: 'ĐỌC BÀI VIẾT',
-		},
+			label: {
+				placeholder: defaults.buttonLabel(Lang.Vietnamese),
+				required: false,
+			},
+		}),
 	],
 }
