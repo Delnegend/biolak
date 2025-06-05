@@ -88,11 +88,11 @@ export const PostsCollection: CollectionConfig<typeof PostsSlug> = {
 		{
 			name: 'title',
 			type: 'text',
-			required: true,
 			label: {
 				en: 'Title',
 				vi: 'Tiêu đề',
 			},
+			required: true,
 			localized: true,
 		},
 		{
