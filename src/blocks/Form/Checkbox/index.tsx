@@ -25,7 +25,6 @@ export function Checkbox(
 					defaultChecked={props.defaultValue}
 					id={props.name}
 					{...props_}
-					// @ts-expect-error TODO: unused, if use then fix type
 					onCheckedChange={(checked) => {
 						setValue(props_.name, checked)
 					}}
