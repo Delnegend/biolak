@@ -30,7 +30,7 @@ export async function generateStaticParams() {
 
 	return categories.docs
 		.map((doc) => doc.slug)
-		.filter((slug): slug is string => typeof slug === 'string' && slug.length > 0)
+		.filter((slug) => typeof slug === 'string' && slug.length > 0)
 		.map((slug) => ({ slug }))
 }
 
