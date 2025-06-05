@@ -12,24 +12,34 @@ import { FooterGlobalComponent } from '@/globals/Footer/Component'
 import { RenderHero } from '@/heros/RenderHero'
 import { generateMeta } from '@/utilities/generateMeta'
 import { getClientLang } from '@/utilities/getClientLang'
+import { tryCatch } from '@/utilities/tryCatch'
 
 import PageClient from './page.client'
 
 export async function generateStaticParams() {
-	const payload = await getPayload({ config: configPromise })
+	const payload2 = await tryCatch(() => getPayload({ config: configPromise }))
+	if (!payload2.tryCatchSuccess) {
+		throw new Error(`Failed to initialize Payload: ${payload2.error}`)
+	}
+	const payload = payload2
 	const locale = await getClientLang()
 
-	const pages = await payload.find({
-		collection: PagesSlug,
-		draft: false,
-		limit: 1000,
-		overrideAccess: false,
-		pagination: false,
-		select: {
-			slug: true,
-		},
-		locale,
-	})
+	const pages = await tryCatch(() =>
+		payload.find({
+			collection: PagesSlug,
+			draft: false,
+			limit: 1000,
+			overrideAccess: false,
+			pagination: false,
+			select: {
+				slug: true,
+			},
+			locale,
+		}),
+	)
+	if (!pages.tryCatchSuccess) {
+		throw new Error(`Failed to fetch pages: ${pages.error}`)
+	}
 
 	return pages.docs
 		?.filter((doc) => {
