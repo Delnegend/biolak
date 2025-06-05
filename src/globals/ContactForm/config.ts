@@ -3,7 +3,8 @@ import { GlobalConfig } from 'payload'
 
 import { allow, Role } from '@/access/allow'
 import { Lang } from '@/utilities/lang'
-import { matchLang } from '@/utilities/matchLang'
+
+import { ContactFormGlobalDefaults as defaults } from './defaults'
 
 export const ContactFormGlobalSlug = 'contactFormGlobal'
 export const ContactFormGlobalConf: GlobalConfig<typeof ContactFormGlobalSlug> = {
@@ -20,77 +21,82 @@ export const ContactFormGlobalConf: GlobalConfig<typeof ContactFormGlobalSlug> =
 		{
 			name: 'title',
 			type: 'text',
-			required: true,
 			localized: true,
-			defaultValue: matchLang({
-				[Lang.English]: 'Contact Us',
-				[Lang.Vietnamese]: 'Liên hệ với BioLAK',
-			}),
+			label: false,
+			defaultValue: defaults.title,
+			admin: {
+				placeholder: defaults.title(Lang.Vietnamese),
+			},
 		},
 		{
 			name: 'name',
 			type: 'text',
-			required: true,
+			label: false,
 			localized: true,
-			defaultValue: matchLang({
-				[Lang.English]: 'Input your name',
-				[Lang.Vietnamese]: 'Nhập tên của bạn',
-			}),
+			defaultValue: defaults.name,
+			admin: {
+				placeholder: defaults.name(Lang.Vietnamese),
+			},
 		},
 		{
 			name: 'phoneNumber',
 			type: 'text',
-			required: true,
+			label: false,
 			localized: true,
-			defaultValue: matchLang({
-				[Lang.English]: 'Input your phone number',
-				[Lang.Vietnamese]: 'Nhập số điện thoại',
-			}),
+			defaultValue: defaults.phoneNumber,
+			admin: {
+				placeholder: defaults.phoneNumber(Lang.Vietnamese),
+			},
 		},
 		{
 			name: 'email',
 			type: 'text',
-			required: true,
+			label: false,
 			localized: true,
-			defaultValue: matchLang({
-				[Lang.English]: 'Input your email',
-				[Lang.Vietnamese]: 'Nhập địa chỉ email',
-			}),
+			defaultValue: defaults.email,
+			admin: {
+				placeholder: defaults.email(Lang.Vietnamese),
+			},
 		},
 		{
 			name: 'question',
 			type: 'text',
-			required: true,
+			label: false,
 			localized: true,
-			defaultValue: matchLang({
-				[Lang.English]: 'Ask your question to us',
-				[Lang.Vietnamese]: 'Câu hỏi của bạn tới chúng tôi',
-			}),
+			defaultValue: defaults.question,
+			admin: {
+				placeholder: defaults.question(Lang.Vietnamese),
+			},
 		},
 		{
 			name: 'actionSend',
 			type: 'text',
-			required: true,
+			label: false,
 			localized: true,
-			defaultValue: matchLang({
-				[Lang.English]: 'SEND BIOLAK',
-				[Lang.Vietnamese]: 'GỬI BIOLAK',
-			}),
+			defaultValue: defaults.actionSend,
+			admin: {
+				placeholder: defaults.actionSend(Lang.Vietnamese),
+			},
 		},
 		{
 			name: 'biolakPhoneNumber',
 			type: 'text',
-			defaultValue: '0987654321',
+			label: false,
+			defaultValue: defaults.biolakPhoneNumber,
+			localized: true,
+			admin: {
+				placeholder: defaults.biolakPhoneNumber(Lang.Vietnamese),
+			},
 		},
 		{
 			name: 'actionCall',
 			type: 'text',
-			required: true,
+			label: false,
 			localized: true,
-			defaultValue: matchLang({
-				[Lang.English]: 'CALL BIOLAK',
-				[Lang.Vietnamese]: 'GỌI BIOLAK',
-			}),
+			defaultValue: defaults.actionCall,
+			admin: {
+				placeholder: defaults.actionCall(Lang.Vietnamese),
+			},
 		},
 	],
 	hooks: {

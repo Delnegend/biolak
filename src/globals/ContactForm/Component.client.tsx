@@ -18,6 +18,7 @@ import {
 	type ContactFormInputType,
 	submitContactFormAction,
 } from './actions/submitContactFormAction'
+import { ContactFormGlobalDefaults as defaults } from './defaults'
 
 export function INTERNAL_ContactFormClient({ global }: { global: ContactFormGlobal }) {
 	const { register, handleSubmit } = useForm<ContactFormInputType>()
@@ -31,7 +32,7 @@ export function INTERNAL_ContactFormClient({ global }: { global: ContactFormGlob
 					matchLang({
 						[Lang.English]: 'BioLAK has received your feedback',
 						[Lang.Vietnamese]: 'BioLAK đã nhận đuợc phản hồi của bạn',
-					})({ locale }),
+					})(locale),
 				)
 				return
 			}
@@ -45,7 +46,7 @@ export function INTERNAL_ContactFormClient({ global }: { global: ContactFormGlob
 				matchLang({
 					[Lang.English]: 'Unable to send feedback',
 					[Lang.Vietnamese]: 'Không thể gửi phản hồi',
-				})({ locale }),
+				})(locale),
 				{
 					description,
 				},
@@ -57,28 +58,36 @@ export function INTERNAL_ContactFormClient({ global }: { global: ContactFormGlob
 		<form onSubmit={handleSubmit(onSubmit)}>
 			<Card className="flex flex-col gap-[4.5rem] border-none bg-transparent">
 				<CardHeader className="p-0">
-					<CardTitle className="h-[70px] font-serif text-4xl">{global.title}</CardTitle>
+					<CardTitle className="h-[70px] font-serif text-4xl">
+						{global.title ?? defaults.title(locale)}
+					</CardTitle>
 				</CardHeader>
 				<CardContent className="p-0">
 					<div className="grid grid-cols-2 gap-9">
-						<TextInput label={global.name} {...register('username')} />
-						<TextInput label={global.phoneNumber} {...register('phoneNumber')} />
+						<TextInput
+							label={global.name ?? defaults.name(locale)}
+							{...register('username')}
+						/>
+						<TextInput
+							label={global.phoneNumber ?? defaults.phoneNumber(locale)}
+							{...register('phoneNumber')}
+						/>
 						<TextInput
 							classNames={{ container: 'col-span-2' }}
-							label={global.email}
+							label={global.email ?? defaults.email(locale)}
 							type="email"
 							{...register('email')}
 						/>
 						<TextInput
 							classNames={{ container: 'col-span-2' }}
-							label={global.question}
+							label={global.question ?? defaults.question(locale)}
 							{...register('message')}
 						/>
 					</div>
 				</CardContent>
 				<CardFooter className="grid grid-cols-2 gap-5 p-0">
 					<Button size="lg" type="submit">
-						{global.actionSend}
+						{global.actionSend ?? defaults.actionSend(locale)}
 					</Button>
 					<Button
 						className="pointer-events-none w-full justify-between"
@@ -87,9 +96,9 @@ export function INTERNAL_ContactFormClient({ global }: { global: ContactFormGlob
 						asChild
 					>
 						<Link href={`tel:${global.biolakPhoneNumber}`} tabIndex={-1}>
-							{global.actionCall}
+							{global.actionCall ?? defaults.actionCall(locale)}
+							<ArrowRight />
 						</Link>
-						<ArrowRight />
 					</Button>
 				</CardFooter>
 			</Card>
