@@ -30,11 +30,11 @@ export const ProductCategoriesCollection: CollectionConfig<typeof ProductCategor
 		{
 			name: 'title',
 			type: 'text',
-			required: true,
 			label: {
 				en: 'Title',
 				vi: 'Tiêu đề',
 			},
+			required: true,
 			localized: true,
 		},
 		{
