@@ -15,6 +15,7 @@ import { matchLang } from '@/utilities/matchLang'
 import { cn } from '@/utilities/ui'
 
 import { sendReviewAction, SendReviewInputType } from './actions/sendReviewAction'
+import { ReviewsGlobalDefaults as defaults } from './defaults'
 
 export function INTERNAL_ReviewDialogContentClient({
 	global,
@@ -40,7 +41,7 @@ export function INTERNAL_ReviewDialogContentClient({
 				matchLang({
 					[Lang.English]: 'Review has been sent successfully',
 					[Lang.Vietnamese]: 'Đánh giá đã được gửi thành công',
-				})({ locale }),
+				})(locale),
 			)
 			return
 		}
@@ -48,7 +49,7 @@ export function INTERNAL_ReviewDialogContentClient({
 			matchLang({
 				[Lang.English]: 'Unable to send review',
 				[Lang.Vietnamese]: 'Không thể gửi đánh giá',
-			})({ locale }),
+			})(locale),
 			{
 				description: response.error,
 			},
@@ -111,7 +112,7 @@ export function INTERNAL_ReviewDialogContentClient({
 						className={cn('w-full max-w-[25.5rem] self-end', className?.triggerButton)}
 						hideArrow={true}
 					>
-						{global.btnLabel}
+						{global.btnLabel ?? defaults.reviewButtonLabel(locale)}
 					</Button>
 				</DialogTrigger>
 				<DialogContent
@@ -119,14 +120,16 @@ export function INTERNAL_ReviewDialogContentClient({
 					aria-label={matchLang({
 						[Lang.English]: 'Send a review for your order dialog',
 						[Lang.Vietnamese]: 'Hộp thoại gửi đánh giá cho đơn hàng của bạn',
-					})({ locale })}
+					})(locale)}
 				>
 					<form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-9">
-						<DialogTitle>{global.reviewDialogTitle}</DialogTitle>
+						<DialogTitle>
+							{global.reviewDialogTitle ?? defaults.reviewDialogTitle(locale)}
+						</DialogTitle>
 
 						<div>
 							<div className="mb-6 text-xl text-muted-foreground">
-								{global.heartsSelectionLabel ?? '???'}
+								{global.heartsSelectionLabel ?? defaults.heartsSelectionLabel(locale)}
 							</div>
 							<div className="flex flex-row gap-x-[0.875rem]">
 								{Array.from({ length: 5 }).map((_, i) => {
@@ -141,7 +144,7 @@ export function INTERNAL_ReviewDialogContentClient({
 											aria-label={matchLang({
 												[Lang.English]: `Set rating to ${i + 1} over 5`,
 												[Lang.Vietnamese]: `Đặt đánh giá tới ${i + 1} trên 5`,
-											})({ locale })}
+											})(locale)}
 										>
 											<Heart
 												fill={rating >= i + 1 ? '#925E12' : 'transparent'}
@@ -154,8 +157,16 @@ export function INTERNAL_ReviewDialogContentClient({
 							</div>
 						</div>
 
-						<TextInput size="sm" label="Mã đơn hàng" {...register('invoiceId')}></TextInput>
-						<TextInput size="sm" label="Nội dung" {...register('content')}></TextInput>
+						<TextInput
+							size="sm"
+							label={global.invoiceIdLabel ?? defaults.invoiceIdLabel(locale)}
+							{...register('invoiceId')}
+						></TextInput>
+						<TextInput
+							size="sm"
+							label={global.contentLabel ?? defaults.contentLabel(locale)}
+							{...register('content')}
+						></TextInput>
 
 						<div className="flex flex-row gap-6 overflow-auto">
 							{reviewImages?.map((image, index) => (
@@ -169,7 +180,7 @@ export function INTERNAL_ReviewDialogContentClient({
 										alt={matchLang({
 											[Lang.English]: `Review image ${index + 1}`,
 											[Lang.Vietnamese]: `Hình ảnh đánh giá ${index + 1}`,
-										})({ locale })}
+										})(locale)}
 										className="size-full overflow-hidden object-cover"
 									/>
 									<button
@@ -212,7 +223,7 @@ export function INTERNAL_ReviewDialogContentClient({
 								aria-label={matchLang({
 									[Lang.English]: 'Add a review image',
 									[Lang.Vietnamese]: 'Thêm hình ảnh đánh giá',
-								})({ locale })}
+								})(locale)}
 								htmlFor="ghost-input"
 							>
 								<CirclePlus size={40} />
@@ -220,7 +231,7 @@ export function INTERNAL_ReviewDialogContentClient({
 						</div>
 
 						<Button type="submit" className="w-full">
-							{global.sendReviewBtnLabel}
+							{global.sendReviewBtnLabel ?? defaults.sendReviewButtonLabel(locale)}
 						</Button>
 					</form>
 				</DialogContent>

@@ -12,6 +12,8 @@ import { Lang } from '@/utilities/lang'
 import { matchLang } from '@/utilities/matchLang'
 import { cn } from '@/utilities/ui'
 
+import { ReviewsGlobalDefaults as defaults } from './defaults'
+
 const phudu = Phudu({
 	subsets: ['vietnamese'],
 	weight: ['600'],
@@ -58,7 +60,7 @@ export async function ReviewsGlobalComponent({
 						matchLang({
 							[Lang.English]: 'Anonymous',
 							[Lang.Vietnamese]: 'Ẩn danh',
-						})({ locale }),
+						})(locale),
 					rating: order.review.rating ?? undefined,
 					content: order.review.content ?? undefined,
 					createdAt: new Date(order.createdAt),
@@ -85,13 +87,13 @@ export async function ReviewsGlobalComponent({
 						{matchLang({
 							[Lang.English]: 'Oh',
 							[Lang.Vietnamese]: 'Ồ',
-						})({ locale })}
+						})(locale)}
 					</h1>
 					<div>
 						{matchLang({
 							[Lang.English]: 'There are no reviews yet',
 							[Lang.Vietnamese]: 'Chưa có đánh giá nào cả',
-						})({ locale })}
+						})(locale)}
 					</div>
 				</div>
 
@@ -106,7 +108,9 @@ export async function ReviewsGlobalComponent({
 	return (
 		<div className="safe-width mt-20 grid grid-cols-[auto_1fr] gap-x-20 text-primary">
 			<div>
-				<div className="font-serif text-2xl font-medium">{global.title}</div>
+				<div className="font-serif text-2xl font-medium">
+					{global.title ?? defaults.title(locale)}
+				</div>
 				<div className="font-serif text-9xl font-medium">{Math.round(avgRating * 10) / 10}</div>
 				<div className="flex w-fit flex-row items-center justify-center gap-4">
 					<HeartsRow rating={avgRating} />

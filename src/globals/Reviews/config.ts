@@ -3,7 +3,8 @@ import { GlobalConfig } from 'payload'
 
 import { allow, Role } from '@/access/allow'
 import { Lang } from '@/utilities/lang'
-import { matchLang } from '@/utilities/matchLang'
+
+import { ReviewsGlobalDefaults as defaults } from './defaults'
 
 export const ReviewsGlobalSlug = 'reviewsGlobal'
 export const ReviewsGlobalConf: GlobalConfig<typeof ReviewsGlobalSlug> = {
@@ -20,100 +21,72 @@ export const ReviewsGlobalConf: GlobalConfig<typeof ReviewsGlobalSlug> = {
 		{
 			name: 'title',
 			type: 'text',
-			label: {
-				en: 'Title',
-				vi: 'Tiêu đề',
-			},
-			required: true,
+			label: false,
 			localized: true,
-			defaultValue: matchLang({
-				[Lang.English]: 'Reviews from customers',
-				[Lang.Vietnamese]: 'Đánh giá từ khách hàng',
-			}),
+			defaultValue: defaults.title,
+			admin: {
+				placeholder: defaults.title(Lang.Vietnamese),
+			},
 		},
 		{
 			name: 'btnLabel',
 			type: 'text',
-			label: {
-				en: 'Review button label',
-				vi: 'Nhãn nút đánh giá',
-			},
-			required: true,
+			label: false,
 			localized: true,
-			defaultValue: matchLang({
-				[Lang.English]: 'WRITE A REVIEW',
-				[Lang.Vietnamese]: 'VIẾT ĐÁNH GIÁ',
-			}),
+			defaultValue: defaults.reviewButtonLabel,
+			admin: {
+				placeholder: defaults.reviewButtonLabel(Lang.Vietnamese),
+			},
 		},
 		{
 			name: 'reviewDialogTitle',
 			type: 'text',
-			label: {
-				en: 'Review dialog title',
-				vi: 'Nhãn hộp thoại đánh giá',
-			},
-			required: true,
+			label: false,
 			localized: true,
-			defaultValue: matchLang({
-				[Lang.English]: 'Your review',
-				[Lang.Vietnamese]: 'Đánh giá của bạn',
-			}),
+			defaultValue: defaults.reviewDialogTitle,
+			admin: {
+				placeholder: defaults.reviewDialogTitle(Lang.Vietnamese),
+			},
 		},
 		{
 			name: 'heartsSelectionLabel',
 			type: 'text',
-			label: {
-				en: 'Hearts selection label',
-				vi: 'Nhãn lựa chọn đánh giá',
-			},
-			required: true,
+			label: false,
 			localized: true,
-			defaultValue: matchLang({
-				[Lang.English]: 'Review for this product',
-				[Lang.Vietnamese]: 'Đánh giá cho sản phẩm này',
-			}),
+			defaultValue: defaults.heartsSelectionLabel,
+			admin: {
+				placeholder: defaults.heartsSelectionLabel(Lang.Vietnamese),
+			},
 		},
 		{
 			name: 'invoiceIdLabel',
 			type: 'text',
-			label: {
-				en: 'Invoice ID label',
-				vi: 'Nhãn mã đơn hàng',
-			},
-			required: true,
+			label: false,
 			localized: true,
-			defaultValue: matchLang({
-				[Lang.English]: 'Your order ID',
-				[Lang.Vietnamese]: 'Mã đơn hàng của bạn',
-			}),
+			defaultValue: defaults.invoiceIdLabel,
+			admin: {
+				placeholder: defaults.invoiceIdLabel(Lang.Vietnamese),
+			},
 		},
 		{
 			name: 'contentLabel',
 			type: 'text',
-			label: {
-				en: 'Content label',
-				vi: 'Nhãn nội dung đánh giá',
-			},
-			required: true,
+			label: false,
 			localized: true,
-			defaultValue: matchLang({
-				[Lang.English]: 'Product review',
-				[Lang.Vietnamese]: 'Cảm nhận về sản phẩm',
-			}),
+			defaultValue: defaults.contentLabel,
+			admin: {
+				placeholder: defaults.contentLabel(Lang.Vietnamese),
+			},
 		},
 		{
 			name: 'sendReviewBtnLabel',
 			type: 'text',
-			label: {
-				en: 'Send review button label',
-				vi: 'Nhãn nút gửi đánh giá',
-			},
-			required: true,
+			label: false,
 			localized: true,
-			defaultValue: matchLang({
-				[Lang.English]: 'WRITE REVIEW',
-				[Lang.Vietnamese]: 'VIẾT ĐÁNH GIÁ',
-			}),
+			defaultValue: defaults.sendReviewButtonLabel,
+			admin: {
+				placeholder: defaults.sendReviewButtonLabel(Lang.Vietnamese),
+			},
 		},
 	],
 	hooks: {
