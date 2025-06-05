@@ -29,32 +29,38 @@ export async function sendReviewAction(input: unknown): Promise<
 			error: string
 	  }
 > {
-	const parsed = tryCatchSync(() => SendReviewSchema.parse(input))
-	if (!parsed.success) {
+	const parsedInput = tryCatchSync(() => SendReviewSchema.parse(input))
+	if (!parsedInput.tryCatchSuccess) {
 		return {
 			success: false,
-			error: parsed.error instanceof z.ZodError ? parsed.error.message : `${parsed.error}`,
+			error:
+				parsedInput.error instanceof z.ZodError
+					? parsedInput.error.message
+					: `${parsedInput.error}`,
 		}
 	}
 
 	const payload = await getPayload({ config })
-	const result = await tryCatch(() =>
+	const updateResult = await tryCatch(() =>
 		payload.update({
 			collection: OrdersSlug,
-			id: parsed.data.invoiceId,
+			id: parsedInput.invoiceId,
 			data: {
 				review: {
-					...parsed.data,
+					...parsedInput,
 					approved: false,
 				},
 			},
 			overrideAccess: true,
 		}),
 	)
-	if (!result.success) {
+	if (!updateResult.tryCatchSuccess) {
 		return {
 			success: false,
-			error: result.error instanceof Error ? result.error.message : `${result.error}`,
+			error:
+				updateResult.error instanceof Error
+					? updateResult.error.message
+					: `${updateResult.error}`,
 		}
 	}
 
