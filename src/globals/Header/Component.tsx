@@ -31,7 +31,7 @@ const prebuilds: Record<
 					matchLang({
 						[Lang.English]: 'Search',
 						[Lang.Vietnamese]: 'Tìm kiếm',
-					})({ locale })}
+					})(locale)}
 			</span>
 			<SearchIcon className="w-5 scale-110 text-primary" size={30} />
 		</Link>
@@ -46,7 +46,7 @@ const prebuilds: Record<
 						matchLang({
 							[Lang.English]: 'Contacts',
 							[Lang.Vietnamese]: 'Liên hệ',
-						})({ locale })}
+						})(locale)}
 				</div>
 			</DialogTrigger>
 			<DialogContent className="min-w-[932px] overflow-hidden !rounded-2xl bg-primary-foreground p-12">
@@ -115,7 +115,7 @@ export async function HeaderGlobalComponent() {
 										matchLang({
 											[Lang.English]: 'Internal link',
 											[Lang.Vietnamese]: 'Liên kết nội bộ',
-										})({ locale })}
+										})(locale)}
 								</Link>
 							) : null
 						}
@@ -132,7 +132,7 @@ export async function HeaderGlobalComponent() {
 										matchLang({
 											[Lang.English]: 'External link',
 											[Lang.Vietnamese]: 'Liên kết ngoài',
-										})({ locale })}
+										})(locale)}
 								</Link>
 							)
 						}

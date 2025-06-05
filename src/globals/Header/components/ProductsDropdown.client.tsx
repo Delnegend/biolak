@@ -114,7 +114,7 @@ export function INTERNAL_ProductsDropdownClient({
 		Array<{
 			id: Product['id']
 			title: Product['title']
-			shortDescription: Product['shortDescription']
+			shortDescription?: Product['shortDescription']
 			variants: Product['variants']
 			slug?: Product['slug']
 			icon?: Product['icon']
@@ -155,7 +155,7 @@ export function INTERNAL_ProductsDropdownClient({
 				matchLang({
 					[Lang.English]: "Can't load products list",
 					[Lang.Vietnamese]: 'Không thể tải danh sách sản phẩm',
-				})({ locale }),
+				})(locale),
 				{
 					description: error,
 				},
@@ -194,7 +194,7 @@ export function INTERNAL_ProductsDropdownClient({
 					matchLang({
 						[Lang.English]: 'Products',
 						[Lang.Vietnamese]: 'Sản phẩm',
-					})({ locale })}
+					})(locale)}
 			</button>
 			<AnimatePresence>
 				{open && (
@@ -214,12 +214,15 @@ export function INTERNAL_ProductsDropdownClient({
 						}}
 					>
 						{/* categories */}
-						<DropdownColumn className="z-50 border-r" key="categories">
+						<DropdownColumn
+							className="z-50 h-[calc(100dvh-5rem)] overflow-y-auto border-r"
+							key="categories"
+						>
 							<DropdownLabel key="categories">
 								{matchLang({
 									[Lang.English]: 'Products',
 									[Lang.Vietnamese]: 'Sản phẩm',
-								})({ locale })}
+								})(locale)}
 							</DropdownLabel>
 							{categories.docs.map((category, index) => (
 								<DropdownItem
@@ -240,13 +243,16 @@ export function INTERNAL_ProductsDropdownClient({
 						{/* sub categories */}
 						<AnimatePresence mode="wait">
 							{activeCategory?.productSubCategories?.docs?.length && (
-								<DropdownColumn className="z-40 border-r" key="subCategoryPanel">
+								<DropdownColumn
+									className="z-40 h-[calc(100dvh-5rem)] overflow-y-auto border-r"
+									key="subCategoryPanel"
+								>
 									<DropdownLabel key={activeCategory?.slug}>
 										{activeCategory?.title ??
 											matchLang({
 												[Lang.English]: 'Product category',
 												[Lang.Vietnamese]: 'Danh mục sản phẩm',
-											})({ locale })}
+											})(locale)}
 									</DropdownLabel>
 									<DropdownItem key="allProducts" tabIndex={-1}>
 										<Link
@@ -256,7 +262,7 @@ export function INTERNAL_ProductsDropdownClient({
 											{matchLang({
 												[Lang.English]: 'All',
 												[Lang.Vietnamese]: 'Tất cả',
-											})({ locale })}
+											})(locale)}
 										</Link>
 									</DropdownItem>
 									{activeCategory?.productSubCategories?.docs
@@ -286,13 +292,16 @@ export function INTERNAL_ProductsDropdownClient({
 						{/* products */}
 						<AnimatePresence mode="wait">
 							{(activeProducts?.length ?? 0) > 0 && (
-								<DropdownColumn className="z-30" key="productsPanel">
+								<DropdownColumn
+									className="z-30 h-[calc(100dvh-5rem)] overflow-y-auto"
+									key="productsPanel"
+								>
 									<DropdownLabel key={activeSubCategory?.slug}>
 										{activeSubCategory?.title ??
 											matchLang({
 												[Lang.English]: 'Product category',
 												[Lang.Vietnamese]: 'Danh mục sản phẩm',
-											})({ locale })}
+											})(locale)}
 									</DropdownLabel>
 									{activeProducts?.map((product, index) => {
 										const icon =
@@ -346,7 +355,7 @@ export function INTERNAL_ProductsDropdownClient({
 															matchLang({
 																[Lang.English]: 'Product Icon',
 																[Lang.Vietnamese]: 'Biểu tượng sản phẩm',
-															})({ locale })
+															})(locale)
 														}
 														width={icon?.width ?? 200}
 														height={icon?.height ?? 200}

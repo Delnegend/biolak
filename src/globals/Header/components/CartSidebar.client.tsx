@@ -46,7 +46,7 @@ function CartContentWithData(): React.JSX.Element {
 						{matchLang({
 							[Lang.English]: 'Unselect all',
 							[Lang.Vietnamese]: 'Bỏ chọn tất cả',
-						})({ locale })}
+						})(locale)}
 					</button>
 
 					<hr style={{ gridArea: 'hr' }} className="my-6 border-border" />
@@ -55,7 +55,7 @@ function CartContentWithData(): React.JSX.Element {
 						{matchLang({
 							[Lang.English]: 'Total',
 							[Lang.Vietnamese]: 'Tạm tính',
-						})({ locale })}
+						})(locale)}
 					</div>
 
 					<div style={{ gridArea: 'price' }} className="text-[1.75rem] font-semibold">
@@ -73,7 +73,7 @@ function CartContentWithData(): React.JSX.Element {
 							{matchLang({
 								[Lang.English]: 'Checkout',
 								[Lang.Vietnamese]: 'Thanh toán',
-							})({ locale })}
+							})(locale)}
 						</a>
 					</Button>
 				</div>
@@ -83,19 +83,21 @@ function CartContentWithData(): React.JSX.Element {
 }
 
 function CartContentWithoutData(): React.JSX.Element {
+	const { lang: locale } = useClientLang()
+
 	return (
 		<div className="flex h-[calc(100%-6rem)] flex-col items-center justify-center gap-4">
 			<h2 className="font-serif text-[2.5rem] font-semibold text-muted-foreground">
 				{matchLang({
 					[Lang.English]: 'Peek-a-boo...',
 					[Lang.Vietnamese]: 'Ú òa...',
-				})({ locale: useClientLang().lang })}
+				})(locale)}
 			</h2>
 			<div className="text-balance text-center text-2xl text-[#271D13]">
 				{matchLang({
 					[Lang.English]: 'Your cart is empty',
 					[Lang.Vietnamese]: 'Hiện không có sản phẩm nào trong giỏ của bạn',
-				})({ locale: useClientLang().lang })}
+				})(locale)}
 			</div>
 		</div>
 	)
@@ -122,7 +124,7 @@ export function INTERNAL_CartSidebar({
 					hideArrow
 				>
 					{label ??
-						matchLang({ [Lang.English]: 'Cart', [Lang.Vietnamese]: 'Giỏ hàng' })({ locale })}
+						matchLang({ [Lang.English]: 'Cart', [Lang.Vietnamese]: 'Giỏ hàng' })(locale)}
 					{cart.length > 0 && (
 						<div className="absolute -top-2 right-0 flex aspect-square size-7 items-center justify-center overflow-hidden rounded-full bg-[#FF8200] text-base text-primary">
 							{cart.map((item) => item.quantity).reduce((prev, curr) => prev + curr, 0)}
@@ -137,7 +139,7 @@ export function INTERNAL_CartSidebar({
 						{matchLang({
 							[Lang.English]: 'Your cart',
 							[Lang.Vietnamese]: 'Giỏ hàng của bạn',
-						})({ locale })}
+						})(locale)}
 					</SheetTitle>
 				</SheetHeader>
 				{cart.length > 0 ? <CartContentWithData /> : <CartContentWithoutData />}
