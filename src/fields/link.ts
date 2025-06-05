@@ -7,6 +7,7 @@ import { ProductCategoriesSlug } from '@/collections/ProductCategories/slug'
 import { ProductsSlug } from '@/collections/Products/slug'
 import { ProductSubCategoriesSlug } from '@/collections/ProductSubCategories/slug'
 import deepMerge from '@/utilities/deepMerge'
+import { matchLang } from '@/utilities/matchLang'
 
 export const LinkFieldRelations = [
 	PagesSlug,
@@ -26,10 +27,16 @@ export type LinkFieldRelationsType = (typeof LinkFieldRelations)[number]
  */
 export function link({
 	disableLabel = false,
+	label,
 	overrides = {},
 }: {
 	disableLabel?: boolean
 	overrides?: Partial<GroupField>
+	label?: {
+		placeholder?: string
+		defaultValue?: ReturnType<typeof matchLang>
+		required?: boolean
+	}
 } = {}): Field {
 	const linkResult: GroupField = {
 		name: 'link',
@@ -139,12 +146,15 @@ export function link({
 					type: 'text',
 					admin: {
 						width: '50%',
+						placeholder: label?.placeholder,
 					},
 					label: {
 						en: 'Label',
 						vi: 'Nhãn',
 					},
-					required: true,
+					required: label?.required ?? true,
+					localized: true,
+					defaultValue: label?.defaultValue,
 				},
 			],
 		})
