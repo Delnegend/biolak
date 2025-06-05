@@ -3,7 +3,8 @@ import { GlobalConfig } from 'payload'
 
 import { allow, Role } from '@/access/allow'
 import { Lang } from '@/utilities/lang'
-import { matchLang } from '@/utilities/matchLang'
+
+import { CheckoutPageGlobalDefaults as defaults } from './defaults'
 
 export const CheckoutPageGlobalSlug = 'checkoutPageGlobal'
 export const CheckoutPageGlobalConf: GlobalConfig<typeof CheckoutPageGlobalSlug> = {
@@ -31,42 +32,30 @@ export const CheckoutPageGlobalConf: GlobalConfig<typeof CheckoutPageGlobalSlug>
 							name: 'title',
 							type: 'text',
 							label: false,
-							required: true,
 							localized: true,
-							defaultValue: matchLang({
-								[Lang.English]: 'Your contact information',
-								[Lang.Vietnamese]: 'Thông tin liên hệ của bạn',
-							}),
+							defaultValue: defaults.contacts.title,
 							admin: {
-								placeholder: 'Thông tin liên hệ của bạn',
+								placeholder: defaults.contacts.title(Lang.Vietnamese),
 							},
 						},
 						{
 							name: 'emailInputLabel',
 							type: 'text',
 							label: false,
-							required: true,
 							localized: true,
-							defaultValue: matchLang({
-								[Lang.English]: 'Input email',
-								[Lang.Vietnamese]: 'Nhập địa chỉ email',
-							}),
+							defaultValue: defaults.contacts.emailInputLabel,
 							admin: {
-								placeholder: 'Nhập địa chỉ email',
+								placeholder: defaults.contacts.emailInputLabel(Lang.Vietnamese),
 							},
 						},
 						{
 							name: 'acceptNewsletter',
 							type: 'text',
 							label: false,
-							required: true,
 							localized: true,
-							defaultValue: matchLang({
-								[Lang.English]: 'I accept all newsletters',
-								[Lang.Vietnamese]: 'Tôi đồng ý nhận mọi thông tin khuyến mãi',
-							}),
+							defaultValue: defaults.contacts.acceptNewsletter,
 							admin: {
-								placeholder: 'Tôi đồng ý nhận mọi thông tin khuyến mãi',
+								placeholder: defaults.contacts.acceptNewsletter(Lang.Vietnamese),
 							},
 						},
 					],
@@ -82,39 +71,27 @@ export const CheckoutPageGlobalConf: GlobalConfig<typeof CheckoutPageGlobalSlug>
 							name: 'title',
 							type: 'text',
 							label: false,
-							required: true,
 							localized: true,
-							defaultValue: matchLang({
-								[Lang.English]: 'Address',
-								[Lang.Vietnamese]: 'Địa chỉ giao hàng',
-							}),
+							defaultValue: defaults.address.title,
 							admin: {
-								placeholder: 'Địa chỉ giao hàng',
+								placeholder: defaults.address.title(Lang.Vietnamese),
 							},
 						},
 						{
 							name: 'nameInputLabel',
 							type: 'text',
 							label: false,
-							required: true,
 							localized: true,
-							defaultValue: matchLang({
-								[Lang.English]: 'Name',
-								[Lang.Vietnamese]: 'Họ và tên',
-							}),
+							defaultValue: defaults.address.nameInputLabel,
 							admin: {
-								placeholder: 'Họ và tên',
+								placeholder: defaults.address.nameInputLabel(Lang.Vietnamese),
 							},
 						},
 						{
 							name: 'phoneInputLabel',
 							type: 'text',
 							label: false,
-							required: true,
-							defaultValue: matchLang({
-								[Lang.English]: 'Phone number',
-								[Lang.Vietnamese]: 'Số điện thoại',
-							}),
+							defaultValue: defaults.address.phoneInputLabel,
 							admin: {
 								placeholder: 'Số điện thoại',
 							},
@@ -123,70 +100,50 @@ export const CheckoutPageGlobalConf: GlobalConfig<typeof CheckoutPageGlobalSlug>
 							name: 'provinceCityInputLabel',
 							type: 'text',
 							label: false,
-							required: true,
 							localized: true,
-							defaultValue: matchLang({
-								[Lang.English]: 'Select Province/City',
-								[Lang.Vietnamese]: 'Chọn Tỉnh/Thành phố',
-							}),
+							defaultValue: defaults.address.provinceCityInputLabel,
 							admin: {
-								placeholder: 'Chọn Tỉnh/Thành phố',
+								placeholder: defaults.address.provinceCityInputLabel(Lang.Vietnamese),
 							},
 						},
 						{
 							name: 'districtInputLabel',
 							type: 'text',
 							label: false,
-							required: true,
 							localized: true,
-							defaultValue: matchLang({
-								[Lang.English]: 'Select District/Ward',
-								[Lang.Vietnamese]: 'Chọn Quận/Huyện',
-							}),
+							defaultValue: defaults.address.districtInputLabel,
 							admin: {
-								placeholder: 'Chọn Quận/Huyện',
+								placeholder: defaults.address.districtInputLabel(Lang.Vietnamese),
 							},
 						},
 						{
 							name: 'wardInputLabel',
 							type: 'text',
 							label: false,
-							required: true,
 							localized: true,
-							defaultValue: matchLang({
-								[Lang.English]: 'Select Ward/Block',
-								[Lang.Vietnamese]: 'Chọn Phuờng/Xã',
-							}),
+							defaultValue: defaults.address.wardInputLabel,
 							admin: {
-								placeholder: 'Chọn Phuờng/Xã',
+								placeholder: defaults.address.wardInputLabel(Lang.Vietnamese),
 							},
 						},
 						{
 							name: 'details',
 							type: 'text',
 							label: false,
-							required: true,
 							localized: true,
-							defaultValue: matchLang({
-								[Lang.English]: 'Number of people, street, building',
-								[Lang.Vietnamese]: 'Số nhà, đường, khu vực',
-							}),
+							defaultValue: defaults.address.details,
 							admin: {
-								placeholder: 'Số nhà, đường, khu vực',
+								placeholder: defaults.address.details(Lang.Vietnamese),
 							},
 						},
 						{
 							name: 'saveForNextTime',
 							type: 'text',
 							label: false,
-							required: true,
 							localized: true,
-							defaultValue: matchLang({
-								[Lang.English]: 'Save details for next time',
-								[Lang.Vietnamese]: 'Lưu thông tin thanh toán cho những lần tiếp theo',
-							}),
+							defaultValue: defaults.address.saveForNextTime,
 							admin: {
-								placeholder: 'Lưu thông tin thanh toán cho những lần tiếp theo',
+								placeholder: defaults.address.saveForNextTime(Lang.Vietnamese),
 							},
 						},
 					],
@@ -202,42 +159,30 @@ export const CheckoutPageGlobalConf: GlobalConfig<typeof CheckoutPageGlobalSlug>
 							name: 'title',
 							type: 'text',
 							label: false,
-							required: true,
 							localized: true,
-							defaultValue: matchLang({
-								[Lang.English]: 'Shipping method',
-								[Lang.Vietnamese]: 'Phuơng thức vận chuyển',
-							}),
+							defaultValue: defaults.shipping.title,
 							admin: {
-								placeholder: 'Phuơng thức vận chuyển',
+								placeholder: defaults.shipping.title(Lang.Vietnamese),
 							},
 						},
 						{
 							name: 'standardShippingLabel',
 							type: 'text',
 							label: false,
-							required: true,
 							localized: true,
-							defaultValue: matchLang({
-								[Lang.English]: 'Standard shipping (5-7 days)',
-								[Lang.Vietnamese]: 'Giao hàng tiêu chuẩn (5-7 ngày)',
-							}),
+							defaultValue: defaults.shipping.standardShippingLabel,
 							admin: {
-								placeholder: 'Giao hàng tiêu chuẩn (5-7 ngày)',
+								placeholder: defaults.shipping.standardShippingLabel(Lang.Vietnamese),
 							},
 						},
 						{
 							name: 'fastShippingLabel',
 							type: 'text',
 							label: false,
-							required: true,
 							localized: true,
-							defaultValue: matchLang({
-								[Lang.English]: 'Fast shipping (<3 days)',
-								[Lang.Vietnamese]: 'Giao hàng nhanh (<3 ngày)',
-							}),
+							defaultValue: defaults.shipping.fastShippingLabel,
 							admin: {
-								placeholder: 'Giao hàng nhanh (<3 ngày)',
+								placeholder: defaults.shipping.fastShippingLabel(Lang.Vietnamese),
 							},
 						},
 					],
@@ -253,42 +198,30 @@ export const CheckoutPageGlobalConf: GlobalConfig<typeof CheckoutPageGlobalSlug>
 							name: 'title',
 							type: 'text',
 							label: false,
-							required: true,
 							localized: true,
-							defaultValue: matchLang({
-								[Lang.English]: 'Payment method',
-								[Lang.Vietnamese]: 'Phương thức thanh toán',
-							}),
+							defaultValue: defaults.payment.title,
 							admin: {
-								placeholder: 'Phương thức thanh toán',
+								placeholder: defaults.payment.title(Lang.Vietnamese),
 							},
 						},
 						{
 							name: 'codLabel',
 							type: 'text',
 							label: false,
-							required: true,
 							localized: true,
-							defaultValue: matchLang({
-								[Lang.English]: 'Cash on delivery (COD)',
-								[Lang.Vietnamese]: 'Thanh toán khi nhận hàng (COD)',
-							}),
+							defaultValue: defaults.payment.codLabel,
 							admin: {
-								placeholder: 'Thanh toán khi nhận hàng (COD)',
+								placeholder: defaults.payment.codLabel(Lang.Vietnamese),
 							},
 						},
 						{
 							name: 'bankTransferLabel',
 							type: 'text',
 							label: false,
-							required: true,
 							localized: true,
-							defaultValue: matchLang({
-								[Lang.English]: 'Bank transfer (QR)',
-								[Lang.Vietnamese]: 'Chuyển khoản ngân hàng (QR)',
-							}),
+							defaultValue: defaults.payment.bankTransferLabel,
 							admin: {
-								placeholder: 'Chuyển khoản ngân hàng (QR)',
+								placeholder: defaults.payment.bankTransferLabel(Lang.Vietnamese),
 							},
 						},
 					],
@@ -304,53 +237,40 @@ export const CheckoutPageGlobalConf: GlobalConfig<typeof CheckoutPageGlobalSlug>
 							name: 'title',
 							type: 'text',
 							label: false,
-							required: true,
 							localized: true,
-							defaultValue: matchLang({
-								[Lang.English]: 'Gift',
-								[Lang.Vietnamese]: 'Tặng quà',
-							}),
+							defaultValue: defaults.gift.title,
+							admin: {
+								placeholder: defaults.gift.title(Lang.Vietnamese),
+							},
 						},
 						{
 							name: 'senderInputLabel',
 							type: 'text',
 							label: false,
-							required: true,
 							localized: true,
-							defaultValue: matchLang({
-								[Lang.English]: 'Sender name',
-								[Lang.Vietnamese]: 'Tên người gửi',
-							}),
+							defaultValue: defaults.gift.sender,
 							admin: {
-								placeholder: 'Tên người gửi',
+								placeholder: defaults.gift.sender(Lang.Vietnamese),
 							},
 						},
 						{
 							name: 'recipientInputLabel',
 							type: 'text',
 							label: false,
-							required: true,
 							localized: true,
-							defaultValue: matchLang({
-								[Lang.English]: 'Recipient name',
-								[Lang.Vietnamese]: 'Tên người nhận',
-							}),
+							defaultValue: defaults.gift.recipient,
 							admin: {
-								placeholder: 'Tên người nhận',
+								placeholder: defaults.gift.recipient(Lang.Vietnamese),
 							},
 						},
 						{
 							name: 'messageInputLabel',
 							type: 'text',
 							label: false,
-							required: true,
 							localized: true,
-							defaultValue: matchLang({
-								[Lang.English]: 'Message. Limit 1000 characters.',
-								[Lang.Vietnamese]: 'Thông điệp. Giới hạn 1000 chữ.',
-							}),
+							defaultValue: defaults.gift.message,
 							admin: {
-								placeholder: 'Thông điệp. Giới hạn 1000 chữ.',
+								placeholder: defaults.gift.message(Lang.Vietnamese),
 							},
 						},
 					],
@@ -366,14 +286,10 @@ export const CheckoutPageGlobalConf: GlobalConfig<typeof CheckoutPageGlobalSlug>
 							name: 'title',
 							type: 'text',
 							label: false,
-							required: true,
 							localized: true,
-							defaultValue: matchLang({
-								[Lang.English]: 'Order details',
-								[Lang.Vietnamese]: 'Chi tiết đơn hàng',
-							}),
+							defaultValue: defaults.order.title,
 							admin: {
-								placeholder: 'Chi tiết đơn hàng',
+								placeholder: defaults.order.title(Lang.Vietnamese),
 							},
 						},
 					],
@@ -389,42 +305,30 @@ export const CheckoutPageGlobalConf: GlobalConfig<typeof CheckoutPageGlobalSlug>
 							name: 'title',
 							type: 'text',
 							label: false,
-							required: true,
 							localized: true,
-							defaultValue: matchLang({
-								[Lang.English]: 'Discount code',
-								[Lang.Vietnamese]: 'Mã giảm giá',
-							}),
+							defaultValue: defaults.discount.title,
 							admin: {
-								placeholder: 'Mã giảm giá',
+								placeholder: defaults.discount.title(Lang.Vietnamese),
 							},
 						},
 						{
 							name: 'inputPlaceholder',
 							type: 'text',
 							label: false,
-							required: true,
 							localized: true,
-							defaultValue: matchLang({
-								[Lang.English]: 'Discount code',
-								[Lang.Vietnamese]: 'Mã khuyến mãi',
-							}),
+							defaultValue: defaults.discount.inputLabel,
 							admin: {
-								placeholder: 'Mã khuyến mãi',
+								placeholder: defaults.discount.inputLabel(Lang.Vietnamese),
 							},
 						},
 						{
 							name: 'applyButtonLabel',
 							type: 'text',
 							label: false,
-							required: true,
 							localized: true,
-							defaultValue: matchLang({
-								[Lang.English]: 'Apply',
-								[Lang.Vietnamese]: 'Áp dụng',
-							}),
+							defaultValue: defaults.discount.applyButton,
 							admin: {
-								placeholder: 'Áp dụng',
+								placeholder: defaults.discount.applyButton(Lang.Vietnamese),
 							},
 						},
 					],
@@ -440,87 +344,60 @@ export const CheckoutPageGlobalConf: GlobalConfig<typeof CheckoutPageGlobalSlug>
 							name: 'provisional',
 							type: 'text',
 							label: false,
-							required: true,
 							localized: true,
-							defaultValue: matchLang({
-								[Lang.English]: 'Provisional',
-								[Lang.Vietnamese]: 'Tạm tính',
-							}),
+							defaultValue: defaults.orderSummary.provisional,
 							admin: {
-								placeholder: 'Tạm tính',
+								placeholder: defaults.orderSummary.provisional(Lang.Vietnamese),
 							},
 						},
 						{
 							name: 'discount',
 							type: 'text',
 							label: false,
-							required: true,
 							localized: true,
-							defaultValue: matchLang({
-								[Lang.English]: 'Discount',
-								[Lang.Vietnamese]: 'Giảm giá',
-							}),
+							defaultValue: defaults.orderSummary.discount,
 							admin: {
-								placeholder: 'Giảm giá',
+								placeholder: defaults.orderSummary.discount(Lang.Vietnamese),
 							},
 						},
 						{
 							name: 'shipping',
 							type: 'text',
 							label: false,
-							required: true,
 							localized: true,
-							defaultValue: matchLang({
-								[Lang.English]: 'Shipping',
-								[Lang.Vietnamese]: 'Vận chuyển',
-							}),
+							defaultValue: defaults.orderSummary.shipping,
 							admin: {
-								placeholder: 'Vận chuyển',
+								placeholder: defaults.orderSummary.shipping(Lang.Vietnamese),
 							},
 						},
 						{
 							name: 'total',
 							type: 'text',
 							label: false,
-							required: true,
 							localized: true,
-							defaultValue: matchLang({
-								[Lang.English]: 'Total',
-								[Lang.Vietnamese]: 'Tổng cộng',
-							}),
+							defaultValue: defaults.orderSummary.total,
 							admin: {
-								placeholder: 'Tổng cộng',
+								placeholder: defaults.orderSummary.total(Lang.Vietnamese),
 							},
 						},
 						{
 							name: 'acknowledgment',
 							type: 'text',
 							label: false,
-							required: true,
 							localized: true,
-							defaultValue: matchLang({
-								[Lang.English]:
-									'When pressing the Order button, you confirm that you have read and agree to our terms, sales policy, and privacy policy on the Website.',
-								[Lang.Vietnamese]:
-									'Khi nhấn nút Đặt hàng nghĩa là bạn đã đọc và đồng ý với các điều khoản, chính sách bán hàng và bảo mật của chúng tôi tại Website.',
-							}),
+							defaultValue: defaults.orderSummary.acknowledge,
 							admin: {
-								placeholder:
-									'Khi nhấn nút Đặt hàng nghĩa là bạn đã đọc và đồng ý với các điều khoản, chính sách bán hàng và bảo mật của chúng tôi tại Website.',
+								placeholder: defaults.orderSummary.acknowledge(Lang.Vietnamese),
 							},
 						},
 						{
 							name: 'orderButtonLabel',
 							type: 'text',
 							label: false,
-							required: true,
 							localized: true,
-							defaultValue: matchLang({
-								[Lang.English]: 'Order',
-								[Lang.Vietnamese]: 'Đặt hàng',
-							}),
+							defaultValue: defaults.orderSummary.orderButton,
 							admin: {
-								placeholder: 'Đặt hàng',
+								placeholder: defaults.orderSummary.orderButton(Lang.Vietnamese),
 							},
 						},
 					],
