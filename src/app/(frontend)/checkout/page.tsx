@@ -71,7 +71,7 @@ export default async function Checkout(): Promise<React.JSX.Element> {
 				alt={matchLang({
 					[Lang.English]: 'Brand Logo',
 					[Lang.Vietnamese]: 'Logo thuơng hiệu',
-				})({ locale })}
+				})(locale)}
 				className="my-16 h-16 w-32 overflow-hidden object-contain"
 				unoptimized={true}
 			/>

@@ -13,6 +13,7 @@ import {
 	SelectValue,
 } from '@/components/ui/select'
 import { TextInput } from '@/components/ui/text-input'
+import { CheckoutPageGlobalDefaults as defaults } from '@/globals/CheckoutPage/defaults'
 import { BasicProductInCart, useCartManager } from '@/hooks/useCartManager'
 import { useClientLang } from '@/hooks/useClientLang'
 import { CheckoutPageGlobal } from '@/payload-types'
@@ -89,13 +90,13 @@ function CartListWithAccordion(): React.JSX.Element {
 				aria-label={matchLang({
 					[Lang.English]: 'Toggle cart details',
 					[Lang.Vietnamese]: 'Ẩn hiện chi tiết giỏ hàng',
-				})({ locale })}
+				})(locale)}
 				onClick={() => setOpen((prev) => !prev)}
 			>
 				{matchLang({
 					[Lang.English]: open ? 'Hide details' : 'Cart details',
 					[Lang.Vietnamese]: open ? 'Ẩn chi tiết' : 'Chi tiết giỏ hàng',
-				})({ locale })}
+				})(locale)}
 				<ChevronDown
 					className={cn('transition-all', {
 						'rotate-180': open,
@@ -115,24 +116,35 @@ function OrderSummary({
 	global: CheckoutPageGlobal
 }): React.JSX.Element {
 	const provisional = cart.reduce((acc, item) => acc + item.variant.price * item.quantity, 0)
+	const { lang: locale } = useClientLang()
 
 	return (
 		<div>
 			<div className="grid grid-cols-[auto_1fr] gap-2">
-				<div className="font-bold">{global.orderSummary.provisional}</div>
+				<div className="font-bold">
+					{global.orderSummary?.provisional ?? defaults.orderSummary.provisional(locale)}
+				</div>
 				<div className="place-self-end">{formatPrice(provisional)}</div>
-				<div className="font-bold">{global.orderSummary.shipping}</div>
+				<div className="font-bold">
+					{global.orderSummary?.shipping ?? defaults.orderSummary.shipping(locale)}
+				</div>
 				<div className="place-self-end">{formatPrice(0)}</div>
-				<div className="font-bold">{global.orderSummary.discount}</div>
+				<div className="font-bold">
+					{global.orderSummary?.discount ?? defaults.orderSummary.discount(locale)}
+				</div>
 				<div className="place-self-end">{formatPrice(0)}</div>
-				<div className="font-bold">{global.orderSummary.total}</div>
+				<div className="font-bold">
+					{global.orderSummary?.total ?? defaults.orderSummary.total(locale)}
+				</div>
 				<div className="place-self-end">{formatPrice(provisional)}</div>
 			</div>
 			<ul className="my-6 text-balance italic">
-				<li>{global.orderSummary.acknowledgment}</li>
+				<li>
+					{global.orderSummary?.acknowledgment ?? defaults.orderSummary.acknowledge(locale)}
+				</li>
 			</ul>
 			<Button size="md" className="h-14 w-full" hideArrow>
-				{global.orderSummary.orderButtonLabel}
+				{global.orderSummary?.orderButtonLabel ?? defaults.orderSummary.orderButton(locale)}
 			</Button>
 		</div>
 	)
@@ -192,19 +204,18 @@ export default function PageClient({
 						[Lang.Vietnamese]: loadedFromLocalStorageDone
 							? 'Giỏ hàng của bạn đang trống.'
 							: 'Đang tải giỏ hàng của bạn...',
-					})({ locale })}
+					})(locale)}
 				</h2>
 				{loadedFromLocalStorageDone && (
-					<Button className="w-fit" asChild>
+					<Button className="w-fit justify-between" asChild>
 						{/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
 						<a href="/">
 							{matchLang({
 								[Lang.English]: 'Go to home page',
 								[Lang.Vietnamese]: 'Về trang chủ',
-							})({ locale })}
-							&nbsp;
+							})(locale)}
+							<ArrowRight />
 						</a>
-						<ArrowRight />
 					</Button>
 				)}
 			</div>
@@ -215,23 +226,50 @@ export default function PageClient({
 		<div className="grid grid-cols-[2fr_1fr] gap-x-5">
 			<div className="flex flex-col gap-y-5">
 				<Card>
-					<Title>{global.contacts.title}</Title>
+					<Title>{global.contacts?.title ?? defaults.contacts.title(locale)}</Title>
 					<div>
-						<TextInput label={global.contacts.emailInputLabel} />
-						<CustomizedCheckbox id="newsletter" label={global.contacts.acceptNewsletter} />
+						<TextInput
+							label={
+								global.contacts?.emailInputLabel ??
+								defaults.contacts.emailInputLabel(locale)
+							}
+						/>
+						<CustomizedCheckbox
+							id="newsletter"
+							label={
+								global.contacts?.acceptNewsletter ??
+								defaults.contacts.acceptNewsletter(locale)
+							}
+						/>
 					</div>
-					<Title>{global.address.title}</Title>
+					<Title>{global.address?.title ?? defaults.address.title(locale)}</Title>
 					<div className="grid grid-cols-2 gap-x-6 gap-y-9">
-						<TextInput size="sm" label={global.address.nameInputLabel} />
-						<TextInput size="sm" label={global.address.phoneInputLabel} />
+						<TextInput
+							size="sm"
+							label={
+								global.address?.nameInputLabel ?? defaults.address.nameInputLabel(locale)
+							}
+						/>
+						<TextInput
+							size="sm"
+							label={
+								global.address?.phoneInputLabel ?? defaults.address.phoneInputLabel(locale)
+							}
+						/>
 						<input type="text" className="hidden" id="provinceCity" />
 						<input type="text" className="hidden" id="district" />
 						<input type="text" className="hidden" id="ward" />
 
 						<Select value={selectedCity} onValueChange={setSelectedCity}>
 							<SelectTrigger
-								label={global.address.provinceCityInputLabel}
-								aria-label={global.address.provinceCityInputLabel}
+								label={
+									global.address?.provinceCityInputLabel ??
+									defaults.address.provinceCityInputLabel(locale)
+								}
+								aria-label={
+									global.address?.provinceCityInputLabel ??
+									defaults.address.provinceCityInputLabel(locale)
+								}
 							>
 								<SelectValue />
 							</SelectTrigger>
@@ -246,11 +284,17 @@ export default function PageClient({
 						<Select
 							value={selectedDistrict}
 							onValueChange={setSelectedDistrict}
-							disabled={!Boolean(selectedCity)}
+							disabled={!selectedCity}
 						>
 							<SelectTrigger
-								label={global.address.districtInputLabel}
-								aria-label={global.address.districtInputLabel}
+								label={
+									global.address?.districtInputLabel ??
+									defaults.address.districtInputLabel(locale)
+								}
+								aria-label={
+									global.address?.districtInputLabel ??
+									defaults.address.districtInputLabel(locale)
+								}
 							>
 								<SelectValue />
 							</SelectTrigger>
@@ -268,11 +312,15 @@ export default function PageClient({
 						<Select
 							value={selectedWard}
 							onValueChange={setSelectedWard}
-							disabled={!Boolean(selectedDistrict) || !Boolean(selectedCity)}
+							disabled={!selectedDistrict || !selectedCity}
 						>
 							<SelectTrigger
-								label={global.address.wardInputLabel}
-								aria-label={global.address.wardInputLabel}
+								label={
+									global.address?.wardInputLabel ?? defaults.address.wardInputLabel(locale)
+								}
+								aria-label={
+									global.address?.wardInputLabel ?? defaults.address.wardInputLabel(locale)
+								}
 							>
 								<SelectValue />
 							</SelectTrigger>
@@ -289,71 +337,106 @@ export default function PageClient({
 							</SelectContent>
 						</Select>
 
-						<TextInput size="sm" label={global.address.details} />
+						<TextInput
+							size="sm"
+							label={global.address?.details ?? defaults.address.details(locale)}
+						/>
 
 						<CustomizedCheckbox
 							id="saveForNextTime"
-							label={global.address.saveForNextTime}
+							label={
+								global.address?.saveForNextTime ?? defaults.address.saveForNextTime(locale)
+							}
 							classNames={{ container: 'col-span-2' }}
 						/>
 					</div>
 				</Card>
 
 				<Card>
-					<Title>{global.shipping.title}</Title>
+					<Title>{global.shipping?.title ?? defaults.shipping.title(locale)}</Title>
 					<div>
 						<CustomizedCheckbox
 							id="standardShipping"
-							label={global.shipping.standardShippingLabel}
+							label={
+								global.shipping?.standardShippingLabel ??
+								defaults.shipping.standardShippingLabel(locale)
+							}
 						/>
-						<CustomizedCheckbox id="fastShipping" label={global.shipping.fastShippingLabel} />
+						<CustomizedCheckbox
+							id="fastShipping"
+							label={
+								global.shipping?.fastShippingLabel ??
+								defaults.shipping.fastShippingLabel(locale)
+							}
+						/>
 					</div>
 				</Card>
 
 				<Card>
-					<Title>{global.payment.title}</Title>
+					<Title>{global.payment?.title ?? defaults.payment.title(locale)}</Title>
 					<div>
-						<CustomizedCheckbox id="cod" label={global.payment.codLabel} />
-						<CustomizedCheckbox id="bankTransfer" label={global.payment.bankTransferLabel} />
+						<CustomizedCheckbox
+							id="cod"
+							label={global.payment?.codLabel ?? defaults.payment.codLabel(locale)}
+						/>
+						<CustomizedCheckbox
+							id="bankTransfer"
+							label={
+								global.payment?.bankTransferLabel ??
+								defaults.payment.bankTransferLabel(locale)
+							}
+						/>
 					</div>
 				</Card>
 
 				<Card>
-					<Title>{global.gift.title}</Title>
+					<Title>{global.gift?.title ?? defaults.gift.title(locale)}</Title>
 					<div className="grid grid-cols-2 gap-x-6 gap-y-3">
-						<TextInput size="sm" label={global.gift.senderInputLabel} />
-						<TextInput size="sm" label={global.gift.recipientInputLabel} />
+						<TextInput
+							size="sm"
+							label={global.gift?.senderInputLabel ?? defaults.gift.sender(locale)}
+						/>
+						<TextInput
+							size="sm"
+							label={global.gift?.recipientInputLabel ?? defaults.gift.recipient(locale)}
+						/>
 						<TextInput
 							size="sm"
 							classNames={{
 								container: 'col-span-2',
 							}}
-							label={global.gift.messageInputLabel}
+							label={global.gift?.messageInputLabel ?? defaults.gift.message(locale)}
 						/>
 					</div>
 				</Card>
 			</div>
 
 			<Card>
-				<Title>{global.order.title}</Title>
+				<Title>{global.order?.title ?? defaults.order.title(locale)}</Title>
 				<CartListWithAccordion />
 				<hr />
 
-				<Title>{global.discount.title}</Title>
+				<Title>{global.discount?.title ?? defaults.discount.title(locale)}</Title>
 				<div className="flex h-[4.5rem] items-center justify-between rounded-[0.5rem] border border-primary p-[0.625rem]">
 					<input
 						type="text"
-						placeholder={global.discount.inputPlaceholder}
-						aria-label={global.discount.inputPlaceholder}
+						placeholder={
+							global.discount?.inputPlaceholder ?? defaults.discount.inputLabel(locale)
+						}
+						aria-label={
+							global.discount?.inputPlaceholder ?? defaults.discount.inputLabel(locale)
+						}
 						className="h-[calc(4.5rem-1.25rem)] w-full border-primary bg-transparent px-3 text-lg placeholder:text-muted-foreground focus:outline-none"
 					/>
 					<Button
 						hideArrow
-						aria-label={global.discount.applyButtonLabel}
+						aria-label={
+							global.discount?.applyButtonLabel ?? defaults.discount.applyButton(locale)
+						}
 						className="h-[calc(4.5rem-1.25rem)]"
 						size="md"
 					>
-						{global.discount.applyButtonLabel}
+						{global.discount?.applyButtonLabel ?? defaults.discount.applyButton(locale)}
 					</Button>
 				</div>
 				<hr className="my-2" />
