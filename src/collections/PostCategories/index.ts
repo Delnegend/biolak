@@ -34,11 +34,12 @@ export const PostCategoriesCollection: CollectionConfig<typeof PostCategoriesSlu
 		{
 			name: 'title',
 			type: 'text',
-			required: true,
 			label: {
 				en: 'Category name',
 				vi: 'Tên danh mục',
 			},
+			required: true,
+			localized: true,
 		},
 		{
 			name: PostsSlug,
@@ -55,6 +56,16 @@ export const PostCategoriesCollection: CollectionConfig<typeof PostCategoriesSlu
 			label: {
 				en: 'Content',
 				vi: 'Nội dung',
+			},
+			labels: {
+				singular: {
+					en: 'Block',
+					vi: 'Khối',
+				},
+				plural: {
+					en: 'Blocks',
+					vi: 'Các khối',
+				},
 			},
 			type: 'blocks',
 			blocks: [CallToActionPostBlockConf, PostsGridBlockConf],
