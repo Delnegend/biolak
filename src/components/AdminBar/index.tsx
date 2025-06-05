@@ -45,7 +45,7 @@ export function AdminBar({
 	const router = useRouter()
 
 	const onAuthChange = React.useCallback((user: PayloadMeUser) => {
-		setShow(Boolean(user?.id))
+		setShow(!!user?.id)
 	}, [])
 
 	return (
