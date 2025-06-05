@@ -103,7 +103,6 @@ export const ProductsCollection: CollectionConfig<typeof ProductsSlug> = {
 										en: 'Short Description',
 										vi: 'Mô tả ngắn',
 									},
-									required: true,
 									localized: true,
 								},
 							],
