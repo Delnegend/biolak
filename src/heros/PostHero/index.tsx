@@ -25,7 +25,7 @@ export async function PostHero({ post: p }: { post: Post }): Promise<React.JSX.E
 				{matchLang({
 					[Lang.English]: 'Post',
 					[Lang.Vietnamese]: 'Bài viết',
-				})({ locale })}
+				})(locale)}
 			</div>
 			<h1 className="max-w-[30rem] text-balance">{p.title}</h1>
 		</div>
