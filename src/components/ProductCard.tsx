@@ -20,7 +20,7 @@ export async function ProductCard({
 		id: Product['id']
 		title: Product['title']
 		slug?: Product['slug']
-		shortDescription: Product['shortDescription']
+		shortDescription?: Product['shortDescription']
 		gallery?: Product['gallery']
 		variants: Array<{
 			price: Product['variants'][number]['price']
@@ -44,7 +44,7 @@ export async function ProductCard({
 			style={{
 				gridTemplateAreas: `"img img"
 											"title add-to-cart"
-											"desc add-to-cart"
+											"${p.shortDescription ? 'desc' : '.'} add-to-cart"
 											"price add-to-cart"`,
 			}}
 		>
@@ -69,15 +69,17 @@ export async function ProductCard({
 			>
 				{`${p.title} →`}
 			</Link>
-			<div style={{ gridArea: 'desc' }} className="mb-[1.375rem] text-xs uppercase">
-				{p.shortDescription}
-			</div>
+			{p.shortDescription && (
+				<div style={{ gridArea: 'desc' }} className="mb-[1.375rem] text-xs uppercase">
+					{p.shortDescription}
+				</div>
+			)}
 			<div style={{ gridArea: 'price' }}>
 				{getPriceRange(p) ??
 					matchLang({
 						[Lang.English]: 'Out of stock',
 						[Lang.Vietnamese]: 'Hết hàng',
-					})({ locale })}
+					})(locale)}
 			</div>
 			<div style={{ gridArea: 'add-to-cart' }}>
 				<Button
