@@ -226,6 +226,7 @@ export const PagesCollection: CollectionConfig<typeof PagesSlug> = {
 							admin: {
 								initCollapsed: true,
 							},
+							label: false,
 							labels: {
 								singular: {
 									en: 'Block',
