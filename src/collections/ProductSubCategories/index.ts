@@ -40,11 +40,11 @@ export const ProductSubCategoriesCollection: CollectionConfig<typeof ProductSubC
 		{
 			name: 'title',
 			type: 'text',
-			required: true,
 			label: {
 				en: 'Title',
 				vi: 'Tiêu đề',
 			},
+			required: true,
 			localized: true,
 		},
 		{
