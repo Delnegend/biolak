@@ -140,7 +140,9 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   ALTER TABLE "products_blocks_cta_left_locales" ADD COLUMN "title" varchar NOT NULL;
   ALTER TABLE "products_blocks_cta_left_locales" ADD COLUMN "description" jsonb;
   ALTER TABLE "products_blocks_call_to_add_to_cart_locales" ADD COLUMN "content" jsonb;
-  ALTER TABLE "products_blocks_how_to_use_product_locales" ADD COLUMN "content" jsonb NOT NULL;
+  ALTER TABLE "products_blocks_how_to_use_product_locales" ADD COLUMN "content" jsonb NULL;
+  UPDATE "products_blocks_how_to_use_product_locales" SET "content" = '{}';
+  ALTER TABLE "products_blocks_how_to_use_product_locales" ALTER COLUMN "content" SET NOT NULL;
   ALTER TABLE "contact_form_global_locales" ADD COLUMN "biolak_phone_number" varchar;
   DO $$ BEGIN
    ALTER TABLE "pages_blocks_certificates_organizations_locales" ADD CONSTRAINT "pages_blocks_certificates_organizations_locales_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."pages_blocks_certificates_organizations"("id") ON DELETE cascade ON UPDATE no action;
