@@ -73,7 +73,7 @@ export function SlugComponent(props: SlugComponentProps): React.JSX.Element {
 				value={value}
 				onChange={setValue}
 				path={props.path || props.field.name}
-				readOnly={Boolean(readOnly)}
+				readOnly={!!readOnly}
 			/>
 		</div>
 	)
