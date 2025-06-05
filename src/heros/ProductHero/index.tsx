@@ -43,6 +43,8 @@ export async function ProductHero({
 
 	const subtitle = [category?.title, subCategory?.title].filter((c) => c).join(' • ')
 
+	const validVariant = findValidProductVariant(p.variants)
+
 	return (
 		<div className="relative grid min-h-[50dvw] grid-cols-2 text-balance">
 			<div />
@@ -54,7 +56,7 @@ export async function ProductHero({
 						matchLang({
 							[Lang.English]: 'Product hero background image',
 							[Lang.Vietnamese]: 'Hình nền hero sản phẩm',
-						})({ locale })
+						})(locale)
 					}
 					width={img?.width ?? 1000}
 					height={img?.height ?? 1000}
@@ -74,11 +76,12 @@ export async function ProductHero({
 				<INTERNAL_ProductVariantsClient
 					variants={p.variants}
 					product={{ slug: p.slug, title: p.title }}
+					validVariant={validVariant}
 				/>
 
 				<div className="mt-8 grid size-full h-fit grid-cols-[repeat(auto-fill,minmax(14rem,1fr))] gap-4">
-					<INTERNAL_BuyNowClient fallbackVariant={findValidProductVariant(p.variants)} />
-					<INTERNAL_AddToCartClient />
+					<INTERNAL_BuyNowClient hasAtLeastOneProductInStock={validVariant !== null} />
+					<INTERNAL_AddToCartClient hasAtLeastOneProductInStock={validVariant !== null} />
 				</div>
 			</div>
 		</div>

@@ -9,14 +9,28 @@ import { useSelectedProductVariant } from './ProductVariantContext'
 export function INTERNAL_ProductVariantsClient({
 	variants,
 	product: { slug, title },
+	validVariant,
 }: {
 	variants: Product['variants']
 	product: {
 		slug: Product['slug']
 		title: Product['title']
 	}
+	validVariant?: Product['variants'][number] | null
 }): React.JSX.Element {
 	const { selectedProductVariant, setSelectedProductVariant } = useSelectedProductVariant()
+
+	if (validVariant) {
+		setSelectedProductVariant({
+			slug,
+			title,
+			variant: validVariant,
+		})
+	}
+
+	if (!variants || variants.length === 0) {
+		return <></>
+	}
 
 	return (
 		<div className="mt-2 flex flex-wrap gap-2">

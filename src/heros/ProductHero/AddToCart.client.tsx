@@ -11,7 +11,11 @@ import { matchLang } from '@/utilities/matchLang'
 
 import { useSelectedProductVariant } from './ProductVariantContext'
 
-export function INTERNAL_AddToCartClient(): React.JSX.Element {
+export function INTERNAL_AddToCartClient({
+	hasAtLeastOneProductInStock,
+}: {
+	hasAtLeastOneProductInStock: boolean
+}): React.JSX.Element {
 	const { lang: locale } = useClientLang()
 	const { loadProduct } = useCartManager({ syncWithLocalStorage: true })
 	const { selectedProductVariant } = useSelectedProductVariant()
@@ -38,7 +42,7 @@ export function INTERNAL_AddToCartClient(): React.JSX.Element {
 					matchLang({
 						[Lang.English]: `Added ${selectedProductVariant?.title} variant ${selectedProductVariant?.variant?.title} to cart`,
 						[Lang.Vietnamese]: `Đã thêm ${selectedProductVariant?.title} loại ${selectedProductVariant?.variant?.title} vào giỏ hàng`,
-					})({ locale }),
+					})(locale),
 				)
 			}}
 			disabled={
@@ -49,13 +53,13 @@ export function INTERNAL_AddToCartClient(): React.JSX.Element {
 			aria-label={matchLang({
 				[Lang.English]: `Add ${selectedProductVariant?.title} variant ${selectedProductVariant?.variant?.title} to cart`,
 				[Lang.Vietnamese]: `Thêm ${selectedProductVariant?.title} loại ${selectedProductVariant?.variant?.title} vào giỏ hàng`,
-			})({ locale })}
+			})(locale)}
 		>
 			<span>
 				{matchLang({
-					[Lang.English]: 'ADD TO CART',
-					[Lang.Vietnamese]: 'THÊM VÀO GIỎ',
-				})({ locale })}
+					[Lang.English]: hasAtLeastOneProductInStock ? 'ADD TO CART' : 'OUT OF STOCK',
+					[Lang.Vietnamese]: hasAtLeastOneProductInStock ? 'THÊM VÀO GIỎ' : 'HẾT HÀNG',
+				})(locale)}
 			</span>
 			<ShoppingCart />
 		</Button>
