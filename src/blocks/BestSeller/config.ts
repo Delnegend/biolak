@@ -32,6 +32,9 @@ export const BestSellerBlockConf: Block = {
 				[Lang.English]: 'Best Seller',
 				[Lang.Vietnamese]: 'Sản phẩm bán chạy',
 			}),
+			admin: {
+				placeholder: 'Sản phẩm bán chạy',
+			},
 		},
 		{
 			name: 'description',
