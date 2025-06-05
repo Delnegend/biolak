@@ -65,10 +65,10 @@ export function useCartManager({
 			setLoadedFromLocalStorageDone(true)
 			return
 		}
-		const result = tryCatchSync(
+		const parsedCart = tryCatchSync(
 			() => JSON.parse(localStorage.getItem(cartKey) || '[]') as BasicProductInCart[],
 		)
-		if (result.success) setCart(result.data)
+		if (parsedCart.tryCatchSuccess) setCart(parsedCart)
 		setLoadedFromLocalStorageDone(true)
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [])
