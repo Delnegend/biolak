@@ -57,7 +57,7 @@ export function CartListClient({
 									toggleCheck({
 										productSlug: item.slug,
 										variantSku: item.variant.sku,
-										checked: Boolean(checked),
+										checked: !!checked,
 									})
 								}
 							/>
@@ -70,7 +70,7 @@ export function CartListClient({
 									matchLang({
 										[Lang.English]: `${item.variant.title}'s image`,
 										[Lang.Vietnamese]: `Ảnh ${item.variant.title}`,
-									})({ locale })
+									})(locale)
 								}
 								width={variantImg?.width ?? 100}
 								height={variantImg?.height ?? 100}
@@ -97,7 +97,7 @@ export function CartListClient({
 							aria-label={matchLang({
 								[Lang.English]: `Remove ${item.title} (${item.variant.title}) from cart`,
 								[Lang.Vietnamese]: `Xoá ${item.title} (${item.variant.title}) khỏi giỏ hàng`,
-							})({ locale })}
+							})(locale)}
 						>
 							<X />
 						</button>
@@ -111,7 +111,7 @@ export function CartListClient({
 								aria-label={matchLang({
 									[Lang.English]: `Decrease quantity of ${item.title} (${item.variant.title})`,
 									[Lang.Vietnamese]: `Giảm số lượng ${item.title} (${item.variant.title})`,
-								})({ locale })}
+								})(locale)}
 							>
 								-
 							</button>
@@ -122,7 +122,7 @@ export function CartListClient({
 								aria-label={matchLang({
 									[Lang.English]: `Increase quantity of ${item.title} (${item.variant.title})`,
 									[Lang.Vietnamese]: `Tăng số lượng ${item.title} (${item.variant.title})`,
-								})({ locale })}
+								})(locale)}
 							>
 								+
 							</button>
