@@ -2,7 +2,6 @@
 
 import { Button } from '@/components/ui/button'
 import { useClientLang } from '@/hooks/useClientLang'
-import { Product } from '@/payload-types'
 import { formatPrice } from '@/utilities/formatPrice'
 import { Lang } from '@/utilities/lang'
 import { matchLang } from '@/utilities/matchLang'
@@ -10,14 +9,12 @@ import { matchLang } from '@/utilities/matchLang'
 import { useSelectedProductVariant } from './ProductVariantContext'
 
 export function INTERNAL_BuyNowClient({
-	fallbackVariant,
+	hasAtLeastOneProductInStock,
 }: {
-	fallbackVariant?: Product['variants'][number] | null
+	hasAtLeastOneProductInStock: boolean
 }): React.JSX.Element {
 	const { lang: locale } = useClientLang()
 	const { selectedProductVariant } = useSelectedProductVariant()
-
-	const variant = selectedProductVariant?.variant ?? fallbackVariant ?? undefined
 
 	return (
 		<Button
@@ -25,25 +22,27 @@ export function INTERNAL_BuyNowClient({
 			className="flex items-center justify-between gap-4 uppercase"
 			hideArrow={true}
 			tabIndex={-1}
-			disabled={!variant}
+			disabled={!selectedProductVariant?.variant || !hasAtLeastOneProductInStock}
 		>
 			<a
 				href={'/checkout?product=' + selectedProductVariant?.slug}
 				onClick={(e) => {
-					if (!variant) {
+					if (!selectedProductVariant?.variant) {
 						e.preventDefault()
 					}
 				}}
 				aria-label={matchLang({
-					[Lang.English]: `Buy ${selectedProductVariant?.title} variant ${variant?.title} now`,
-					[Lang.Vietnamese]: `Mua ngay ${selectedProductVariant?.title} loại ${variant?.title}`,
-				})({ locale })}
+					[Lang.English]: `Buy ${selectedProductVariant?.title} variant ${selectedProductVariant?.variant?.title} now`,
+					[Lang.Vietnamese]: `Mua ngay ${selectedProductVariant?.title} loại ${selectedProductVariant?.variant?.title}`,
+				})(locale)}
 			>
 				{matchLang({
-					[Lang.English]: 'BUY NOW',
-					[Lang.Vietnamese]: 'MUA NGAY',
-				})({ locale })}
-				{variant && <span> - {formatPrice(variant.price)}</span>}
+					[Lang.English]: hasAtLeastOneProductInStock ? 'BUY NOW' : 'OUT OF STOCK',
+					[Lang.Vietnamese]: hasAtLeastOneProductInStock ? 'MUA NGAY' : 'HẾT HÀNG',
+				})(locale)}
+				{selectedProductVariant?.variant && (
+					<span> - {formatPrice(selectedProductVariant?.variant?.price)}</span>
+				)}
 			</a>
 		</Button>
 	)
