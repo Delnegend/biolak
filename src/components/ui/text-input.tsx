@@ -37,7 +37,7 @@ export function TextInput({
 					onFocus?.(e)
 				}}
 				onBlur={(e) => {
-					if (!Boolean(e.target.value)) {
+					if (!e.target.value) {
 						setElevated(false)
 					}
 					onBlur?.(e)
