@@ -31,6 +31,9 @@ export const BuyNowBlockConf: Block = {
 				[Lang.English]: 'BUY NOW',
 				[Lang.Vietnamese]: 'MUA NGAY',
 			}),
+			admin: {
+				placeholder: 'Mua ngay',
+			},
 		},
 		{
 			name: ProductsSlug,
