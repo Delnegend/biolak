@@ -1,23 +1,23 @@
-type Result<T, E = unknown> =
+type FlatResult<T, E = unknown> =
+	| (T & {
+			tryCatchSuccess: true
+	  })
 	| {
-			success: true
-			data: T
-	  }
-	| {
-			success: false
+			tryCatchSuccess: false
 			error: E
 	  }
 
-export function tryCatch<T, E = unknown>(fn: () => Promise<T>): Promise<Result<T, E>> {
+export function tryCatch<T, E = unknown>(fn: () => Promise<T>): Promise<FlatResult<T, E>> {
 	return fn().then(
-		(data) => ({ success: true, data }),
-		(error) => ({ success: false, error: error as E }),
+		(data) => ({ ...data, tryCatchSuccess: true }) as FlatResult<T, E>,
+		(error) => ({ tryCatchSuccess: false, error }) as FlatResult<T, E>,
 	)
 }
-export function tryCatchSync<T, E = unknown>(fn: () => T): Result<T, E> {
+
+export function tryCatchSync<T, E = unknown>(fn: () => T): FlatResult<T, E> {
 	try {
-		return { success: true, data: fn() }
+		return { tryCatchSuccess: true, ...fn() }
 	} catch (error) {
-		return { success: false, error: error as E }
+		return { tryCatchSuccess: false, error: error as E }
 	}
 }
