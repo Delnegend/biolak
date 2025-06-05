@@ -2,6 +2,9 @@ import type { Block } from 'payload'
 
 import { MediaSlug } from '@/collections/Media/slug'
 import { link } from '@/fields/link'
+import { Lang } from '@/utilities/lang'
+
+import { CallToActionLeftBlockDefaults as defaults } from './defaults'
 
 export const CallToActionLeftBlockConf: Block = {
 	slug: 'cta-left',
@@ -26,6 +29,7 @@ export const CallToActionLeftBlockConf: Block = {
 				vi: 'Tiêu đề',
 			},
 			required: true,
+			localized: true,
 		},
 		{
 			name: 'description',
@@ -34,6 +38,7 @@ export const CallToActionLeftBlockConf: Block = {
 				en: 'Description',
 				vi: 'Mô tả',
 			},
+			localized: true,
 		},
 		{
 			name: 'background',
@@ -44,25 +49,20 @@ export const CallToActionLeftBlockConf: Block = {
 			},
 			relationTo: MediaSlug,
 		},
-		{
-			name: 'button',
-			type: 'group',
-			label: {
-				en: 'Button',
-				vi: 'Nút',
-			},
-			fields: [
-				{
-					name: 'text',
-					type: 'text',
-					label: {
-						en: 'Button Label',
-						vi: 'Nhãn nút',
-					},
-					required: true,
+		link({
+			overrides: {
+				label: {
+					en: 'Button Label',
+					vi: 'Nhãn nút',
 				},
-				link({ disableLabel: true }),
-			],
-		},
+				defaultValue: defaults.buttonLabel,
+				required: true,
+				localized: true,
+			},
+			label: {
+				placeholder: defaults.buttonLabel(Lang.Vietnamese),
+				required: false,
+			},
+		}),
 	],
 }

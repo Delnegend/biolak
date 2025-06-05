@@ -25,6 +25,7 @@ export const InfiniteScrollBlockConf: Block = {
 				vi: 'Ảnh đồ họa',
 			},
 			required: true,
+			localized: true,
 			relationTo: MediaSlug,
 		},
 		{
@@ -34,6 +35,7 @@ export const InfiniteScrollBlockConf: Block = {
 				en: 'Animation Duration in seconds',
 				vi: 'Thời gian hoạt ảnh (giây)',
 			},
+			localized: true,
 			defaultValue: 10,
 		},
 	],

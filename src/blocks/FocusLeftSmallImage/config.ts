@@ -35,6 +35,7 @@ export const FocusLeftSmallImageBlockConf: Block = {
 				vi: 'Nội dung',
 			},
 			required: true,
+			localized: true,
 		},
 	],
 }

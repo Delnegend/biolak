@@ -2,6 +2,9 @@ import { Block } from 'payload'
 
 import { MediaSlug } from '@/collections/Media/slug'
 import { ProductsSlug } from '@/collections/Products/slug'
+import { Lang } from '@/utilities/lang'
+
+import { CallToAddToCartBlockDefaults as defaults } from './defaults'
 
 export const CallToAddToCartBlockConf: Block = {
 	slug: 'call-to-add-to-cart',
@@ -34,6 +37,7 @@ export const CallToAddToCartBlockConf: Block = {
 				en: 'Content',
 				vi: 'Nội dung',
 			},
+			localized: true,
 		},
 		{
 			name: 'buttonLabel',
@@ -42,8 +46,11 @@ export const CallToAddToCartBlockConf: Block = {
 				en: 'Button Label',
 				vi: 'Nhãn nút',
 			},
-			defaultValue: 'MUA NGAY',
-			required: true,
+			localized: true,
+			defaultValue: defaults.buttonLabel,
+			admin: {
+				placeholder: defaults.buttonLabel(Lang.Vietnamese),
+			},
 		},
 		{
 			name: ProductsSlug,
@@ -52,6 +59,17 @@ export const CallToAddToCartBlockConf: Block = {
 			label: {
 				en: 'Product',
 				vi: 'Sản phẩm',
+			},
+			required: true,
+			admin: {
+				condition: (data) => {
+					const isProductDocument =
+						!!data.reviewsVisible &&
+						!!data.variants &&
+						!!data.productCategories &&
+						data.productSubCategories
+					return !isProductDocument
+				},
 			},
 		},
 	],

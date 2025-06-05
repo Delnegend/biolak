@@ -3,7 +3,8 @@ import { Block } from 'payload'
 import { ProductsSlug } from '@/collections/Products/slug'
 import { link } from '@/fields/link'
 import { Lang } from '@/utilities/lang'
-import { matchLang } from '@/utilities/matchLang'
+
+import { ProductsCarouselBlockDefaults } from './defaults'
 
 export const ProductsCarouselBlockConf: Block = {
 	slug: 'productsCarousel',
@@ -22,41 +23,39 @@ export const ProductsCarouselBlockConf: Block = {
 	fields: [
 		{
 			name: 'title',
+			type: 'text',
 			label: {
 				en: 'Title',
 				vi: 'Tiêu đề',
 			},
-			type: 'text',
-			required: true,
 			localized: true,
-			defaultValue: matchLang({
-				[Lang.English]: 'PRODUCTS BEING SOLD',
-				[Lang.Vietnamese]: 'SẢN PHẨM BÁN CHẠY',
-			}),
+			defaultValue: ProductsCarouselBlockDefaults.title,
+			admin: {
+				placeholder: ProductsCarouselBlockDefaults.title(Lang.Vietnamese),
+			},
 		},
 		{
 			name: 'products',
+			type: 'relationship',
 			label: {
 				en: 'Products',
 				vi: 'Sản phẩm',
 			},
-			type: 'relationship',
 			relationTo: ProductsSlug,
 			hasMany: true,
 		},
 		{
 			name: 'watchMoreBtnLabel',
+			type: 'text',
 			label: {
 				en: 'Watch More Button Label',
 				vi: 'Nhãn nút xem thêm',
 			},
-			type: 'text',
-			required: true,
 			localized: true,
-			defaultValue: matchLang({
-				[Lang.English]: 'WATCH MORE',
-				[Lang.Vietnamese]: 'XEM THÊM',
-			}),
+			defaultValue: ProductsCarouselBlockDefaults.watchMoreBtnLabel,
+			admin: {
+				placeholder: ProductsCarouselBlockDefaults.watchMoreBtnLabel(Lang.Vietnamese),
+			},
 		},
 		link({
 			overrides: {
@@ -66,10 +65,12 @@ export const ProductsCarouselBlockConf: Block = {
 					vi: 'Nút xem tất cả sản phẩm',
 				},
 				localized: true,
-				defaultValue: matchLang({
-					[Lang.English]: 'VIEW ALL PRODUCTS',
-					[Lang.Vietnamese]: 'XEM TẤT CẢ SẢN PHẨM',
-				}),
+				required: true,
+				defaultValue: ProductsCarouselBlockDefaults.allProductsBtnLabel,
+			},
+			label: {
+				placeholder: ProductsCarouselBlockDefaults.allProductsBtnLabel(Lang.Vietnamese),
+				required: false,
 			},
 		}),
 	],

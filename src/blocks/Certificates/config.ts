@@ -1,6 +1,9 @@
 import { Block } from 'payload'
 
 import { MediaSlug } from '@/collections/Media/slug'
+import { Lang } from '@/utilities/lang'
+
+import { CertificatesBlockDefaults as defaults } from './defaults'
 
 export const CertificatesBlockConf: Block = {
 	slug: 'certificates',
@@ -24,8 +27,11 @@ export const CertificatesBlockConf: Block = {
 				en: 'Title',
 				vi: 'Tiêu đề',
 			},
-			required: true,
-			defaultValue: 'Chứng nhận bởi các tổ chức quốc tế',
+			localized: true,
+			defaultValue: defaults.title,
+			admin: {
+				placeholder: defaults.title(Lang.Vietnamese),
+			},
 		},
 		{
 			type: 'array',
@@ -53,6 +59,7 @@ export const CertificatesBlockConf: Block = {
 						vi: 'Tên tổ chức',
 					},
 					required: true,
+					localized: true,
 				},
 				{
 					name: 'description',
@@ -61,7 +68,7 @@ export const CertificatesBlockConf: Block = {
 						en: 'Description',
 						vi: 'Mô tả',
 					},
-					required: true,
+					localized: true,
 				},
 				{
 					name: 'logo',

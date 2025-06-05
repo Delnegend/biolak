@@ -3,13 +3,17 @@ import React from 'react'
 import { ProductCard } from '@/components/ProductCard'
 import { Carousel, CarouselContent, CarouselItem } from '@/components/ui/carousel'
 import { BestSellerBlockProps } from '@/payload-types'
+import { getClientLang } from '@/utilities/getClientLang'
 import { cn } from '@/utilities/ui'
 
-export function BestSellerBlock(props: BestSellerBlockProps): React.JSX.Element {
+import { BestSellerBlockDefaults as defaults } from './defaults'
+
+export async function BestSellerBlock(props: BestSellerBlockProps): Promise<React.JSX.Element> {
 	const products =
 		props.products && props.products.length > 0
 			? props.products.filter((p) => p !== null && typeof p === 'object')
 			: []
+	const locale = await getClientLang()
 
 	return (
 		<div className="safe-width flex h-[48rem]">
@@ -19,7 +23,7 @@ export function BestSellerBlock(props: BestSellerBlockProps): React.JSX.Element 
 						'font-serif text-7xl font-semibold italic leading-[3.5rem] text-primary',
 					)}
 				>
-					{props.title}
+					{props.title ?? defaults.title(locale)}
 				</div>
 				{props.description && <div className={cn('text-balance')}>{props.description}</div>}
 			</div>

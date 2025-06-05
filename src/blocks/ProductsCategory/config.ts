@@ -2,6 +2,9 @@ import { Block } from 'payload'
 
 import { ProductCategoriesSlug } from '@/collections/ProductCategories/slug'
 import { ProductSubCategoriesSlug } from '@/collections/ProductSubCategories/slug'
+import { Lang } from '@/utilities/lang'
+
+import { ProductsCategoryBlockDefaults } from './defaults'
 
 export const ProductsCategoryBlockConf: Block = {
 	slug: 'productsCategory',
@@ -35,8 +38,11 @@ export const ProductsCategoryBlockConf: Block = {
 				en: 'Button Label',
 				vi: 'Nhãn nút',
 			},
-			required: true,
-			defaultValue: 'XEM TẤT CẢ CÁC SẢN PHẨM',
+			localized: true,
+			defaultValue: ProductsCategoryBlockDefaults.buttonLabel,
+			admin: {
+				placeholder: ProductsCategoryBlockDefaults.buttonLabel(Lang.Vietnamese),
+			},
 		},
 	],
 }

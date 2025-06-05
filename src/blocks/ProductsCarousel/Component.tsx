@@ -7,8 +7,10 @@ import { CMSLink } from '@/components/CMSLink'
 import { Button } from '@/components/ui/button'
 import { Carousel, CarouselContent, CarouselItem } from '@/components/ui/carousel'
 import type { ProductsCarouselBlockProps } from '@/payload-types'
+import { getClientLang } from '@/utilities/getClientLang'
 import { cn } from '@/utilities/ui'
 
+import { ProductsCarouselBlockDefaults as defaults } from './defaults'
 import { ProductsCarouselNavButton } from './ProductsCarouselNavButton'
 
 const phudu = Phudu({
@@ -16,21 +18,26 @@ const phudu = Phudu({
 	weight: '500',
 })
 
-export function ProductsCarouselBlock(props: ProductsCarouselBlockProps): React.JSX.Element {
+export async function ProductsCarouselBlock(
+	props: ProductsCarouselBlockProps,
+): Promise<React.JSX.Element> {
 	const products = props.products?.filter((p) => typeof p === 'object') ?? []
+	const locale = await getClientLang()
 
 	return (
 		<div className="relative max-h-[55rem] overflow-hidden">
 			{products && products.length > 0 && (
 				<Carousel opts={{ loop: true }}>
 					<CarouselContent>
-						{products.map((p) => {
+						{products.map((product) => {
 							const img =
-								p.gallery && p.gallery[0] && typeof p.gallery[0] === 'object'
-									? p.gallery[0]
+								product.gallery &&
+								product.gallery[0] &&
+								typeof product.gallery[0] === 'object'
+									? product.gallery[0]
 									: undefined
 							return (
-								<CarouselItem key={p.id} className="grid grid-cols-2">
+								<CarouselItem key={product.id} className="grid grid-cols-2">
 									<Image
 										src={img?.url ?? 'https://placehold.co/720x880'}
 										alt={img?.alt ?? 'Product Image'}
@@ -40,17 +47,25 @@ export function ProductsCarouselBlock(props: ProductsCarouselBlockProps): React.
 										unoptimized={img?.url === undefined}
 									/>
 									<div className="flex flex-col justify-center gap-3 text-balance bg-[#210E0A] px-14 text-[#F1DAAE]">
-										<div className="text-xl font-medium">{props.title}</div>
-										<div className="font-serif text-7xl font-bold">{p.title}</div>
-										<div className="my-5">{p.shortDescription}</div>
+										<div className="text-xl font-medium">
+											{props.title ?? defaults.title(locale)}
+										</div>
+										<div className="font-serif text-7xl font-bold">{product.title}</div>
+										<div className="my-5">{product.shortDescription}</div>
 
 										<Button
 											size="lg"
 											className="w-full max-w-[26rem] justify-between"
 											asChild
 										>
-											<Link href="/[slug]" as={p.slug ? `/product/${p.slug}` : '#'}>
-												{props.watchMoreBtnLabel}
+											<Link
+												href="/[slug]"
+												as={product.slug ? `/product/${product.slug}` : '#'}
+											>
+												{props.watchMoreBtnLabel ??
+													defaults.watchMoreBtnLabel({
+														locale,
+													})}
 												<ArrowRight />
 											</Link>
 										</Button>
@@ -66,7 +81,7 @@ export function ProductsCarouselBlock(props: ProductsCarouselBlockProps): React.
 													xmlns="http://www.w3.org/2000/svg"
 												>
 													<circle
-														opacity={pDot.id === p.id ? '0.8' : '0.4'}
+														opacity={pDot.id === product.id ? '0.8' : '0.4'}
 														cx="5"
 														cy="5.16602"
 														r="5"
@@ -82,7 +97,10 @@ export function ProductsCarouselBlock(props: ProductsCarouselBlockProps): React.
 												phudu.className,
 											)}
 											{...props.apb}
-											type={props.apb.type ?? undefined}
+											type={props.apb?.type ?? undefined}
+											label={defaults.allProductsBtnLabel({
+												locale,
+											})}
 										/>
 									</div>
 								</CarouselItem>

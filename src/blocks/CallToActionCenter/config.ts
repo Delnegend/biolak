@@ -2,6 +2,9 @@ import type { Block } from 'payload'
 
 import { MediaSlug } from '@/collections/Media/slug'
 import { link } from '@/fields/link'
+import { Lang } from '@/utilities/lang'
+
+import { CallToActionCenterBlockDefaults as defaults } from './defaults'
 
 export const CallToActionCenterBlockConf: Block = {
 	slug: 'cta-center',
@@ -26,6 +29,7 @@ export const CallToActionCenterBlockConf: Block = {
 				vi: 'Tiêu đề',
 			},
 			required: true,
+			localized: true,
 		},
 		{
 			name: 'sub-title',
@@ -34,6 +38,7 @@ export const CallToActionCenterBlockConf: Block = {
 				en: 'Sub Title',
 				vi: 'Tiêu đề phụ',
 			},
+			localized: true,
 		},
 		{
 			name: 'description',
@@ -42,6 +47,7 @@ export const CallToActionCenterBlockConf: Block = {
 				en: 'Description',
 				vi: 'Mô tả',
 			},
+			localized: true,
 		},
 		{
 			name: 'background',
@@ -52,25 +58,20 @@ export const CallToActionCenterBlockConf: Block = {
 			},
 			relationTo: MediaSlug,
 		},
-		{
-			name: 'button',
-			type: 'group',
-			label: {
-				en: 'Button',
-				vi: 'Nút',
-			},
-			fields: [
-				{
-					name: 'text',
-					type: 'text',
-					label: {
-						en: 'Button Label',
-						vi: 'Nhãn nút',
-					},
-					required: true,
+		link({
+			overrides: {
+				label: {
+					en: 'Button Label',
+					vi: 'Nhãn nút',
 				},
-				link({ disableLabel: true }),
-			],
-		},
+				defaultValue: defaults.buttonLabel,
+				required: true,
+				localized: true,
+			},
+			label: {
+				placeholder: defaults.buttonLabel(Lang.Vietnamese),
+				required: false,
+			},
+		}),
 	],
 }

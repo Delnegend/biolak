@@ -2,7 +2,8 @@ import { Block } from 'payload'
 
 import { ProductsSlug } from '@/collections/Products/slug'
 import { Lang } from '@/utilities/lang'
-import { matchLang } from '@/utilities/matchLang'
+
+import { BestSellerBlockDefaults as defaults } from './defaults'
 
 export const BestSellerBlockConf: Block = {
 	slug: 'bestSeller',
@@ -26,14 +27,10 @@ export const BestSellerBlockConf: Block = {
 				vi: 'Tiêu đề',
 				en: 'Title',
 			},
-			required: true,
 			localized: true,
-			defaultValue: matchLang({
-				[Lang.English]: 'Best Seller',
-				[Lang.Vietnamese]: 'Sản phẩm bán chạy',
-			}),
+			defaultValue: defaults.title,
 			admin: {
-				placeholder: 'Sản phẩm bán chạy',
+				placeholder: defaults.title(Lang.Vietnamese),
 			},
 		},
 		{
@@ -43,6 +40,7 @@ export const BestSellerBlockConf: Block = {
 				vi: 'Mô tả',
 				en: 'Description',
 			},
+			localized: true,
 		},
 		{
 			name: 'products',
