@@ -4,7 +4,8 @@ import { GlobalConfig } from 'payload'
 import { allow, Role } from '@/access/allow'
 import { MediaSlug } from '@/collections/Media/slug'
 import { Lang } from '@/utilities/lang'
-import { matchLang } from '@/utilities/matchLang'
+
+import { FloatingGlobalDefaults as defaults } from './defaults'
 
 export const FloatingGlobalSlug = 'floatingGlobal'
 export const FloatingGlobalConf: GlobalConfig<typeof FloatingGlobalSlug> = {
@@ -21,16 +22,12 @@ export const FloatingGlobalConf: GlobalConfig<typeof FloatingGlobalSlug> = {
 		{
 			name: 'label',
 			type: 'text',
-			label: {
-				en: 'Label',
-				vi: 'Nhãn',
-			},
-			required: true,
+			label: false,
 			localized: true,
-			defaultValue: matchLang({
-				[Lang.English]: 'Contacts',
-				[Lang.Vietnamese]: 'Liên hệ',
-			}),
+			defaultValue: defaults.contact,
+			admin: {
+				placeholder: defaults.contact(Lang.Vietnamese),
+			},
 		},
 		{
 			name: 'links',
