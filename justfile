@@ -111,7 +111,7 @@ update:
   docker compose down && git pull --rebase && docker compose up -d
 
 # check if the prod would build successfully
-test-build:
+test-build: lint
   docker compose up postgres-test-prod server-test-prod
   docker compose down postgres-test-prod server-test-prod
 
