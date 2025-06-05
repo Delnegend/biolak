@@ -64,7 +64,7 @@ db-start-migrate:
 
 db-create-migrate:
   pnpm payload migrate:create
-  just minify-migrations & rm trailing spaces
+  just minify-migrations
 
 db-dev-pg-start:
   docker compose up -d postgres-dev
