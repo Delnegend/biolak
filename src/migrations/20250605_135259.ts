@@ -596,7 +596,9 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   ALTER TABLE "_pages_v_blocks_call_to_action_post" ADD COLUMN "link_type" "enum__pages_v_blocks_call_to_action_post_link_type" DEFAULT 'reference';
   ALTER TABLE "_pages_v_blocks_call_to_action_post" ADD COLUMN "link_new_tab" boolean;
   ALTER TABLE "_pages_v_blocks_call_to_action_post" ADD COLUMN "link_url" varchar;
-  ALTER TABLE "_pages_v_blocks_content_columns" ADD COLUMN "_locale" "_locales" NOT NULL;
+  ALTER TABLE "_pages_v_blocks_content_columns" ADD COLUMN "_locale" "_locales";
+  UPDATE "_pages_v_blocks_content_columns" SET "_locale" = 'vi';
+  ALTER TABLE "_pages_v_blocks_content_columns" ALTER COLUMN "_locale" SET NOT NULL;
   ALTER TABLE "post_categories_blocks_call_to_action_post" ADD COLUMN "link_type" "enum_post_categories_blocks_call_to_action_post_link_type" DEFAULT 'reference';
   ALTER TABLE "post_categories_blocks_call_to_action_post" ADD COLUMN "link_new_tab" boolean;
   ALTER TABLE "post_categories_blocks_call_to_action_post" ADD COLUMN "link_url" varchar;
