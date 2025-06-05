@@ -89,7 +89,7 @@ export async function GET(
 							error: matchLang({
 								[Lang.English]: 'Product not found',
 								[Lang.Vietnamese]: 'Không tìm thấy sản phẩm',
-							})({ locale }),
+							})(locale),
 						}) satisfies GetProductsBySubCategorySlug['Response'],
 			),
 			{
