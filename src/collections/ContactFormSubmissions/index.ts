@@ -36,7 +36,6 @@ export const ContactFormSubmissionsCollection: CollectionConfig<typeof ContactFo
 			{
 				name: 'email',
 				type: 'text',
-				required: true,
 				label: {
 					en: 'Email',
 					vi: 'Email',
