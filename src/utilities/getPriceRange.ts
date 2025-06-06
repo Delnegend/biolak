@@ -11,6 +11,8 @@ export function getPriceRange(p: {
 		stock: ProductVariant['stock']
 	}[]
 }): string | null {
+	if (!p.variants) return null
+
 	const availableVariants = p.variants.filter((variant) => variant.stock > 0)
 	if (availableVariants.length === 0) return null
 
