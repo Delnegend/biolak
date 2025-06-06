@@ -11,6 +11,7 @@
 		"dev:prod": "NODE_OPTIONS=--no-deprecation pnpm build && pnpm start"
 	},
 	"dependencies": {
+		"@hookform/resolvers": "^5.0.1",
 		"@payloadcms/admin-bar": "3.41.0",
 		"@payloadcms/db-postgres": "3.41.0",
 		"@payloadcms/email-nodemailer": "3.41.0",
