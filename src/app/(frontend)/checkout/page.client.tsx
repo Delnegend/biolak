@@ -3,10 +3,20 @@ import { ArrowRight, ChevronDown } from 'lucide-react'
 import React, { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
+import { z } from 'zod/v4'
 
 import { CartListClient } from '@/components/CartList.client'
 import { Button } from '@/components/ui/button'
 import { Checkbox } from '@/components/ui/checkbox'
+import {
+	Form,
+	FormControl,
+	FormDescription,
+	FormField,
+	FormItem,
+	FormLabel,
+	FormMessage,
+} from '@/components/ui/form'
 import {
 	Select,
 	SelectContent,
@@ -25,7 +35,7 @@ import { matchLang } from '@/utilities/matchLang'
 import { cn } from '@/utilities/ui'
 
 import CITY_DISTRICT_WARD from './actions/city-district-ward.json'
-import { ConfirmDetailsActionInputType } from './actions/confirmDetailsAction'
+import { ConfirmDetailsActionSchema } from './actions/confirmDetailsAction'
 
 function Title({
 	children,
@@ -196,12 +206,29 @@ export default function PageClient({
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [])
 
-	const {
-		register,
-		handleSubmit,
-		formState: { errors },
-	} = useForm<ConfirmDetailsActionInputType>()
-	const onSubmit = handleSubmit((data) => {
+	const form = useForm<z.infer<typeof ConfirmDetailsActionSchema>>({
+		// resolver: zodResolver(ConfirmDetailsActionSchema),
+		defaultValues: {
+			personalDetails: {
+				name: '',
+				email: '',
+				phoneNumber: '',
+				city: '',
+				district: '',
+				ward: '',
+				houseNumber: '',
+			},
+			transportationMethod: 'standard',
+			paymentMethod: 'cod',
+			sendGift: {
+				sender: '',
+				receiver: '',
+				message: '',
+			},
+		},
+	})
+
+	function onSubmit(data: z.infer<typeof ConfirmDetailsActionSchema>): void {
 		const { city, district, ward } = data.personalDetails
 		const cityDistrictWard: Record<
 			string,
@@ -227,7 +254,7 @@ export default function PageClient({
 				[Lang.Vietnamese]: 'Xác nhận thông tin thành công',
 			})(locale),
 		)
-	})
+	}
 
 	if (cart.length === 0) {
 		return (
@@ -259,226 +286,266 @@ export default function PageClient({
 	}
 
 	return (
-		<div className="grid grid-cols-[2fr_1fr] gap-x-5">
-			<div className="flex flex-col gap-y-5">
-				<Card>
-					<Title>{global.contacts?.title ?? defaults.contacts.title(locale)}</Title>
-					<div>
-						<TextInput
-							label={
-								global.contacts?.emailInputLabel ??
-								defaults.contacts.emailInputLabel(locale)
-							}
-						/>
-						<CustomizedCheckbox
-							id="newsletter"
-							label={
-								global.contacts?.acceptNewsletter ??
-								defaults.contacts.acceptNewsletter(locale)
-							}
-						/>
-					</div>
-					<Title>{global.address?.title ?? defaults.address.title(locale)}</Title>
-					<div className="grid grid-cols-2 gap-x-6 gap-y-9">
-						<TextInput
-							size="sm"
-							label={
-								global.address?.nameInputLabel ?? defaults.address.nameInputLabel(locale)
-							}
-						/>
-						<TextInput
-							size="sm"
-							label={
-								global.address?.phoneInputLabel ?? defaults.address.phoneInputLabel(locale)
-							}
-						/>
-						<input type="text" className="hidden" id="provinceCity" />
-						<input type="text" className="hidden" id="district" />
-						<input type="text" className="hidden" id="ward" />
-
-						<Select value={selectedCity} onValueChange={setSelectedCity}>
-							<SelectTrigger
-								label={
-									global.address?.provinceCityInputLabel ??
-									defaults.address.provinceCityInputLabel(locale)
-								}
-								aria-label={
-									global.address?.provinceCityInputLabel ??
-									defaults.address.provinceCityInputLabel(locale)
-								}
-							>
-								<SelectValue />
-							</SelectTrigger>
-							<SelectContent>
-								{Object.keys(CITY_DISTRICT_WARD).map((city) => (
-									<SelectItem key={city} value={city}>
-										{city}
-									</SelectItem>
-								))}
-							</SelectContent>
-						</Select>
-						<Select
-							value={selectedDistrict}
-							onValueChange={setSelectedDistrict}
-							disabled={!selectedCity}
-						>
-							<SelectTrigger
-								label={
-									global.address?.districtInputLabel ??
-									defaults.address.districtInputLabel(locale)
-								}
-								aria-label={
-									global.address?.districtInputLabel ??
-									defaults.address.districtInputLabel(locale)
-								}
-							>
-								<SelectValue />
-							</SelectTrigger>
-							<SelectContent>
-								{/* @ts-expect-error - idc */}
-								{Object.keys(selectedCity ? CITY_DISTRICT_WARD[selectedCity] : {}).map(
-									(district) => (
-										<SelectItem key={district} value={district}>
-											{district}
-										</SelectItem>
-									),
+		<Form {...form}>
+			<form onSubmit={form.handleSubmit(onSubmit)}>
+				<div className="grid grid-cols-[2fr_1fr] gap-x-5">
+					<div className="flex flex-col gap-y-5">
+						<Card>
+							<FormField
+								control={form.control}
+								name="personalDetails.name"
+								render={({ field }) => (
+									<FormItem>
+										<FormLabel>
+											{global.contacts?.title ?? defaults.contacts.title(locale)}
+										</FormLabel>
+										<FormControl>
+											<TextInput
+												label={
+													global.contacts?.emailInputLabel ??
+													defaults.contacts.emailInputLabel(locale)
+												}
+												{...field}
+											/>
+										</FormControl>
+										<FormDescription>
+											{matchLang({
+												[Lang.English]: 'This is your name.',
+												[Lang.Vietnamese]: 'Đây là tên của bạn.',
+											})(locale)}
+										</FormDescription>
+										<FormMessage />
+									</FormItem>
 								)}
-							</SelectContent>
-						</Select>
-						<Select
-							value={selectedWard}
-							onValueChange={setSelectedWard}
-							disabled={!selectedDistrict || !selectedCity}
-						>
-							<SelectTrigger
-								label={
-									global.address?.wardInputLabel ?? defaults.address.wardInputLabel(locale)
+							/>
+
+							<Title>{global.contacts?.title ?? defaults.contacts.title(locale)}</Title>
+							<div>
+								<TextInput
+									label={
+										global.contacts?.emailInputLabel ??
+										defaults.contacts.emailInputLabel(locale)
+									}
+								/>
+								<CustomizedCheckbox
+									id="newsletter"
+									label={
+										global.contacts?.acceptNewsletter ??
+										defaults.contacts.acceptNewsletter(locale)
+									}
+								/>
+							</div>
+							<Title>{global.address?.title ?? defaults.address.title(locale)}</Title>
+							<div className="grid grid-cols-2 gap-x-6 gap-y-9">
+								<TextInput
+									size="sm"
+									label={
+										global.address?.nameInputLabel ??
+										defaults.address.nameInputLabel(locale)
+									}
+								/>
+								<TextInput
+									size="sm"
+									label={
+										global.address?.phoneInputLabel ??
+										defaults.address.phoneInputLabel(locale)
+									}
+								/>
+								<input type="text" className="hidden" id="provinceCity" />
+								<input type="text" className="hidden" id="district" />
+								<input type="text" className="hidden" id="ward" />
+
+								<Select value={selectedCity} onValueChange={setSelectedCity}>
+									<SelectTrigger
+										label={
+											global.address?.provinceCityInputLabel ??
+											defaults.address.provinceCityInputLabel(locale)
+										}
+										aria-label={
+											global.address?.provinceCityInputLabel ??
+											defaults.address.provinceCityInputLabel(locale)
+										}
+									>
+										<SelectValue />
+									</SelectTrigger>
+									<SelectContent>
+										{Object.keys(CITY_DISTRICT_WARD).map((city) => (
+											<SelectItem key={city} value={city}>
+												{city}
+											</SelectItem>
+										))}
+									</SelectContent>
+								</Select>
+								<Select
+									value={selectedDistrict}
+									onValueChange={setSelectedDistrict}
+									disabled={!selectedCity}
+								>
+									<SelectTrigger
+										label={
+											global.address?.districtInputLabel ??
+											defaults.address.districtInputLabel(locale)
+										}
+										aria-label={
+											global.address?.districtInputLabel ??
+											defaults.address.districtInputLabel(locale)
+										}
+									>
+										<SelectValue />
+									</SelectTrigger>
+									<SelectContent>
+										{Object.keys(
+											// @ts-expect-error - idc
+											selectedCity ? CITY_DISTRICT_WARD[selectedCity] : {},
+										).map((district) => (
+											<SelectItem key={district} value={district}>
+												{district}
+											</SelectItem>
+										))}
+									</SelectContent>
+								</Select>
+								<Select
+									value={selectedWard}
+									onValueChange={setSelectedWard}
+									disabled={!selectedDistrict || !selectedCity}
+								>
+									<SelectTrigger
+										label={
+											global.address?.wardInputLabel ??
+											defaults.address.wardInputLabel(locale)
+										}
+										aria-label={
+											global.address?.wardInputLabel ??
+											defaults.address.wardInputLabel(locale)
+										}
+									>
+										<SelectValue />
+									</SelectTrigger>
+									<SelectContent>
+										{(selectedCity && selectedDistrict
+											? // @ts-expect-error - idc
+												CITY_DISTRICT_WARD[selectedCity][selectedDistrict]
+											: []
+										).map((ward: string) => (
+											<SelectItem key={ward} value={ward}>
+												{ward}
+											</SelectItem>
+										))}
+									</SelectContent>
+								</Select>
+
+								<TextInput
+									size="sm"
+									label={global.address?.details ?? defaults.address.details(locale)}
+								/>
+
+								<CustomizedCheckbox
+									id="saveForNextTime"
+									label={
+										global.address?.saveForNextTime ??
+										defaults.address.saveForNextTime(locale)
+									}
+									classNames={{ container: 'col-span-2' }}
+								/>
+							</div>
+						</Card>
+
+						<Card>
+							<Title>{global.shipping?.title ?? defaults.shipping.title(locale)}</Title>
+							<div>
+								<CustomizedCheckbox
+									id="standardShipping"
+									label={
+										global.shipping?.standardShippingLabel ??
+										defaults.shipping.standardShippingLabel(locale)
+									}
+								/>
+								<CustomizedCheckbox
+									id="fastShipping"
+									label={
+										global.shipping?.fastShippingLabel ??
+										defaults.shipping.fastShippingLabel(locale)
+									}
+								/>
+							</div>
+						</Card>
+
+						<Card>
+							<Title>{global.payment?.title ?? defaults.payment.title(locale)}</Title>
+							<div>
+								<CustomizedCheckbox
+									id="cod"
+									label={global.payment?.codLabel ?? defaults.payment.codLabel(locale)}
+								/>
+								<CustomizedCheckbox
+									id="bankTransfer"
+									label={
+										global.payment?.bankTransferLabel ??
+										defaults.payment.bankTransferLabel(locale)
+									}
+								/>
+							</div>
+						</Card>
+
+						<Card>
+							<Title>{global.gift?.title ?? defaults.gift.title(locale)}</Title>
+							<div className="grid grid-cols-2 gap-x-6 gap-y-3">
+								<TextInput
+									size="sm"
+									label={global.gift?.senderInputLabel ?? defaults.gift.sender(locale)}
+								/>
+								<TextInput
+									size="sm"
+									label={
+										global.gift?.recipientInputLabel ?? defaults.gift.recipient(locale)
+									}
+								/>
+								<TextInput
+									size="sm"
+									classNames={{
+										container: 'col-span-2',
+									}}
+									label={global.gift?.messageInputLabel ?? defaults.gift.message(locale)}
+								/>
+							</div>
+						</Card>
+					</div>
+
+					<Card>
+						<Title>{global.order?.title ?? defaults.order.title(locale)}</Title>
+						<CartListWithAccordion />
+						<hr />
+
+						<Title>{global.discount?.title ?? defaults.discount.title(locale)}</Title>
+						<div className="flex h-[4.5rem] items-center justify-between rounded-[0.5rem] border border-primary p-[0.625rem]">
+							<input
+								type="text"
+								placeholder={
+									global.discount?.inputPlaceholder ?? defaults.discount.inputLabel(locale)
 								}
 								aria-label={
-									global.address?.wardInputLabel ?? defaults.address.wardInputLabel(locale)
+									global.discount?.inputPlaceholder ?? defaults.discount.inputLabel(locale)
 								}
+								className="h-[calc(4.5rem-1.25rem)] w-full border-primary bg-transparent px-3 text-lg placeholder:text-muted-foreground focus:outline-none"
+							/>
+							<Button
+								hideArrow
+								aria-label={
+									global.discount?.applyButtonLabel ??
+									defaults.discount.applyButton(locale)
+								}
+								className="h-[calc(4.5rem-1.25rem)]"
+								size="md"
 							>
-								<SelectValue />
-							</SelectTrigger>
-							<SelectContent>
-								{(selectedCity && selectedDistrict
-									? // @ts-expect-error - idc
-										CITY_DISTRICT_WARD[selectedCity][selectedDistrict]
-									: []
-								).map((ward: string) => (
-									<SelectItem key={ward} value={ward}>
-										{ward}
-									</SelectItem>
-								))}
-							</SelectContent>
-						</Select>
+								{global.discount?.applyButtonLabel ?? defaults.discount.applyButton(locale)}
+							</Button>
+						</div>
+						<hr className="my-2" />
 
-						<TextInput
-							size="sm"
-							label={global.address?.details ?? defaults.address.details(locale)}
-						/>
-
-						<CustomizedCheckbox
-							id="saveForNextTime"
-							label={
-								global.address?.saveForNextTime ?? defaults.address.saveForNextTime(locale)
-							}
-							classNames={{ container: 'col-span-2' }}
-						/>
-					</div>
-				</Card>
-
-				<Card>
-					<Title>{global.shipping?.title ?? defaults.shipping.title(locale)}</Title>
-					<div>
-						<CustomizedCheckbox
-							id="standardShipping"
-							label={
-								global.shipping?.standardShippingLabel ??
-								defaults.shipping.standardShippingLabel(locale)
-							}
-						/>
-						<CustomizedCheckbox
-							id="fastShipping"
-							label={
-								global.shipping?.fastShippingLabel ??
-								defaults.shipping.fastShippingLabel(locale)
-							}
-						/>
-					</div>
-				</Card>
-
-				<Card>
-					<Title>{global.payment?.title ?? defaults.payment.title(locale)}</Title>
-					<div>
-						<CustomizedCheckbox
-							id="cod"
-							label={global.payment?.codLabel ?? defaults.payment.codLabel(locale)}
-						/>
-						<CustomizedCheckbox
-							id="bankTransfer"
-							label={
-								global.payment?.bankTransferLabel ??
-								defaults.payment.bankTransferLabel(locale)
-							}
-						/>
-					</div>
-				</Card>
-
-				<Card>
-					<Title>{global.gift?.title ?? defaults.gift.title(locale)}</Title>
-					<div className="grid grid-cols-2 gap-x-6 gap-y-3">
-						<TextInput
-							size="sm"
-							label={global.gift?.senderInputLabel ?? defaults.gift.sender(locale)}
-						/>
-						<TextInput
-							size="sm"
-							label={global.gift?.recipientInputLabel ?? defaults.gift.recipient(locale)}
-						/>
-						<TextInput
-							size="sm"
-							classNames={{
-								container: 'col-span-2',
-							}}
-							label={global.gift?.messageInputLabel ?? defaults.gift.message(locale)}
-						/>
-					</div>
-				</Card>
-			</div>
-
-			<Card>
-				<Title>{global.order?.title ?? defaults.order.title(locale)}</Title>
-				<CartListWithAccordion />
-				<hr />
-
-				<Title>{global.discount?.title ?? defaults.discount.title(locale)}</Title>
-				<div className="flex h-[4.5rem] items-center justify-between rounded-[0.5rem] border border-primary p-[0.625rem]">
-					<input
-						type="text"
-						placeholder={
-							global.discount?.inputPlaceholder ?? defaults.discount.inputLabel(locale)
-						}
-						aria-label={
-							global.discount?.inputPlaceholder ?? defaults.discount.inputLabel(locale)
-						}
-						className="h-[calc(4.5rem-1.25rem)] w-full border-primary bg-transparent px-3 text-lg placeholder:text-muted-foreground focus:outline-none"
-					/>
-					<Button
-						hideArrow
-						aria-label={
-							global.discount?.applyButtonLabel ?? defaults.discount.applyButton(locale)
-						}
-						className="h-[calc(4.5rem-1.25rem)]"
-						size="md"
-					>
-						{global.discount?.applyButtonLabel ?? defaults.discount.applyButton(locale)}
-					</Button>
+						<OrderSummary cart={cart} global={global} />
+					</Card>
 				</div>
-				<hr className="my-2" />
-
-				<OrderSummary cart={cart} global={global} />
-			</Card>
-		</div>
+			</form>
+		</Form>
 	)
 }
