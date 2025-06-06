@@ -104,7 +104,11 @@ export const OrdersCollection: CollectionConfig<typeof OrdersSlug> = {
 	hooks: {
 		afterChange: [
 			async ({ doc, req: { payload } }) => {
-				const result = await tryCatch(() =>
+				const {
+					ok: resultOk,
+					error: resultError,
+					data: result,
+				} = await tryCatch(() =>
 					payload.sendEmail({
 						from: process.env.SMTP_FROM,
 						to: 'bar@example.com, baz@example.com',
@@ -112,8 +116,8 @@ export const OrdersCollection: CollectionConfig<typeof OrdersSlug> = {
 						text: 'BioLAK có đơn hàng mới từ ' + doc[CustomersSlug]?.name,
 					}),
 				)
-				if (!result.tryCatchSuccess) {
-					console.error('Error sending email:', result.error)
+				if (!resultOk) {
+					console.error('Error sending email:', resultError)
 					return doc
 				}
 				console.log('Message sent:', result)
