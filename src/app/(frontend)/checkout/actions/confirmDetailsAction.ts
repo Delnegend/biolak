@@ -34,7 +34,7 @@ const ConfirmDetailsActionSchema = z.object({
 	}),
 })
 
-export type ConfirmDetailsAction = z.infer<typeof ConfirmDetailsActionSchema>
+export type ConfirmDetailsActionInputType = z.infer<typeof ConfirmDetailsActionSchema>
 
 export async function confirmDetailsAction(input: unknown): Promise<
 	| {

@@ -1,6 +1,8 @@
 'use client'
 import { ArrowRight, ChevronDown } from 'lucide-react'
 import React, { useEffect, useState } from 'react'
+import { useForm } from 'react-hook-form'
+import { toast } from 'sonner'
 
 import { CartListClient } from '@/components/CartList.client'
 import { Button } from '@/components/ui/button'
@@ -23,6 +25,7 @@ import { matchLang } from '@/utilities/matchLang'
 import { cn } from '@/utilities/ui'
 
 import CITY_DISTRICT_WARD from './actions/city-district-ward.json'
+import { ConfirmDetailsActionInputType } from './actions/confirmDetailsAction'
 
 function Title({
 	children,
@@ -192,6 +195,39 @@ export default function PageClient({
 			})
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [])
+
+	const {
+		register,
+		handleSubmit,
+		formState: { errors },
+	} = useForm<ConfirmDetailsActionInputType>()
+	const onSubmit = handleSubmit((data) => {
+		const { city, district, ward } = data.personalDetails
+		const cityDistrictWard: Record<
+			string,
+			Record<string, string[]>
+		> = CITY_DISTRICT_WARD as Record<string, Record<string, string[]>>
+		if (
+			!cityDistrictWard[city] ||
+			!cityDistrictWard[city][district] ||
+			!cityDistrictWard[city][district].includes(ward)
+		) {
+			toast.error(
+				matchLang({
+					[Lang.English]: 'Invalid district or ward for the selected city',
+					[Lang.Vietnamese]: 'Quận hoặc phường không hợp lệ cho thành phố đã chọn',
+				})(locale),
+			)
+			return
+		}
+		// Handle the form submission here
+		toast.success(
+			matchLang({
+				[Lang.English]: 'Details confirmed successfully',
+				[Lang.Vietnamese]: 'Xác nhận thông tin thành công',
+			})(locale),
+		)
+	})
 
 	if (cart.length === 0) {
 		return (
