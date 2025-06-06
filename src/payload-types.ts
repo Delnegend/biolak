@@ -253,24 +253,6 @@ export interface Product {
   icon?: (number | null) | Media;
   gallery?: (number | Media)[] | null;
   reviewsVisible?: ('show' | 'hide') | null;
-  heroSubtitle?: string | null;
-  heroTitle?: string | null;
-  heroDescription?: {
-    root: {
-      type: string;
-      children: {
-        type: string;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  } | null;
-  heroMedia?: (number | null) | Media;
   content?:
     | (
         | ArchiveBlockProps
@@ -293,6 +275,24 @@ export interface Product {
         | ThreePhotoBlockProps
       )[]
     | null;
+  heroSubtitle?: string | null;
+  heroTitle?: string | null;
+  heroDescription?: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  heroMedia?: (number | null) | Media;
   orders?: {
     docs?: (number | Order)[];
     hasNextPage?: boolean;
@@ -2484,10 +2484,6 @@ export interface ProductsSelect<T extends boolean = true> {
   icon?: T;
   gallery?: T;
   reviewsVisible?: T;
-  heroSubtitle?: T;
-  heroTitle?: T;
-  heroDescription?: T;
-  heroMedia?: T;
   content?:
     | T
     | {
@@ -2510,6 +2506,10 @@ export interface ProductsSelect<T extends boolean = true> {
         productsCarousel?: T | ProductsCarouselBlockPropsSelect<T>;
         threePhoto?: T | ThreePhotoBlockPropsSelect<T>;
       };
+  heroSubtitle?: T;
+  heroTitle?: T;
+  heroDescription?: T;
+  heroMedia?: T;
   orders?: T;
   meta?:
     | T
