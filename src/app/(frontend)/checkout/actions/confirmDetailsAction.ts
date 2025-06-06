@@ -27,11 +27,13 @@ const ConfirmDetailsActionSchema = z.object({
 		.required(),
 	transportationMethod: z.enum(['standard', 'express']),
 	paymentMethod: z.enum(['cod', 'bankTransfer']),
-	sendGift: z.object({
-		sender: z.string().optional(),
-		receiver: z.string().optional(),
-		message: z.string().max(1000).optional(),
-	}),
+	sendGift: z
+		.object({
+			sender: z.string().optional(),
+			receiver: z.string().optional(),
+			message: z.string().max(1000).optional(),
+		})
+		.optional(),
 })
 
 export type ConfirmDetailsActionInputType = z.infer<typeof ConfirmDetailsActionSchema>
