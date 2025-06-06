@@ -249,6 +249,49 @@ export const ProductsCollection: CollectionConfig<typeof ProductsSlug> = {
 					],
 				},
 				{
+					label: {
+						en: 'Content',
+						vi: 'Nội dung',
+					},
+					fields: [
+						{
+							name: 'content',
+							type: 'blocks',
+							label: false,
+							labels: {
+								singular: {
+									en: 'Block',
+									vi: 'Khối',
+								},
+								plural: {
+									en: 'Blocks',
+									vi: 'Các khối',
+								},
+							},
+							blocks: [
+								ArchiveBlockConf,
+								BuyNowBlockConf,
+								CallToActionCenterBlockConf,
+								CallToActionLeftBlockConf,
+								CallToActionRightBlockConf,
+								CallToAddToCartBlockConf,
+								CertificatesBlockConf,
+								ContentBlockConf,
+								FormBlockConf,
+								HighlighRightBlockConf,
+								HighlightCenterBlockConf,
+								HighlightLeftBlockConf,
+								HowToUseProductBlockConf,
+								InfiniteScrollBlockConf,
+								LatestPostsBlockConf,
+								MediaBlockConf,
+								ProductsCarouselBlockConf,
+								ThreePhotoBlockConf,
+							],
+						},
+					],
+				},
+				{
 					label: 'Hero',
 					fields: [
 						{
@@ -286,52 +329,6 @@ export const ProductsCollection: CollectionConfig<typeof ProductsSlug> = {
 								vi: 'Ghi đè ảnh sản phẩm',
 							},
 							relationTo: MediaSlug,
-						},
-					],
-				},
-				{
-					label: {
-						en: 'Content',
-						vi: 'Nội dung',
-					},
-					fields: [
-						{
-							name: 'content',
-							type: 'blocks',
-							labels: {
-								singular: {
-									en: 'Block',
-									vi: 'Khối',
-								},
-								plural: {
-									en: 'Blocks',
-									vi: 'Các khối',
-								},
-							},
-							label: {
-								en: 'Content',
-								vi: 'Nội dung',
-							},
-							blocks: [
-								ArchiveBlockConf,
-								BuyNowBlockConf,
-								CallToActionCenterBlockConf,
-								CallToActionLeftBlockConf,
-								CallToActionRightBlockConf,
-								CallToAddToCartBlockConf,
-								CertificatesBlockConf,
-								ContentBlockConf,
-								FormBlockConf,
-								HighlighRightBlockConf,
-								HighlightCenterBlockConf,
-								HighlightLeftBlockConf,
-								HowToUseProductBlockConf,
-								InfiniteScrollBlockConf,
-								LatestPostsBlockConf,
-								MediaBlockConf,
-								ProductsCarouselBlockConf,
-								ThreePhotoBlockConf,
-							],
 						},
 					],
 				},

@@ -142,10 +142,7 @@ export const PostsCollection: CollectionConfig<typeof PostsSlug> = {
 							admin: {
 								initCollapsed: true,
 							},
-							label: {
-								en: 'Content',
-								vi: 'Nội dung',
-							},
+							label: false,
 							labels: {
 								singular: {
 									en: 'Block',
