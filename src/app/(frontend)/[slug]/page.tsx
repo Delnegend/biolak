@@ -17,14 +17,21 @@ import { tryCatch } from '@/utilities/tryCatch'
 import PageClient from './page.client'
 
 export async function generateStaticParams() {
-	const payload2 = await tryCatch(() => getPayload({ config: configPromise }))
-	if (!payload2.tryCatchSuccess) {
-		throw new Error(`Failed to initialize Payload: ${payload2.error}`)
+	const {
+		ok: payloadOk,
+		data: payload,
+		error: payloadError,
+	} = await tryCatch(() => getPayload({ config: configPromise }))
+	if (!payloadOk) {
+		throw new Error(`Failed to initialize Payload: ${payloadError}`)
 	}
-	const payload = payload2
 	const locale = await getClientLang()
 
-	const pages = await tryCatch(() =>
+	const {
+		ok: pagesOk,
+		data: pages,
+		error: pagesError,
+	} = await tryCatch(() =>
 		payload.find({
 			collection: PagesSlug,
 			draft: false,
@@ -37,8 +44,8 @@ export async function generateStaticParams() {
 			locale,
 		}),
 	)
-	if (!pages.tryCatchSuccess) {
-		throw new Error(`Failed to fetch pages: ${pages.error}`)
+	if (!pagesOk) {
+		throw new Error(`Failed to fetch pages: ${pagesError}`)
 	}
 
 	return pages.docs
