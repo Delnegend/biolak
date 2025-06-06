@@ -18,8 +18,8 @@ export type GetProductsBySubCategorySlug = {
 					slug?: Product['slug']
 					title: Product['title']
 					shortDescription?: Product['shortDescription']
-					variants: Product['variants']
 					icon?: Product['icon']
+					variants: Product['variants']
 				}[]
 		  }
 		| {
@@ -57,6 +57,7 @@ export async function GET(
 					shortDescription: true,
 					price: true,
 					icon: true,
+					variants: true,
 				},
 				locale,
 			})
