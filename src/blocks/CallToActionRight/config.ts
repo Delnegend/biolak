@@ -90,10 +90,6 @@ export const CallToActionRightBlockConf: Block = {
 		},
 		link({
 			overrides: {
-				label: {
-					en: 'Button Label',
-					vi: 'Nhãn nút',
-				},
 				defaultValue: defaults.buttonLabel,
 				required: true,
 				localized: true,
