@@ -13,6 +13,7 @@ import { Product, ProductCategory, ProductSubCategory } from '@/payload-types'
 import { getPriceRange } from '@/utilities/getPriceRange'
 import { Lang } from '@/utilities/lang'
 import { matchLang } from '@/utilities/matchLang'
+import { tryCatch } from '@/utilities/tryCatch'
 import { cn } from '@/utilities/ui'
 
 const panelAnimationVariants: Variants = {
@@ -132,34 +133,41 @@ export function INTERNAL_ProductsDropdownClient({
 		setActiveProducts([])
 		if (!subCategory.slug) return
 
-		let error: string | undefined
-		try {
-			await fetch(
+		const response = await tryCatch(() =>
+			fetch(
 				`/api/sub-category/${subCategory.slug}` satisfies GetProductsBySubCategorySlug['Path'],
-			)
-				.then((res) => res.json())
-				.then((data: GetProductsBySubCategorySlug['Response']) => {
-					if (!data.success) {
-						error = data.error
-						return
-					}
-					setActiveProducts(data.data)
-				})
-		} catch (e) {
-			if (e instanceof Error) error = e.message
-			else error = String(e)
-		}
-
-		if (error)
+			),
+		)
+		if (!response.tryCatchSuccess) {
 			toast.error(
 				matchLang({
 					[Lang.English]: "Can't load products list",
 					[Lang.Vietnamese]: 'Không thể tải danh sách sản phẩm',
 				})(locale),
 				{
-					description: error,
+					description: `${response.error}`,
 				},
 			)
+			return
+		}
+
+		const products = await tryCatch(() => {
+			return response.json() as Promise<GetProductsBySubCategorySlug['Response']>
+		})
+		if (!products.tryCatchSuccess || !products.success) {
+			toast.error(
+				matchLang({
+					[Lang.English]: "Can't parse products list",
+					[Lang.Vietnamese]: 'Không thể phân tích danh sách sản phẩm',
+				})(locale),
+				{
+					description: `${products.error}`,
+				},
+			)
+			return
+		}
+
+		setActiveProducts(products.data)
 	}
 
 	// find the minimum height for the dropdown for it to fill the screen perfectly
@@ -346,7 +354,11 @@ export function INTERNAL_ProductsDropdownClient({
 														className="text-start text-base font-medium opacity-70"
 														style={{ gridArea: 'price' }}
 													>
-														{getPriceRange(product)}
+														{getPriceRange(product) ??
+															matchLang({
+																[Lang.English]: 'Out of stock',
+																[Lang.Vietnamese]: 'Hết hàng',
+															})(locale)}
 													</div>
 													<Image
 														src={icon?.url ?? 'https://placehold.co/200x200'}
