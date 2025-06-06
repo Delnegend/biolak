@@ -9,3 +9,7 @@
 .blocks-drawer__blocks {
 	@apply grid grid-cols-[repeat(auto-fill,minmax(200px,1fr))];
 }
+
+.relationship-table__header {
+	@apply items-center;
+}
