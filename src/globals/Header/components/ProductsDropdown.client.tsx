@@ -133,35 +133,43 @@ export function INTERNAL_ProductsDropdownClient({
 		setActiveProducts([])
 		if (!subCategory.slug) return
 
-		const response = await tryCatch(() =>
+		const {
+			ok: responseOk,
+			data: response,
+			error: responseError,
+		} = await tryCatch(() =>
 			fetch(
 				`/api/sub-category/${subCategory.slug}` satisfies GetProductsBySubCategorySlug['Path'],
 			),
 		)
-		if (!response.tryCatchSuccess) {
+		if (!responseOk || !response.ok) {
 			toast.error(
 				matchLang({
 					[Lang.English]: "Can't load products list",
 					[Lang.Vietnamese]: 'Không thể tải danh sách sản phẩm',
 				})(locale),
 				{
-					description: `${response.error}`,
+					description: `${responseError}`,
 				},
 			)
 			return
 		}
 
-		const products = await tryCatch(() => {
+		const {
+			ok: productsOk,
+			data: products,
+			error: productsError,
+		} = await tryCatch(() => {
 			return response.json() as Promise<GetProductsBySubCategorySlug['Response']>
 		})
-		if (!products.tryCatchSuccess || !products.success) {
+		if (!productsOk || !products.success) {
 			toast.error(
 				matchLang({
 					[Lang.English]: "Can't parse products list",
 					[Lang.Vietnamese]: 'Không thể phân tích danh sách sản phẩm',
 				})(locale),
 				{
-					description: `${products.error}`,
+					description: `${productsError}`,
 				},
 			)
 			return
