@@ -13,7 +13,7 @@ interface CityDistrictWard {
 	}
 }
 
-const ConfirmDetailsActionSchema = z.object({
+export const ConfirmDetailsActionSchema = z.object({
 	personalDetails: z
 		.object({
 			name: z.string().min(1, 'Name is required'),
@@ -35,8 +35,6 @@ const ConfirmDetailsActionSchema = z.object({
 		})
 		.optional(),
 })
-
-export type ConfirmDetailsActionInputType = z.infer<typeof ConfirmDetailsActionSchema>
 
 export async function confirmDetailsAction(input: unknown): Promise<
 	| {
