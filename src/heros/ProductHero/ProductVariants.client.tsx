@@ -1,5 +1,7 @@
 'use client'
 
+import { useEffect } from 'react'
+
 import { Button } from '@/components/ui/button'
 import { Product } from '@/payload-types'
 import { cn } from '@/utilities/ui'
@@ -20,15 +22,17 @@ export function INTERNAL_ProductVariantsClient({
 }): React.JSX.Element {
 	const { selectedProductVariant, setSelectedProductVariant } = useSelectedProductVariant()
 
-	if (validVariant) {
+	useEffect(() => {
+		if (!validVariant) return
 		setSelectedProductVariant({
 			slug,
 			title,
 			variant: validVariant,
 		})
-	}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [])
 
-	if (!variants || variants.length === 0) {
+	if (!variants || variants.length === 1) {
 		return <></>
 	}
 
