@@ -45,17 +45,21 @@ export async function confirmDetailsAction(input: unknown): Promise<
 			error: string
 	  }
 > {
-	const parsedInput = tryCatchSync(() => ConfirmDetailsActionSchema.safeParse(input))
-	if (!parsedInput.tryCatchSuccess) {
-		if (parsedInput.error instanceof z.ZodError) {
+	const {
+		ok: parsedInputOk,
+		data: parsedInput,
+		error: parsedInputError,
+	} = tryCatchSync(() => ConfirmDetailsActionSchema.safeParse(input))
+	if (!parsedInputOk) {
+		if (parsedInputError instanceof z.ZodError) {
 			return {
 				success: false,
-				error: parsedInput.error.message,
+				error: parsedInputError.message,
 			}
 		}
 		return {
 			success: false,
-			error: `${parsedInput.error}`,
+			error: `${parsedInputError}`,
 		}
 	}
 
