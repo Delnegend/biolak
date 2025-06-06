@@ -17,16 +17,16 @@ export async function CallToActionPostBlock(
 	const locale = await getClientLang()
 
 	const img = post?.heroImage && typeof post.heroImage === 'object' ? post.heroImage : null
+	const title = props.overwriteTitle ?? post?.title
+	const description = props.overwriteDescription ?? post?.meta?.meta?.description
 
 	return (
 		<div className="flex h-full flex-row max-lg:flex-col">
 			<div className="flex w-full flex-col gap-[3.75rem] px-[6.125rem] py-[7.125rem] lg:max-w-[36rem]">
-				<div className="font-serif text-[4rem] font-semibold leading-none">
-					{props.overwriteTitle ?? post?.title}
-				</div>
-				<div className="text-xl font-semibold">
-					{props.overwriteDescription ?? post?.meta?.meta?.description}
-				</div>
+				{title && (
+					<div className="font-serif text-[4rem] font-semibold leading-none">{title}</div>
+				)}
+				{description && <div className="text-xl font-semibold">{description}</div>}
 				<Button size="lg" className="justify-between" asChild disabled={!props.link}>
 					<CMSLink
 						{...props.link}
