@@ -8,6 +8,7 @@ import { CollectionConfig } from 'payload'
 import { fileURLToPath } from 'url'
 
 import { allow, Role } from '@/access/allow'
+import { Lang } from '@/utilities/lang'
 
 import { MediaSlug } from './slug'
 
@@ -18,12 +19,12 @@ export const MediaCollection: CollectionConfig<typeof MediaSlug> = {
 	slug: MediaSlug,
 	labels: {
 		singular: {
-			en: 'Media',
-			vi: 'Đa phuơng tiện',
+			[Lang.English]: 'Media',
+			[Lang.Vietnamese]: 'Đa phuơng tiện',
 		},
 		plural: {
-			en: 'Media',
-			vi: 'Đa phuơng tiện',
+			[Lang.English]: 'Media',
+			[Lang.Vietnamese]: 'Đa phuơng tiện',
 		},
 	},
 	access: {
@@ -37,8 +38,8 @@ export const MediaCollection: CollectionConfig<typeof MediaSlug> = {
 			name: 'alt',
 			type: 'text',
 			label: {
-				en: 'Alt Text',
-				vi: 'Văn bản thay thế',
+				[Lang.English]: 'Alt Text',
+				[Lang.Vietnamese]: 'Văn bản thay thế',
 			},
 		},
 		{
@@ -50,8 +51,8 @@ export const MediaCollection: CollectionConfig<typeof MediaSlug> = {
 				},
 			}),
 			label: {
-				en: 'Caption',
-				vi: 'Chú thích',
+				[Lang.English]: 'Caption',
+				[Lang.Vietnamese]: 'Chú thích',
 			},
 		},
 	],

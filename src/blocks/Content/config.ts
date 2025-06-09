@@ -6,6 +6,7 @@ import {
 import type { Block, Field } from 'payload'
 
 import { link } from '@/fields/link'
+import { Lang } from '@/utilities/lang'
 
 const columnFields: Field[] = [
 	{
@@ -16,35 +17,35 @@ const columnFields: Field[] = [
 			{
 				value: 'oneThird',
 				label: {
-					en: 'One Third',
-					vi: 'Một phần ba',
+					[Lang.English]: 'One Third',
+					[Lang.Vietnamese]: 'Một phần ba',
 				},
 			},
 			{
 				value: 'half',
 				label: {
-					en: 'Half',
-					vi: 'Một nửa',
+					[Lang.English]: 'Half',
+					[Lang.Vietnamese]: 'Một nửa',
 				},
 			},
 			{
 				value: 'twoThirds',
 				label: {
-					en: 'Two Thirds',
-					vi: 'Hai phần ba',
+					[Lang.English]: 'Two Thirds',
+					[Lang.Vietnamese]: 'Hai phần ba',
 				},
 			},
 			{
 				value: 'full',
 				label: {
-					en: 'Full',
-					vi: 'Toàn bộ',
+					[Lang.English]: 'Full',
+					[Lang.Vietnamese]: 'Toàn bộ',
 				},
 			},
 		],
 		label: {
-			en: 'Size',
-			vi: 'Kích thước',
+			[Lang.English]: 'Size',
+			[Lang.Vietnamese]: 'Kích thước',
 		},
 	},
 	{
@@ -52,24 +53,36 @@ const columnFields: Field[] = [
 		type: 'select',
 		defaultValue: 'default',
 		label: {
-			en: 'Font',
-			vi: 'Phông chữ',
+			[Lang.English]: 'Font',
+			[Lang.Vietnamese]: 'Phông chữ',
 		},
 		options: [
 			{
-				label: 'Default',
+				label: {
+					[Lang.English]: 'Default',
+					[Lang.Vietnamese]: 'Mặc định',
+				},
 				value: 'default',
 			},
 			{
-				label: 'Serif',
+				label: {
+					[Lang.English]: 'Serif',
+					[Lang.Vietnamese]: 'Serif',
+				},
 				value: 'serif',
 			},
 			{
-				label: 'Sans-serif',
+				label: {
+					[Lang.English]: 'Sans-serif',
+					[Lang.Vietnamese]: 'Sans-serif',
+				},
 				value: 'sans-serif',
 			},
 			{
-				label: 'Monospace',
+				label: {
+					[Lang.English]: 'Monospace',
+					[Lang.Vietnamese]: 'Monospace',
+				},
 				value: 'monospace',
 			},
 		],
@@ -79,8 +92,8 @@ const columnFields: Field[] = [
 		type: 'textarea',
 		defaultValue: '',
 		label: {
-			en: 'Custom CSS',
-			vi: 'CSS tùy chỉnh',
+			[Lang.English]: 'Custom CSS',
+			[Lang.Vietnamese]: 'CSS tùy chỉnh',
 		},
 	},
 	{
@@ -99,8 +112,8 @@ const columnFields: Field[] = [
 		name: 'enableLink',
 		type: 'checkbox',
 		label: {
-			en: 'Enable Link',
-			vi: 'Kích hoạt liên kết',
+			[Lang.English]: 'Enable Link',
+			[Lang.Vietnamese]: 'Kích hoạt liên kết',
 		},
 	},
 	link({
@@ -119,12 +132,12 @@ export const ContentBlockConf: Block = {
 	interfaceName: 'ContentBlockProps',
 	labels: {
 		singular: {
-			en: 'Content',
-			vi: 'Nội dung',
+			[Lang.English]: 'Content',
+			[Lang.Vietnamese]: 'Nội dung',
 		},
 		plural: {
-			en: 'Contents',
-			vi: 'Nội dung',
+			[Lang.English]: 'Contents',
+			[Lang.Vietnamese]: 'Nội dung',
 		},
 	},
 	fields: [
@@ -132,17 +145,17 @@ export const ContentBlockConf: Block = {
 			name: 'columns',
 			type: 'array',
 			label: {
-				en: 'Columns',
-				vi: 'Cột',
+				[Lang.English]: 'Columns',
+				[Lang.Vietnamese]: 'Cột',
 			},
 			labels: {
 				singular: {
-					en: 'Column',
-					vi: 'Cột',
+					[Lang.English]: 'Column',
+					[Lang.Vietnamese]: 'Cột',
 				},
 				plural: {
-					en: 'Columns',
-					vi: 'Cột',
+					[Lang.English]: 'Columns',
+					[Lang.Vietnamese]: 'Cột',
 				},
 			},
 			admin: {

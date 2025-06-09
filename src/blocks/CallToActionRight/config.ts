@@ -12,12 +12,12 @@ export const CallToActionRightBlockConf: Block = {
 	imageURL: '/thumbs/call-to-action-right.avif',
 	labels: {
 		plural: {
-			en: 'Call to Action (Right)',
-			vi: 'Kêu gọi hành động (Phải)',
+			[Lang.English]: 'Call to Action (Right)',
+			[Lang.Vietnamese]: 'Kêu gọi hành động (Phải)',
 		},
 		singular: {
-			en: 'Call to Action (Right)',
-			vi: 'Kêu gọi hành động (Phải)',
+			[Lang.English]: 'Call to Action (Right)',
+			[Lang.Vietnamese]: 'Kêu gọi hành động (Phải)',
 		},
 	},
 	fields: [
@@ -25,8 +25,8 @@ export const CallToActionRightBlockConf: Block = {
 			name: 'title',
 			type: 'textarea',
 			label: {
-				en: 'Title',
-				vi: 'Tiêu đề',
+				[Lang.English]: 'Title',
+				[Lang.Vietnamese]: 'Tiêu đề',
 			},
 			required: true,
 			localized: true,
@@ -35,8 +35,8 @@ export const CallToActionRightBlockConf: Block = {
 			name: 'sub-title',
 			type: 'textarea',
 			label: {
-				en: 'Sub Title',
-				vi: 'Tiêu đề phụ',
+				[Lang.English]: 'Sub Title',
+				[Lang.Vietnamese]: 'Tiêu đề phụ',
 			},
 			localized: true,
 		},
@@ -44,8 +44,8 @@ export const CallToActionRightBlockConf: Block = {
 			name: 'description',
 			type: 'richText',
 			label: {
-				en: 'Description',
-				vi: 'Mô tả',
+				[Lang.English]: 'Description',
+				[Lang.Vietnamese]: 'Mô tả',
 			},
 			localized: true,
 		},
@@ -53,17 +53,17 @@ export const CallToActionRightBlockConf: Block = {
 			name: 'gallery',
 			type: 'array',
 			label: {
-				en: 'Gallery',
-				vi: 'Thư viện',
+				[Lang.English]: 'Gallery',
+				[Lang.Vietnamese]: 'Thư viện',
 			},
 			labels: {
 				singular: {
-					en: 'Image',
-					vi: 'Hình ảnh',
+					[Lang.English]: 'Image',
+					[Lang.Vietnamese]: 'Hình ảnh',
 				},
 				plural: {
-					en: 'Images',
-					vi: 'Hình ảnh',
+					[Lang.English]: 'Images',
+					[Lang.Vietnamese]: 'Hình ảnh',
 				},
 			},
 			fields: [
@@ -71,8 +71,8 @@ export const CallToActionRightBlockConf: Block = {
 					name: 'title',
 					type: 'text',
 					label: {
-						en: 'Image Title',
-						vi: 'Tiêu đề hình ảnh',
+						[Lang.English]: 'Image Title',
+						[Lang.Vietnamese]: 'Tiêu đề hình ảnh',
 					},
 					required: true,
 					localized: true,
@@ -81,8 +81,8 @@ export const CallToActionRightBlockConf: Block = {
 					name: 'image',
 					type: 'upload',
 					label: {
-						en: 'Image',
-						vi: 'Hình ảnh',
+						[Lang.English]: 'Image',
+						[Lang.Vietnamese]: 'Hình ảnh',
 					},
 					relationTo: MediaSlug,
 				},

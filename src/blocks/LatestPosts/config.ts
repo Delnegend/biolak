@@ -11,12 +11,12 @@ export const LatestPostsBlockConf: Block = {
 	imageURL: '/thumbs/latest-posts.avif',
 	labels: {
 		singular: {
-			en: 'Latest Posts',
-			vi: 'Bài viết mới nhất',
+			[Lang.English]: 'Latest Posts',
+			[Lang.Vietnamese]: 'Bài viết mới nhất',
 		},
 		plural: {
-			en: 'Latest Posts',
-			vi: 'Bài viết mới nhất',
+			[Lang.English]: 'Latest Posts',
+			[Lang.Vietnamese]: 'Bài viết mới nhất',
 		},
 	},
 	fields: [
@@ -24,8 +24,8 @@ export const LatestPostsBlockConf: Block = {
 			name: 'title',
 			type: 'text',
 			label: {
-				en: 'Title',
-				vi: 'Tiêu đề',
+				[Lang.English]: 'Title',
+				[Lang.Vietnamese]: 'Tiêu đề',
 			},
 			localized: true,
 			defaultValue: defaults.title,
@@ -37,8 +37,8 @@ export const LatestPostsBlockConf: Block = {
 			name: 'buttonLabel',
 			type: 'text',
 			label: {
-				en: 'Button Label',
-				vi: 'Nhãn nút',
+				[Lang.English]: 'Button Label',
+				[Lang.Vietnamese]: 'Nhãn nút',
 			},
 			localized: true,
 			defaultValue: defaults.buttonLabel,
@@ -49,8 +49,8 @@ export const LatestPostsBlockConf: Block = {
 		{
 			name: 'posts',
 			label: {
-				en: 'Posts',
-				vi: 'Bài viết',
+				[Lang.English]: 'Posts',
+				[Lang.Vietnamese]: 'Bài viết',
 			},
 			type: 'relationship',
 			relationTo: PostsSlug,

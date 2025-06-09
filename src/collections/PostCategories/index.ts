@@ -5,6 +5,7 @@ import { CallToActionPostBlockConf } from '@/blocks/CallToActionPost/config'
 import { PostsGridBlockConf } from '@/blocks/PostsGrid/config'
 import { FooterSizeField } from '@/fields/footer'
 import { slugField } from '@/fields/slug'
+import { Lang } from '@/utilities/lang'
 
 import { PostsSlug } from '../Posts/slug'
 import { PostCategoriesSlug } from './slug'
@@ -13,12 +14,12 @@ export const PostCategoriesCollection: CollectionConfig<typeof PostCategoriesSlu
 	slug: PostCategoriesSlug,
 	labels: {
 		singular: {
-			en: 'Post Category',
-			vi: 'Danh mục bài viết',
+			[Lang.English]: 'Post Category',
+			[Lang.Vietnamese]: 'Danh mục bài viết',
 		},
 		plural: {
-			en: 'Post Categories',
-			vi: 'Danh mục bài viết',
+			[Lang.English]: 'Post Categories',
+			[Lang.Vietnamese]: 'Danh mục bài viết',
 		},
 	},
 	access: {
@@ -35,8 +36,8 @@ export const PostCategoriesCollection: CollectionConfig<typeof PostCategoriesSlu
 			name: 'title',
 			type: 'text',
 			label: {
-				en: 'Category name',
-				vi: 'Tên danh mục',
+				[Lang.English]: 'Category name',
+				[Lang.Vietnamese]: 'Tên danh mục',
 			},
 			required: true,
 			localized: true,
@@ -47,24 +48,24 @@ export const PostCategoriesCollection: CollectionConfig<typeof PostCategoriesSlu
 			collection: PostsSlug,
 			on: PostCategoriesSlug,
 			label: {
-				en: 'Posts',
-				vi: 'Bài viết',
+				[Lang.English]: 'Posts',
+				[Lang.Vietnamese]: 'Bài viết',
 			},
 		},
 		{
 			name: 'layout',
 			label: {
-				en: 'Content',
-				vi: 'Nội dung',
+				[Lang.English]: 'Content',
+				[Lang.Vietnamese]: 'Nội dung',
 			},
 			labels: {
 				singular: {
-					en: 'Block',
-					vi: 'Khối',
+					[Lang.English]: 'Block',
+					[Lang.Vietnamese]: 'Khối',
 				},
 				plural: {
-					en: 'Blocks',
-					vi: 'Các khối',
+					[Lang.English]: 'Blocks',
+					[Lang.Vietnamese]: 'Các khối',
 				},
 			},
 			type: 'blocks',

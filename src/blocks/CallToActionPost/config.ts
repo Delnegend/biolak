@@ -10,12 +10,12 @@ export const CallToActionPostBlockConf: Block = {
 	slug: 'call-to-action-post',
 	labels: {
 		singular: {
-			en: 'Call to Action (Post)',
-			vi: 'Khối kêu gọi hành động (Bài viết)',
+			[Lang.English]: 'Call to Action (Post)',
+			[Lang.Vietnamese]: 'Kêu gọi hành động (Bài viết)',
 		},
 		plural: {
-			en: 'Call to Action (Post)',
-			vi: 'Khối kêu gọi hành động (Bài viết)',
+			[Lang.English]: 'Call to Action (Post)',
+			[Lang.Vietnamese]: 'Kêu gọi hành động (Bài viết)',
 		},
 	},
 	interfaceName: 'CallToActionPostBlockProps',
@@ -26,8 +26,8 @@ export const CallToActionPostBlockConf: Block = {
 			type: 'relationship',
 			relationTo: PostsSlug,
 			label: {
-				en: 'Post',
-				vi: 'Bài viết',
+				[Lang.English]: 'Post',
+				[Lang.Vietnamese]: 'Bài viết',
 			},
 			required: true,
 		},
@@ -35,8 +35,8 @@ export const CallToActionPostBlockConf: Block = {
 			name: 'overwriteTitle',
 			type: 'text',
 			label: {
-				en: 'Overwrite Title',
-				vi: 'Ghi đè tiêu đề',
+				[Lang.English]: 'Overwrite Title',
+				[Lang.Vietnamese]: 'Ghi đè tiêu đề',
 			},
 			localized: true,
 		},
@@ -44,8 +44,8 @@ export const CallToActionPostBlockConf: Block = {
 			name: 'overwriteDescription',
 			type: 'textarea',
 			label: {
-				en: 'Overwrite Description',
-				vi: 'Ghi đè mô tả',
+				[Lang.English]: 'Overwrite Description',
+				[Lang.Vietnamese]: 'Ghi đè mô tả',
 			},
 			localized: true,
 		},

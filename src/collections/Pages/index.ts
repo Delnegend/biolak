@@ -22,6 +22,7 @@ import { FooterSizeField } from '@/fields/footer'
 import { linkGroup } from '@/fields/linkGroup'
 import { metaTab } from '@/fields/metaTab'
 import { slugField } from '@/fields/slug'
+import { Lang } from '@/utilities/lang'
 
 import { adminOrPublished } from '../../access/adminOrPublished'
 import { ArchiveBlockConf } from '../../blocks/ArchiveBlock/config'
@@ -39,12 +40,12 @@ export const PagesCollection: CollectionConfig<typeof PagesSlug> = {
 	slug: PagesSlug,
 	labels: {
 		singular: {
-			en: 'Page',
-			vi: 'Trang',
+			[Lang.English]: 'Page',
+			[Lang.Vietnamese]: 'Trang',
 		},
 		plural: {
-			en: 'Pages',
-			vi: 'Trang',
+			[Lang.English]: 'Pages',
+			[Lang.Vietnamese]: 'Trang',
 		},
 	},
 	access: {
@@ -87,8 +88,8 @@ export const PagesCollection: CollectionConfig<typeof PagesSlug> = {
 			type: 'text',
 			required: true,
 			label: {
-				en: 'Title',
-				vi: 'Tiêu đề',
+				[Lang.English]: 'Title',
+				[Lang.Vietnamese]: 'Tiêu đề',
 			},
 		},
 		{
@@ -111,36 +112,36 @@ export const PagesCollection: CollectionConfig<typeof PagesSlug> = {
 									type: 'select',
 									defaultValue: 'lowImpact',
 									label: {
-										en: 'Type',
-										vi: 'Kiểu',
+										[Lang.English]: 'Type',
+										[Lang.Vietnamese]: 'Kiểu',
 									},
 									options: [
 										{
 											value: 'none',
 											label: {
-												en: 'None',
-												vi: 'Không có',
+												[Lang.English]: 'None',
+												[Lang.Vietnamese]: 'Không có',
 											},
 										},
 										{
 											value: 'highImpact',
 											label: {
-												en: 'High Impact',
-												vi: 'Tác động lớn',
+												[Lang.English]: 'High Impact',
+												[Lang.Vietnamese]: 'Tác động lớn',
 											},
 										},
 										{
 											value: 'mediumImpact',
 											label: {
-												en: 'Medium Impact',
-												vi: 'Tác động vừa phải',
+												[Lang.English]: 'Medium Impact',
+												[Lang.Vietnamese]: 'Tác động vừa phải',
 											},
 										},
 										{
 											value: 'lowImpact',
 											label: {
-												en: 'Low Impact',
-												vi: 'Tác động thấp',
+												[Lang.English]: 'Low Impact',
+												[Lang.Vietnamese]: 'Tác động thấp',
 											},
 										},
 									],
@@ -150,24 +151,24 @@ export const PagesCollection: CollectionConfig<typeof PagesSlug> = {
 									name: 'title',
 									type: 'textarea',
 									label: {
-										en: 'Title',
-										vi: 'Tiêu đề',
+										[Lang.English]: 'Title',
+										[Lang.Vietnamese]: 'Tiêu đề',
 									},
 								},
 								{
 									name: 'subtitle',
 									type: 'textarea',
 									label: {
-										en: 'Subtitle',
-										vi: 'Tiêu đề phụ',
+										[Lang.English]: 'Subtitle',
+										[Lang.Vietnamese]: 'Tiêu đề phụ',
 									},
 								},
 								{
 									name: 'description',
 									type: 'richText',
 									label: {
-										en: 'Description',
-										vi: 'Mô tả',
+										[Lang.English]: 'Description',
+										[Lang.Vietnamese]: 'Mô tả',
 									},
 								},
 								linkGroup({
@@ -179,8 +180,8 @@ export const PagesCollection: CollectionConfig<typeof PagesSlug> = {
 									name: 'media',
 									type: 'upload',
 									label: {
-										en: 'Media',
-										vi: 'Phương tiện',
+										[Lang.English]: 'Media',
+										[Lang.Vietnamese]: 'Phương tiện',
 									},
 									relationTo: MediaSlug,
 								},
@@ -191,8 +192,8 @@ export const PagesCollection: CollectionConfig<typeof PagesSlug> = {
 				},
 				{
 					label: {
-						en: 'Content',
-						vi: 'Nội dung',
+						[Lang.English]: 'Content',
+						[Lang.Vietnamese]: 'Nội dung',
 					},
 					fields: [
 						{
@@ -229,12 +230,12 @@ export const PagesCollection: CollectionConfig<typeof PagesSlug> = {
 							label: false,
 							labels: {
 								singular: {
-									en: 'Block',
-									vi: 'Khối',
+									[Lang.English]: 'Block',
+									[Lang.Vietnamese]: 'Khối',
 								},
 								plural: {
-									en: 'Blocks',
-									vi: 'Các khối',
+									[Lang.English]: 'Blocks',
+									[Lang.Vietnamese]: 'Các khối',
 								},
 							},
 						},
@@ -250,8 +251,8 @@ export const PagesCollection: CollectionConfig<typeof PagesSlug> = {
 				position: 'sidebar',
 			},
 			label: {
-				en: 'Published At',
-				vi: 'Ngày xuất bản',
+				[Lang.English]: 'Published At',
+				[Lang.Vietnamese]: 'Ngày xuất bản',
 			},
 		},
 		...slugField(),

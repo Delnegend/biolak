@@ -11,8 +11,8 @@ export const FloatingGlobalSlug = 'floatingGlobal'
 export const FloatingGlobalConf: GlobalConfig<typeof FloatingGlobalSlug> = {
 	slug: FloatingGlobalSlug,
 	label: {
-		en: 'Floating Contacts Buttons',
-		vi: 'Nút nổi liên hệ',
+		[Lang.English]: 'Floating Contacts Buttons',
+		[Lang.Vietnamese]: 'Nút nổi liên hệ',
 	},
 	access: {
 		read: allow(Role.Public),
@@ -33,17 +33,17 @@ export const FloatingGlobalConf: GlobalConfig<typeof FloatingGlobalSlug> = {
 			name: 'links',
 			type: 'array',
 			label: {
-				en: 'Links',
-				vi: 'Liên kết',
+				[Lang.English]: 'Links',
+				[Lang.Vietnamese]: 'Liên kết',
 			},
 			labels: {
 				singular: {
-					en: 'Link',
-					vi: 'Liên kết',
+					[Lang.English]: 'Link',
+					[Lang.Vietnamese]: 'Liên kết',
 				},
 				plural: {
-					en: 'Links',
-					vi: 'Liên kết',
+					[Lang.English]: 'Links',
+					[Lang.Vietnamese]: 'Liên kết',
 				},
 			},
 			fields: [
@@ -54,8 +54,8 @@ export const FloatingGlobalConf: GlobalConfig<typeof FloatingGlobalSlug> = {
 							name: 'link',
 							type: 'text',
 							label: {
-								en: 'Link',
-								vi: 'Liên kết',
+								[Lang.English]: 'Link',
+								[Lang.Vietnamese]: 'Liên kết',
 							},
 							required: true,
 						},
@@ -64,8 +64,8 @@ export const FloatingGlobalConf: GlobalConfig<typeof FloatingGlobalSlug> = {
 							type: 'relationship',
 							relationTo: MediaSlug,
 							label: {
-								en: 'Icon',
-								vi: 'Biểu tượng',
+								[Lang.English]: 'Icon',
+								[Lang.Vietnamese]: 'Biểu tượng',
 							},
 						},
 					],

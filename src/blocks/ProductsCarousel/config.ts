@@ -12,12 +12,12 @@ export const ProductsCarouselBlockConf: Block = {
 	imageURL: '/thumbs/products-carousel.avif',
 	labels: {
 		plural: {
-			en: 'Products Carousel',
-			vi: 'Sản phẩm trượt',
+			[Lang.English]: 'Products Carousel',
+			[Lang.Vietnamese]: 'Sản phẩm trượt',
 		},
 		singular: {
-			en: 'Product Carousel',
-			vi: 'Sản phẩm trượt',
+			[Lang.English]: 'Product Carousel',
+			[Lang.Vietnamese]: 'Sản phẩm trượt',
 		},
 	},
 	fields: [
@@ -25,8 +25,8 @@ export const ProductsCarouselBlockConf: Block = {
 			name: 'title',
 			type: 'text',
 			label: {
-				en: 'Title',
-				vi: 'Tiêu đề',
+				[Lang.English]: 'Title',
+				[Lang.Vietnamese]: 'Tiêu đề',
 			},
 			localized: true,
 			defaultValue: ProductsCarouselBlockDefaults.title,
@@ -38,8 +38,8 @@ export const ProductsCarouselBlockConf: Block = {
 			name: 'products',
 			type: 'relationship',
 			label: {
-				en: 'Products',
-				vi: 'Sản phẩm',
+				[Lang.English]: 'Products',
+				[Lang.Vietnamese]: 'Sản phẩm',
 			},
 			relationTo: ProductsSlug,
 			hasMany: true,
@@ -48,8 +48,8 @@ export const ProductsCarouselBlockConf: Block = {
 			name: 'watchMoreBtnLabel',
 			type: 'text',
 			label: {
-				en: 'Watch More Button Label',
-				vi: 'Nhãn nút xem thêm',
+				[Lang.English]: 'Watch More Button Label',
+				[Lang.Vietnamese]: 'Nhãn nút xem thêm',
 			},
 			localized: true,
 			defaultValue: ProductsCarouselBlockDefaults.watchMoreBtnLabel,
@@ -61,8 +61,8 @@ export const ProductsCarouselBlockConf: Block = {
 			overrides: {
 				name: 'apb',
 				label: {
-					en: 'All Products Button',
-					vi: 'Nút xem tất cả sản phẩm',
+					[Lang.English]: 'All Products Button',
+					[Lang.Vietnamese]: 'Nút xem tất cả sản phẩm',
 				},
 				localized: true,
 				required: true,

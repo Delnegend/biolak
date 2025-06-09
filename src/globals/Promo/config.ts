@@ -3,13 +3,14 @@ import { type GlobalConfig } from 'payload'
 
 import { allow, Role } from '@/access/allow'
 import { link } from '@/fields/link'
+import { Lang } from '@/utilities/lang'
 
 export const PromoGlobalSlug = 'promoGlobal'
 export const PromoGlobalConf: GlobalConfig<typeof PromoGlobalSlug> = {
 	slug: PromoGlobalSlug,
 	label: {
-		en: 'Promo message',
-		vi: 'Thông điệp khuyến mãi',
+		[Lang.English]: 'Promo message',
+		[Lang.Vietnamese]: 'Thông điệp khuyến mãi',
 	},
 	access: {
 		read: allow(Role.Public),

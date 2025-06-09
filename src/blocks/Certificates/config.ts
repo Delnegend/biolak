@@ -11,12 +11,12 @@ export const CertificatesBlockConf: Block = {
 	imageURL: '/thumbs/certificates.avif',
 	labels: {
 		plural: {
-			en: 'Certificates',
-			vi: 'Chứng nhận',
+			[Lang.English]: 'Certificates',
+			[Lang.Vietnamese]: 'Chứng nhận',
 		},
 		singular: {
-			en: 'Certificate',
-			vi: 'Chứng nhận',
+			[Lang.English]: 'Certificate',
+			[Lang.Vietnamese]: 'Chứng nhận',
 		},
 	},
 	fields: [
@@ -24,8 +24,8 @@ export const CertificatesBlockConf: Block = {
 			name: 'title',
 			type: 'text',
 			label: {
-				en: 'Title',
-				vi: 'Tiêu đề',
+				[Lang.English]: 'Title',
+				[Lang.Vietnamese]: 'Tiêu đề',
 			},
 			localized: true,
 			defaultValue: defaults.title,
@@ -37,17 +37,17 @@ export const CertificatesBlockConf: Block = {
 			type: 'array',
 			name: 'organizations',
 			label: {
-				en: 'Organizations',
-				vi: 'Tổ chức',
+				[Lang.English]: 'Organizations',
+				[Lang.Vietnamese]: 'Tổ chức',
 			},
 			labels: {
 				singular: {
-					en: 'Organization',
-					vi: 'Tổ chức',
+					[Lang.English]: 'Organization',
+					[Lang.Vietnamese]: 'Tổ chức',
 				},
 				plural: {
-					en: 'Organizations',
-					vi: 'Tổ chức',
+					[Lang.English]: 'Organizations',
+					[Lang.Vietnamese]: 'Tổ chức',
 				},
 			},
 			fields: [
@@ -55,8 +55,8 @@ export const CertificatesBlockConf: Block = {
 					name: 'title',
 					type: 'text',
 					label: {
-						en: 'Organization Name',
-						vi: 'Tên tổ chức',
+						[Lang.English]: 'Organization Name',
+						[Lang.Vietnamese]: 'Tên tổ chức',
 					},
 					required: true,
 					localized: true,
@@ -65,8 +65,8 @@ export const CertificatesBlockConf: Block = {
 					name: 'description',
 					type: 'text',
 					label: {
-						en: 'Description',
-						vi: 'Mô tả',
+						[Lang.English]: 'Description',
+						[Lang.Vietnamese]: 'Mô tả',
 					},
 					localized: true,
 				},
@@ -74,8 +74,8 @@ export const CertificatesBlockConf: Block = {
 					name: 'logo',
 					type: 'upload',
 					label: {
-						en: 'Logo',
-						vi: 'Logo',
+						[Lang.English]: 'Logo',
+						[Lang.Vietnamese]: 'Logo',
 					},
 					relationTo: MediaSlug,
 				},

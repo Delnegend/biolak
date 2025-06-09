@@ -1,6 +1,7 @@
 import { Block } from 'payload'
 
 import { MediaSlug } from '@/collections/Media/slug'
+import { Lang } from '@/utilities/lang'
 
 export const HighlightCenterBlockConf: Block = {
 	slug: 'highlight-center',
@@ -8,12 +9,12 @@ export const HighlightCenterBlockConf: Block = {
 	imageURL: '/thumbs/highlight-center.avif',
 	labels: {
 		singular: {
-			en: 'Highlight Center',
-			vi: 'Nổi bật giữa',
+			[Lang.English]: 'Highlight Center',
+			[Lang.Vietnamese]: 'Nổi bật giữa',
 		},
 		plural: {
-			en: 'Highlight Centers',
-			vi: 'Nổi bật giữa',
+			[Lang.English]: 'Highlight Centers',
+			[Lang.Vietnamese]: 'Nổi bật giữa',
 		},
 	},
 	fields: [
@@ -21,8 +22,8 @@ export const HighlightCenterBlockConf: Block = {
 			name: 'order',
 			type: 'number',
 			label: {
-				en: 'Order',
-				vi: 'Thứ tự',
+				[Lang.English]: 'Order',
+				[Lang.Vietnamese]: 'Thứ tự',
 			},
 			required: true,
 		},
@@ -30,8 +31,8 @@ export const HighlightCenterBlockConf: Block = {
 			name: 'title',
 			type: 'text',
 			label: {
-				en: 'Title',
-				vi: 'Tiêu đề',
+				[Lang.English]: 'Title',
+				[Lang.Vietnamese]: 'Tiêu đề',
 			},
 			required: true,
 			localized: true,
@@ -40,8 +41,8 @@ export const HighlightCenterBlockConf: Block = {
 			name: 'description',
 			type: 'textarea',
 			label: {
-				en: 'Description',
-				vi: 'Mô tả',
+				[Lang.English]: 'Description',
+				[Lang.Vietnamese]: 'Mô tả',
 			},
 			required: true,
 			localized: true,
@@ -50,8 +51,8 @@ export const HighlightCenterBlockConf: Block = {
 			name: 'image',
 			type: 'upload',
 			label: {
-				en: 'Image',
-				vi: 'Hình ảnh',
+				[Lang.English]: 'Image',
+				[Lang.Vietnamese]: 'Hình ảnh',
 			},
 			relationTo: MediaSlug,
 		},

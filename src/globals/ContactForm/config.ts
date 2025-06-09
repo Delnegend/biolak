@@ -10,8 +10,8 @@ export const ContactFormGlobalSlug = 'contactFormGlobal'
 export const ContactFormGlobalConf: GlobalConfig<typeof ContactFormGlobalSlug> = {
 	slug: ContactFormGlobalSlug,
 	label: {
-		en: 'Contact Form',
-		vi: 'Mẫu liên hệ',
+		[Lang.English]: 'Contact Form',
+		[Lang.Vietnamese]: 'Mẫu liên hệ',
 	},
 	access: {
 		read: allow(Role.Public),

@@ -11,12 +11,12 @@ export const BuyNowBlockConf: Block = {
 	imageURL: '/thumbs/buy-now.avif',
 	labels: {
 		singular: {
-			en: 'Buy Now',
-			vi: 'Mua ngay',
+			[Lang.English]: 'Buy Now',
+			[Lang.Vietnamese]: 'Mua ngay',
 		},
 		plural: {
-			en: 'Buy Nows',
-			vi: 'Mua ngay',
+			[Lang.English]: 'Buy Nows',
+			[Lang.Vietnamese]: 'Mua ngay',
 		},
 	},
 	fields: [
@@ -24,8 +24,8 @@ export const BuyNowBlockConf: Block = {
 			name: 'buttonLabel',
 			type: 'text',
 			label: {
-				en: 'Button Label',
-				vi: 'Nhãn nút',
+				[Lang.English]: 'Button Label',
+				[Lang.Vietnamese]: 'Nhãn nút',
 			},
 			localized: true,
 			defaultValue: defaults.buttonLabel,
@@ -38,8 +38,8 @@ export const BuyNowBlockConf: Block = {
 			type: 'relationship',
 			relationTo: ProductsSlug,
 			label: {
-				en: 'Product',
-				vi: 'Sản phẩm',
+				[Lang.English]: 'Product',
+				[Lang.Vietnamese]: 'Sản phẩm',
 			},
 			admin: {
 				condition: (data) => {

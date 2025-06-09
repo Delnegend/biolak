@@ -11,8 +11,8 @@ export const FooterGlobalSlug = 'footerGlobal'
 export const FooterGlobalConf: GlobalConfig<typeof FooterGlobalSlug> = {
 	slug: FooterGlobalSlug,
 	label: {
-		en: 'Footer',
-		vi: 'Chân trang',
+		[Lang.English]: 'Footer',
+		[Lang.Vietnamese]: 'Chân trang',
 	},
 	access: {
 		read: allow(Role.Public),
@@ -30,13 +30,19 @@ export const FooterGlobalConf: GlobalConfig<typeof FooterGlobalSlug> = {
 							name: 'image',
 							type: 'upload',
 							relationTo: MediaSlug,
-							label: 'Image',
+							label: {
+								[Lang.English]: 'Background Image',
+								[Lang.Vietnamese]: 'Hình ảnh nền',
+							},
 						},
 					],
 				},
 				{
 					name: 'contactUs',
-					label: 'Contact Us',
+					label: {
+						[Lang.English]: 'Contact Us',
+						[Lang.Vietnamese]: 'Liên hệ với chúng tôi',
+					},
 					fields: [
 						{
 							name: 'title',

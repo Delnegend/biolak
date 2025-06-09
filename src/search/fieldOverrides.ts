@@ -1,14 +1,15 @@
 import { Field } from 'payload'
 
 import { MediaSlug } from '@/collections/Media/slug'
+import { Lang } from '@/utilities/lang'
 
 export const searchFields: Field[] = [
 	{
 		name: 'slug',
 		type: 'text',
 		label: {
-			en: 'Slug',
-			vi: 'Đường dẫn',
+			[Lang.English]: 'Slug',
+			[Lang.Vietnamese]: 'Đường dẫn',
 		},
 		index: true,
 		admin: {
@@ -28,23 +29,23 @@ export const searchFields: Field[] = [
 				type: 'text',
 				name: 'title',
 				label: {
-					en: 'Title',
-					vi: 'Tiêu đề',
+					[Lang.English]: 'Title',
+					[Lang.Vietnamese]: 'Tiêu đề',
 				},
 			},
 			{
 				type: 'text',
 				name: 'description',
 				label: {
-					en: 'Description',
-					vi: 'Mô tả',
+					[Lang.English]: 'Description',
+					[Lang.Vietnamese]: 'Mô tả',
 				},
 			},
 			{
 				name: 'image',
 				label: {
-					en: 'Image',
-					vi: 'Hình ảnh',
+					[Lang.English]: 'Image',
+					[Lang.Vietnamese]: 'Hình ảnh',
 				},
 				type: 'upload',
 				relationTo: MediaSlug,

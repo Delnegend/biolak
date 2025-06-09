@@ -1,6 +1,7 @@
 import { Block } from 'payload'
 
 import { MediaSlug } from '@/collections/Media/slug'
+import { Lang } from '@/utilities/lang'
 
 export const FocusLeftSmallImageBlockConf: Block = {
 	slug: 'focus-left-small-image',
@@ -8,12 +9,12 @@ export const FocusLeftSmallImageBlockConf: Block = {
 	imageURL: '/thumbs/focus-left-small-image.avif',
 	labels: {
 		singular: {
-			en: 'Focus Left Small Image',
-			vi: 'Hình ảnh nhỏ bên trái',
+			[Lang.English]: 'Focus Left Small Image',
+			[Lang.Vietnamese]: 'Hình ảnh nhỏ bên trái',
 		},
 		plural: {
-			en: 'Focuses Left Small Image',
-			vi: 'Hình ảnh nhỏ bên trái',
+			[Lang.English]: 'Focuses Left Small Image',
+			[Lang.Vietnamese]: 'Hình ảnh nhỏ bên trái',
 		},
 	},
 	fields: [
@@ -21,8 +22,8 @@ export const FocusLeftSmallImageBlockConf: Block = {
 			name: 'image',
 			type: 'upload',
 			label: {
-				en: 'Image',
-				vi: 'Hình ảnh',
+				[Lang.English]: 'Image',
+				[Lang.Vietnamese]: 'Hình ảnh',
 			},
 			relationTo: MediaSlug,
 		},
@@ -31,8 +32,8 @@ export const FocusLeftSmallImageBlockConf: Block = {
 			name: 'content',
 			type: 'richText',
 			label: {
-				en: 'Content',
-				vi: 'Nội dung',
+				[Lang.English]: 'Content',
+				[Lang.Vietnamese]: 'Nội dung',
 			},
 			required: true,
 			localized: true,

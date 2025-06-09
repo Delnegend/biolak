@@ -1,6 +1,7 @@
 import { CollectionConfig } from 'payload'
 
 import { allow, Role } from '@/access/allow'
+import { Lang } from '@/utilities/lang'
 
 import { ContactFormSubmissionsSlug } from './slug'
 
@@ -9,12 +10,12 @@ export const ContactFormSubmissionsCollection: CollectionConfig<typeof ContactFo
 		slug: ContactFormSubmissionsSlug,
 		labels: {
 			singular: {
-				en: 'Contact Form Submission',
-				vi: 'Đơn điền liên hệ',
+				[Lang.English]: 'Contact Form Submission',
+				[Lang.Vietnamese]: 'Đơn điền liên hệ',
 			},
 			plural: {
-				en: 'Contact Forms Submissions',
-				vi: 'Đơn điền liên hệ',
+				[Lang.English]: 'Contact Forms Submissions',
+				[Lang.Vietnamese]: 'Đơn điền liên hệ',
 			},
 		},
 		access: {
@@ -29,16 +30,16 @@ export const ContactFormSubmissionsCollection: CollectionConfig<typeof ContactFo
 				type: 'text',
 				required: true,
 				label: {
-					en: 'Username',
-					vi: 'Tên người dùng',
+					[Lang.English]: 'Username',
+					[Lang.Vietnamese]: 'Tên người dùng',
 				},
 			},
 			{
 				name: 'email',
 				type: 'text',
 				label: {
-					en: 'Email',
-					vi: 'Email',
+					[Lang.English]: 'Email',
+					[Lang.Vietnamese]: 'Email',
 				},
 			},
 			{
@@ -46,8 +47,8 @@ export const ContactFormSubmissionsCollection: CollectionConfig<typeof ContactFo
 				type: 'text',
 				required: true,
 				label: {
-					en: 'Phone Number',
-					vi: 'Số điện thoại',
+					[Lang.English]: 'Phone Number',
+					[Lang.Vietnamese]: 'Số điện thoại',
 				},
 			},
 			{
@@ -55,8 +56,8 @@ export const ContactFormSubmissionsCollection: CollectionConfig<typeof ContactFo
 				type: 'textarea',
 				required: true,
 				label: {
-					en: 'Message',
-					vi: 'Tin nhắn',
+					[Lang.English]: 'Message',
+					[Lang.Vietnamese]: 'Tin nhắn',
 				},
 			},
 		],

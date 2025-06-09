@@ -12,12 +12,12 @@ export const CallToAddToCartBlockConf: Block = {
 	imageURL: '/thumbs/cta-add-to-cart.avif',
 	labels: {
 		singular: {
-			en: 'CTA (Add To Cart)',
-			vi: 'Kêu gọi hành động (Thêm vào giỏ hàng)',
+			[Lang.English]: 'CTA (Add To Cart)',
+			[Lang.Vietnamese]: 'Kêu gọi hành động (Thêm vào giỏ hàng)',
 		},
 		plural: {
-			en: 'CTAs (Add To Cart)',
-			vi: 'Kêu gọi hành động (Thêm vào giỏ hàng)',
+			[Lang.English]: 'CTAs (Add To Cart)',
+			[Lang.Vietnamese]: 'Kêu gọi hành động (Thêm vào giỏ hàng)',
 		},
 	},
 	fields: [
@@ -26,16 +26,16 @@ export const CallToAddToCartBlockConf: Block = {
 			type: 'upload',
 			relationTo: MediaSlug,
 			label: {
-				en: 'Image',
-				vi: 'Hình ảnh',
+				[Lang.English]: 'Image',
+				[Lang.Vietnamese]: 'Hình ảnh',
 			},
 		},
 		{
 			name: 'content',
 			type: 'richText',
 			label: {
-				en: 'Content',
-				vi: 'Nội dung',
+				[Lang.English]: 'Content',
+				[Lang.Vietnamese]: 'Nội dung',
 			},
 			localized: true,
 		},
@@ -43,8 +43,8 @@ export const CallToAddToCartBlockConf: Block = {
 			name: 'buttonLabel',
 			type: 'text',
 			label: {
-				en: 'Button Label',
-				vi: 'Nhãn nút',
+				[Lang.English]: 'Button Label',
+				[Lang.Vietnamese]: 'Nhãn nút',
 			},
 			localized: true,
 			defaultValue: defaults.buttonLabel,
@@ -57,8 +57,8 @@ export const CallToAddToCartBlockConf: Block = {
 			type: 'relationship',
 			relationTo: ProductsSlug,
 			label: {
-				en: 'Product',
-				vi: 'Sản phẩm',
+				[Lang.English]: 'Product',
+				[Lang.Vietnamese]: 'Sản phẩm',
 			},
 			required: true,
 			admin: {

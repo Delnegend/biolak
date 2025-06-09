@@ -1,32 +1,34 @@
 import { SelectField } from 'payload'
 
+import { Lang } from '@/utilities/lang'
+
 export const FooterSizeField: SelectField = {
 	type: 'select',
 	name: 'footerSize',
 	label: {
-		en: 'Select Footer Size',
-		vi: 'Chọn kích thước Footer',
+		[Lang.English]: 'Select Footer Size',
+		[Lang.Vietnamese]: 'Chọn kích thước Footer',
 	},
 	defaultValue: 'small',
 	options: [
 		{
 			label: {
-				en: 'Small',
-				vi: 'Nhỏ',
+				[Lang.English]: 'Small',
+				[Lang.Vietnamese]: 'Nhỏ',
 			},
 			value: 'small',
 		},
 		{
 			label: {
-				en: 'Medium',
-				vi: 'Trung bình',
+				[Lang.English]: 'Medium',
+				[Lang.Vietnamese]: 'Trung bình',
 			},
 			value: 'medium',
 		},
 		{
 			label: {
-				en: 'Large',
-				vi: 'Lớn',
+				[Lang.English]: 'Large',
+				[Lang.Vietnamese]: 'Lớn',
 			},
 			value: 'large',
 		},

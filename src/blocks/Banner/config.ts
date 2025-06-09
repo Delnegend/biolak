@@ -5,17 +5,19 @@ import {
 } from '@payloadcms/richtext-lexical'
 import type { Block } from 'payload'
 
+import { Lang } from '@/utilities/lang'
+
 export const BannerBlockConf: Block = {
 	slug: 'banner',
 	interfaceName: 'BannerBlockProps',
 	labels: {
 		plural: {
-			en: 'Banners',
-			vi: 'Biểu ngữ',
+			[Lang.English]: 'Banners',
+			[Lang.Vietnamese]: 'Biểu ngữ',
 		},
 		singular: {
-			en: 'Banner',
-			vi: 'Biểu ngữ',
+			[Lang.English]: 'Banner',
+			[Lang.Vietnamese]: 'Biểu ngữ',
 		},
 	},
 	fields: [
@@ -26,29 +28,29 @@ export const BannerBlockConf: Block = {
 			options: [
 				{
 					label: {
-						en: 'Info',
-						vi: 'Thông tin',
+						[Lang.English]: 'Info',
+						[Lang.Vietnamese]: 'Thông tin',
 					},
 					value: 'info',
 				},
 				{
 					label: {
-						en: 'Warning',
-						vi: 'Cảnh báo',
+						[Lang.English]: 'Warning',
+						[Lang.Vietnamese]: 'Cảnh báo',
 					},
 					value: 'warning',
 				},
 				{
 					label: {
-						en: 'Error',
-						vi: 'Lỗi',
+						[Lang.English]: 'Error',
+						[Lang.Vietnamese]: 'Lỗi',
 					},
 					value: 'error',
 				},
 				{
 					label: {
-						en: 'Success',
-						vi: 'Thành công',
+						[Lang.English]: 'Success',
+						[Lang.Vietnamese]: 'Thành công',
 					},
 					value: 'success',
 				},

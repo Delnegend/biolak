@@ -1,6 +1,7 @@
 import { CollectionConfig } from 'payload'
 
 import { allow, Role } from '@/access/allow'
+import { Lang } from '@/utilities/lang'
 
 import { OrdersSlug } from '../Orders/slug'
 import { CustomersSlug } from './slug'
@@ -9,12 +10,12 @@ export const CustomersCollection: CollectionConfig<typeof CustomersSlug> = {
 	slug: CustomersSlug,
 	labels: {
 		singular: {
-			en: 'Customer',
-			vi: 'Khách hàng',
+			[Lang.English]: 'Customer',
+			[Lang.Vietnamese]: 'Khách hàng',
 		},
 		plural: {
-			en: 'Customers',
-			vi: 'Khách hàng',
+			[Lang.English]: 'Customers',
+			[Lang.Vietnamese]: 'Khách hàng',
 		},
 	},
 	access: {
@@ -28,40 +29,40 @@ export const CustomersCollection: CollectionConfig<typeof CustomersSlug> = {
 			name: 'name',
 			type: 'text',
 			label: {
-				en: 'Name',
-				vi: 'Tên',
+				[Lang.English]: 'Name',
+				[Lang.Vietnamese]: 'Tên',
 			},
 		},
 		{
 			name: 'email',
 			type: 'email',
 			label: {
-				en: 'Email',
-				vi: 'Email',
+				[Lang.English]: 'Email',
+				[Lang.Vietnamese]: 'Email',
 			},
 		},
 		{
 			name: 'phoneNumber',
 			type: 'text',
 			label: {
-				en: 'Phone Number',
-				vi: 'Số điện thoại',
+				[Lang.English]: 'Phone Number',
+				[Lang.Vietnamese]: 'Số điện thoại',
 			},
 		},
 		{
 			name: 'address',
 			type: 'text',
 			label: {
-				en: 'Address',
-				vi: 'Địa chỉ',
+				[Lang.English]: 'Address',
+				[Lang.Vietnamese]: 'Địa chỉ',
 			},
 		},
 		{
 			name: OrdersSlug,
 			type: 'join',
 			label: {
-				en: 'Orders',
-				vi: 'Đơn hàng',
+				[Lang.English]: 'Orders',
+				[Lang.Vietnamese]: 'Đơn hàng',
 			},
 			collection: OrdersSlug,
 			on: CustomersSlug,

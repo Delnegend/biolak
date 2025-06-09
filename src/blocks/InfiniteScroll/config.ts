@@ -1,6 +1,7 @@
 import { Block } from 'payload'
 
 import { MediaSlug } from '@/collections/Media/slug'
+import { Lang } from '@/utilities/lang'
 
 export const InfiniteScrollBlockConf: Block = {
 	slug: 'infiniteScroll',
@@ -8,12 +9,12 @@ export const InfiniteScrollBlockConf: Block = {
 	imageURL: '/thumbs/infinite-scroll.avif',
 	labels: {
 		singular: {
-			en: 'Infinite Scroll',
-			vi: 'Cuộn vô tận',
+			[Lang.English]: 'Infinite Scroll',
+			[Lang.Vietnamese]: 'Cuộn vô tận',
 		},
 		plural: {
-			en: 'Infinite Scroll',
-			vi: 'Cuộn vô tận',
+			[Lang.English]: 'Infinite Scroll',
+			[Lang.Vietnamese]: 'Cuộn vô tận',
 		},
 	},
 	fields: [
@@ -21,8 +22,8 @@ export const InfiniteScrollBlockConf: Block = {
 			name: 'graphic',
 			type: 'upload',
 			label: {
-				en: 'Graphic',
-				vi: 'Ảnh đồ họa',
+				[Lang.English]: 'Graphic',
+				[Lang.Vietnamese]: 'Ảnh đồ họa',
 			},
 			required: true,
 			localized: true,
@@ -32,8 +33,8 @@ export const InfiniteScrollBlockConf: Block = {
 			name: 'animationDuration',
 			type: 'number',
 			label: {
-				en: 'Animation Duration in seconds',
-				vi: 'Thời gian hoạt ảnh (giây)',
+				[Lang.English]: 'Animation Duration in seconds',
+				[Lang.Vietnamese]: 'Thời gian hoạt ảnh (giây)',
 			},
 			localized: true,
 			defaultValue: 10,

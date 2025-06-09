@@ -1,6 +1,7 @@
 import { Block } from 'payload'
 
 import { MediaSlug } from '@/collections/Media/slug'
+import { Lang } from '@/utilities/lang'
 
 export const ThreePhotoBlockConf: Block = {
 	slug: 'threePhoto',
@@ -8,12 +9,12 @@ export const ThreePhotoBlockConf: Block = {
 	imageURL: '/thumbs/three-photo.avif',
 	labels: {
 		plural: {
-			en: 'Three Photos',
-			vi: 'Ba hình ảnh',
+			[Lang.English]: 'Three Photos',
+			[Lang.Vietnamese]: 'Ba hình ảnh',
 		},
 		singular: {
-			en: 'Three Photo',
-			vi: 'Ba hình ảnh',
+			[Lang.English]: 'Three Photo',
+			[Lang.Vietnamese]: 'Ba hình ảnh',
 		},
 	},
 	fields: [
@@ -22,8 +23,8 @@ export const ThreePhotoBlockConf: Block = {
 			type: 'upload',
 			relationTo: MediaSlug,
 			label: {
-				en: 'Photo Left',
-				vi: 'Hình ảnh bên trái',
+				[Lang.English]: 'Photo Left',
+				[Lang.Vietnamese]: 'Hình ảnh bên trái',
 			},
 		},
 		{
@@ -31,8 +32,8 @@ export const ThreePhotoBlockConf: Block = {
 			type: 'upload',
 			relationTo: MediaSlug,
 			label: {
-				en: 'Photo Center',
-				vi: 'Hình ảnh ở giữa',
+				[Lang.English]: 'Photo Center',
+				[Lang.Vietnamese]: 'Hình ảnh ở giữa',
 			},
 		},
 		{
@@ -40,8 +41,8 @@ export const ThreePhotoBlockConf: Block = {
 			type: 'upload',
 			relationTo: MediaSlug,
 			label: {
-				en: 'Photo Right',
-				vi: 'Hình ảnh bên phải',
+				[Lang.English]: 'Photo Right',
+				[Lang.Vietnamese]: 'Hình ảnh bên phải',
 			},
 		},
 	],

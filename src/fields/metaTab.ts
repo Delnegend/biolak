@@ -9,6 +9,7 @@ import { Tab } from 'payload'
 
 import { allow, Role } from '@/access/allow'
 import { MediaSlug } from '@/collections/Media/slug'
+import { Lang } from '@/utilities/lang'
 
 export const metaTab: Tab = {
 	name: 'meta',
@@ -17,6 +18,7 @@ export const metaTab: Tab = {
 		{
 			name: 'meta',
 			type: 'group',
+			label: false,
 			access: {
 				create: allow(Role.Admin, Role.ContentManager),
 				read: allow(Role.Public),
@@ -30,12 +32,31 @@ export const metaTab: Tab = {
 				}),
 				MetaTitleField({
 					hasGenerateFn: true,
+					overrides: {
+						label: {
+							[Lang.English]: 'Meta Title',
+							[Lang.Vietnamese]: 'Tiêu đề SEO',
+						},
+					},
 				}),
 				MetaImageField({
 					relationTo: MediaSlug,
+					overrides: {
+						label: {
+							[Lang.English]: 'Meta Image',
+							[Lang.Vietnamese]: 'Hình ảnh SEO',
+						},
+					},
 				}),
 
-				MetaDescriptionField({}),
+				MetaDescriptionField({
+					overrides: {
+						label: {
+							[Lang.English]: 'Meta Description',
+							[Lang.Vietnamese]: 'Mô tả SEO',
+						},
+					},
+				}),
 				PreviewField({
 					// if the `generateUrl` function is configured
 					hasGenerateFn: true,
