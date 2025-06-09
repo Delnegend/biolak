@@ -105,15 +105,6 @@ export const PostsCollection: CollectionConfig<typeof PostsSlug> = {
 					},
 					fields: [
 						{
-							name: 'heroImage',
-							type: 'upload',
-							label: {
-								en: 'Hero Image',
-								vi: 'Hình ảnh minh họa',
-							},
-							relationTo: MediaSlug,
-						},
-						{
 							name: 'layout',
 							type: 'blocks',
 							blocks: [
