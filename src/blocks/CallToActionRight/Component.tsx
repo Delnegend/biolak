@@ -1,9 +1,9 @@
 import { ArrowRight } from 'lucide-react'
 import { Phudu } from 'next/font/google'
-import Image from 'next/image'
 import React from 'react'
 
 import { CMSLink } from '@/components/CMSLink'
+import { HeadlessImage } from '@/components/Media/HeadlessImage'
 import RichText from '@/components/RichText'
 import { Button } from '@/components/ui/button'
 import { Carousel, CarouselContent, CarouselItem } from '@/components/ui/carousel'
@@ -27,19 +27,16 @@ export async function CallToActionRightBlock(
 			<Carousel opts={{ dragFree: true }} className="place-self-center">
 				<CarouselContent>
 					{props.gallery?.map((item, idx) => {
-						const img = item.image && typeof item.image === 'object' ? item.image : null
 						return (
 							<CarouselItem className="max-w-fit" key={item.id ?? `${idx}-${item.title}`}>
-								<Image
-									src={img?.url ?? 'https://placehold.co/380x460'}
+								<HeadlessImage
+									media={item.image}
 									alt={matchLang({
 										[Lang.English]: `${item.title} product image`,
 										[Lang.Vietnamese]: `Ảnh sản phẩm ${item.title}`,
 									})(locale)}
-									width={img?.width ?? 380}
-									height={img?.height ?? 460}
+									placeholder={{ width: 380, height: 460 }}
 									className="mb-4 h-[28.75rem] w-[23.75rem] rounded-[0.5rem] object-cover"
-									unoptimized={!img}
 								/>
 								<div className={cn('text-balance text-center text-2xl', phudu.className)}>
 									{item.title}

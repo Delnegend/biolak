@@ -1,7 +1,10 @@
 import { Phudu } from 'next/font/google'
-import Image from 'next/image'
 
+import { HeadlessImage } from '@/components/Media/HeadlessImage'
 import { HighlightCenterBlockProps } from '@/payload-types'
+import { getClientLang } from '@/utilities/getClientLang'
+import { Lang } from '@/utilities/lang'
+import { matchLang } from '@/utilities/matchLang'
 import { cn } from '@/utilities/ui'
 
 const phudu = Phudu({
@@ -9,18 +12,21 @@ const phudu = Phudu({
 	weight: '400',
 })
 
-export function HighlightCenterBlock(props: HighlightCenterBlockProps): React.JSX.Element {
-	const img = props.image && typeof props.image === 'object' ? props.image : null
+export async function HighlightCenterBlock(
+	props: HighlightCenterBlockProps,
+): Promise<React.JSX.Element> {
+	const locale = await getClientLang()
 
 	return (
 		<div className="safe-width my-28 flex flex-col text-primary">
 			<div className="flex w-full flex-col items-center justify-center">
-				<Image
-					src={img?.url ?? 'https://placehold.co/1000x1000'}
-					width={img?.width ?? 1000}
-					height={img?.height ?? 1000}
-					alt={img?.alt ?? 'Placeholder'}
-					unoptimized={!img}
+				<HeadlessImage
+					media={props.image}
+					alt={matchLang({
+						[Lang.English]: 'Highlight center image',
+						[Lang.Vietnamese]: 'Hình ảnh nổi bật ở giữa',
+					})(locale)}
+					placeholder={{ width: 600, height: 600 }}
 					className="aspect-square w-[32.75rem] overflow-hidden rounded-full object-cover"
 				/>
 				<div className={cn('relative mt-28 text-5xl', phudu.className)}>

@@ -1,7 +1,7 @@
 import { ArrowRight } from 'lucide-react'
-import Image from 'next/image'
 
 import { CMSLink } from '@/components/CMSLink'
+import { HeadlessImage } from '@/components/Media/HeadlessImage'
 import { Button } from '@/components/ui/button'
 import { CallToActionPostBlockProps } from '@/payload-types'
 import { getClientLang } from '@/utilities/getClientLang'
@@ -16,7 +16,6 @@ export async function CallToActionPostBlock(
 	const post = props.post && typeof props.post === 'object' ? props.post : null
 	const locale = await getClientLang()
 
-	const img = post?.heroImage && typeof post.heroImage === 'object' ? post.heroImage : null
 	const title = props.overwriteTitle ?? post?.title
 	const description = props.overwriteDescription ?? post?.meta?.meta?.description
 
@@ -38,18 +37,13 @@ export async function CallToActionPostBlock(
 				</Button>
 			</div>
 			<div className="w-full lg:relative">
-				<Image
-					src={img?.url ?? 'https://placehold.co/1000x1000'}
-					width={img?.width ?? 1000}
-					height={img?.height ?? 1000}
-					alt={
-						img?.alt ??
-						matchLang({
-							[Lang.English]: 'Post hero image',
-							[Lang.Vietnamese]: 'Hình ảnh bài viết',
-						})(locale)
-					}
-					unoptimized={!img}
+				<HeadlessImage
+					media={post?.meta?.meta?.image}
+					placeholder={{ width: 1000, height: 1000 }}
+					alt={matchLang({
+						[Lang.English]: 'Post hero image',
+						[Lang.Vietnamese]: 'Hình ảnh bài viết',
+					})(locale)}
 					className="size-full object-cover max-lg:aspect-square lg:absolute"
 				/>
 			</div>

@@ -1,6 +1,6 @@
 import { DM_Sans } from 'next/font/google'
-import Image from 'next/image'
 
+import { HeadlessImage } from '@/components/Media/HeadlessImage'
 import { CertificatesBlockProps } from '@/payload-types'
 import { getClientLang } from '@/utilities/getClientLang'
 import { cn } from '@/utilities/ui'
@@ -21,16 +21,12 @@ export async function CertificatesBlock(props: CertificatesBlockProps): Promise<
 			</div>
 			<div className="grid w-5/6 max-w-7xl grid-cols-3 gap-6">
 				{props.organizations?.map((org, index) => {
-					const logo = org.logo && typeof org.logo === 'object' ? org.logo : undefined
 					return (
 						<div className="flex flex-col items-center gap-4 p-8" key={index}>
-							<Image
-								src={logo?.url ?? 'https://placehold.co/144x144'}
-								width={logo?.width ?? 144}
-								height={logo?.height ?? 144}
-								alt={`${org.title} Logo`}
+							<HeadlessImage
+								media={org.logo}
+								placeholder={{ width: 144, height: 144 }}
 								className="aspect-square size-full max-h-36 max-w-36 object-contain"
-								unoptimized={logo?.url === undefined || logo.mimeType === 'image/svg+xml'}
 							/>
 							<div className="text-center font-serif text-5xl font-semibold leading-8 text-primary">
 								{org.title}

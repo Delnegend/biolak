@@ -1,7 +1,7 @@
 import { ArrowRight } from 'lucide-react'
-import Image from 'next/image'
 import Link from 'next/link'
 
+import { HeadlessImage } from '@/components/Media/HeadlessImage'
 import { Button } from '@/components/ui/button'
 import { Carousel, CarouselContent, CarouselItem } from '@/components/ui/carousel'
 import { LatestPostsBlockProps } from '@/payload-types'
@@ -31,7 +31,6 @@ export async function LatestPostsBlock(props: LatestPostsBlockProps): Promise<Re
 				<Carousel opts={{ dragFree: true }}>
 					<CarouselContent className="gap-12">
 						{posts.map((post, index) => {
-							const img = typeof post.heroImage === 'object' ? post.heroImage : null
 							const author = typeof post.authors?.[0] === 'object' ? post.authors[0] : null
 							const lastModified =
 								typeof post.updatedAt === 'string' ? new Date(post.updatedAt) : new Date()
@@ -40,19 +39,14 @@ export async function LatestPostsBlock(props: LatestPostsBlockProps): Promise<Re
 							return (
 								<Link href={`/post/${post.slug}`} key={index}>
 									<CarouselItem key={index} className="max-w-[25rem]">
-										<Image
-											src={img?.url || 'https://placehold.co/460x400'}
-											alt={
-												img?.alt ||
-												matchLang({
-													[Lang.English]: 'Post hero image',
-													[Lang.Vietnamese]: 'Hình ảnh bài viết',
-												})(locale)
-											}
-											width={img?.width || 0}
-											height={img?.height || 0}
+										<HeadlessImage
+											media={post.meta?.meta?.image}
+											alt={matchLang({
+												[Lang.English]: 'Post hero image',
+												[Lang.Vietnamese]: 'Hình ảnh bài viết',
+											})(locale)}
+											placeholder={{ width: 460, height: 400 }}
 											className="h-[25rem] w-[28.75rem] rounded-[0.5rem] object-cover"
-											unoptimized={!img}
 										/>
 
 										<div className="my-6 text-primary">

@@ -1,5 +1,4 @@
-import Image from 'next/image'
-
+import { HeadlessImage } from '@/components/Media/HeadlessImage'
 import RichText from '@/components/RichText'
 import { FocusRightLargeImageBlockProps } from '@/payload-types'
 
@@ -17,12 +16,10 @@ export function FocusRightLargeImageBlock(
 			>
 				<RichText data={props.content} enableGutter={false} />
 			</div>
-			<Image
-				src="https://placehold.co/1000x1000"
+			<HeadlessImage
+				media={props.image}
 				alt="Placeholder image"
-				width={1000}
-				height={1000}
-				unoptimized={true}
+				placeholder={{ width: 1000, height: 1000 }}
 				className="size-full max-w-[calc(80rem*55/100)] object-cover"
 				style={{ gridArea: 'img' }}
 			/>
