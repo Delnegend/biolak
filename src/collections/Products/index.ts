@@ -300,47 +300,6 @@ export const ProductsCollection: CollectionConfig<typeof ProductsSlug> = {
 					],
 				},
 				{
-					label: 'Hero',
-					fields: [
-						{
-							name: 'heroSubtitle',
-							type: 'textarea',
-							label: {
-								en: 'Subtitle override',
-								vi: 'Ghi đè tên sản phẩm (phụ đề)',
-							},
-							localized: true,
-						},
-						{
-							name: 'heroTitle',
-							type: 'textarea',
-							label: {
-								en: 'Title override',
-								vi: 'Ghi đè mô tả ngắn (tiêu đề)',
-							},
-							localized: true,
-						},
-						{
-							name: 'heroDescription',
-							type: 'richText',
-							label: {
-								en: 'Description override',
-								vi: 'Ghi đè mô tả',
-							},
-							localized: true,
-						},
-						{
-							name: 'heroMedia',
-							type: 'upload',
-							label: {
-								en: 'Media override',
-								vi: 'Ghi đè ảnh sản phẩm',
-							},
-							relationTo: MediaSlug,
-						},
-					],
-				},
-				{
 					label: {
 						[Lang.English]: 'Orders',
 						[Lang.Vietnamese]: 'Đơn hàng',
