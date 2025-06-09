@@ -103,14 +103,7 @@ export default async function Product({
 				<PageClient />
 				<PayloadRedirects disableNotFound url={url} />
 				{draft && <LivePreviewListener />}
-				<ProductHero
-					product={product}
-					overrides={{
-						subtitle: product.heroSubtitle,
-						title: product.heroTitle,
-						description: product.heroDescription,
-					}}
-				/>
+				<ProductHero product={product} />
 				{product.content && <RenderBlocks blocks={product.content} product={product} />}
 
 				{/* reviews */}
