@@ -18,6 +18,7 @@ function getImageURL(image?: Media | Config['db']['defaultIDType'] | null): stri
 	return url
 }
 
+// TODO: use the first image in the gallery if available for Product
 export async function generateMeta(args: {
 	doc: Partial<Page> | Partial<Post> | Partial<Product> | null
 }): Promise<Metadata> {
