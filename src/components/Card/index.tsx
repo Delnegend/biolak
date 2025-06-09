@@ -18,10 +18,6 @@ export function Card(props: {
 	title?: string
 }): React.JSX.Element {
 	const { card, link } = useClickableCard({})
-	// const { className, doc, relationTo, showCategories, title: titleFromProps } = props
-
-	// const { slug, postCategories, meta, title } = doc || {}
-	// const { description, image: metaImage } = meta || {}
 
 	const hasCategories =
 		props.doc?.postCategories &&

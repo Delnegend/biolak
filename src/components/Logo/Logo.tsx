@@ -1,7 +1,6 @@
 import clsx from 'clsx'
 import React from 'react'
 
-// export const Logo = (props: Props) => {
 export function Logo(props: {
 	className?: string
 	loading?: 'lazy' | 'eager'
