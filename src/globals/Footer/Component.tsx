@@ -1,6 +1,6 @@
 import { Phudu } from 'next/font/google'
-import Image from 'next/image'
 
+import { HeadlessImage } from '@/components/Media/HeadlessImage'
 import { TextInput } from '@/components/ui/text-input'
 import { FooterGlobal, Media } from '@/payload-types'
 import { getClientLang } from '@/utilities/getClientLang'
@@ -46,26 +46,16 @@ async function FooterLarge({
 	locale: Lang
 	stamp?: Media | null
 }): Promise<React.JSX.Element> {
-	const img =
-		image !== undefined && typeof image.image === 'object' && image.image !== null
-			? image.image
-			: null
-
 	return (
 		<footer className="relative flex overflow-hidden">
-			<Image
-				src={img?.url ?? 'https://placehold.co/1000x1000'}
-				alt={
-					img?.alt ??
-					matchLang({
-						[Lang.English]: 'Lanscape Image',
-						[Lang.Vietnamese]: 'Ảnh Lanscape',
-					})(locale)
-				}
-				width={img?.width ?? 1000}
-				height={img?.height ?? 1000}
+			<HeadlessImage
+				media={image?.image}
+				alt={matchLang({
+					[Lang.English]: 'Lanscape Image',
+					[Lang.Vietnamese]: 'Ảnh Lanscape',
+				})(locale)}
+				placeholder={{ width: 1000, height: 1000 }}
 				className="absolute top-1/2 h-full w-1/2 -translate-y-1/2 object-cover"
-				unoptimized={!img}
 			/>
 
 			<div className="w-1/2 translate-x-full">
@@ -94,13 +84,11 @@ async function FooterLarge({
 						{legal?.content ?? defaults.legal.content(locale)}
 					</div>
 
-					<Image
-						src={stamp?.url ?? 'https://placehold.co/200x100'}
+					<HeadlessImage
+						media={stamp}
 						alt={stamp?.alt ?? 'Đã thông báo bộ Công Thương'}
-						width={stamp?.width ?? 200}
-						height={stamp?.height ?? 100}
+						placeholder={{ width: 200, height: 100 }}
 						className="my-6 h-14 w-auto object-contain"
-						unoptimized={!stamp}
 					/>
 
 					<div className="text-xs font-normal text-[#F1DAAE]">{legal?.copyright}</div>
@@ -133,19 +121,14 @@ async function FooterMedium({
 				<div className="whitespace-pre-wrap text-base">
 					{global.legal?.content ?? defaults.legal.content(locale)}
 				</div>
-				<Image
-					src={stamp?.url ?? 'https://placehold.co/200x100'}
-					alt={
-						stamp?.alt ??
-						matchLang({
-							[Lang.English]: 'Noticed by the Board of Directors',
-							[Lang.Vietnamese]: 'Đã thông báo bộ Công Thương',
-						})(locale)
-					}
-					width={stamp?.width ?? 200}
-					height={stamp?.height ?? 100}
+				<HeadlessImage
+					media={stamp}
+					alt={matchLang({
+						[Lang.English]: 'Noticed by the Board of Directors',
+						[Lang.Vietnamese]: 'Đã thông báo bộ Công Thương',
+					})(locale)}
+					placeholder={{ width: 200, height: 100 }}
 					className="my-6 h-14 w-auto object-contain"
-					unoptimized={!stamp}
 				/>
 			</div>
 

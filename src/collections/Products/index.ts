@@ -23,6 +23,7 @@ import { FooterSizeField } from '@/fields/footer'
 import { metaTab } from '@/fields/metaTab'
 import { slugField } from '@/fields/slug'
 import { generatePreviewPath } from '@/utilities/generatePreviewPath'
+import { Lang } from '@/utilities/lang'
 
 import { MediaSlug } from '../Media/slug'
 import { OrdersSlug } from '../Orders/slug'
@@ -34,12 +35,12 @@ export const ProductsCollection: CollectionConfig<typeof ProductsSlug> = {
 	slug: ProductsSlug,
 	labels: {
 		singular: {
-			en: 'Product',
-			vi: 'Sản phẩm',
+			[Lang.English]: 'Product',
+			[Lang.Vietnamese]: 'Sản phẩm',
 		},
 		plural: {
-			en: 'Products',
-			vi: 'Sản phẩm',
+			[Lang.English]: 'Products',
+			[Lang.Vietnamese]: 'Sản phẩm',
 		},
 	},
 	access: {
@@ -54,8 +55,8 @@ export const ProductsCollection: CollectionConfig<typeof ProductsSlug> = {
 			tabs: [
 				{
 					label: {
-						en: 'General',
-						vi: 'Thông tin chung',
+						[Lang.English]: 'General',
+						[Lang.Vietnamese]: 'Thông tin chung',
 					},
 					fields: [
 						{
@@ -66,8 +67,8 @@ export const ProductsCollection: CollectionConfig<typeof ProductsSlug> = {
 									type: 'relationship',
 									relationTo: ProductCategoriesSlug,
 									label: {
-										en: 'Product Categories',
-										vi: 'Danh mục sản phẩm',
+										[Lang.English]: 'Product Categories',
+										[Lang.Vietnamese]: 'Danh mục sản phẩm',
 									},
 									hasMany: true,
 								},
@@ -76,8 +77,8 @@ export const ProductsCollection: CollectionConfig<typeof ProductsSlug> = {
 									type: 'relationship',
 									relationTo: ProductSubCategoriesSlug,
 									label: {
-										en: 'Product Subcategories',
-										vi: 'Danh mục con sản phẩm',
+										[Lang.English]: 'Product Subcategories',
+										[Lang.Vietnamese]: 'Danh mục con sản phẩm',
 									},
 									hasMany: true,
 								},
@@ -90,8 +91,8 @@ export const ProductsCollection: CollectionConfig<typeof ProductsSlug> = {
 									name: 'title',
 									type: 'text',
 									label: {
-										en: "Product's title",
-										vi: 'Tên sản phẩm',
+										[Lang.English]: "Product's title",
+										[Lang.Vietnamese]: 'Tên sản phẩm',
 									},
 									required: true,
 									localized: true,
@@ -100,8 +101,8 @@ export const ProductsCollection: CollectionConfig<typeof ProductsSlug> = {
 									name: 'shortDescription',
 									type: 'text',
 									label: {
-										en: 'Short Description',
-										vi: 'Mô tả ngắn',
+										[Lang.English]: 'Short Description',
+										[Lang.Vietnamese]: 'Mô tả ngắn',
 									},
 									localized: true,
 								},
@@ -111,8 +112,8 @@ export const ProductsCollection: CollectionConfig<typeof ProductsSlug> = {
 							name: 'longDescription',
 							type: 'richText',
 							label: {
-								en: 'Long Description',
-								vi: 'Mô tả chi tiết',
+								[Lang.English]: 'Long Description',
+								[Lang.Vietnamese]: 'Mô tả chi tiết',
 							},
 							localized: true,
 						},
@@ -120,17 +121,17 @@ export const ProductsCollection: CollectionConfig<typeof ProductsSlug> = {
 							name: 'variants',
 							type: 'array',
 							label: {
-								en: 'Variants',
-								vi: 'Loại',
+								[Lang.English]: 'Variants',
+								[Lang.Vietnamese]: 'Các loại',
 							},
 							labels: {
 								singular: {
-									en: 'Variant',
-									vi: 'Loại',
+									[Lang.English]: 'Variant',
+									[Lang.Vietnamese]: 'Loại',
 								},
 								plural: {
-									en: 'Variants',
-									vi: 'Các loại',
+									[Lang.English]: 'Variants',
+									[Lang.Vietnamese]: 'Các loại',
 								},
 							},
 							fields: [
@@ -141,8 +142,8 @@ export const ProductsCollection: CollectionConfig<typeof ProductsSlug> = {
 											name: 'title',
 											type: 'text',
 											label: {
-												en: "Variant's title",
-												vi: 'Tên loại',
+												[Lang.English]: "Variant's title",
+												[Lang.Vietnamese]: 'Tên loại',
 											},
 											required: true,
 											localized: true,
@@ -151,8 +152,8 @@ export const ProductsCollection: CollectionConfig<typeof ProductsSlug> = {
 											name: 'sku',
 											type: 'text',
 											label: {
-												en: "Variant's SKU",
-												vi: 'Mã SKU loại',
+												[Lang.English]: "Variant's SKU",
+												[Lang.Vietnamese]: 'Mã SKU loại',
 											},
 											required: true,
 										},
@@ -165,8 +166,8 @@ export const ProductsCollection: CollectionConfig<typeof ProductsSlug> = {
 											name: 'stock',
 											type: 'number',
 											label: {
-												en: "Variant's stock",
-												vi: 'Số lượng tồn kho',
+												[Lang.English]: "Variant's stock",
+												[Lang.Vietnamese]: 'Số lượng tồn kho',
 											},
 											required: true,
 										},
@@ -174,8 +175,8 @@ export const ProductsCollection: CollectionConfig<typeof ProductsSlug> = {
 											name: 'price',
 											type: 'number',
 											label: {
-												en: "Variant's price",
-												vi: 'Giá loại',
+												[Lang.English]: "Variant's price",
+												[Lang.Vietnamese]: 'Giá loại',
 											},
 											required: true,
 										},
@@ -185,16 +186,16 @@ export const ProductsCollection: CollectionConfig<typeof ProductsSlug> = {
 									name: 'defaultVariant',
 									type: 'checkbox',
 									label: {
-										en: 'Default variant',
-										vi: 'Loại mặc định',
+										[Lang.English]: 'Default variant',
+										[Lang.Vietnamese]: 'Loại mặc định',
 									},
 								},
 								{
 									name: 'image',
 									type: 'upload',
 									label: {
-										en: "Variant's image",
-										vi: 'Ảnh loại',
+										[Lang.English]: "Variant's image",
+										[Lang.Vietnamese]: 'Ảnh loại',
 									},
 									relationTo: MediaSlug,
 								},
@@ -206,17 +207,24 @@ export const ProductsCollection: CollectionConfig<typeof ProductsSlug> = {
 							name: 'icon',
 							type: 'upload',
 							label: {
-								en: "Product's icon",
-								vi: 'Biểu tượng sản phẩm',
+								[Lang.English]: "Product's icon",
+								[Lang.Vietnamese]: 'Biểu tượng sản phẩm',
 							},
 							relationTo: MediaSlug,
+							admin: {
+								description: {
+									[Lang.English]: 'This icon will be used in the product dropdown list.',
+									[Lang.Vietnamese]:
+										'Biểu tượng này sẽ được sử dụng trong danh sách thả xuống của sản phẩm.',
+								},
+							},
 						},
 						{
 							name: 'gallery',
 							type: 'upload',
 							label: {
-								en: 'Gallery',
-								vi: 'Thư viện ảnh',
+								[Lang.English]: 'Gallery',
+								[Lang.Vietnamese]: 'Thư viện ảnh',
 							},
 							relationTo: MediaSlug,
 							hasMany: true,
@@ -224,23 +232,23 @@ export const ProductsCollection: CollectionConfig<typeof ProductsSlug> = {
 						{
 							name: 'reviewsVisible',
 							label: {
-								en: 'Reviews Visible',
-								vi: 'Hiển thị đánh giá',
+								[Lang.English]: 'Reviews Visible',
+								[Lang.Vietnamese]: 'Hiển thị đánh giá',
 							},
 							type: 'radio',
 							options: [
 								{
 									value: 'show',
 									label: {
-										en: 'Show',
-										vi: 'Hiển thị',
+										[Lang.English]: 'Show',
+										[Lang.Vietnamese]: 'Hiển thị',
 									},
 								},
 								{
 									value: 'hide',
 									label: {
-										en: 'Hide',
-										vi: 'Ẩn',
+										[Lang.English]: 'Hide',
+										[Lang.Vietnamese]: 'Ẩn',
 									},
 								},
 							],
@@ -250,8 +258,8 @@ export const ProductsCollection: CollectionConfig<typeof ProductsSlug> = {
 				},
 				{
 					label: {
-						en: 'Content',
-						vi: 'Nội dung',
+						[Lang.English]: 'Content',
+						[Lang.Vietnamese]: 'Nội dung',
 					},
 					fields: [
 						{
@@ -260,12 +268,12 @@ export const ProductsCollection: CollectionConfig<typeof ProductsSlug> = {
 							label: false,
 							labels: {
 								singular: {
-									en: 'Block',
-									vi: 'Khối',
+									[Lang.English]: 'Block',
+									[Lang.Vietnamese]: 'Khối',
 								},
 								plural: {
-									en: 'Blocks',
-									vi: 'Các khối',
+									[Lang.English]: 'Blocks',
+									[Lang.Vietnamese]: 'Các khối',
 								},
 							},
 							blocks: [
@@ -334,8 +342,8 @@ export const ProductsCollection: CollectionConfig<typeof ProductsSlug> = {
 				},
 				{
 					label: {
-						en: 'Orders',
-						vi: 'Đơn hàng',
+						[Lang.English]: 'Orders',
+						[Lang.Vietnamese]: 'Đơn hàng',
 					},
 					fields: [
 						{

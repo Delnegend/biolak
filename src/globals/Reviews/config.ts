@@ -10,8 +10,8 @@ export const ReviewsGlobalSlug = 'reviewsGlobal'
 export const ReviewsGlobalConf: GlobalConfig<typeof ReviewsGlobalSlug> = {
 	slug: ReviewsGlobalSlug,
 	label: {
-		en: 'Reviews',
-		vi: 'Đánh giá',
+		[Lang.English]: 'Reviews',
+		[Lang.Vietnamese]: 'Đánh giá',
 	},
 	access: {
 		read: allow(Role.Public),

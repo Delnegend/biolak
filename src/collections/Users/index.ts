@@ -1,6 +1,7 @@
 import { CollectionConfig } from 'payload'
 
 import { allow, Role } from '@/access/allow'
+import { Lang } from '@/utilities/lang'
 
 import { UsersSlug } from './slug'
 
@@ -8,12 +9,12 @@ export const UsersCollection: CollectionConfig<typeof UsersSlug> = {
 	slug: UsersSlug,
 	labels: {
 		singular: {
-			en: 'User',
-			vi: 'Người dùng',
+			[Lang.English]: 'User',
+			[Lang.Vietnamese]: 'Người dùng',
 		},
 		plural: {
-			en: 'Users',
-			vi: 'Người dùng',
+			[Lang.English]: 'Users',
+			[Lang.Vietnamese]: 'Người dùng',
 		},
 	},
 	access: {
@@ -33,8 +34,8 @@ export const UsersCollection: CollectionConfig<typeof UsersSlug> = {
 			name: 'name',
 			type: 'text',
 			label: {
-				en: 'Name',
-				vi: 'Tên',
+				[Lang.English]: 'Name',
+				[Lang.Vietnamese]: 'Tên',
 			},
 		},
 		{
@@ -44,22 +45,22 @@ export const UsersCollection: CollectionConfig<typeof UsersSlug> = {
 			options: [
 				{
 					label: {
-						en: 'Admin',
-						vi: 'Quản trị viên',
+						[Lang.English]: 'Admin',
+						[Lang.Vietnamese]: 'Quản trị viên',
 					},
 					value: Role.Admin.toString(),
 				},
 				{
 					label: {
-						en: 'Sales Manager',
-						vi: 'Quản lý bán hàng',
+						[Lang.English]: 'Sales Manager',
+						[Lang.Vietnamese]: 'Quản lý bán hàng',
 					},
 					value: Role.SalesManager.toString(),
 				},
 				{
 					label: {
-						en: 'Content Manager',
-						vi: 'Quản lý nội dung',
+						[Lang.English]: 'Content Manager',
+						[Lang.Vietnamese]: 'Quản lý nội dung',
 					},
 					value: Role.ContentManager.toString(),
 				},
@@ -69,8 +70,8 @@ export const UsersCollection: CollectionConfig<typeof UsersSlug> = {
 					!(props.req?.user?.role !== Role.Admin || props.doc?.role === Role.Admin),
 			},
 			label: {
-				en: 'Role',
-				vi: 'Quyền',
+				[Lang.English]: 'Role',
+				[Lang.Vietnamese]: 'Quyền',
 			},
 		},
 	],

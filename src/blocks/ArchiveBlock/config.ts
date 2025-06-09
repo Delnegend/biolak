@@ -7,18 +7,19 @@ import {
 import type { Block } from 'payload'
 
 import { PostCategoriesSlug } from '@/collections/PostCategories/slug'
+import { Lang } from '@/utilities/lang'
 
 export const ArchiveBlockConf: Block = {
 	slug: 'archive',
 	interfaceName: 'ArchiveBlockProps',
 	labels: {
 		plural: {
-			en: 'Archives',
-			vi: 'Danh sách bài viết',
+			[Lang.English]: 'Archives',
+			[Lang.Vietnamese]: 'Danh sách bài viết',
 		},
 		singular: {
-			en: 'Archive',
-			vi: 'Danh sách bài viết',
+			[Lang.English]: 'Archive',
+			[Lang.Vietnamese]: 'Danh sách bài viết',
 		},
 	},
 	fields: [
@@ -26,8 +27,8 @@ export const ArchiveBlockConf: Block = {
 			name: 'introContent',
 			type: 'richText',
 			label: {
-				en: 'Intro Content',
-				vi: 'Nội dung giới thiệu',
+				[Lang.English]: 'Intro Content',
+				[Lang.Vietnamese]: 'Nội dung giới thiệu',
 			},
 			editor: lexicalEditor({
 				features: ({ rootFeatures }) => {
@@ -44,17 +45,23 @@ export const ArchiveBlockConf: Block = {
 			name: 'populateBy',
 			type: 'select',
 			label: {
-				en: 'Populate By',
-				vi: 'Phân loại',
+				[Lang.English]: 'Populate By',
+				[Lang.Vietnamese]: 'Phân loại',
 			},
 			defaultValue: 'collection',
 			options: [
 				{
-					label: 'Collection',
+					label: {
+						[Lang.English]: 'Collection',
+						[Lang.Vietnamese]: 'Bộ sưu tập',
+					},
 					value: 'collection',
 				},
 				{
-					label: 'Individual Selection',
+					label: {
+						[Lang.English]: 'Individual Selection',
+						[Lang.Vietnamese]: 'Lựa chọn cá nhân',
+					},
 					value: 'selection',
 				},
 			],
@@ -63,8 +70,8 @@ export const ArchiveBlockConf: Block = {
 			name: 'relationTo',
 			type: 'select',
 			label: {
-				en: 'Relation To',
-				vi: 'Liên quan đến',
+				[Lang.English]: 'Relation To',
+				[Lang.Vietnamese]: 'Liên quan đến',
 			},
 			admin: {
 				condition: (_, siblingData) => siblingData.populateBy === 'collection',
@@ -72,7 +79,10 @@ export const ArchiveBlockConf: Block = {
 			defaultValue: 'posts',
 			options: [
 				{
-					label: 'Posts',
+					label: {
+						[Lang.English]: 'Posts',
+						[Lang.Vietnamese]: 'Bài viết',
+					},
 					value: 'posts',
 				},
 			],
@@ -81,8 +91,8 @@ export const ArchiveBlockConf: Block = {
 			name: PostCategoriesSlug,
 			type: 'relationship',
 			label: {
-				en: 'Categories',
-				vi: 'Thể loại',
+				[Lang.English]: 'Categories',
+				[Lang.Vietnamese]: 'Thể loại',
 			},
 			admin: {
 				condition: (_, siblingData) => siblingData.populateBy === 'collection',
@@ -94,8 +104,8 @@ export const ArchiveBlockConf: Block = {
 			name: 'limit',
 			type: 'number',
 			label: {
-				en: 'Limit',
-				vi: 'Giới hạn',
+				[Lang.English]: 'Limit',
+				[Lang.Vietnamese]: 'Giới hạn',
 			},
 			admin: {
 				condition: (_, siblingData) => siblingData.populateBy === 'collection',
@@ -107,8 +117,8 @@ export const ArchiveBlockConf: Block = {
 			name: 'selectedDocs',
 			type: 'relationship',
 			label: {
-				en: 'Selected Posts',
-				vi: 'Bài viết đã chọn',
+				[Lang.English]: 'Selected Posts',
+				[Lang.Vietnamese]: 'Bài viết đã chọn',
 			},
 			admin: {
 				condition: (_, siblingData) => siblingData.populateBy === 'selection',

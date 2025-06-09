@@ -23,11 +23,11 @@ import { ThreePhotoBlockConf } from '@/blocks/ThreePhoto/config'
 import { FooterSizeField } from '@/fields/footer'
 import { metaTab } from '@/fields/metaTab'
 import { slugField } from '@/fields/slug'
+import { Lang } from '@/utilities/lang'
 
 import { adminOrPublished } from '../../access/adminOrPublished'
 import { MediaBlockConf } from '../../blocks/MediaBlock/config'
 import { generatePreviewPath } from '../../utilities/generatePreviewPath'
-import { MediaSlug } from '../Media/slug'
 import { PostCategoriesSlug } from '../PostCategories/slug'
 import { UsersSlug } from '../Users/slug'
 import { populateAuthors } from './hooks/populateAuthors'
@@ -38,12 +38,12 @@ export const PostsCollection: CollectionConfig<typeof PostsSlug> = {
 	slug: PostsSlug,
 	labels: {
 		singular: {
-			en: 'Post',
-			vi: 'Bài viết',
+			[Lang.English]: 'Post',
+			[Lang.Vietnamese]: 'Bài viết',
 		},
 		plural: {
-			en: 'Posts',
-			vi: 'Bài viết',
+			[Lang.English]: 'Posts',
+			[Lang.Vietnamese]: 'Bài viết',
 		},
 	},
 	access: {
@@ -89,8 +89,8 @@ export const PostsCollection: CollectionConfig<typeof PostsSlug> = {
 			name: 'title',
 			type: 'text',
 			label: {
-				en: 'Title',
-				vi: 'Tiêu đề',
+				[Lang.English]: 'Title',
+				[Lang.Vietnamese]: 'Tiêu đề',
 			},
 			required: true,
 			localized: true,
@@ -100,8 +100,8 @@ export const PostsCollection: CollectionConfig<typeof PostsSlug> = {
 			tabs: [
 				{
 					label: {
-						en: 'Content',
-						vi: 'Nội dung',
+						[Lang.English]: 'Content',
+						[Lang.Vietnamese]: 'Nội dung',
 					},
 					fields: [
 						{
@@ -145,12 +145,12 @@ export const PostsCollection: CollectionConfig<typeof PostsSlug> = {
 							label: false,
 							labels: {
 								singular: {
-									en: 'Block',
-									vi: 'Khối',
+									[Lang.English]: 'Block',
+									[Lang.Vietnamese]: 'Khối',
 								},
 								plural: {
-									en: 'Blocks',
-									vi: 'Các khối',
+									[Lang.English]: 'Blocks',
+									[Lang.Vietnamese]: 'Các khối',
 								},
 							},
 						},
@@ -174,8 +174,8 @@ export const PostsCollection: CollectionConfig<typeof PostsSlug> = {
 							hasMany: true,
 							relationTo: PostsSlug,
 							label: {
-								en: 'Related Posts',
-								vi: 'Bài viết liên quan',
+								[Lang.English]: 'Related Posts',
+								[Lang.Vietnamese]: 'Bài viết liên quan',
 							},
 						},
 						{
@@ -187,8 +187,8 @@ export const PostsCollection: CollectionConfig<typeof PostsSlug> = {
 							hasMany: true,
 							relationTo: PostCategoriesSlug,
 							label: {
-								en: 'Post Categories',
-								vi: 'Danh mục bài viết',
+								[Lang.English]: 'Post Categories',
+								[Lang.Vietnamese]: 'Danh mục bài viết',
 							},
 						},
 					],
@@ -217,8 +217,8 @@ export const PostsCollection: CollectionConfig<typeof PostsSlug> = {
 				],
 			},
 			label: {
-				en: 'Published At',
-				vi: 'Ngày xuất bản',
+				[Lang.English]: 'Published At',
+				[Lang.Vietnamese]: 'Ngày xuất bản',
 			},
 		},
 		{
@@ -230,8 +230,8 @@ export const PostsCollection: CollectionConfig<typeof PostsSlug> = {
 			hasMany: true,
 			relationTo: UsersSlug,
 			label: {
-				en: 'Authors',
-				vi: 'Tác giả',
+				[Lang.English]: 'Authors',
+				[Lang.Vietnamese]: 'Tác giả',
 			},
 		},
 		// This field is only used to populate the user data via the `populateAuthors` hook
@@ -258,8 +258,8 @@ export const PostsCollection: CollectionConfig<typeof PostsSlug> = {
 				},
 			],
 			label: {
-				en: 'Populated Authors',
-				vi: 'Tác giả đã được phân bổ',
+				[Lang.English]: 'Populated Authors',
+				[Lang.Vietnamese]: 'Tác giả đã được phân bổ',
 			},
 		},
 		...slugField(),

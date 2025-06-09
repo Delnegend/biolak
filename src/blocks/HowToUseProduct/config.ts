@@ -12,12 +12,12 @@ export const HowToUseProductBlockConf: Block = {
 	imageURL: '/thumbs/how-to-use-product.avif',
 	labels: {
 		singular: {
-			en: 'How to use product',
-			vi: 'Huớng dẫn sử dụng sản phẩm',
+			[Lang.English]: 'How to use product',
+			[Lang.Vietnamese]: 'Huớng dẫn sử dụng sản phẩm',
 		},
 		plural: {
-			en: 'How to use product',
-			vi: 'Huớng dẫn sử dụng sản phẩm',
+			[Lang.English]: 'How to use product',
+			[Lang.Vietnamese]: 'Huớng dẫn sử dụng sản phẩm',
 		},
 	},
 	fields: [
@@ -25,8 +25,8 @@ export const HowToUseProductBlockConf: Block = {
 			name: 'title',
 			type: 'text',
 			label: {
-				en: 'Title',
-				vi: 'Tiêu đề',
+				[Lang.English]: 'Title',
+				[Lang.Vietnamese]: 'Tiêu đề',
 			},
 			localized: true,
 			defaultValue: defaults.title,
@@ -38,8 +38,8 @@ export const HowToUseProductBlockConf: Block = {
 			name: 'subtitle',
 			type: 'text',
 			label: {
-				en: 'Subtitle',
-				vi: 'Tiêu đề phụ',
+				[Lang.English]: 'Subtitle',
+				[Lang.Vietnamese]: 'Tiêu đề phụ',
 			},
 			localized: true,
 			admin: {
@@ -57,8 +57,8 @@ export const HowToUseProductBlockConf: Block = {
 			name: 'content',
 			type: 'richText',
 			label: {
-				en: 'Content',
-				vi: 'Nội dung',
+				[Lang.English]: 'Content',
+				[Lang.Vietnamese]: 'Nội dung',
 			},
 			required: true,
 			localized: true,
@@ -68,8 +68,8 @@ export const HowToUseProductBlockConf: Block = {
 			type: 'upload',
 			relationTo: MediaSlug,
 			label: {
-				en: 'Image',
-				vi: 'Ảnh minh họa',
+				[Lang.English]: 'Image',
+				[Lang.Vietnamese]: 'Ảnh minh họa',
 			},
 		},
 		{
@@ -77,8 +77,8 @@ export const HowToUseProductBlockConf: Block = {
 			type: 'relationship',
 			relationTo: ProductsSlug,
 			label: {
-				en: 'Product',
-				vi: 'Sản phẩm',
+				[Lang.English]: 'Product',
+				[Lang.Vietnamese]: 'Sản phẩm',
 			},
 			admin: {
 				condition: (data) => {

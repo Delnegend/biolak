@@ -3,35 +3,36 @@ import type { Field, GlobalConfig } from 'payload'
 
 import { allow, Role } from '@/access/allow'
 import { LinkFieldRelations } from '@/fields/link'
+import { Lang } from '@/utilities/lang'
 
 const fields: Field[] = [
 	{
 		name: 'kind',
 		type: 'radio',
 		label: {
-			vi: 'Loại liên kết',
-			en: 'Link type',
+			[Lang.Vietnamese]: 'Loại liên kết',
+			[Lang.English]: 'Link type',
 		},
 		options: [
 			{
 				value: 'prebuilt',
 				label: {
-					en: 'Functional button',
-					vi: 'Nút chức năng',
+					[Lang.English]: 'Functional button',
+					[Lang.Vietnamese]: 'Nút chức năng',
 				},
 			},
 			{
 				value: 'internalUrl',
 				label: {
-					en: 'Link to internal page',
-					vi: 'Liên kết trang nội bộ',
+					[Lang.English]: 'Link to internal page',
+					[Lang.Vietnamese]: 'Liên kết trang nội bộ',
 				},
 			},
 			{
 				value: 'customUrl',
 				label: {
-					en: 'Custom URL',
-					vi: 'Liên kết tùy chỉnh',
+					[Lang.English]: 'Custom URL',
+					[Lang.Vietnamese]: 'Liên kết tùy chỉnh',
 				},
 			},
 		],
@@ -44,35 +45,53 @@ const fields: Field[] = [
 				name: 'prebuilt',
 				type: 'select',
 				label: {
-					vi: 'Chức năng',
-					en: 'Prebuilt',
+					[Lang.Vietnamese]: 'Chức năng',
+					[Lang.English]: 'Prebuilt',
 				},
 				admin: {
 					condition: (_, siblingData) => siblingData?.kind === 'prebuilt',
 				},
 				options: [
 					{
-						label: 'Tìm kiếm',
+						label: {
+							[Lang.Vietnamese]: 'Tìm kiếm',
+							[Lang.English]: 'Search',
+						},
 						value: 'search',
 					},
 					{
-						label: 'Sản phẩm',
+						label: {
+							[Lang.Vietnamese]: 'Sản phẩm',
+							[Lang.English]: 'Products',
+						},
 						value: 'products',
 					},
 					{
-						label: 'BioLAK',
+						label: {
+							[Lang.Vietnamese]: 'BioLAK',
+							[Lang.English]: 'BioLAK',
+						},
 						value: 'about',
 					},
 					{
-						label: 'Liên hệ',
+						label: {
+							[Lang.English]: 'Contact',
+							[Lang.Vietnamese]: 'Liên hệ',
+						},
 						value: 'contact',
 					},
 					{
-						label: 'VIE/EN',
+						label: {
+							[Lang.English]: 'VIE/EN',
+							[Lang.Vietnamese]: 'VIE/EN',
+						},
 						value: 'vie-en',
 					},
 					{
-						label: 'Giỏ hàng',
+						label: {
+							[Lang.English]: 'Cart',
+							[Lang.Vietnamese]: 'Giỏ hàng',
+						},
 						value: 'cart',
 					},
 				],
@@ -82,8 +101,8 @@ const fields: Field[] = [
 				name: 'customUrl',
 				type: 'text',
 				label: {
-					en: 'Custom URL',
-					vi: 'Liên kết tùy chỉnh',
+					[Lang.English]: 'Custom URL',
+					[Lang.Vietnamese]: 'Liên kết tùy chỉnh',
 				},
 				admin: {
 					condition: (_, siblingData) => siblingData?.kind === 'customUrl',
@@ -95,8 +114,8 @@ const fields: Field[] = [
 				type: 'relationship',
 				relationTo: [...LinkFieldRelations],
 				label: {
-					en: 'Link to internal page',
-					vi: 'Liên kết trang nội bộ',
+					[Lang.English]: 'Link to internal page',
+					[Lang.Vietnamese]: 'Liên kết trang nội bộ',
 				},
 				admin: {
 					condition: (_, siblingData) => siblingData?.kind === 'internalUrl',
@@ -107,8 +126,8 @@ const fields: Field[] = [
 				name: 'label',
 				type: 'text',
 				label: {
-					en: 'Label',
-					vi: 'Nhãn',
+					[Lang.English]: 'Label',
+					[Lang.Vietnamese]: 'Nhãn',
 				},
 				localized: true,
 			},
@@ -120,8 +139,8 @@ export const HeaderGlobalSlug = 'headerGlobal'
 export const HeaderGlobalConf: GlobalConfig<typeof HeaderGlobalSlug> = {
 	slug: HeaderGlobalSlug,
 	label: {
-		en: 'Header',
-		vi: 'Thanh tiêu đề',
+		[Lang.English]: 'Header',
+		[Lang.Vietnamese]: 'Thanh tiêu đề',
 	},
 	access: {
 		read: allow(Role.Public),
@@ -131,17 +150,17 @@ export const HeaderGlobalConf: GlobalConfig<typeof HeaderGlobalSlug> = {
 		{
 			name: 'headerItemsLeft',
 			label: {
-				en: 'Header Items Left',
-				vi: 'Các mục tiêu đề trái',
+				[Lang.English]: 'Header Items Left',
+				[Lang.Vietnamese]: 'Các mục tiêu đề trái',
 			},
 			labels: {
 				singular: {
-					en: 'Header Item Left',
-					vi: 'Mục tiêu đề trái',
+					[Lang.English]: 'Header Item Left',
+					[Lang.Vietnamese]: 'Mục tiêu đề trái',
 				},
 				plural: {
-					en: 'Header Items Left',
-					vi: 'Các mục tiêu đề trái',
+					[Lang.English]: 'Header Items Left',
+					[Lang.Vietnamese]: 'Các mục tiêu đề trái',
 				},
 			},
 			type: 'array',
@@ -150,17 +169,17 @@ export const HeaderGlobalConf: GlobalConfig<typeof HeaderGlobalSlug> = {
 		{
 			name: 'headerItemsRight',
 			label: {
-				en: 'Header Items Right',
-				vi: 'Các mục tiêu đề phải',
+				[Lang.English]: 'Header Items Right',
+				[Lang.Vietnamese]: 'Các mục tiêu đề phải',
 			},
 			labels: {
 				singular: {
-					en: 'Header Item Right',
-					vi: 'Mục tiêu đề phải',
+					[Lang.English]: 'Header Item Right',
+					[Lang.Vietnamese]: 'Mục tiêu đề phải',
 				},
 				plural: {
-					en: 'Header Items Right',
-					vi: 'Các mục tiêu đề phải',
+					[Lang.English]: 'Header Items Right',
+					[Lang.Vietnamese]: 'Các mục tiêu đề phải',
 				},
 			},
 			type: 'array',

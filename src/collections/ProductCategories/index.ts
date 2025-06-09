@@ -3,6 +3,7 @@ import { CollectionConfig } from 'payload'
 import { allow, Role } from '@/access/allow'
 import { FooterSizeField } from '@/fields/footer'
 import { slugField } from '@/fields/slug'
+import { Lang } from '@/utilities/lang'
 
 import { ProductsSlug } from '../Products/slug'
 import { ProductSubCategoriesSlug } from '../ProductSubCategories/slug'
@@ -12,12 +13,12 @@ export const ProductCategoriesCollection: CollectionConfig<typeof ProductCategor
 	slug: ProductCategoriesSlug,
 	labels: {
 		singular: {
-			en: 'Product Category',
-			vi: 'Danh mục sản phẩm',
+			[Lang.English]: 'Product Category',
+			[Lang.Vietnamese]: 'Danh mục sản phẩm',
 		},
 		plural: {
-			en: 'Product Categories',
-			vi: 'Danh mục sản phẩm',
+			[Lang.English]: 'Product Categories',
+			[Lang.Vietnamese]: 'Danh mục sản phẩm',
 		},
 	},
 	access: {
@@ -31,8 +32,8 @@ export const ProductCategoriesCollection: CollectionConfig<typeof ProductCategor
 			name: 'title',
 			type: 'text',
 			label: {
-				en: 'Title',
-				vi: 'Tiêu đề',
+				[Lang.English]: 'Title',
+				[Lang.Vietnamese]: 'Tiêu đề',
 			},
 			required: true,
 			localized: true,
@@ -43,8 +44,8 @@ export const ProductCategoriesCollection: CollectionConfig<typeof ProductCategor
 			collection: ProductSubCategoriesSlug,
 			on: ProductCategoriesSlug,
 			label: {
-				en: 'Sub Categories',
-				vi: 'Danh mục phụ',
+				[Lang.English]: 'Sub Categories',
+				[Lang.Vietnamese]: 'Danh mục phụ',
 			},
 		},
 		{
@@ -53,8 +54,8 @@ export const ProductCategoriesCollection: CollectionConfig<typeof ProductCategor
 			collection: ProductsSlug,
 			on: ProductCategoriesSlug,
 			label: {
-				en: 'Products',
-				vi: 'Sản phẩm',
+				[Lang.English]: 'Products',
+				[Lang.Vietnamese]: 'Sản phẩm',
 			},
 		},
 		...slugField(),

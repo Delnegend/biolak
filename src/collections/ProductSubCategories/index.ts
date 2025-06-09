@@ -3,6 +3,7 @@ import { CollectionConfig } from 'payload'
 import { allow, Role } from '@/access/allow'
 import { FooterSizeField } from '@/fields/footer'
 import { slugField } from '@/fields/slug'
+import { Lang } from '@/utilities/lang'
 
 import { ProductCategoriesSlug } from '../ProductCategories/slug'
 import { ProductsSlug } from '../Products/slug'
@@ -12,12 +13,12 @@ export const ProductSubCategoriesCollection: CollectionConfig<typeof ProductSubC
 	slug: ProductSubCategoriesSlug,
 	labels: {
 		singular: {
-			en: 'Product Sub Category',
-			vi: 'Danh mục con sản phẩm',
+			[Lang.English]: 'Product Sub Category',
+			[Lang.Vietnamese]: 'Danh mục con sản phẩm',
 		},
 		plural: {
-			en: 'Product Sub Categories',
-			vi: 'Danh mục con sản phẩm',
+			[Lang.English]: 'Product Sub Categories',
+			[Lang.Vietnamese]: 'Danh mục con sản phẩm',
 		},
 	},
 	access: {
@@ -31,8 +32,8 @@ export const ProductSubCategoriesCollection: CollectionConfig<typeof ProductSubC
 			name: ProductCategoriesSlug,
 			type: 'relationship',
 			label: {
-				en: 'Category',
-				vi: 'Danh mục',
+				[Lang.English]: 'Category',
+				[Lang.Vietnamese]: 'Danh mục',
 			},
 			relationTo: ProductCategoriesSlug,
 			required: true,
@@ -41,8 +42,8 @@ export const ProductSubCategoriesCollection: CollectionConfig<typeof ProductSubC
 			name: 'title',
 			type: 'text',
 			label: {
-				en: 'Title',
-				vi: 'Tiêu đề',
+				[Lang.English]: 'Title',
+				[Lang.Vietnamese]: 'Tiêu đề',
 			},
 			required: true,
 			localized: true,
@@ -53,8 +54,8 @@ export const ProductSubCategoriesCollection: CollectionConfig<typeof ProductSubC
 			collection: ProductsSlug,
 			on: ProductSubCategoriesSlug,
 			label: {
-				en: 'Products',
-				vi: 'Sản phẩm',
+				[Lang.English]: 'Products',
+				[Lang.Vietnamese]: 'Sản phẩm',
 			},
 		},
 		...slugField(),

@@ -12,12 +12,12 @@ export const ProductsCategoryBlockConf: Block = {
 	imageURL: '/thumbs/products-category.avif',
 	labels: {
 		singular: {
-			en: 'Products Category Preview',
-			vi: 'Danh mục sản phẩm xem trước',
+			[Lang.English]: 'Products Category Preview',
+			[Lang.Vietnamese]: 'Danh mục sản phẩm xem trước',
 		},
 		plural: {
-			en: 'Products Categories Preview',
-			vi: 'Danh mục sản phẩm xem trước',
+			[Lang.English]: 'Products Categories Preview',
+			[Lang.Vietnamese]: 'Danh mục sản phẩm xem trước',
 		},
 	},
 	fields: [
@@ -26,8 +26,8 @@ export const ProductsCategoryBlockConf: Block = {
 			type: 'relationship',
 			relationTo: [ProductCategoriesSlug, ProductSubCategoriesSlug],
 			label: {
-				en: 'Products Category',
-				vi: 'Danh mục sản phẩm',
+				[Lang.English]: 'Products Category',
+				[Lang.Vietnamese]: 'Danh mục sản phẩm',
 			},
 			required: true,
 		},
@@ -35,8 +35,8 @@ export const ProductsCategoryBlockConf: Block = {
 			name: 'buttonLabel',
 			type: 'text',
 			label: {
-				en: 'Button Label',
-				vi: 'Nhãn nút',
+				[Lang.English]: 'Button Label',
+				[Lang.Vietnamese]: 'Nhãn nút',
 			},
 			localized: true,
 			defaultValue: ProductsCategoryBlockDefaults.buttonLabel,

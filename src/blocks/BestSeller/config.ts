@@ -11,12 +11,12 @@ export const BestSellerBlockConf: Block = {
 	imageURL: '/thumbs/bestseller.avif',
 	labels: {
 		plural: {
-			en: 'Best Sellers',
-			vi: 'Sản phẩm bán chạy',
+			[Lang.English]: 'Best Sellers',
+			[Lang.Vietnamese]: 'Sản phẩm bán chạy',
 		},
 		singular: {
-			en: 'Best Seller',
-			vi: 'Sản phẩm bán chạy',
+			[Lang.English]: 'Best Seller',
+			[Lang.Vietnamese]: 'Sản phẩm bán chạy',
 		},
 	},
 	fields: [
@@ -24,8 +24,8 @@ export const BestSellerBlockConf: Block = {
 			name: 'title',
 			type: 'text',
 			label: {
-				vi: 'Tiêu đề',
-				en: 'Title',
+				[Lang.Vietnamese]: 'Tiêu đề',
+				[Lang.English]: 'Title',
 			},
 			localized: true,
 			defaultValue: defaults.title,
@@ -37,16 +37,16 @@ export const BestSellerBlockConf: Block = {
 			name: 'description',
 			type: 'textarea',
 			label: {
-				vi: 'Mô tả',
-				en: 'Description',
+				[Lang.Vietnamese]: 'Mô tả',
+				[Lang.English]: 'Description',
 			},
 			localized: true,
 		},
 		{
 			name: 'products',
 			label: {
-				vi: 'Sản phẩm',
-				en: 'Products',
+				[Lang.Vietnamese]: 'Sản phẩm',
+				[Lang.English]: 'Products',
 			},
 			type: 'relationship',
 			relationTo: ProductsSlug,

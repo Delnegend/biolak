@@ -10,8 +10,8 @@ export const CheckoutPageGlobalSlug = 'checkoutPageGlobal'
 export const CheckoutPageGlobalConf: GlobalConfig<typeof CheckoutPageGlobalSlug> = {
 	slug: CheckoutPageGlobalSlug,
 	label: {
-		en: 'Checkout Page',
-		vi: 'Trang thanh toán',
+		[Lang.English]: 'Checkout Page',
+		[Lang.Vietnamese]: 'Trang thanh toán',
 	},
 	access: {
 		read: allow(Role.Public),
@@ -24,8 +24,8 @@ export const CheckoutPageGlobalConf: GlobalConfig<typeof CheckoutPageGlobalSlug>
 				{
 					name: 'contacts',
 					label: {
-						en: 'Contacts',
-						vi: 'Thông tin liên hệ',
+						[Lang.English]: 'Contacts',
+						[Lang.Vietnamese]: 'Thông tin liên hệ',
 					},
 					fields: [
 						{
@@ -63,8 +63,8 @@ export const CheckoutPageGlobalConf: GlobalConfig<typeof CheckoutPageGlobalSlug>
 				{
 					name: 'address',
 					label: {
-						en: 'Address',
-						vi: 'Địa chỉ',
+						[Lang.English]: 'Address',
+						[Lang.Vietnamese]: 'Địa chỉ',
 					},
 					fields: [
 						{
@@ -93,7 +93,7 @@ export const CheckoutPageGlobalConf: GlobalConfig<typeof CheckoutPageGlobalSlug>
 							label: false,
 							defaultValue: defaults.address.phoneInputLabel,
 							admin: {
-								placeholder: 'Số điện thoại',
+								placeholder: defaults.address.phoneInputLabel(Lang.Vietnamese),
 							},
 						},
 						{
@@ -151,8 +151,8 @@ export const CheckoutPageGlobalConf: GlobalConfig<typeof CheckoutPageGlobalSlug>
 				{
 					name: 'shipping',
 					label: {
-						en: 'Shipping',
-						vi: 'Vận chuyển',
+						[Lang.English]: 'Shipping',
+						[Lang.Vietnamese]: 'Vận chuyển',
 					},
 					fields: [
 						{
@@ -190,8 +190,8 @@ export const CheckoutPageGlobalConf: GlobalConfig<typeof CheckoutPageGlobalSlug>
 				{
 					name: 'payment',
 					label: {
-						en: 'Payment',
-						vi: 'Thanh toán',
+						[Lang.English]: 'Payment',
+						[Lang.Vietnamese]: 'Thanh toán',
 					},
 					fields: [
 						{
@@ -229,8 +229,8 @@ export const CheckoutPageGlobalConf: GlobalConfig<typeof CheckoutPageGlobalSlug>
 				{
 					name: 'gift',
 					label: {
-						en: 'Gift',
-						vi: 'Quà tặng',
+						[Lang.English]: 'Gift',
+						[Lang.Vietnamese]: 'Quà tặng',
 					},
 					fields: [
 						{
@@ -278,8 +278,8 @@ export const CheckoutPageGlobalConf: GlobalConfig<typeof CheckoutPageGlobalSlug>
 				{
 					name: 'order',
 					label: {
-						en: 'Order',
-						vi: 'Đơn hàng',
+						[Lang.English]: 'Order',
+						[Lang.Vietnamese]: 'Đơn hàng',
 					},
 					fields: [
 						{
@@ -297,8 +297,8 @@ export const CheckoutPageGlobalConf: GlobalConfig<typeof CheckoutPageGlobalSlug>
 				{
 					name: 'discount',
 					label: {
-						en: 'Discount',
-						vi: 'Giảm giá',
+						[Lang.English]: 'Discount',
+						[Lang.Vietnamese]: 'Giảm giá',
 					},
 					fields: [
 						{
@@ -336,8 +336,8 @@ export const CheckoutPageGlobalConf: GlobalConfig<typeof CheckoutPageGlobalSlug>
 				{
 					name: 'orderSummary',
 					label: {
-						en: 'Order Summary',
-						vi: 'Tóm tắt đơn hàng',
+						[Lang.English]: 'Order Summary',
+						[Lang.Vietnamese]: 'Tóm tắt đơn hàng',
 					},
 					fields: [
 						{

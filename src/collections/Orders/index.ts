@@ -1,6 +1,7 @@
 import { CollectionConfig } from 'payload'
 
 import { allow, Role } from '@/access/allow'
+import { Lang } from '@/utilities/lang'
 import { tryCatch } from '@/utilities/tryCatch'
 
 import { CustomersSlug } from '../Customers/slug'
@@ -11,12 +12,12 @@ export const OrdersCollection: CollectionConfig<typeof OrdersSlug> = {
 	slug: OrdersSlug,
 	labels: {
 		singular: {
-			en: 'Orders',
-			vi: 'Đơn hàng',
+			[Lang.English]: 'Orders',
+			[Lang.Vietnamese]: 'Đơn hàng',
 		},
 		plural: {
-			en: 'Orders',
-			vi: 'Đơn hàng',
+			[Lang.English]: 'Orders',
+			[Lang.Vietnamese]: 'Đơn hàng',
 		},
 	},
 	access: {
@@ -30,8 +31,8 @@ export const OrdersCollection: CollectionConfig<typeof OrdersSlug> = {
 			name: 'review',
 			type: 'group',
 			label: {
-				en: 'Review',
-				vi: 'Đánh giá',
+				[Lang.English]: 'Review',
+				[Lang.Vietnamese]: 'Đánh giá',
 			},
 			access: {
 				create: allow(Role.Admin, Role.SalesManager, Role.ContentManager),
@@ -43,8 +44,8 @@ export const OrdersCollection: CollectionConfig<typeof OrdersSlug> = {
 					name: 'rating',
 					type: 'number',
 					label: {
-						en: 'Rating (1-5)',
-						vi: 'Đánh giá (1-5)',
+						[Lang.English]: 'Rating (1-5)',
+						[Lang.Vietnamese]: 'Đánh giá (1-5)',
 					},
 					min: 1,
 					max: 5,
@@ -57,8 +58,8 @@ export const OrdersCollection: CollectionConfig<typeof OrdersSlug> = {
 					name: 'content',
 					type: 'textarea',
 					label: {
-						en: 'Content',
-						vi: 'Nội dung',
+						[Lang.English]: 'Content',
+						[Lang.Vietnamese]: 'Nội dung',
 					},
 					access: {
 						update: allow(Role.NoOne),
@@ -69,8 +70,8 @@ export const OrdersCollection: CollectionConfig<typeof OrdersSlug> = {
 					name: 'approved',
 					type: 'checkbox',
 					label: {
-						en: 'Approved',
-						vi: 'Đã duyệt',
+						[Lang.English]: 'Approved',
+						[Lang.Vietnamese]: 'Đã duyệt',
 					},
 					access: {
 						update: allow(Role.Admin, Role.SalesManager, Role.ContentManager),
@@ -84,8 +85,8 @@ export const OrdersCollection: CollectionConfig<typeof OrdersSlug> = {
 			type: 'relationship',
 			relationTo: ProductsSlug,
 			label: {
-				en: 'Product',
-				vi: 'Sản phẩm',
+				[Lang.English]: 'Product',
+				[Lang.Vietnamese]: 'Sản phẩm',
 			},
 			required: true,
 		},
@@ -94,8 +95,8 @@ export const OrdersCollection: CollectionConfig<typeof OrdersSlug> = {
 			type: 'relationship',
 			relationTo: CustomersSlug,
 			label: {
-				en: 'Customer',
-				vi: 'Khách hàng',
+				[Lang.English]: 'Customer',
+				[Lang.Vietnamese]: 'Khách hàng',
 			},
 			required: true,
 		},

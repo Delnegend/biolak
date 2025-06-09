@@ -1,6 +1,7 @@
 import type { ArrayField, Field } from 'payload'
 
 import deepMerge from '@/utilities/deepMerge'
+import { Lang } from '@/utilities/lang'
 
 import { link } from './link'
 
@@ -12,12 +13,12 @@ export const linkGroup: LinkGroupType = ({ overrides = {} } = {}) => {
 		type: 'array',
 		labels: {
 			plural: {
-				en: 'Links',
-				vi: 'Liên kết',
+				[Lang.English]: 'Links',
+				[Lang.Vietnamese]: 'Liên kết',
 			},
 			singular: {
-				en: 'Link',
-				vi: 'Liên kết',
+				[Lang.English]: 'Link',
+				[Lang.Vietnamese]: 'Liên kết',
 			},
 		},
 		fields: [link()],
