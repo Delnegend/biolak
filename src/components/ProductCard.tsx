@@ -1,5 +1,4 @@
 import { CirclePlus } from 'lucide-react'
-import Image from 'next/image'
 import Link from 'next/link'
 
 import { Product } from '@/payload-types'
@@ -9,6 +8,7 @@ import { Lang } from '@/utilities/lang'
 import { matchLang } from '@/utilities/matchLang'
 import { cn } from '@/utilities/ui'
 
+import { HeadlessImage } from './Media/HeadlessImage'
 import { Button } from './ui/button'
 
 export async function ProductCard({
@@ -31,8 +31,8 @@ export async function ProductCard({
 	component?: React.ElementType
 }): Promise<React.JSX.Element> {
 	const Comp = component ?? 'div'
-	const img = p.gallery?.[0] && typeof p.gallery[0] === 'object' ? p.gallery[0] : null
 	const locale = await getClientLang()
+	const priceRange = getPriceRange(p)
 
 	return (
 		<Comp
@@ -49,13 +49,14 @@ export async function ProductCard({
 			}}
 		>
 			<Link href={p.slug ? `/product/${p.slug}` : '#'} style={{ gridArea: 'img' }}>
-				<Image
-					src={img?.url ?? 'https://placehold.co/1000x1000'}
-					alt={`Ảnh sản phẩm ${p.title}`}
-					width={img?.width ?? 1000}
-					height={img?.height ?? 1000}
+				<HeadlessImage
+					media={p.gallery?.[0]}
+					alt={matchLang({
+						[Lang.English]: 'Product image',
+						[Lang.Vietnamese]: 'Hình ảnh sản phẩm',
+					})(locale)}
+					placeholder={{ width: 1000, height: 1000 }}
 					style={{ gridArea: 'img' }}
-					unoptimized={!img}
 					className={cn(
 						'mb-6 rounded-[0.5rem] object-cover',
 						size === 'lg' ? 'h-[28.75rem]' : 'h-[25.875rem]',
@@ -75,17 +76,19 @@ export async function ProductCard({
 				</div>
 			)}
 			<div style={{ gridArea: 'price' }}>
-				{getPriceRange(p) ??
-					matchLang({
-						[Lang.English]: 'Out of stock',
-						[Lang.Vietnamese]: 'Hết hàng',
-					})(locale)}
+				{!!priceRange
+					? priceRange
+					: matchLang({
+							[Lang.English]: 'Out of stock',
+							[Lang.Vietnamese]: 'Hết hàng',
+						})(locale)}
 			</div>
 			<div style={{ gridArea: 'add-to-cart' }}>
 				<Button
 					hideArrow={true}
 					className="group flex size-12 items-center justify-center rounded-[0.5rem] border-[#E7B27E] bg-[#E7B27E] p-0 transition-all hover:border hover:bg-transparent"
 					title="Thêm vào giỏ hàng"
+					disabled={!priceRange}
 				>
 					<CirclePlus className="w-full transition-colors group-hover:text-[#E7B27E]" />
 				</Button>

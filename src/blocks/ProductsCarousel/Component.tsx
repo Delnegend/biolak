@@ -1,13 +1,15 @@
 import { ArrowRight } from 'lucide-react'
 import { Phudu } from 'next/font/google'
-import Image from 'next/image'
 import Link from 'next/link'
 
 import { CMSLink } from '@/components/CMSLink'
+import { HeadlessImage } from '@/components/Media/HeadlessImage'
 import { Button } from '@/components/ui/button'
 import { Carousel, CarouselContent, CarouselItem } from '@/components/ui/carousel'
 import type { ProductsCarouselBlockProps } from '@/payload-types'
 import { getClientLang } from '@/utilities/getClientLang'
+import { Lang } from '@/utilities/lang'
+import { matchLang } from '@/utilities/matchLang'
 import { cn } from '@/utilities/ui'
 
 import { ProductsCarouselBlockDefaults as defaults } from './defaults'
@@ -38,13 +40,18 @@ export async function ProductsCarouselBlock(
 									: undefined
 							return (
 								<CarouselItem key={product.id} className="grid grid-cols-2">
-									<Image
-										src={img?.url ?? 'https://placehold.co/720x880'}
-										alt={img?.alt ?? 'Product Image'}
-										width={img?.width ?? 720}
-										height={img?.height ?? 880}
+									<HeadlessImage
+										media={product.gallery?.[0]}
+										alt={
+											img?.alt ??
+											product.title ??
+											matchLang({
+												[Lang.English]: 'Product Image',
+												[Lang.Vietnamese]: 'Hình ảnh sản phẩm',
+											})(locale)
+										}
+										placeholder={{ width: 720, height: 880 }}
 										className="size-full max-h-[55rem] object-cover"
-										unoptimized={img?.url === undefined}
 									/>
 									<div className="flex flex-col justify-center gap-3 text-balance bg-[#210E0A] px-14 text-[#F1DAAE]">
 										<div className="text-xl font-medium">

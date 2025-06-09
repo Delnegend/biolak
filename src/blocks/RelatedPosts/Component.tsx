@@ -1,11 +1,12 @@
 import { SerializedEditorState } from '@payloadcms/richtext-lexical/lexical'
-import clsx from 'clsx'
 import React from 'react'
 
-import RichText from '@/components/RichText'
 import type { Post } from '@/payload-types'
+import { getClientLang } from '@/utilities/getClientLang'
+import { Lang } from '@/utilities/lang'
+import { matchLang } from '@/utilities/matchLang'
 
-import { Card } from '../../components/Card'
+import { LatestPostsBlock } from '../LatestPosts/Component'
 
 export type RelatedPostsProps = {
 	className?: string
@@ -13,18 +14,17 @@ export type RelatedPostsProps = {
 	introContent?: SerializedEditorState
 }
 
-export function RelatedPosts(props: RelatedPostsProps): React.JSX.Element {
+export async function RelatedPosts(props: RelatedPostsProps): Promise<React.JSX.Element> {
+	const locale = await getClientLang()
+
 	return (
-		<div className={clsx('lg:container', props.className)}>
-			{props.introContent && <RichText data={props.introContent} enableGutter={false} />}
-
-			<div className="grid grid-cols-1 items-stretch gap-4 md:grid-cols-2 md:gap-8">
-				{props.docs?.map((doc, index) => {
-					if (typeof doc === 'string') return null
-
-					return <Card key={index} doc={doc} relationTo="posts" showCategories />
-				})}
-			</div>
-		</div>
+		<LatestPostsBlock
+			posts={props.docs ?? []}
+			blockType="latestPosts"
+			title={matchLang({
+				[Lang.English]: 'Related Posts',
+				[Lang.Vietnamese]: 'Bài viết liên quan',
+			})(locale)}
+		/>
 	)
 }

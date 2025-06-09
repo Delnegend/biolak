@@ -2,7 +2,6 @@
 
 import { X } from 'lucide-react'
 import { Phudu } from 'next/font/google'
-import Image from 'next/image'
 import Link from 'next/link'
 
 import { useCartManager } from '@/hooks/useCartManager'
@@ -12,6 +11,7 @@ import { Lang } from '@/utilities/lang'
 import { matchLang } from '@/utilities/matchLang'
 import { cn } from '@/utilities/ui'
 
+import { HeadlessImage } from './Media/HeadlessImage'
 import { Checkbox } from './ui/checkbox'
 
 const phudu = Phudu({
@@ -63,19 +63,14 @@ export function CartListClient({
 							/>
 						)}
 						<Link href={`/product/${item.slug}`} style={{ gridArea: 'img' }}>
-							<Image
-								src={variantImg?.url ?? 'https://placehold.co/100x100'}
-								alt={
-									variantImg?.alt ??
-									matchLang({
-										[Lang.English]: `${item.variant.title}'s image`,
-										[Lang.Vietnamese]: `Ảnh ${item.variant.title}`,
-									})(locale)
-								}
-								width={variantImg?.width ?? 100}
-								height={variantImg?.height ?? 100}
+							<HeadlessImage
+								media={variantImg}
+								alt={matchLang({
+									[Lang.English]: `${item.variant.title}'s image`,
+									[Lang.Vietnamese]: `Ảnh ${item.variant.title}`,
+								})(locale)}
+								placeholder={{ width: 100, height: 100 }}
 								className="size-[3.75rem] rounded-lg object-cover"
-								unoptimized={!variantImg}
 							/>
 						</Link>
 						<Link

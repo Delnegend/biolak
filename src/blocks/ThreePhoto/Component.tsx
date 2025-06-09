@@ -1,37 +1,40 @@
-import Image from 'next/image'
-
+import { HeadlessImage } from '@/components/Media/HeadlessImage'
 import type { ThreePhotoBlockProps } from '@/payload-types'
+import { getClientLang } from '@/utilities/getClientLang'
+import { Lang } from '@/utilities/lang'
+import { matchLang } from '@/utilities/matchLang'
 
-export function ThreePhotoBlock(props: ThreePhotoBlockProps): React.JSX.Element {
-	const photoLeft = typeof props.photoLeft === 'object' ? props.photoLeft : null
-	const photoRight = typeof props.photoRight === 'object' ? props.photoRight : null
-	const photoCenter = typeof props.photoCenter === 'object' ? props.photoCenter : null
+export async function ThreePhotoBlock(props: ThreePhotoBlockProps): Promise<React.JSX.Element> {
+	const locale = await getClientLang()
 
 	return (
 		<div className="mx-auto my-28 grid w-4/5 max-w-7xl grid-cols-[290fr_620fr_290fr] gap-x-10">
-			<Image
+			<HeadlessImage
+				media={props.photoLeft}
 				className="place-self-center"
-				src={photoLeft?.url ?? 'https://placehold.co/290x442'}
-				alt={photoLeft?.alt ?? 'Left Photo'}
-				width={photoLeft?.width ?? 290}
-				height={photoLeft?.height ?? 442}
-				unoptimized={!photoLeft}
+				placeholder={{ width: 290, height: 442 }}
+				alt={matchLang({
+					[Lang.English]: 'Left Photo',
+					[Lang.Vietnamese]: 'Ảnh bên trái',
+				})(locale)}
 			/>
-			<Image
+			<HeadlessImage
 				className="place-self-center"
-				src={photoCenter?.url ?? 'https://placehold.co/620x725'}
-				alt={photoCenter?.alt ?? 'Center Photo'}
-				width={photoCenter?.width ?? 620}
-				height={photoCenter?.height ?? 725}
-				unoptimized={!photoCenter}
+				media={props.photoCenter}
+				placeholder={{ width: 620, height: 725 }}
+				alt={matchLang({
+					[Lang.English]: 'Center Photo',
+					[Lang.Vietnamese]: 'Ảnh ở giữa',
+				})(locale)}
 			/>
-			<Image
+			<HeadlessImage
 				className="place-self-center"
-				src={photoRight?.url ?? 'https://placehold.co/290x442'}
-				alt={photoRight?.alt ?? 'Right Photo'}
-				width={photoRight?.width ?? 290}
-				height={photoRight?.height ?? 442}
-				unoptimized={!photoRight}
+				media={props.photoRight}
+				placeholder={{ width: 290, height: 442 }}
+				alt={matchLang({
+					[Lang.English]: 'Right Photo',
+					[Lang.Vietnamese]: 'Ảnh bên phải',
+				})(locale)}
 			/>
 		</div>
 	)

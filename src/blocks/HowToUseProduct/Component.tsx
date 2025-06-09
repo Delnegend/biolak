@@ -1,6 +1,5 @@
-import Image from 'next/image'
-
 import { ProductsSlug } from '@/collections/Products/slug'
+import { HeadlessImage } from '@/components/Media/HeadlessImage'
 import RichText from '@/components/RichText'
 import { HowToUseProductBlockProps, Product } from '@/payload-types'
 import { getClientLang } from '@/utilities/getClientLang'
@@ -15,7 +14,6 @@ export async function HowToUseProductBlock(
 	},
 ): Promise<React.JSX.Element> {
 	const locale = await getClientLang()
-	const img = typeof props.image === 'object' ? props.image : null
 
 	const p =
 		typeof props[ProductsSlug] === 'object' && !!props[ProductsSlug]
@@ -40,18 +38,13 @@ export async function HowToUseProductBlock(
 		<div className="relative grid min-h-[50dvw] grid-cols-2">
 			<div />
 			<div className="absolute inset-0 z-0">
-				<Image
-					src={img?.url ?? 'https://placehold.co/1000x1000'}
-					alt={
-						img?.alt ??
-						matchLang({
-							[Lang.English]: 'How to use product background image',
-							[Lang.Vietnamese]: 'Hình nền hướng dẫn sử dụng sản phẩm',
-						})(locale)
-					}
-					width={img?.width ?? 1000}
-					height={img?.height ?? 1000}
-					unoptimized={!img}
+				<HeadlessImage
+					media={props.image}
+					alt={matchLang({
+						[Lang.English]: 'How to use product background image',
+						[Lang.Vietnamese]: 'Hình nền hướng dẫn sử dụng sản phẩm',
+					})(locale)}
+					placeholder={{ width: 1000, height: 1000 }}
 					className="h-full w-1/2 overflow-hidden object-cover"
 				/>
 			</div>

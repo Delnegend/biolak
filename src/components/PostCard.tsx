@@ -1,11 +1,14 @@
-import Image from 'next/image'
 import Link from 'next/link'
 
 import { Post } from '@/payload-types'
+import { getClientLang } from '@/utilities/getClientLang'
+import { Lang } from '@/utilities/lang'
+import { matchLang } from '@/utilities/matchLang'
 
-export function PostCard({ post }: { post: Post }): React.JSX.Element {
-	const img = post.heroImage && typeof post.heroImage === 'object' ? post.heroImage : null
+import { HeadlessImage } from './Media/HeadlessImage'
 
+export async function PostCard({ post }: { post: Post }): Promise<React.JSX.Element> {
+	const locale = await getClientLang()
 	const author = typeof post.authors?.[0] === 'object' ? post.authors[0] : null
 	const lastModified = typeof post.updatedAt === 'string' ? new Date(post.updatedAt) : new Date()
 	const lastModifiedStr = `${lastModified.getDate().toString().padStart(2, '0')}.${lastModified.getMonth().toString().padStart(2, '0')}.${lastModified.getFullYear().toString().slice(2)}`
@@ -13,13 +16,14 @@ export function PostCard({ post }: { post: Post }): React.JSX.Element {
 	return (
 		<div className="max-w-[25rem]">
 			<Link href={`/post/${post.slug}`}>
-				<Image
-					src={img?.url || 'https://placehold.co/460x400'}
-					alt={img?.alt || ''}
-					width={img?.width || 0}
-					height={img?.height || 0}
+				<HeadlessImage
+					media={post.meta?.meta?.image}
+					alt={matchLang({
+						[Lang.English]: 'Post hero image',
+						[Lang.Vietnamese]: 'Hình ảnh bài viết',
+					})(locale)}
+					placeholder={{ width: 460, height: 400 }}
 					className="h-[25rem] w-[28.75rem] rounded-[0.5rem] object-cover"
-					unoptimized={!img}
 				/>
 			</Link>
 

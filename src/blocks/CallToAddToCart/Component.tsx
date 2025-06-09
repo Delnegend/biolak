@@ -1,6 +1,5 @@
-import Image from 'next/image'
-
 import { ProductsSlug } from '@/collections/Products/slug'
+import { HeadlessImage } from '@/components/Media/HeadlessImage'
 import RichText from '@/components/RichText'
 import { CallToAddToCartBlockProps, Product } from '@/payload-types'
 import { getClientLang } from '@/utilities/getClientLang'
@@ -16,8 +15,6 @@ export async function CallToAddToCartBlock(
 	},
 ): Promise<React.JSX.Element> {
 	const locale = await getClientLang()
-
-	const img = props.image && typeof props.image === 'object' ? props.image : null
 	const p =
 		typeof props[ProductsSlug] === 'object' && !!props[ProductsSlug]
 			? props[ProductsSlug]
@@ -34,18 +31,13 @@ export async function CallToAddToCartBlock(
 
 	return (
 		<div className="safe-width my-28 flex !max-w-[50rem] flex-col items-center text-primary">
-			<Image
-				src={img?.url ?? 'https://placehold.co/600x600'}
-				alt={
-					img?.alt ??
-					matchLang({
-						[Lang.English]: 'Background image for call to add to cart button',
-						[Lang.Vietnamese]: 'Hình nền cho nút thêm vào giỏ hàng',
-					})(locale)
-				}
-				width={img?.width ?? 600}
-				height={img?.height ?? 600}
-				unoptimized={!img}
+			<HeadlessImage
+				media={props.image}
+				alt={matchLang({
+					[Lang.English]: 'Background image for call to add to cart button',
+					[Lang.Vietnamese]: 'Hình nền cho nút thêm vào giỏ hàng',
+				})(locale)}
+				placeholder={{ width: 600, height: 600 }}
 				className="aspect-square size-full max-w-[38rem] rounded-full object-cover"
 			/>
 			{props.content && (

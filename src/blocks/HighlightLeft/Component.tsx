@@ -1,19 +1,23 @@
-import Image from 'next/image'
-
+import { HeadlessImage } from '@/components/Media/HeadlessImage'
 import { HighlightLeftBlockProps } from '@/payload-types'
+import { getClientLang } from '@/utilities/getClientLang'
+import { Lang } from '@/utilities/lang'
+import { matchLang } from '@/utilities/matchLang'
 
-export function HighlightLeftBlock(props: HighlightLeftBlockProps): React.JSX.Element {
-	const img = props.image && typeof props.image === 'object' ? props.image : null
+export async function HighlightLeftBlock(
+	props: HighlightLeftBlockProps,
+): Promise<React.JSX.Element> {
+	const locale = await getClientLang()
 
 	return (
 		<div className="safe-width my-28 grid grid-cols-[25rem_1fr] gap-[7rem] text-primary">
 			<div>
-				<Image
-					src={img?.url ?? 'https://placehold.co/1000x1000'}
-					width={img?.width ?? 1000}
-					height={img?.height ?? 1000}
-					alt={img?.alt ?? 'Placeholder'}
-					unoptimized={!img}
+				<HeadlessImage
+					media={props.image}
+					alt={matchLang({
+						[Lang.English]: 'Highlight left image',
+						[Lang.Vietnamese]: 'Hình ảnh nổi bật bên trái',
+					})(locale)}
 					className="aspect-square size-[25rem] overflow-hidden rounded-full object-cover"
 				/>
 				<div className="relative mt-28 text-center text-5xl">

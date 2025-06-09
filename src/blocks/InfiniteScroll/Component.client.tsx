@@ -1,9 +1,9 @@
 'use client'
 import './style.scss'
 
-import Image from 'next/image'
 import { useEffect, useRef, useState } from 'react'
 
+import { HeadlessImage } from '@/components/Media/HeadlessImage'
 import { useClientLang } from '@/hooks/useClientLang'
 import { Media } from '@/payload-types'
 import { Lang } from '@/utilities/lang'
@@ -60,19 +60,14 @@ export function InfiniteScrollBlockCC(props: {
 		>
 			<div className="flex flex-row overflow-x-visible">
 				{Array.from({ length: renderCount }).map((_, i) => (
-					<Image
+					<HeadlessImage
 						key={i}
-						src={props.graphic?.url ?? 'https://placehold.co/1000x100'}
-						alt={
-							props.graphic?.alt ??
-							matchLang({
-								[Lang.English]: 'Infinite scroll banner image',
-								[Lang.Vietnamese]: 'Hình ảnh băng chuyền vô tận',
-							})(locale)
-						}
-						width={props.graphic?.width ?? 1000}
-						height={props.graphic?.height ?? 100}
-						unoptimized={props.graphic?.mimeType === 'image/svg+xml' || !props.graphic?.url}
+						media={props.graphic}
+						alt={matchLang({
+							[Lang.English]: 'Infinite scroll banner image',
+							[Lang.Vietnamese]: 'Hình ảnh băng chuyền vô tận',
+						})(locale)}
+						placeholder={{ width: 1000, height: 100 }}
 					/>
 				))}
 			</div>

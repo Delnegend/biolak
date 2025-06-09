@@ -1,6 +1,5 @@
 'use client'
 import { AnimatePresence, motion, Variants } from 'motion/react'
-import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { PaginatedDocs } from 'payload'
@@ -8,6 +7,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import { toast } from 'sonner'
 
 import { GetProductsBySubCategorySlug } from '@/app/api/sub-category/[slug]/route'
+import { HeadlessImage } from '@/components/Media/HeadlessImage'
 import { useClientLang } from '@/hooks/useClientLang'
 import { Product, ProductCategory, ProductSubCategory } from '@/payload-types'
 import { getPriceRange } from '@/utilities/getPriceRange'
@@ -320,11 +320,6 @@ export function INTERNAL_ProductsDropdownClient({
 											})(locale)}
 									</DropdownLabel>
 									{activeProducts?.map((product, index) => {
-										const icon =
-											product.icon && typeof product.icon === 'object'
-												? product.icon
-												: null
-
 										return (
 											<motion.button
 												key={product.slug}
@@ -368,18 +363,13 @@ export function INTERNAL_ProductsDropdownClient({
 																[Lang.Vietnamese]: 'Hết hàng',
 															})(locale)}
 													</div>
-													<Image
-														src={icon?.url ?? 'https://placehold.co/200x200'}
-														alt={
-															icon?.alt ??
-															matchLang({
-																[Lang.English]: 'Product Icon',
-																[Lang.Vietnamese]: 'Biểu tượng sản phẩm',
-															})(locale)
-														}
-														width={icon?.width ?? 200}
-														height={icon?.height ?? 200}
-														unoptimized={!icon}
+													<HeadlessImage
+														media={product.icon}
+														alt={matchLang({
+															[Lang.English]: 'Product Icon',
+															[Lang.Vietnamese]: 'Biểu tượng sản phẩm',
+														})(locale)}
+														placeholder={{ width: 200, height: 200 }}
 														className="size-[5.25rem] object-contain"
 														style={{ gridArea: 'image' }}
 													/>
