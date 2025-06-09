@@ -11,6 +11,7 @@ import { defaultLexical } from '@/fields/defaultLexical'
 
 import { ContactFormSubmissionsCollection } from './collections/ContactFormSubmissions'
 import { CustomersCollection } from './collections/Customers'
+import { DiscountCodesCollection } from './collections/DiscountCode'
 import { MediaCollection } from './collections/Media'
 import { OrdersCollection } from './collections/Orders'
 import { PagesCollection } from './collections/Pages'
@@ -82,6 +83,7 @@ export default buildConfig({
 	collections: [
 		CustomersCollection,
 		ContactFormSubmissionsCollection,
+		DiscountCodesCollection,
 		MediaCollection,
 		PagesCollection,
 		PostCategoriesCollection,
