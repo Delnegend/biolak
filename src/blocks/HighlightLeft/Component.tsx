@@ -1,14 +1,13 @@
 import { HeadlessImage } from '@/components/Media/HeadlessImage'
 import { HighlightLeftBlockProps } from '@/payload-types'
-import { getClientLang } from '@/utilities/getClientLang'
 import { Lang } from '@/utilities/lang'
 import { matchLang } from '@/utilities/matchLang'
 
-export async function HighlightLeftBlock(
-	props: HighlightLeftBlockProps,
-): Promise<React.JSX.Element> {
-	const locale = await getClientLang()
-
+export function HighlightLeftBlock(
+	props: HighlightLeftBlockProps & {
+		__locale?: Lang
+	},
+): React.JSX.Element {
 	return (
 		<div className="safe-width my-28 grid grid-cols-[25rem_1fr] gap-[7rem] text-primary">
 			<div>
@@ -17,7 +16,7 @@ export async function HighlightLeftBlock(
 					alt={matchLang({
 						[Lang.English]: 'Highlight left image',
 						[Lang.Vietnamese]: 'Hình ảnh nổi bật bên trái',
-					})(locale)}
+					})(props.__locale)}
 					className="aspect-square size-[25rem] overflow-hidden rounded-full object-cover"
 				/>
 				<div className="relative mt-28 text-center text-5xl">

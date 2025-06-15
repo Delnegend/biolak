@@ -2,7 +2,7 @@ import { DM_Sans } from 'next/font/google'
 
 import { HeadlessImage } from '@/components/Media/HeadlessImage'
 import { CertificatesBlockProps } from '@/payload-types'
-import { getClientLang } from '@/utilities/getClientLang'
+import { Lang } from '@/utilities/lang'
 import { cn } from '@/utilities/ui'
 
 import { CertificatesBlockDefaults as defaults } from './defaults'
@@ -12,12 +12,15 @@ const dmsans = DM_Sans({
 	weight: ['400'],
 })
 
-export async function CertificatesBlock(props: CertificatesBlockProps): Promise<React.JSX.Element> {
-	const locale = await getClientLang()
+export function CertificatesBlock(
+	props: CertificatesBlockProps & {
+		__locale?: Lang
+	},
+): React.JSX.Element {
 	return (
 		<div className="flex w-full flex-col items-center justify-center border-t border-black py-16">
 			<div className="mb-16 text-balance text-center font-serif text-5xl font-bold text-primary">
-				{props.title ?? defaults.title(locale)}
+				{props.title ?? defaults.title(props.__locale)}
 			</div>
 			<div className="grid w-5/6 max-w-7xl grid-cols-3 gap-6">
 				{props.organizations?.map((org, index) => {

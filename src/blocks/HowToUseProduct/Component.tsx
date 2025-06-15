@@ -2,19 +2,17 @@ import { ProductsSlug } from '@/collections/Products/slug'
 import { HeadlessImage } from '@/components/Media/HeadlessImage'
 import RichText from '@/components/RichText'
 import { HowToUseProductBlockProps, Product } from '@/payload-types'
-import { getClientLang } from '@/utilities/getClientLang'
 import { Lang } from '@/utilities/lang'
 import { matchLang } from '@/utilities/matchLang'
 
 import { HowToUseProductBlockDefaults as defaults } from './defaults'
 
-export async function HowToUseProductBlock(
+export function HowToUseProductBlock(
 	props: HowToUseProductBlockProps & {
 		__product?: Product | null
+		__locale?: Lang
 	},
-): Promise<React.JSX.Element> {
-	const locale = await getClientLang()
-
+): React.JSX.Element {
 	const p =
 		typeof props[ProductsSlug] === 'object' && !!props[ProductsSlug]
 			? props[ProductsSlug]
@@ -43,7 +41,7 @@ export async function HowToUseProductBlock(
 					alt={matchLang({
 						[Lang.English]: 'How to use product background image',
 						[Lang.Vietnamese]: 'Hình nền hướng dẫn sử dụng sản phẩm',
-					})(locale)}
+					})(props.__locale)}
 					placeholder={{ width: 1000, height: 1000 }}
 					className="h-full w-1/2 overflow-hidden object-cover"
 				/>
@@ -51,7 +49,7 @@ export async function HowToUseProductBlock(
 			<div className='text-primary" flex size-full flex-col justify-center p-[7rem]'>
 				{!!subtitle && <div className="text-xl font-medium">{subtitle}</div>}
 				<div className="mb-4 mt-1 font-serif text-5xl font-medium">
-					{props.title ?? defaults.title(locale)}
+					{props.title ?? defaults.title(props.__locale)}
 				</div>
 				<RichText className="compact" data={props.content} enableGutter={false} />
 			</div>

@@ -6,6 +6,7 @@ import { ContentBlock } from '@/blocks/Content/Component'
 import { FormBlock } from '@/blocks/Form/Component'
 import { MediaBlockComponent } from '@/blocks/MediaBlock/Component'
 import type { Page, Post, PostCategory, Product } from '@/payload-types'
+import { getClientLang } from '@/utilities/getClientLang'
 
 import { ArchiveBlockConf } from './ArchiveBlock/config'
 import { BannerBlock } from './Banner/Component'
@@ -84,7 +85,7 @@ const blockComponents = {
 	[ThreePhotoBlockConf.slug]: ThreePhotoBlock,
 }
 
-export function RenderBlocks({
+export async function RenderBlocks({
 	blocks,
 	product,
 	// TODO: might need these in the future
@@ -95,10 +96,12 @@ export function RenderBlocks({
 	product?: Product | null
 	post?: Post | null
 	postCategory?: PostCategory | null
-}): React.JSX.Element {
+}): Promise<React.JSX.Element> {
 	if (!(blocks && Array.isArray(blocks) && blocks.length > 0)) {
 		return <></>
 	}
+
+	const locale = await getClientLang()
 
 	return (
 		<>
@@ -114,8 +117,17 @@ export function RenderBlocks({
 				}
 
 				return (
-					// @ts-expect-error there may be some mismatch between the expected types here
-					<BlockToRender {...block} key={index} disableInnerContainer __product={product} />
+					<BlockToRender
+						{...block}
+						// @ts-expect-error there may be some mismatch between the expected types here
+						key={index}
+						// @ts-expect-error same
+						disableInnerContainer
+						// @ts-expect-error same
+						__product={product}
+						// @ts-expect-error same
+						locale={locale}
+					/>
 				)
 			})}
 		</>

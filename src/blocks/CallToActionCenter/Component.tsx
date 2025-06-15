@@ -6,14 +6,15 @@ import RichText from '@/components/RichText'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import type { CallToActionCenterBlockProps } from '@/payload-types'
-import { getClientLang } from '@/utilities/getClientLang'
+import { Lang } from '@/utilities/lang'
 
 import { CallToActionCenterBlockDefaults as defaults } from './defaults'
 
-export async function CallToActionCenterBlock(
-	props: CallToActionCenterBlockProps,
-): Promise<React.JSX.Element> {
-	const locale = await getClientLang()
+export function CallToActionCenterBlock(
+	props: CallToActionCenterBlockProps & {
+		__locale?: Lang
+	},
+): React.JSX.Element {
 	const bgUrl =
 		props.background && typeof props.background === 'object' && props.background.url
 			? props.background.url
@@ -57,7 +58,7 @@ export async function CallToActionCenterBlock(
 							className="grid"
 							{...props.link}
 							type={props.link?.type ?? undefined}
-							label={props.link?.label ?? defaults.buttonLabel(locale)}
+							label={props.link?.label ?? defaults.buttonLabel(props.__locale)}
 						>
 							<ArrowRight />
 						</CMSLink>

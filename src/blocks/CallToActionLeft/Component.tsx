@@ -5,14 +5,15 @@ import { CMSLink } from '@/components/CMSLink'
 import RichText from '@/components/RichText'
 import { Button } from '@/components/ui/button'
 import type { CallToActionLeftBlockProps } from '@/payload-types'
-import { getClientLang } from '@/utilities/getClientLang'
+import { Lang } from '@/utilities/lang'
 
 import { CallToActionLeftBlockDefaults as defaults } from './defaults'
 
-export async function CallToActionLeftBlock(
-	props: CallToActionLeftBlockProps,
-): Promise<React.JSX.Element> {
-	const locale = await getClientLang()
+export function CallToActionLeftBlock(
+	props: CallToActionLeftBlockProps & {
+		__locale?: Lang
+	},
+): React.JSX.Element {
 	const bgUrl =
 		props.background && typeof props.background === 'object' && props.background.url
 			? props.background.url
@@ -43,7 +44,7 @@ export async function CallToActionLeftBlock(
 						<CMSLink
 							{...props.link}
 							type={props.link.type ?? undefined}
-							label={props.link.label ?? defaults.buttonLabel(locale)}
+							label={props.link.label ?? defaults.buttonLabel(props.__locale)}
 						>
 							<ArrowRight />
 						</CMSLink>

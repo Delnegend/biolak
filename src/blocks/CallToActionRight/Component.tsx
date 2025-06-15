@@ -8,7 +8,6 @@ import RichText from '@/components/RichText'
 import { Button } from '@/components/ui/button'
 import { Carousel, CarouselContent, CarouselItem } from '@/components/ui/carousel'
 import type { CallToActionRightBlockProps } from '@/payload-types'
-import { getClientLang } from '@/utilities/getClientLang'
 import { Lang } from '@/utilities/lang'
 import { matchLang } from '@/utilities/matchLang'
 import { cn } from '@/utilities/ui'
@@ -17,11 +16,11 @@ import { CallToActionRightBlockDefaults as defaults } from './defaults'
 
 const phudu = Phudu({ subsets: ['vietnamese'], weight: ['400', '600'] })
 
-export async function CallToActionRightBlock(
-	props: CallToActionRightBlockProps,
-): Promise<React.JSX.Element> {
-	const locale = await getClientLang()
-
+export function CallToActionRightBlock(
+	props: CallToActionRightBlockProps & {
+		__locale?: Lang
+	},
+): React.JSX.Element {
 	return (
 		<div className="safe-width flex h-[48rem] justify-between bg-background">
 			<Carousel opts={{ dragFree: true }} className="place-self-center">
@@ -34,7 +33,7 @@ export async function CallToActionRightBlock(
 									alt={matchLang({
 										[Lang.English]: `${item.title} product image`,
 										[Lang.Vietnamese]: `Ảnh sản phẩm ${item.title}`,
-									})(locale)}
+									})(props.__locale)}
 									placeholder={{ width: 380, height: 460 }}
 									className="mb-4 h-[28.75rem] w-[23.75rem] rounded-[0.5rem] object-cover"
 								/>
@@ -75,7 +74,7 @@ export async function CallToActionRightBlock(
 					<CMSLink
 						{...props.link}
 						type={props.link.type ?? undefined}
-						label={props.link.label ?? defaults.buttonLabel(locale)}
+						label={props.link.label ?? defaults.buttonLabel(props.__locale)}
 					>
 						<ArrowRight />
 					</CMSLink>
