@@ -9,6 +9,7 @@ import { ProductSubCategoriesSlug } from '@/collections/ProductSubCategories/slu
 import { ProductCard } from '@/components/ProductCard'
 import { Carousel, CarouselContent, CarouselItem } from '@/components/ui/carousel'
 import { ProductsCategoryBlockProps } from '@/payload-types'
+import { tryCatch } from '@/utilities/tryCatch'
 import { cn } from '@/utilities/ui'
 
 const phudu = Phudu({
@@ -20,10 +21,22 @@ export async function ProductsCategoryBlock(
 ): Promise<React.JSX.Element> {
 	const category = typeof props.category.value === 'object' ? props.category.value : null
 
-	const payload = await getPayload({ config: configPromise })
+	const {
+		data: payload,
+		ok: payloadOk,
+		error: payloadErr,
+	} = await tryCatch(() => getPayload({ config: configPromise }))
+	if (!payloadOk) {
+		throw new Error(`ProductsCategoryBlock: Error getting payload client: ${payloadErr}`)
+	}
+
 	let products
-	try {
-		products = await payload.find({
+	const {
+		data: productFromCategory,
+		ok: productFromCategoryOk,
+		error: productFromCategoryErr,
+	} = await tryCatch(() =>
+		payload.find({
 			collection: ProductsSlug,
 			overrideAccess: false,
 			where: {
@@ -31,16 +44,22 @@ export async function ProductsCategoryBlock(
 					equals: category?.slug,
 				},
 			},
-		})
-	} catch (e) {
+		}),
+	)
+	if (!productFromCategoryOk) {
 		throw new Error(
-			`ProductsCategoryBlock: Error loading products for category ${category?.slug}: ${e}`,
+			`ProductsCategoryBlock: Error loading products for category ${category?.slug}: ${productFromCategoryErr}`,
 		)
 	}
+	products = productFromCategory
 
 	if (products.docs.length === 0) {
-		try {
-			products = await payload.find({
+		const {
+			data: productFromSubCategory,
+			ok: productFromSubCategoryOk,
+			error: productFromSubCategoryErr,
+		} = await tryCatch(() =>
+			payload.find({
 				collection: ProductsSlug,
 				overrideAccess: false,
 				where: {
@@ -48,12 +67,14 @@ export async function ProductsCategoryBlock(
 						equals: category?.slug,
 					},
 				},
-			})
-		} catch (e) {
+			}),
+		)
+		if (!productFromSubCategoryOk) {
 			throw new Error(
-				`ProductsCategoryBlock: Error loading products for sub category ${category?.slug}: ${e}`,
+				`ProductsCategoryBlock: Error loading products for sub category ${category?.slug}: ${productFromSubCategoryErr}`,
 			)
 		}
+		products = productFromSubCategory
 	}
 
 	return (
