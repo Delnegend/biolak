@@ -26,7 +26,7 @@ function CartContentWithData(): React.JSX.Element {
 
 	return (
 		<div className="flex h-[calc(100%-6rem)] flex-col justify-between gap-10">
-			<CartListClient />
+			<CartListClient locale={locale} showCheckbox={true} />
 
 			<SheetFooter>
 				<div
@@ -114,6 +114,7 @@ export function INTERNAL_CartSidebar({
 		syncWithLocalStorage: true,
 	})
 	const [open, setOpen] = useState(false)
+	const cartProductCount = cart.map((item) => item.quantity).reduce((prev, curr) => prev + curr, 0)
 
 	return (
 		<Sheet open={open} onOpenChange={setOpen}>
@@ -125,9 +126,10 @@ export function INTERNAL_CartSidebar({
 				>
 					{label ??
 						matchLang({ [Lang.English]: 'Cart', [Lang.Vietnamese]: 'Giỏ hàng' })(locale)}
-					{cart.length > 0 && (
+
+					{cartProductCount > 0 && (
 						<div className="absolute -top-2 right-0 flex aspect-square size-7 items-center justify-center overflow-hidden rounded-full bg-[#FF8200] text-base text-primary">
-							{cart.map((item) => item.quantity).reduce((prev, curr) => prev + curr, 0)}
+							{cartProductCount}
 						</div>
 					)}
 				</Button>
