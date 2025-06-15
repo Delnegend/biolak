@@ -1,24 +1,51 @@
 'use client'
 
+import { PaginatedDocs } from 'payload'
+import { stringify } from 'qs-esm'
 import { createContext, useContext, useEffect, useState } from 'react'
+import { z } from 'zod/v4'
 
+import { ProductsSlug } from '@/collections/Products/slug'
 import { type Product } from '@/payload-types'
-import { tryCatchSync } from '@/utilities/tryCatch'
+import { tryCatch, tryCatchSync } from '@/utilities/tryCatch'
 
-export type BasicProduct = {
-	slug: Product['slug']
-	title: Product['title']
-	variant: NonNullable<Product['variants']>[number]
-}
+const ProductInCartInLocalStorageSchema = z.object({
+	product: z.object({
+		id: z.number(),
+		title: z.string().optional().default(''),
+		slug: z.string().optional().default(''),
+	}),
+	variant: z.object({
+		sku: z.string(),
+		title: z.string(),
+		price: z.number().min(0),
+		image: z.any().optional().nullable(),
+	}),
+	quantity: z.number().min(1),
+	checked: z.boolean().optional().default(true),
+	disabled: z.boolean().optional().default(false),
+})
 
-export type BasicProductInCart = BasicProduct & {
+export interface ProductInCart {
+	product: {
+		id: Product['id']
+		title: Product['title']
+		slug?: Product['slug']
+	}
+	variant: {
+		sku: Product['variants'][number]['sku']
+		title: Product['variants'][number]['title']
+		price: Product['variants'][number]['price']
+		image?: Product['variants'][number]['image']
+	}
 	quantity: number
-	checked: boolean
+	checked?: boolean
+	disabled?: boolean
 }
 
 const CartContext = createContext<{
-	cart: BasicProductInCart[]
-	setCart: React.Dispatch<React.SetStateAction<BasicProductInCart[]>>
+	cart: ProductInCart[]
+	setCart: React.Dispatch<React.SetStateAction<ProductInCart[]>>
 } | null>(null)
 
 export function CartContextProvider({
@@ -26,7 +53,7 @@ export function CartContextProvider({
 }: {
 	children: React.ReactNode
 }): React.JSX.Element {
-	const [cart, setCart] = useState<BasicProductInCart[]>([])
+	const [cart, setCart] = useState<ProductInCart[]>([])
 	return <CartContext.Provider value={{ cart, setCart }}>{children}</CartContext.Provider>
 }
 
@@ -45,19 +72,12 @@ export function useCartManager({
 	}
 
 	const { cart, setCart: setCart_ } = cartCtx
-	function setCart(
-		newCart: BasicProductInCart[] | ((prev: BasicProductInCart[]) => BasicProductInCart[]),
-	) {
-		if (typeof newCart === 'function') {
-			setCart_((prev) => {
-				const tmp = newCart(prev)
-				if (syncWithLocalStorage) localStorage.setItem(cartKey, JSON.stringify(tmp))
-				return tmp
-			})
-		} else {
-			setCart_(newCart)
-			if (syncWithLocalStorage) localStorage.setItem(cartKey, JSON.stringify(newCart))
-		}
+	function setCart(newCart: (prev: ProductInCart[]) => ProductInCart[]) {
+		setCart_((prev) => {
+			const tmp = newCart(prev)
+			if (syncWithLocalStorage) localStorage.setItem(cartKey, JSON.stringify(tmp))
+			return tmp
+		})
 	}
 
 	useEffect(() => {
@@ -65,12 +85,134 @@ export function useCartManager({
 			setLoadedFromLocalStorageDone(true)
 			return
 		}
-		const { ok, data: parsedCart } = tryCatchSync(
-			() => JSON.parse(localStorage.getItem(cartKey) || '[]') as BasicProductInCart[],
+
+		const { ok, data: parsedUnvalidated } = tryCatchSync(() =>
+			JSON.parse(localStorage.getItem(cartKey) || '[]'),
 		)
-		if (ok && Array.isArray(parsedCart)) setCart(parsedCart)
-		else localStorage.setItem(cartKey, JSON.stringify([]))
-		setLoadedFromLocalStorageDone(true)
+		if (!ok) {
+			console.error(`Failed to parse cart from localStorage: ${parsedUnvalidated}`)
+			localStorage.setItem(cartKey, JSON.stringify([]))
+			setLoadedFromLocalStorageDone(true)
+			return
+		}
+
+		const { success, data, error } = z
+			.array(ProductInCartInLocalStorageSchema)
+			.safeParse(parsedUnvalidated)
+		if (!success) {
+			console.error(`Failed to validate cart from localStorage: ${z.prettifyError(error)}`)
+			localStorage.setItem(cartKey, JSON.stringify([]))
+			setLoadedFromLocalStorageDone(true)
+			return
+		}
+
+		setCart((_) => data)
+
+		// refresh all fields in the products in the cart, except for
+		// - checked, quantity
+		// - product.id
+		// - variant.sku
+		const productIdsInCart = data.map((item) => item.product.id)
+		void (async () => {
+			const {
+				data: resp,
+				ok: respOk,
+				error: respError,
+			} = await tryCatch(() =>
+				fetch(
+					`/api/${ProductsSlug}${stringify(
+						{
+							pagination: false,
+							limit: 1000,
+							where: {
+								id: {
+									in: productIdsInCart,
+								},
+							},
+							select: {
+								variants: true,
+								title: true,
+								slug: true,
+							} satisfies Partial<Record<keyof Product, true>>,
+						},
+						{
+							addQueryPrefix: true,
+						},
+					)}}`,
+				),
+			)
+
+			if (!respOk) {
+				console.error(`Failed to refresh product in cart info: ${respError}`)
+				return
+			}
+
+			if (!resp.ok) {
+				console.error(`Failed to fetch products for cart: ${resp.status} ${resp.statusText}`)
+				return
+			}
+
+			const { data, ok, error } = await tryCatch(
+				() =>
+					resp.json() as Promise<
+						PaginatedDocs<{
+							id: Product['id']
+							variants: Product['variants']
+							slug: Product['slug']
+							title: Product['title']
+						}>
+					>,
+			)
+
+			if (!ok) {
+				console.error(`Failed to parse products for cart: ${error}`)
+				return
+			}
+
+			setCart((prev) => {
+				const updatedCart: ProductInCart[] = []
+
+				for (const item of prev) {
+					const productInResponse = data.docs.find((prod) => prod.id === item.product.id)
+					if (!productInResponse) {
+						console.warn(
+							`Product with id ${item.product.id} not found in response, removing from cart`,
+						)
+						continue
+					}
+					const variantInResponse = productInResponse.variants.find(
+						(variant) => variant.sku === item.variant.sku,
+					)
+					if (!variantInResponse) {
+						console.warn(
+							`Variant with sku ${item.variant.sku} not found for product ${item.product.id}, removing from cart`,
+						)
+						continue
+					}
+					const outOfStock = variantInResponse.stock <= 0
+					updatedCart.push({
+						product: {
+							id: productInResponse.id,
+							title: productInResponse.title,
+							slug: productInResponse.slug,
+						},
+						variant: {
+							sku: variantInResponse.sku,
+							title: variantInResponse.title,
+							price: variantInResponse.price,
+							image: variantInResponse.image,
+						},
+						quantity: item.quantity,
+						checked: outOfStock ? false : (item.checked ?? true),
+						disabled: outOfStock,
+					})
+				}
+				return updatedCart
+			})
+
+			setLoadedFromLocalStorageDone(true)
+		})()
+
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [])
 
@@ -78,10 +220,12 @@ export function useCartManager({
 		cart,
 		loadedFromLocalStorageDone,
 
-		loadProduct(product: BasicProduct): void {
+		loadProduct(product: ProductInCart): void {
 			setCart((prev) => {
 				const existingProductIndex = prev?.findIndex(
-					(item) => item.slug === product.slug && item.variant.id === product.variant.id,
+					(item) =>
+						item.product.id === product.product.id &&
+						item.variant.sku === product.variant.sku,
 				)
 
 				const updatedCart = structuredClone(prev ?? [])
@@ -93,17 +237,21 @@ export function useCartManager({
 				) {
 					updatedCart[existingProductIndex].quantity += 1
 				} else {
-					updatedCart.push({ ...product, quantity: 1, checked: true })
+					updatedCart.push(product)
 				}
 
 				return updatedCart
 			})
 		},
 
-		unloadProduct(product: BasicProduct): void {
+		unloadProduct(product: {
+			productId: ProductInCart['product']['id']
+			variantSku: ProductInCart['variant']['sku']
+		}): void {
 			setCart((prev) => {
 				const existingProductIndex = prev?.findIndex(
-					(item) => item.slug === product.slug && item.variant.id === product.variant.id,
+					(item) =>
+						item.product.id === product.productId && item.variant.sku === product.variantSku,
 				)
 
 				const updatedCart = structuredClone(prev ?? [])
@@ -124,16 +272,16 @@ export function useCartManager({
 		},
 
 		removeProduct({
-			productSlug,
+			productId,
 			variantSku,
 		}: {
-			productSlug: Product['slug']
-			variantSku: Product['variants'][number]['sku']
+			productId: ProductInCart['product']['id']
+			variantSku: ProductInCart['variant']['sku']
 		}): void {
 			setCart((prev) => {
 				const updatedCart =
 					prev?.filter(
-						(item) => !(item.slug === productSlug && item.variant.sku === variantSku),
+						(item) => !(item.product.id === productId && item.variant.sku === variantSku),
 					) ?? []
 
 				return updatedCart
@@ -141,18 +289,18 @@ export function useCartManager({
 		},
 
 		toggleCheck({
-			productSlug,
+			productId,
 			variantSku,
 			checked,
 		}: {
-			productSlug: Product['slug']
-			variantSku: Product['variants'][number]['sku']
+			productId: ProductInCart['product']['id']
+			variantSku: ProductInCart['variant']['sku']
 			checked: boolean
 		}) {
 			setCart((prev) => {
 				const updatedCart = structuredClone(prev ?? [])
 				const existingProductIndex = updatedCart.findIndex(
-					(item) => item.slug === productSlug && item.variant.sku === variantSku,
+					(item) => item.product.id === productId && item.variant.sku === variantSku,
 				)
 
 				if (existingProductIndex > -1 && updatedCart[existingProductIndex]) {
