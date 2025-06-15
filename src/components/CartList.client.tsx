@@ -4,7 +4,7 @@ import { X } from 'lucide-react'
 import { Phudu } from 'next/font/google'
 import Link from 'next/link'
 
-import { ProductInCart, useCartManager } from '@/hooks/useCartManager'
+import { useCartManager } from '@/hooks/useCartManager'
 import { formatPrice } from '@/utilities/formatPrice'
 import { Lang } from '@/utilities/lang'
 import { matchLang } from '@/utilities/matchLang'
@@ -35,13 +35,14 @@ export function CartListClient({
 		<div className={cn('flex flex-col gap-5', className)}>
 			{cart.map((item) => (
 				<div
+					key={`${item.product.id}-${item.variant.sku}`}
 					className={cn('grid items-center gap-3', {
 						'grid-cols-[auto_auto_1fr_auto]': showCheckbox,
 						'grid-cols-[auto_1fr_auto]': !showCheckbox,
 					})}
 					style={{
 						gridTemplateAreas: `"${showCheckbox ? 'select ' : ''}img title remove"
-														"${showCheckbox ? 'select ' : ''}img quantity price"`,
+																"${showCheckbox ? 'select ' : ''}img quantity price"`,
 					}}
 				>
 					{showCheckbox && (
