@@ -2,12 +2,13 @@ import { defaultLocale, Lang } from './lang'
 
 export function matchLang(
 	translations: Record<Lang, string>,
-): (props: { locale: Lang } | Lang) => string {
-	return function matchLangInner(props: { locale: Lang } | Lang): string {
+): (props?: { locale?: Lang } | Lang) => string {
+	return function matchLangInner(props?: { locale?: Lang } | Lang): string {
 		if (typeof props === 'string') {
-			return translations[props as Lang] ?? translations[defaultLocale] ?? ''
+			const locale = (props as Lang | undefined) ?? defaultLocale
+			return translations[locale] ?? ''
 		}
-		const { locale } = props
+		const locale = props?.locale ?? defaultLocale
 		const t = translations[locale]
 		if (t) return t
 		const fallback = translations[defaultLocale]
