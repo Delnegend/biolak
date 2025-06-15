@@ -2,21 +2,13 @@
 
 import { createContext, useContext, useState } from 'react'
 
-import type { Product } from '@/payload-types'
+import { ProductInCart } from '@/hooks/useCartManager'
+
+type SelectedProductVariant = Omit<ProductInCart, 'quantity' | 'checked'>
 
 const variantContext = createContext<{
-	selectedProductVariant: {
-		slug: Product['slug']
-		title: Product['title']
-		variant: NonNullable<Product['variants']>[number]
-	} | null
-	setSelectedProductVariant: React.Dispatch<
-		React.SetStateAction<{
-			slug: Product['slug']
-			title: Product['title']
-			variant: NonNullable<Product['variants']>[number]
-		} | null>
-	>
+	selectedProductVariant: SelectedProductVariant | null
+	setSelectedProductVariant: React.Dispatch<React.SetStateAction<SelectedProductVariant | null>>
 } | null>(null)
 
 /** Use this in the entire product page to provide the product slug and variant to all components. */
@@ -25,11 +17,8 @@ export function ProductVariantContextProvider({
 }: {
 	children: React.ReactNode
 }): React.JSX.Element {
-	const [selectedProductVariant, setSelectedProductVariant] = useState<{
-		slug: Product['slug']
-		title: Product['title']
-		variant: NonNullable<Product['variants']>[number]
-	} | null>(null)
+	const [selectedProductVariant, setSelectedProductVariant] =
+		useState<SelectedProductVariant | null>(null)
 
 	return (
 		<variantContext.Provider

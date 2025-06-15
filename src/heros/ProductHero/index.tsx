@@ -8,9 +8,9 @@ import { getClientLang } from '@/utilities/getClientLang'
 import { Lang } from '@/utilities/lang'
 import { matchLang } from '@/utilities/matchLang'
 
-import { INTERNAL_AddToCartClient } from './AddToCart.client'
-import { INTERNAL_BuyNowClient } from './BuyNow.client'
-import { INTERNAL_ProductVariantsClient } from './ProductVariants.client'
+import { INTERNAL_AddToCartButton } from './AddToCart.client'
+import { INTERNAL_BuyNowButton } from './BuyNow.client'
+import { INTERNAL_ProductVariantSelector } from './ProductVariantSelector.client'
 
 export async function ProductHero({
 	product: p,
@@ -57,15 +57,11 @@ export async function ProductHero({
 					<div className="text-balance text-primary">{p.shortDescription}</div>
 				) : null}
 
-				<INTERNAL_ProductVariantsClient
-					variants={p.variants}
-					product={{ slug: p.slug, title: p.title }}
-					validVariant={validVariant}
-				/>
+				<INTERNAL_ProductVariantSelector product={p} validVariant={validVariant} />
 
 				<div className="mt-8 grid size-full h-fit grid-cols-[repeat(auto-fill,minmax(14rem,1fr))] gap-4">
-					<INTERNAL_BuyNowClient hasAtLeastOneProductInStock={validVariant !== null} />
-					<INTERNAL_AddToCartClient hasAtLeastOneProductInStock={validVariant !== null} />
+					<INTERNAL_BuyNowButton locale={locale} disabled={validVariant === null} />
+					<INTERNAL_AddToCartButton locale={locale} disabled={validVariant === null} />
 				</div>
 			</div>
 		</div>
