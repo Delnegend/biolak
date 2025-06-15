@@ -236,6 +236,11 @@ export const ProductsCollection: CollectionConfig<typeof ProductsSlug> = {
 								[Lang.Vietnamese]: 'Hiển thị đánh giá',
 							},
 							type: 'radio',
+							access: {
+								read: allow(Role.Admin, Role.ContentManager),
+								update: allow(Role.Admin, Role.ContentManager),
+								create: allow(Role.Admin, Role.ContentManager),
+							},
 							options: [
 								{
 									value: 'show',
