@@ -7,11 +7,13 @@ import React from 'react'
 import { ProductsSlug } from '@/collections/Products/slug'
 import { CheckoutPageGlobalSlug } from '@/globals/CheckoutPage/config'
 import { CheckoutPageGlobal } from '@/payload-types'
+import { findValidProductVariant } from '@/utilities/findValidProductVariant'
 import { getClientLang } from '@/utilities/getClientLang'
 import { getCachedGlobal } from '@/utilities/getGlobals'
 import { HeaderName } from '@/utilities/headerName'
 import { Lang } from '@/utilities/lang'
 import { matchLang } from '@/utilities/matchLang'
+import { tryCatch } from '@/utilities/tryCatch'
 
 import PageClient from './page.client'
 
@@ -22,44 +24,47 @@ export default async function Checkout(): Promise<React.JSX.Element> {
 		getHeaders(),
 	])
 
-	const requestQuery = new URLSearchParams(headers.get(HeaderName.RequestQuery) ?? '')
-	const overrideProductSlug = requestQuery.get('product') ?? ''
-	const overrideProductVariantSku = requestQuery.get('variant') ?? null
-
 	const [global, overrideProduct] = await Promise.all([
 		getCachedGlobal<CheckoutPageGlobal>(CheckoutPageGlobalSlug, 1, locale)(),
-		payload
-			.find({
+		tryCatch(async () => {
+			const requestQuery = new URLSearchParams(headers.get(HeaderName.RequestQuery) ?? '')
+			const overrideProductIdNumber = Number(requestQuery.get('product'))
+			const overrideVariantSku = requestQuery.get('variant') ?? null
+			if (!overrideVariantSku || Number.isNaN(overrideProductIdNumber)) return null
+
+			const product = await payload.find({
 				collection: ProductsSlug,
 				where: {
-					slug: {
-						equals: overrideProductSlug,
+					id: {
+						equals: overrideProductIdNumber,
 					},
 				},
 				select: {
 					title: true,
 					variants: true,
+					icon: true,
+					slug: true,
 				},
 			})
-			.then(
-				(data) => {
-					if (data.docs.length <= 0 || !data.docs[0]) return null
+			if (product.docs.length <= 0 || !product.docs[0]) return null
 
-					const foundVariant = data.docs[0].variants.find(
-						(variant) => variant.sku === overrideProductVariantSku,
-					)
-					if (!foundVariant) return null
+			const validVariant = findValidProductVariant(product.docs[0].variants)
+			if (!validVariant) return null
 
-					return {
-						product: {
-							slug: overrideProductSlug,
-							title: data.docs[0].title,
-						},
-						variant: foundVariant,
-					}
+			return {
+				product: {
+					id: overrideProductIdNumber,
+					title: product.docs[0].title,
+					slug: product.docs[0].slug,
 				},
-				(_) => null,
-			),
+				variant: {
+					sku: validVariant.sku,
+					title: validVariant.title,
+					price: validVariant.price,
+					image: validVariant.image ?? product.docs[0].icon,
+				},
+			}
+		}),
 	])
 
 	return (
@@ -77,15 +82,7 @@ export default async function Checkout(): Promise<React.JSX.Element> {
 			/>
 			<PageClient
 				global={global}
-				overrideProduct={
-					overrideProduct
-						? {
-								slug: overrideProduct.product.slug,
-								title: overrideProduct.product.title,
-								variant: overrideProduct.variant,
-							}
-						: null
-				}
+				override={overrideProduct.ok && overrideProduct.data ? overrideProduct.data : undefined}
 			/>
 		</div>
 	)
