@@ -50,6 +50,7 @@ export const OrdersCollection: CollectionConfig<typeof OrdersSlug> = {
 					min: 1,
 					max: 5,
 					access: {
+						read: allow(Role.Admin, Role.SalesManager, Role.ContentManager),
 						update: allow(Role.NoOne),
 						create: allow(Role.NoOne),
 					},
@@ -62,6 +63,7 @@ export const OrdersCollection: CollectionConfig<typeof OrdersSlug> = {
 						[Lang.Vietnamese]: 'Nội dung',
 					},
 					access: {
+						read: allow(Role.Admin, Role.SalesManager, Role.ContentManager),
 						update: allow(Role.NoOne),
 						create: allow(Role.NoOne),
 					},
