@@ -28,7 +28,8 @@ import { matchLang } from '@/utilities/matchLang'
 import { cn } from '@/utilities/ui'
 
 import CITY_DISTRICT_WARD from './actions/city-district-ward.json'
-import { confirmDetailsAction, ConfirmDetailsActionSchema } from './actions/confirmDetailsAction'
+import { confirmDetailsAction } from './actions/confirmDetailsAction'
+import { ConfirmDetailsActionSchema } from './actions/confirmDetailsActionSchema'
 
 function Title({
 	children,
