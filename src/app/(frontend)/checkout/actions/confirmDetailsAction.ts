@@ -1,3 +1,4 @@
+'use server'
 import { z } from 'zod/v4'
 
 import { getClientLang } from '@/utilities/getClientLang'
@@ -24,16 +25,13 @@ export function ConfirmDetailsActionSchema(locale: Lang) {
 						[Lang.Vietnamese]: 'Họ và tên là bắt buộc',
 					})(locale),
 				),
-				email: z
-					.string()
-					.email()
-					.min(
-						1,
-						matchLang({
-							[Lang.English]: 'Email is required',
-							[Lang.Vietnamese]: 'Email là bắt buộc',
-						})(locale),
-					),
+				email: z.email().min(
+					1,
+					matchLang({
+						[Lang.English]: 'Email is required',
+						[Lang.Vietnamese]: 'Email là bắt buộc',
+					})(locale),
+				),
 				confirmReceiveEmail: z.boolean().optional(),
 				phoneNumber: z.string().min(
 					1,
