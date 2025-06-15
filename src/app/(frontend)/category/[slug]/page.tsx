@@ -11,6 +11,7 @@ import { generateMeta } from '@/utilities/generateMeta'
 import { getClientLang } from '@/utilities/getClientLang'
 import { Lang } from '@/utilities/lang'
 import { matchLang } from '@/utilities/matchLang'
+import { tryCatch } from '@/utilities/tryCatch'
 
 import PageClient from './page.client'
 
@@ -42,20 +43,49 @@ export default async function Category({
 	params: Promise<{ slug?: string }>
 }): Promise<React.JSX.Element> {
 	const { slug: categorySlug = '' } = await params
-	const payload = await getPayload({ config: configPromise })
 	const locale = await getClientLang()
+	const { data, ok, error } = await tryCatch(() =>
+		Promise.all([
+			getPayload({ config: configPromise }),
+			queryCategoryBySlug({ slug: categorySlug }),
+		]),
+	)
+	if (!ok) {
+		return (
+			<div className="safe-width my-24 text-center text-primary">
+				<h2>
+					{matchLang({
+						[Lang.English]: 'Error fetching category',
+						[Lang.Vietnamese]: 'Lỗi khi lấy danh mục',
+					})(locale)}
+					<div>{`${error}`}</div>
+				</h2>
+			</div>
+		)
+	}
 
-	const category = await queryCategoryBySlug({ slug: categorySlug })
+	const [payload, category] = data
 
-	let products
-	try {
-		products = await payload.find({
+	const {
+		data: products,
+		error: productsError,
+		ok: productsOk,
+	} = await tryCatch(() =>
+		payload.find({
 			collection: ProductsSlug,
-			overrideAccess: false,
 			where: {
-				[`${ProductCategoriesSlug}.slug`]: {
-					equals: categorySlug,
-				},
+				or: [
+					{
+						[`${ProductCategoriesSlug}.slug`]: {
+							equals: categorySlug,
+						},
+					},
+					{
+						[`${ProductSubCategoriesSlug}.slug`]: {
+							equals: categorySlug,
+						},
+					},
+				],
 			},
 			select: {
 				title: true,
@@ -63,30 +93,39 @@ export default async function Category({
 				shortDescription: true,
 				gallery: true,
 				price: true,
+				variants: true,
 			},
-			locale,
-		})
-		if (products.docs.length === 0) {
-			products = await payload.find({
-				collection: ProductsSlug,
-				overrideAccess: false,
-				where: {
-					[`${ProductSubCategoriesSlug}.slug`]: {
-						equals: categorySlug,
-					},
-				},
-				select: {
-					title: true,
-					slug: true,
-					shortDescription: true,
-					gallery: true,
-					price: true,
-				},
-				locale,
-			})
-		}
-	} catch (error) {
-		console.error(`Can't fetch products for category slug "${categorySlug}":`, error)
+			limit: 1000,
+			pagination: false,
+			overrideAccess: false,
+		}),
+	)
+
+	if (!productsOk) {
+		return (
+			<div className="safe-width my-24 text-center text-primary">
+				<h2>
+					{matchLang({
+						[Lang.English]: 'Error fetching products for this category',
+						[Lang.Vietnamese]: 'Lỗi khi lấy sản phẩm cho danh mục này',
+					})(locale)}
+					<div>{`${productsError}`}</div>
+				</h2>
+			</div>
+		)
+	}
+
+	if (!products || products?.docs.length === 0) {
+		return (
+			<div className="safe-width my-24 text-center text-primary">
+				<h2>
+					{matchLang({
+						[Lang.English]: 'No products found in this category',
+						[Lang.Vietnamese]: 'Không tìm thấy sản phẩm trong danh mục này',
+					})(locale)}
+				</h2>
+			</div>
+		)
 	}
 
 	return (
@@ -100,7 +139,9 @@ export default async function Category({
 					})(locale)}
 			</div>
 			<div className="flex flex-row flex-wrap gap-6">
-				{products?.docs.map((p) => <ProductCard product={p} key={p.slug} size="sm" />)}
+				{products.docs.map((p) => (
+					<ProductCard product={p} key={p.slug} size="sm" />
+				))}
 			</div>
 		</div>
 	)
