@@ -1,21 +1,16 @@
 'use client'
 
 import { Button } from '@/components/ui/button'
+import { useSelectedProductVariant } from '@/heros/ProductHero/ProductVariantContext'
 import { useCartManager } from '@/hooks/useCartManager'
-import { Product } from '@/payload-types'
 
 export function INTERNAL_AddToCartClient({
-	product,
 	buttonLabel,
 }: {
-	product: {
-		slug: Product['slug']
-		title: Product['title']
-		variant?: NonNullable<Product['variants']>[number] | null
-	}
 	buttonLabel: string
 }): React.JSX.Element {
 	const { loadProduct } = useCartManager({ syncWithLocalStorage: true })
+	const { selectedProductVariant } = useSelectedProductVariant()
 
 	return (
 		<Button
@@ -23,14 +18,15 @@ export function INTERNAL_AddToCartClient({
 			variant="outline"
 			className="mt-6 w-full max-w-[47rem] border-primary text-primary"
 			onClick={() => {
-				if (!product?.slug || !product?.title || !product?.variant) return
+				if (!selectedProductVariant) return
 				loadProduct({
-					slug: product?.slug,
-					title: product?.title,
-					variant: product?.variant,
+					product: selectedProductVariant.product,
+					variant: selectedProductVariant.variant,
+					quantity: 1,
+					checked: true,
 				})
 			}}
-			disabled={!product?.slug || !product?.title || !product?.variant}
+			disabled={!selectedProductVariant}
 		>
 			{buttonLabel}
 		</Button>
