@@ -72,6 +72,13 @@ export default buildConfig({
 				},
 			],
 		},
+		autoLogin:
+			process.env.NODE_ENV === 'development'
+				? {
+						email: process.env.DEV_EMAIL ?? '',
+						password: process.env.DEV_PASSWORD ?? '',
+					}
+				: false,
 	},
 	// This config helps us configure global or default features that the other editors can inherit
 	editor: defaultLexical,
