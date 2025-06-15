@@ -13,28 +13,71 @@ interface CityDistrictWard {
 	}
 }
 
-export const ConfirmDetailsActionSchema = z.object({
-	personalDetails: z
-		.object({
-			name: z.string().min(1, 'Name is required'),
-			email: z.email().min(1, 'Email is required'),
-			phoneNumber: z.string().min(1, 'Phone number is required'),
-			city: z.enum(Object.keys(CITY_DISTRICT_WARD)),
-			district: z.string().min(1, 'District is required'),
-			ward: z.string().min(1, 'Ward is required'),
-			houseNumber: z.string().min(1, 'House number is required'),
-		})
-		.required(),
-	transportationMethod: z.enum(['standard', 'express']),
-	paymentMethod: z.enum(['cod', 'bankTransfer']),
-	sendGift: z
-		.object({
-			sender: z.string().optional(),
-			receiver: z.string().optional(),
-			message: z.string().max(1000).optional(),
-		})
-		.optional(),
-})
+export function ConfirmDetailsActionSchema(locale: Lang) {
+	return z.object({
+		personalDetails: z
+			.object({
+				name: z.string().min(
+					1,
+					matchLang({
+						[Lang.English]: 'Name is required',
+						[Lang.Vietnamese]: 'Họ và tên là bắt buộc',
+					})(locale),
+				),
+				email: z
+					.string()
+					.email()
+					.min(
+						1,
+						matchLang({
+							[Lang.English]: 'Email is required',
+							[Lang.Vietnamese]: 'Email là bắt buộc',
+						})(locale),
+					),
+				confirmReceiveEmail: z.boolean().optional(),
+				phoneNumber: z.string().min(
+					1,
+					matchLang({
+						[Lang.English]: 'Phone number is required',
+						[Lang.Vietnamese]: 'Số điện thoại là bắt buộc',
+					})(locale),
+				),
+				city: z.enum(Object.keys(CITY_DISTRICT_WARD) as [string, ...string[]]),
+				district: z.string().min(
+					1,
+					matchLang({
+						[Lang.English]: 'District is required',
+						[Lang.Vietnamese]: 'Quận là bắt buộc',
+					})(locale),
+				),
+				ward: z.string().min(
+					1,
+					matchLang({
+						[Lang.English]: 'Ward is required',
+						[Lang.Vietnamese]: 'Phường là bắt buộc',
+					})(locale),
+				),
+				houseNumber: z.string().min(
+					1,
+					matchLang({
+						[Lang.English]: 'House number is required',
+						[Lang.Vietnamese]: 'Số nhà là bắt buộc',
+					})(locale),
+				),
+			})
+			.required(),
+		transportationMethod: z.enum(['standard', 'express']),
+		paymentMethod: z.enum(['cod', 'bankTransfer']),
+		sendGift: z
+			.object({
+				sender: z.string().optional(),
+				receiver: z.string().optional(),
+				message: z.string().max(1000).optional(),
+			})
+			.optional(),
+		discountCode: z.string().optional(),
+	})
+}
 
 export async function confirmDetailsAction(input: unknown): Promise<
 	| {
@@ -45,16 +88,19 @@ export async function confirmDetailsAction(input: unknown): Promise<
 			error: string
 	  }
 > {
+	const locale = await getClientLang()
+	const Schema = ConfirmDetailsActionSchema(locale)
+
 	const {
 		ok: parsedInputOk,
 		data: parsedInput,
 		error: parsedInputError,
-	} = tryCatchSync(() => ConfirmDetailsActionSchema.safeParse(input))
+	} = tryCatchSync(() => Schema.parse(input))
 	if (!parsedInputOk) {
 		if (parsedInputError instanceof z.ZodError) {
 			return {
 				success: false,
-				error: parsedInputError.message,
+				error: z.prettifyError(parsedInputError),
 			}
 		}
 		return {
@@ -63,18 +109,7 @@ export async function confirmDetailsAction(input: unknown): Promise<
 		}
 	}
 
-	const locale = await getClientLang()
-	if (!parsedInput.data) {
-		return {
-			success: false,
-			error: matchLang({
-				[Lang.English]: 'Invalid input data',
-				[Lang.Vietnamese]: 'Dữ liệu đầu vào không hợp lệ',
-			})(locale),
-		}
-	}
-
-	const { personalDetails } = parsedInput.data
+	const { personalDetails } = parsedInput
 	const { city, district, ward } = personalDetails
 	const cityDistrictWard: CityDistrictWard = CITY_DISTRICT_WARD as CityDistrictWard
 	if (
@@ -90,6 +125,8 @@ export async function confirmDetailsAction(input: unknown): Promise<
 			})(locale),
 		}
 	}
+
+	console.log('Confirmed details:', parsedInput)
 
 	return { success: true }
 }
