@@ -2,18 +2,20 @@
 import { AnimatePresence, motion, Variants } from 'motion/react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { PaginatedDocs } from 'payload'
+import { PaginatedDocs, Where } from 'payload'
+import { stringify } from 'qs-esm'
 import React, { useEffect, useRef, useState } from 'react'
-import { toast } from 'sonner'
+import useSWR from 'swr'
 
-import { GetProductsBySubCategorySlug } from '@/app/api/sub-category/[slug]/route'
+import { ProductsSlug } from '@/collections/Products/slug'
+import { ProductSubCategoriesSlug } from '@/collections/ProductSubCategories/slug'
 import { HeadlessImage } from '@/components/Media/HeadlessImage'
 import { useClientLang } from '@/hooks/useClientLang'
 import { Product, ProductCategory, ProductSubCategory } from '@/payload-types'
 import { getPriceRange } from '@/utilities/getPriceRange'
 import { Lang } from '@/utilities/lang'
 import { matchLang } from '@/utilities/matchLang'
-import { tryCatch } from '@/utilities/tryCatch'
+import { RESTFetcher } from '@/utilities/RESTFetcher'
 import { cn } from '@/utilities/ui'
 
 const panelAnimationVariants: Variants = {
@@ -111,71 +113,33 @@ export function INTERNAL_ProductsDropdownClient({
 
 	const [activeCategory, setActiveCategory] = useState<ProductCategory | null>(null)
 	const [activeSubCategory, setActiveSubCategory] = useState<ProductSubCategory | null>(null)
-	const [activeProducts, setActiveProducts] = useState<
-		Array<{
-			id: Product['id']
-			title: Product['title']
-			shortDescription?: Product['shortDescription']
-			variants: Product['variants']
-			slug?: Product['slug']
-			icon?: Product['icon']
-		}>
-	>([])
+
+	const { data: products } = useSWR(
+		`/api/${ProductsSlug}${stringify(
+			{
+				pagination: false,
+				limit: 1000,
+				where: {
+					[`${ProductSubCategoriesSlug}`]: {
+						equals: activeSubCategory?.id ?? 0,
+					},
+				} satisfies Where,
+			},
+			{
+				addQueryPrefix: true,
+			},
+		)}`,
+		RESTFetcher<PaginatedDocs<Product>>,
+	)
 
 	function handleCategoryLoad(category: ProductCategory) {
 		setActiveCategory(category)
 		setActiveSubCategory(null)
-		setActiveProducts([])
 	}
 
 	async function handleSubcategoryLoad(subCategory: ProductSubCategory) {
 		setActiveSubCategory(subCategory)
-		setActiveProducts([])
 		if (!subCategory.slug) return
-
-		const {
-			ok: responseOk,
-			data: response,
-			error: responseError,
-		} = await tryCatch(() =>
-			fetch(
-				`/api/sub-category/${subCategory.slug}` satisfies GetProductsBySubCategorySlug['Path'],
-			),
-		)
-		if (!responseOk || !response.ok) {
-			toast.error(
-				matchLang({
-					[Lang.English]: "Can't load products list",
-					[Lang.Vietnamese]: 'Không thể tải danh sách sản phẩm',
-				})(locale),
-				{
-					description: `${responseError}`,
-				},
-			)
-			return
-		}
-
-		const {
-			ok: productsOk,
-			data: products,
-			error: productsError,
-		} = await tryCatch(() => {
-			return response.json() as Promise<GetProductsBySubCategorySlug['Response']>
-		})
-		if (!productsOk || !products.success) {
-			toast.error(
-				matchLang({
-					[Lang.English]: "Can't parse products list",
-					[Lang.Vietnamese]: 'Không thể phân tích danh sách sản phẩm',
-				})(locale),
-				{
-					description: `${productsError}`,
-				},
-			)
-			return
-		}
-
-		setActiveProducts(products.data)
 	}
 
 	// find the minimum height for the dropdown for it to fill the screen perfectly
@@ -194,7 +158,6 @@ export function INTERNAL_ProductsDropdownClient({
 
 		setActiveCategory(null)
 		setActiveSubCategory(null)
-		setActiveProducts([])
 	}, [open])
 
 	// close on route change
@@ -307,7 +270,7 @@ export function INTERNAL_ProductsDropdownClient({
 
 						{/* products */}
 						<AnimatePresence mode="wait">
-							{(activeProducts?.length ?? 0) > 0 && (
+							{activeSubCategory && (products?.docs?.length ?? 0) > 0 && (
 								<DropdownColumn
 									className="z-30 h-[calc(100dvh-5rem)] overflow-y-auto"
 									key="productsPanel"
@@ -319,7 +282,7 @@ export function INTERNAL_ProductsDropdownClient({
 												[Lang.Vietnamese]: 'Danh mục sản phẩm',
 											})(locale)}
 									</DropdownLabel>
-									{activeProducts?.map((product, index) => {
+									{products?.docs.map((product, index) => {
 										return (
 											<motion.button
 												key={product.slug}
