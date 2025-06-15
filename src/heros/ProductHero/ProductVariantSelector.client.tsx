@@ -8,43 +8,46 @@ import { cn } from '@/utilities/ui'
 
 import { useSelectedProductVariant } from './ProductVariantContext'
 
-export function INTERNAL_ProductVariantsClient({
-	variants,
-	product: { slug, title },
+export function INTERNAL_ProductVariantSelector({
+	product,
 	validVariant,
 }: {
-	variants: Product['variants']
 	product: {
-		slug: Product['slug']
+		id: Product['id']
 		title: Product['title']
+		slug?: Product['slug']
+		variants?: Product['variants']
 	}
-	validVariant?: Product['variants'][number] | null
+	validVariant?: {
+		sku: Product['variants'][number]['sku']
+		title: Product['variants'][number]['title']
+		price: Product['variants'][number]['price']
+		image?: Product['variants'][number]['image']
+	} | null
 }): React.JSX.Element {
 	const { selectedProductVariant, setSelectedProductVariant } = useSelectedProductVariant()
 
 	useEffect(() => {
-		if (!validVariant) return
-		setSelectedProductVariant({
-			slug,
-			title,
-			variant: validVariant,
-		})
+		if (validVariant)
+			setSelectedProductVariant({
+				product: product,
+				variant: validVariant,
+			})
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [])
 
-	if (!variants || variants.length === 1) {
+	if (!product.variants || product.variants.length === 1) {
 		return <></>
 	}
 
 	return (
 		<div className="mt-2 flex flex-wrap gap-2">
-			{variants?.map((variant) => (
+			{product.variants?.map((variant) => (
 				<Button
 					key={variant.id}
 					onClick={() =>
 						setSelectedProductVariant({
-							slug,
-							title,
+							product,
 							variant,
 						})
 					}
@@ -52,7 +55,7 @@ export function INTERNAL_ProductVariantsClient({
 					size="sm"
 					variant="outline"
 					className={cn(
-						selectedProductVariant?.variant?.sku === variant.sku && 'border-black text-black',
+						selectedProductVariant?.variant.sku === variant.sku && 'border-black text-black',
 					)}
 					disabled={variant.stock <= 0}
 				>
