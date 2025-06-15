@@ -1,19 +1,19 @@
 'use client'
 
 import { Button } from '@/components/ui/button'
-import { useClientLang } from '@/hooks/useClientLang'
 import { formatPrice } from '@/utilities/formatPrice'
 import { Lang } from '@/utilities/lang'
 import { matchLang } from '@/utilities/matchLang'
 
 import { useSelectedProductVariant } from './ProductVariantContext'
 
-export function INTERNAL_BuyNowClient({
-	hasAtLeastOneProductInStock,
+export function INTERNAL_BuyNowButton({
+	disabled,
+	locale,
 }: {
-	hasAtLeastOneProductInStock: boolean
+	disabled?: boolean
+	locale?: Lang
 }): React.JSX.Element {
-	const { lang: locale } = useClientLang()
 	const { selectedProductVariant } = useSelectedProductVariant()
 
 	return (
@@ -22,26 +22,26 @@ export function INTERNAL_BuyNowClient({
 			className="flex items-center justify-between gap-4 uppercase"
 			hideArrow={true}
 			tabIndex={-1}
-			disabled={!selectedProductVariant?.variant || !hasAtLeastOneProductInStock}
+			disabled={!selectedProductVariant || disabled}
 		>
 			<a
-				href={'/checkout?product=' + selectedProductVariant?.slug}
+				href={`/checkout?product=${selectedProductVariant?.product.id}&variant=${selectedProductVariant?.variant.sku}`}
 				onClick={(e) => {
-					if (!selectedProductVariant?.variant) {
+					if (!selectedProductVariant?.product.id || !selectedProductVariant?.variant.sku) {
 						e.preventDefault()
 					}
 				}}
 				aria-label={matchLang({
-					[Lang.English]: `Buy ${selectedProductVariant?.title} variant ${selectedProductVariant?.variant?.title} now`,
-					[Lang.Vietnamese]: `Mua ngay ${selectedProductVariant?.title} loại ${selectedProductVariant?.variant?.title}`,
+					[Lang.English]: `Buy ${selectedProductVariant?.product.title} variant ${selectedProductVariant?.variant.title} now`,
+					[Lang.Vietnamese]: `Mua ngay ${selectedProductVariant?.product.title} loại ${selectedProductVariant?.variant.title}`,
 				})(locale)}
 			>
 				{matchLang({
-					[Lang.English]: hasAtLeastOneProductInStock ? 'BUY NOW' : 'OUT OF STOCK',
-					[Lang.Vietnamese]: hasAtLeastOneProductInStock ? 'MUA NGAY' : 'HẾT HÀNG',
+					[Lang.English]: disabled ? 'OUT OF STOCK' : 'BUY NOW',
+					[Lang.Vietnamese]: disabled ? 'HẾT HÀNG' : 'MUA NGAY',
 				})(locale)}
-				{selectedProductVariant?.variant && (
-					<span> - {formatPrice(selectedProductVariant?.variant?.price)}</span>
+				{selectedProductVariant && (
+					<span> - {formatPrice(selectedProductVariant?.variant.price)}</span>
 				)}
 			</a>
 		</Button>

@@ -5,18 +5,18 @@ import { toast } from 'sonner'
 
 import { Button } from '@/components/ui/button'
 import { useCartManager } from '@/hooks/useCartManager'
-import { useClientLang } from '@/hooks/useClientLang'
 import { Lang } from '@/utilities/lang'
 import { matchLang } from '@/utilities/matchLang'
 
 import { useSelectedProductVariant } from './ProductVariantContext'
 
-export function INTERNAL_AddToCartClient({
-	hasAtLeastOneProductInStock,
+export function INTERNAL_AddToCartButton({
+	locale,
+	disabled,
 }: {
-	hasAtLeastOneProductInStock: boolean
+	locale?: Lang
+	disabled?: boolean
 }): React.JSX.Element {
-	const { lang: locale } = useClientLang()
 	const { loadProduct } = useCartManager({ syncWithLocalStorage: true })
 	const { selectedProductVariant } = useSelectedProductVariant()
 
@@ -27,38 +27,29 @@ export function INTERNAL_AddToCartClient({
 			hideArrow={true}
 			variant="outline"
 			onClick={() => {
-				if (
-					!selectedProductVariant?.slug ||
-					!selectedProductVariant?.title ||
-					!selectedProductVariant?.variant
-				)
-					return
+				if (!selectedProductVariant?.product.id || !selectedProductVariant?.variant.sku) return
 				loadProduct({
-					slug: selectedProductVariant?.slug,
-					title: selectedProductVariant?.title,
-					variant: selectedProductVariant?.variant,
+					...selectedProductVariant,
+					quantity: 1,
+					checked: true,
 				})
 				toast.success(
 					matchLang({
-						[Lang.English]: `Added ${selectedProductVariant?.title} variant ${selectedProductVariant?.variant?.title} to cart`,
-						[Lang.Vietnamese]: `Đã thêm ${selectedProductVariant?.title} loại ${selectedProductVariant?.variant?.title} vào giỏ hàng`,
+						[Lang.English]: `Added ${selectedProductVariant.product.title} variant ${selectedProductVariant?.variant.title} to cart`,
+						[Lang.Vietnamese]: `Đã thêm ${selectedProductVariant.product.title} loại ${selectedProductVariant?.variant.title} vào giỏ hàng`,
 					})(locale),
 				)
 			}}
-			disabled={
-				!selectedProductVariant?.slug ||
-				!selectedProductVariant?.title ||
-				!selectedProductVariant?.variant
-			}
+			disabled={!selectedProductVariant || disabled}
 			aria-label={matchLang({
-				[Lang.English]: `Add ${selectedProductVariant?.title} variant ${selectedProductVariant?.variant?.title} to cart`,
-				[Lang.Vietnamese]: `Thêm ${selectedProductVariant?.title} loại ${selectedProductVariant?.variant?.title} vào giỏ hàng`,
+				[Lang.English]: `Add ${selectedProductVariant?.product.title} variant ${selectedProductVariant?.variant.title} to cart`,
+				[Lang.Vietnamese]: `Thêm ${selectedProductVariant?.product.title} loại ${selectedProductVariant?.variant.title} vào giỏ hàng`,
 			})(locale)}
 		>
 			<span>
 				{matchLang({
-					[Lang.English]: hasAtLeastOneProductInStock ? 'ADD TO CART' : 'OUT OF STOCK',
-					[Lang.Vietnamese]: hasAtLeastOneProductInStock ? 'THÊM VÀO GIỎ' : 'HẾT HÀNG',
+					[Lang.English]: disabled ? 'OUT OF STOCK' : 'ADD TO CART',
+					[Lang.Vietnamese]: disabled ? 'HẾT HÀNG' : 'THÊM VÀO GIỎ',
 				})(locale)}
 			</span>
 			<ShoppingCart />
