@@ -2,6 +2,7 @@ import type { FieldHook } from 'payload'
 
 export function formatSlug(val: string): string {
 	return val
+		.trim()
 		.normalize('NFD')
 		.replace(/[\u0300-\u036f]/g, '')
 		.replace(/ /g, '-')
