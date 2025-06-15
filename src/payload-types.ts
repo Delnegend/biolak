@@ -69,6 +69,7 @@ export interface Config {
   collections: {
     customers: Customer;
     contactForm: ContactForm;
+    discountCodes: DiscountCode;
     media: Media;
     pages: Page;
     postCategories: PostCategory;
@@ -108,6 +109,7 @@ export interface Config {
   collectionsSelect: {
     customers: CustomersSelect<false> | CustomersSelect<true>;
     contactForm: ContactFormSelect<false> | ContactFormSelect<true>;
+    discountCodes: DiscountCodesSelect<false> | DiscountCodesSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     pages: PagesSelect<false> | PagesSelect<true>;
     postCategories: PostCategoriesSelect<false> | PostCategoriesSelect<true>;
@@ -250,6 +252,9 @@ export interface Product {
     image?: (number | null) | Media;
     id?: string | null;
   }[];
+  /**
+   * This icon will be used in the product dropdown list.
+   */
   icon?: (number | null) | Media;
   gallery?: (number | Media)[] | null;
   reviewsVisible?: ('show' | 'hide') | null;
@@ -275,24 +280,6 @@ export interface Product {
         | ThreePhotoBlockProps
       )[]
     | null;
-  heroSubtitle?: string | null;
-  heroTitle?: string | null;
-  heroDescription?: {
-    root: {
-      type: string;
-      children: {
-        type: string;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  } | null;
-  heroMedia?: (number | null) | Media;
   orders?: {
     docs?: (number | Order)[];
     hasNextPage?: boolean;
@@ -517,7 +504,6 @@ export interface PostCategory {
 export interface Post {
   id: number;
   title: string;
-  heroImage?: (number | null) | Media;
   layout: (
     | ArchiveBlockProps
     | BuyNowBlockProps
@@ -1545,6 +1531,43 @@ export interface ContactForm {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "discountCodes".
+ */
+export interface DiscountCode {
+  id: number;
+  code: string;
+  /**
+   * The number of times this discount code can be used. Set to 0 for unlimited uses.
+   */
+  amount?: number | null;
+  isActive?: boolean | null;
+  discountType: 'percentage' | 'fixed';
+  value: number;
+  maxDiscount?: number | null;
+  /**
+   * Leave empty if there is no expiration date.
+   */
+  expirationDate?: string | null;
+  applicableProducts?: (number | Product)[] | null;
+  applicableCategories?:
+    | (
+        | {
+            relationTo: 'productCategories';
+            value: number | ProductCategory;
+          }
+        | {
+            relationTo: 'productSubCategories';
+            value: number | ProductSubCategory;
+          }
+      )[]
+    | null;
+  allProducts?: boolean | null;
+  allCategories?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "redirects".
  */
 export interface Redirect {
@@ -1724,6 +1747,10 @@ export interface PayloadLockedDocument {
         value: number | ContactForm;
       } | null)
     | ({
+        relationTo: 'discountCodes';
+        value: number | DiscountCode;
+      } | null)
+    | ({
         relationTo: 'media';
         value: number | Media;
       } | null)
@@ -1843,6 +1870,25 @@ export interface ContactFormSelect<T extends boolean = true> {
   email?: T;
   phoneNumber?: T;
   message?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "discountCodes_select".
+ */
+export interface DiscountCodesSelect<T extends boolean = true> {
+  code?: T;
+  amount?: T;
+  isActive?: T;
+  discountType?: T;
+  value?: T;
+  maxDiscount?: T;
+  expirationDate?: T;
+  applicableProducts?: T;
+  applicableCategories?: T;
+  allProducts?: T;
+  allCategories?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -2363,7 +2409,6 @@ export interface PostCategoriesSelect<T extends boolean = true> {
  */
 export interface PostsSelect<T extends boolean = true> {
   title?: T;
-  heroImage?: T;
   layout?:
     | T
     | {
@@ -2506,10 +2551,6 @@ export interface ProductsSelect<T extends boolean = true> {
         productsCarousel?: T | ProductsCarouselBlockPropsSelect<T>;
         threePhoto?: T | ThreePhotoBlockPropsSelect<T>;
       };
-  heroSubtitle?: T;
-  heroTitle?: T;
-  heroDescription?: T;
-  heroMedia?: T;
   orders?: T;
   meta?:
     | T
