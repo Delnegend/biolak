@@ -1,17 +1,17 @@
 import { ProductsSlug } from '@/collections/Products/slug'
 import { BuyNowBlockProps, Product } from '@/payload-types'
 import { findValidProductVariant } from '@/utilities/findValidProductVariant'
-import { getClientLang } from '@/utilities/getClientLang'
+import { Lang } from '@/utilities/lang'
 
 import { INTERNAL_BuyNowClient } from './Component.client'
 import { BuyNowBlockDefaults as defaults } from './defaults'
 
-export async function BuyNowBlock(
+export function BuyNowBlock(
 	props: BuyNowBlockProps & {
 		__product?: Product | null
+		__locale?: Lang
 	},
 ) {
-	const locale = await getClientLang()
 	const p =
 		typeof props[ProductsSlug] === 'object' && !!props[ProductsSlug]
 			? props[ProductsSlug]
@@ -27,7 +27,7 @@ export async function BuyNowBlock(
 			<INTERNAL_BuyNowClient
 				productSlug={p.slug}
 				fallbackVariantSku={findValidProductVariant(p.variants)?.sku}
-				buttonLabel={props.buttonLabel ?? defaults.buttonLabel(locale)}
+				buttonLabel={props.buttonLabel ?? defaults.buttonLabel(props.__locale)}
 			/>
 		</div>
 	)

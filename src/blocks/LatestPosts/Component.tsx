@@ -5,24 +5,28 @@ import { HeadlessImage } from '@/components/Media/HeadlessImage'
 import { Button } from '@/components/ui/button'
 import { Carousel, CarouselContent, CarouselItem } from '@/components/ui/carousel'
 import { LatestPostsBlockProps } from '@/payload-types'
-import { getClientLang } from '@/utilities/getClientLang'
 import { Lang } from '@/utilities/lang'
 import { matchLang } from '@/utilities/matchLang'
 
 import { LatestPostsBlockDefaults as defaults } from './defaults'
 
-export async function LatestPostsBlock(props: LatestPostsBlockProps): Promise<React.JSX.Element> {
+export function LatestPostsBlock(
+	props: LatestPostsBlockProps & {
+		__locale?: Lang
+	},
+): React.JSX.Element {
 	const posts = props.posts.filter((post) => typeof post === 'object') ?? []
-	const locale = await getClientLang()
 
 	return (
 		<div className="border-t py-14">
 			<div className="safe-width">
 				<div className="mb-12 flex flex-row items-center justify-between font-semibold italic">
-					<div className="font-serif text-7xl">{props.title ?? defaults.title(locale)}</div>
+					<div className="font-serif text-7xl">
+						{props.title ?? defaults.title(props.__locale)}
+					</div>
 					<Button size="lg" className="justify-between" variant="outline" asChild>
 						<Link href={'/events'}>
-							{props.buttonLabel ?? defaults.buttonLabel(locale)}
+							{props.buttonLabel ?? defaults.buttonLabel(props.__locale)}
 							<ArrowRight />
 						</Link>
 					</Button>
@@ -44,7 +48,7 @@ export async function LatestPostsBlock(props: LatestPostsBlockProps): Promise<Re
 											alt={matchLang({
 												[Lang.English]: 'Post hero image',
 												[Lang.Vietnamese]: 'Hình ảnh bài viết',
-											})(locale)}
+											})(props.__locale)}
 											placeholder={{ width: 460, height: 400 }}
 											className="h-[25rem] w-[28.75rem] rounded-[0.5rem] object-cover"
 										/>

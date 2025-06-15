@@ -4,17 +4,17 @@ import { CMSLink } from '@/components/CMSLink'
 import { HeadlessImage } from '@/components/Media/HeadlessImage'
 import { Button } from '@/components/ui/button'
 import { CallToActionPostBlockProps } from '@/payload-types'
-import { getClientLang } from '@/utilities/getClientLang'
 import { Lang } from '@/utilities/lang'
 import { matchLang } from '@/utilities/matchLang'
 
 import { CallToActionPostBlockDefaults as defaults } from './defaults'
 
-export async function CallToActionPostBlock(
-	props: CallToActionPostBlockProps,
-): Promise<React.JSX.Element> {
+export function CallToActionPostBlock(
+	props: CallToActionPostBlockProps & {
+		__locale?: Lang
+	},
+): React.JSX.Element {
 	const post = props.post && typeof props.post === 'object' ? props.post : null
-	const locale = await getClientLang()
 
 	const title = props.overwriteTitle ?? post?.title
 	const description = props.overwriteDescription ?? post?.meta?.meta?.description
@@ -30,7 +30,7 @@ export async function CallToActionPostBlock(
 					<CMSLink
 						{...props.link}
 						type={props.link?.type ?? undefined}
-						label={props.link?.label ?? defaults.buttonLabel(locale)}
+						label={props.link?.label ?? defaults.buttonLabel(props.__locale)}
 					>
 						<ArrowRight />
 					</CMSLink>
@@ -43,7 +43,7 @@ export async function CallToActionPostBlock(
 					alt={matchLang({
 						[Lang.English]: 'Post hero image',
 						[Lang.Vietnamese]: 'Hình ảnh bài viết',
-					})(locale)}
+					})(props.__locale)}
 					className="size-full object-cover max-lg:aspect-square lg:absolute"
 				/>
 			</div>

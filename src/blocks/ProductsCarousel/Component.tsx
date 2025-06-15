@@ -7,7 +7,6 @@ import { HeadlessImage } from '@/components/Media/HeadlessImage'
 import { Button } from '@/components/ui/button'
 import { Carousel, CarouselContent, CarouselItem } from '@/components/ui/carousel'
 import type { ProductsCarouselBlockProps } from '@/payload-types'
-import { getClientLang } from '@/utilities/getClientLang'
 import { Lang } from '@/utilities/lang'
 import { matchLang } from '@/utilities/matchLang'
 import { cn } from '@/utilities/ui'
@@ -21,10 +20,11 @@ const phudu = Phudu({
 })
 
 export async function ProductsCarouselBlock(
-	props: ProductsCarouselBlockProps,
+	props: ProductsCarouselBlockProps & {
+		__lang?: Lang
+	},
 ): Promise<React.JSX.Element> {
 	const products = props.products?.filter((p) => typeof p === 'object') ?? []
-	const locale = await getClientLang()
 
 	return (
 		<div className="relative max-h-[55rem] overflow-hidden">
@@ -48,14 +48,14 @@ export async function ProductsCarouselBlock(
 											matchLang({
 												[Lang.English]: 'Product Image',
 												[Lang.Vietnamese]: 'Hình ảnh sản phẩm',
-											})(locale)
+											})(props.__lang)
 										}
 										placeholder={{ width: 720, height: 880 }}
 										className="size-full max-h-[55rem] object-cover"
 									/>
 									<div className="flex flex-col justify-center gap-3 text-balance bg-[#210E0A] px-14 text-[#F1DAAE]">
 										<div className="text-xl font-medium">
-											{props.title ?? defaults.title(locale)}
+											{props.title ?? defaults.title(props.__lang)}
 										</div>
 										<div className="font-serif text-7xl font-bold">{product.title}</div>
 										<div className="my-5">{product.shortDescription}</div>
@@ -70,9 +70,7 @@ export async function ProductsCarouselBlock(
 												as={product.slug ? `/product/${product.slug}` : '#'}
 											>
 												{props.watchMoreBtnLabel ??
-													defaults.watchMoreBtnLabel({
-														locale,
-													})}
+													defaults.watchMoreBtnLabel(props.__lang)}
 												<ArrowRight />
 											</Link>
 										</Button>
@@ -105,9 +103,7 @@ export async function ProductsCarouselBlock(
 											)}
 											{...props.apb}
 											type={props.apb?.type ?? undefined}
-											label={defaults.allProductsBtnLabel({
-												locale,
-											})}
+											label={defaults.allProductsBtnLabel(props.__lang)}
 										/>
 									</div>
 								</CarouselItem>

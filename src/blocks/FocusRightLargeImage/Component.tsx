@@ -1,9 +1,11 @@
 import { HeadlessImage } from '@/components/Media/HeadlessImage'
 import RichText from '@/components/RichText'
 import { FocusRightLargeImageBlockProps } from '@/payload-types'
+import { Lang } from '@/utilities/lang'
+import { matchLang } from '@/utilities/matchLang'
 
 export function FocusRightLargeImageBlock(
-	props: FocusRightLargeImageBlockProps,
+	props: FocusRightLargeImageBlockProps & { __locale?: Lang },
 ): React.JSX.Element {
 	return (
 		<div
@@ -18,7 +20,10 @@ export function FocusRightLargeImageBlock(
 			</div>
 			<HeadlessImage
 				media={props.image}
-				alt="Placeholder image"
+				alt={matchLang({
+					[Lang.English]: 'Focus Right Large Image',
+					[Lang.Vietnamese]: 'Hình ảnh lớn bên phải',
+				})(props.__locale)}
 				placeholder={{ width: 1000, height: 1000 }}
 				className="size-full max-w-[calc(80rem*55/100)] object-cover"
 				style={{ gridArea: 'img' }}

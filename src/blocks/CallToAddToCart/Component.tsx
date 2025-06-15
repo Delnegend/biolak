@@ -2,16 +2,16 @@ import { ProductsSlug } from '@/collections/Products/slug'
 import { HeadlessImage } from '@/components/Media/HeadlessImage'
 import RichText from '@/components/RichText'
 import { CallToAddToCartBlockProps, Product } from '@/payload-types'
-import { getClientLang } from '@/utilities/getClientLang'
 import { Lang } from '@/utilities/lang'
 import { matchLang } from '@/utilities/matchLang'
 
 import { INTERNAL_AddToCartClient } from './AddToCart.client'
 import { CallToAddToCartBlockDefaults as defaults } from './defaults'
 
-export async function CallToAddToCartBlock(
+export function CallToAddToCartBlock(
 	props: CallToAddToCartBlockProps & {
 		__product?: Product | null
+		__locale?: Lang
 	},
 ): Promise<React.JSX.Element> {
 	const locale = await getClientLang()
@@ -29,6 +29,7 @@ export async function CallToAddToCartBlock(
 		p.variants?.find((v) => v.defaultVariant && v.stock > 0) ??
 		p.variants.find((v) => v.stock > 0)
 
+): React.JSX.Element {
 	return (
 		<div className="safe-width my-28 flex !max-w-[50rem] flex-col items-center text-primary">
 			<HeadlessImage
@@ -37,6 +38,7 @@ export async function CallToAddToCartBlock(
 					[Lang.English]: 'Background image for call to add to cart button',
 					[Lang.Vietnamese]: 'Hình nền cho nút thêm vào giỏ hàng',
 				})(locale)}
+				})(props.__locale)}
 				placeholder={{ width: 600, height: 600 }}
 				className="aspect-square size-full max-w-[38rem] rounded-full object-cover"
 			/>
@@ -50,6 +52,7 @@ export async function CallToAddToCartBlock(
 					title: p.title,
 					variant,
 				}}
+				buttonLabel={props.buttonLabel ?? defaults.buttonLabel(props.__locale)}
 			/>
 		</div>
 	)
