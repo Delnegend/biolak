@@ -20,6 +20,7 @@ const ProductInCartInLocalStorageSchema = z.object({
 		title: z.string(),
 		price: z.number().min(0),
 		image: z.any().optional().nullable(),
+		stock: z.number().optional().default(0),
 	}),
 	quantity: z.number().min(1),
 	checked: z.boolean().optional().default(true),
@@ -37,6 +38,7 @@ export interface ProductInCart {
 		title: Product['variants'][number]['title']
 		price: Product['variants'][number]['price']
 		image?: Product['variants'][number]['image']
+		stock?: Product['variants'][number]['stock']
 	}
 	quantity: number
 	checked?: boolean
@@ -90,7 +92,8 @@ export function useCartManager({
 			JSON.parse(localStorage.getItem(cartKey) || '[]'),
 		)
 		if (!ok) {
-			console.error(`Failed to parse cart from localStorage: ${parsedUnvalidated}`)
+			if (process.env.NODE_ENV === 'development')
+				console.error(`Failed to parse cart from localStorage: ${parsedUnvalidated}`)
 			localStorage.setItem(cartKey, JSON.stringify([]))
 			setLoadedFromLocalStorageDone(true)
 			return
@@ -100,7 +103,8 @@ export function useCartManager({
 			.array(ProductInCartInLocalStorageSchema)
 			.safeParse(parsedUnvalidated)
 		if (!success) {
-			console.error(`Failed to validate cart from localStorage: ${z.prettifyError(error)}`)
+			if (process.env.NODE_ENV === 'development')
+				console.error(`Failed to validate cart from localStorage: ${z.prettifyError(error)}`)
 			localStorage.setItem(cartKey, JSON.stringify([]))
 			setLoadedFromLocalStorageDone(true)
 			return
@@ -201,8 +205,9 @@ export function useCartManager({
 							title: variantInResponse.title,
 							price: variantInResponse.price,
 							image: variantInResponse.image,
+							stock: variantInResponse.stock,
 						},
-						quantity: item.quantity,
+						quantity: Math.min(item.quantity, variantInResponse.stock ?? 0),
 						checked: outOfStock ? false : (item.checked ?? true),
 						disabled: outOfStock,
 					})
