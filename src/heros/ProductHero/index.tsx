@@ -59,7 +59,7 @@ export async function ProductHero({
 
 				<INTERNAL_ProductVariantSelector product={p} validVariant={validVariant} />
 
-				<div className="mt-8 grid size-full h-fit grid-cols-[repeat(auto-fill,minmax(14rem,1fr))] gap-4">
+				<div className="mt-8 grid size-full h-fit grid-cols-[repeat(auto-fill,minmax(15rem,1fr))] gap-4">
 					<INTERNAL_BuyNowButton locale={locale} disabled={validVariant === null} />
 					<INTERNAL_AddToCartButton locale={locale} disabled={validVariant === null} />
 				</div>
