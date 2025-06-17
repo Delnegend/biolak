@@ -62,7 +62,7 @@ export async function confirmDetailsAction(input: unknown): Promise<
 		}
 	}
 
-	console.log('Confirmed details:', parsedInput)
+	if (process.env.NODE_ENV === 'development') console.log('Confirmed details:', parsedInput)
 
 	return { success: true }
 }
