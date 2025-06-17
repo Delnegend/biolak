@@ -159,27 +159,13 @@ export const DiscountCodesCollection: CollectionConfig<typeof DiscountCodesSlug>
 			],
 		},
 		{
-			type: 'row',
-			fields: [
-				{
-					name: 'allProducts',
-					type: 'checkbox',
-					label: {
-						[Lang.English]: 'Apply to all products',
-						[Lang.Vietnamese]: 'Áp dụng cho tất cả sản phẩm',
-					},
-					defaultValue: false,
-				},
-				{
-					name: 'allCategories',
-					type: 'checkbox',
-					label: {
-						[Lang.English]: 'Apply to all categories',
-						[Lang.Vietnamese]: 'Áp dụng cho tất cả danh mục',
-					},
-					defaultValue: false,
-				},
-			],
+			name: 'allProducts',
+			type: 'checkbox',
+			label: {
+				[Lang.English]: 'Apply to all products',
+				[Lang.Vietnamese]: 'Áp dụng cho tất cả sản phẩm',
+			},
+			defaultValue: false,
 		},
 	],
 	admin: {
