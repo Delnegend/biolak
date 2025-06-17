@@ -99,13 +99,14 @@ export function CartListClient({
 						className="flex h-5 w-[6.6rem] items-center justify-between border"
 					>
 						<button
-							className="flex aspect-square size-5 items-center justify-center border-r"
-							onClick={() =>
+							className="flex aspect-square size-5 items-center justify-center border-r disabled:text-muted-foreground"
+							onClick={(e) => {
+								e.preventDefault()
 								unloadProduct({
 									productId: item.product.id,
 									variantSku: item.variant.sku,
 								})
-							}
+							}}
 							aria-label={matchLang({
 								[Lang.English]: `Decrease quantity of ${item.product.title} (${item.variant.title})`,
 								[Lang.Vietnamese]: `Giảm số lượng ${item.product.title} (${item.variant.title})`,
@@ -115,8 +116,11 @@ export function CartListClient({
 						</button>
 						<span className="text-sm">{item.quantity}</span>
 						<button
-							className="flex aspect-square size-5 items-center justify-center border-l"
-							onClick={() => loadProduct(item)}
+							className="flex aspect-square size-5 items-center justify-center border-l disabled:text-muted-foreground"
+							onClick={(e) => {
+								e.preventDefault()
+								loadProduct(item)
+							}}
 							aria-label={matchLang({
 								[Lang.English]: `Increase quantity of ${item.product.title} (${item.variant.title})`,
 								[Lang.Vietnamese]: `Tăng số lượng ${item.product.title} (${item.variant.title})`,
