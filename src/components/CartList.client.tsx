@@ -111,6 +111,7 @@ export function CartListClient({
 								[Lang.English]: `Decrease quantity of ${item.product.title} (${item.variant.title})`,
 								[Lang.Vietnamese]: `Giảm số lượng ${item.product.title} (${item.variant.title})`,
 							})(locale)}
+							disabled={item.quantity <= 1}
 						>
 							-
 						</button>
@@ -125,6 +126,7 @@ export function CartListClient({
 								[Lang.English]: `Increase quantity of ${item.product.title} (${item.variant.title})`,
 								[Lang.Vietnamese]: `Tăng số lượng ${item.product.title} (${item.variant.title})`,
 							})(locale)}
+							disabled={item.quantity >= (item.variant.stock ?? 0)}
 						>
 							+
 						</button>
