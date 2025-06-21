@@ -18,7 +18,7 @@ export const UsersCollection: CollectionConfig<typeof UsersSlug> = {
 		},
 	},
 	access: {
-		admin: allow(Role.Admin),
+		admin: allow(Role.Admin, Role.ContentManager, Role.SalesManager),
 		create: allow(Role.Admin),
 		delete: allow(Role.Admin),
 		read: allow(Role.Admin),
