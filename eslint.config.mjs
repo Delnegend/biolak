@@ -50,6 +50,6 @@ export default [
 		},
 	},
 	{
-		ignores: ['.next/', './src/migrations/'],
+		ignores: ['.next/', './src/migrations/', './src/app/(payload)/admin/importMap.js'],
 	},
 ]
