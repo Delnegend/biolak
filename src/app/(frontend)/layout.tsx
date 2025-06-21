@@ -2,8 +2,7 @@ import './globals.css'
 
 import type { Metadata } from 'next'
 import { Crimson_Pro, Manrope } from 'next/font/google'
-import { draftMode } from 'next/headers'
-import { headers as getHeaders } from 'next/headers'
+import { draftMode, headers as getHeaders } from 'next/headers'
 import React from 'react'
 
 import { AdminBar } from '@/components/AdminBar'
@@ -12,7 +11,6 @@ import { FloatingGlobalComponent } from '@/globals/Floating/Component'
 import { HeaderGlobalComponent } from '@/globals/Header/Component'
 import { PromoGlobalComponent } from '@/globals/Promo/Component'
 import { CartContextProvider } from '@/hooks/useCartManager'
-import { ClientLangContextProvider } from '@/hooks/useClientLang'
 import { getServerSideURL } from '@/utilities/getURL'
 import { HeaderName } from '@/utilities/headerName'
 import { mergeOpenGraph } from '@/utilities/mergeOpenGraph'
@@ -47,24 +45,22 @@ export default async function RootLayout({ children }: { children: React.ReactNo
 			</head>
 			<body>
 				<CartContextProvider>
-					<ClientLangContextProvider>
-						<Toaster theme="light" />
-						<AdminBar
-							adminBarProps={{
-								preview: isEnabled,
-							}}
-						/>
-						{pathname === '/checkout' ? (
-							<></>
-						) : (
-							<>
-								<PromoGlobalComponent />
-								<HeaderGlobalComponent />
-							</>
-						)}
-						<FloatingGlobalComponent />
-						{children}
-					</ClientLangContextProvider>
+					<Toaster theme="light" />
+					<AdminBar
+						adminBarProps={{
+							preview: isEnabled,
+						}}
+					/>
+					{pathname === '/checkout' ? (
+						<></>
+					) : (
+						<>
+							<PromoGlobalComponent />
+							<HeaderGlobalComponent />
+						</>
+					)}
+					<FloatingGlobalComponent />
+					{children}
 				</CartContextProvider>
 			</body>
 		</html>
