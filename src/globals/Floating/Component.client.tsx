@@ -8,7 +8,6 @@ import Link from 'next/link'
 import { useState } from 'react'
 
 import { Button } from '@/components/ui/button'
-import { useClientLang } from '@/hooks/useClientLang'
 import { FloatingGlobal } from '@/payload-types'
 import { Lang } from '@/utilities/lang'
 import { matchLang } from '@/utilities/matchLang'
@@ -19,9 +18,14 @@ import { FloatingGlobalDefaults as defaults } from './defaults'
 
 const inter = Inter({ subsets: ['vietnamese'], weight: ['400'] })
 
-export function INTERNAL_FloatingClient({ global }: { global: FloatingGlobal }): React.JSX.Element {
+export function INTERNAL_FloatingClient({
+	global,
+	locale,
+}: {
+	global: FloatingGlobal
+	locale: Lang
+}): React.JSX.Element {
 	const [open, setOpen] = useState(false)
-	const { lang: locale } = useClientLang()
 
 	return (
 		<div className={cn('fixed bottom-4 right-10 z-10 flex h-24 flex-row items-center gap-x-6')}>
