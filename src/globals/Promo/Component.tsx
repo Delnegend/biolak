@@ -1,6 +1,6 @@
 import { CMSLink } from '@/components/CMSLink'
 import { PromoGlobal } from '@/payload-types'
-import { getClientLang } from '@/utilities/getClientLang'
+import { getClientLang } from '@/utilities/getClientLocale'
 import { getCachedGlobal } from '@/utilities/getGlobals'
 
 import { PromoGlobalSlug } from './config'
