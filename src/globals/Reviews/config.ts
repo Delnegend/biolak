@@ -23,7 +23,6 @@ export const ReviewsGlobalConf: GlobalConfig<typeof ReviewsGlobalSlug> = {
 			type: 'text',
 			label: false,
 			localized: true,
-			defaultValue: defaults.title,
 			admin: {
 				placeholder: defaults.title(Lang.Vietnamese),
 			},
@@ -33,7 +32,6 @@ export const ReviewsGlobalConf: GlobalConfig<typeof ReviewsGlobalSlug> = {
 			type: 'text',
 			label: false,
 			localized: true,
-			defaultValue: defaults.reviewButtonLabel,
 			admin: {
 				placeholder: defaults.reviewButtonLabel(Lang.Vietnamese),
 			},
@@ -43,7 +41,6 @@ export const ReviewsGlobalConf: GlobalConfig<typeof ReviewsGlobalSlug> = {
 			type: 'text',
 			label: false,
 			localized: true,
-			defaultValue: defaults.reviewDialogTitle,
 			admin: {
 				placeholder: defaults.reviewDialogTitle(Lang.Vietnamese),
 			},
@@ -53,7 +50,6 @@ export const ReviewsGlobalConf: GlobalConfig<typeof ReviewsGlobalSlug> = {
 			type: 'text',
 			label: false,
 			localized: true,
-			defaultValue: defaults.heartsSelectionLabel,
 			admin: {
 				placeholder: defaults.heartsSelectionLabel(Lang.Vietnamese),
 			},
@@ -63,7 +59,6 @@ export const ReviewsGlobalConf: GlobalConfig<typeof ReviewsGlobalSlug> = {
 			type: 'text',
 			label: false,
 			localized: true,
-			defaultValue: defaults.invoiceIdLabel,
 			admin: {
 				placeholder: defaults.invoiceIdLabel(Lang.Vietnamese),
 			},
@@ -73,7 +68,6 @@ export const ReviewsGlobalConf: GlobalConfig<typeof ReviewsGlobalSlug> = {
 			type: 'text',
 			label: false,
 			localized: true,
-			defaultValue: defaults.contentLabel,
 			admin: {
 				placeholder: defaults.contentLabel(Lang.Vietnamese),
 			},
@@ -83,7 +77,6 @@ export const ReviewsGlobalConf: GlobalConfig<typeof ReviewsGlobalSlug> = {
 			type: 'text',
 			label: false,
 			localized: true,
-			defaultValue: defaults.sendReviewButtonLabel,
 			admin: {
 				placeholder: defaults.sendReviewButtonLabel(Lang.Vietnamese),
 			},

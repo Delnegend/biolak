@@ -8,7 +8,6 @@ import { toast } from 'sonner'
 import { Button } from '@/components/ui/button'
 import { Dialog, DialogContent, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
 import { TextInput } from '@/components/ui/text-input'
-import { useClientLang } from '@/hooks/useClientLang'
 import { ReviewsGlobal } from '@/payload-types'
 import { Lang } from '@/utilities/lang'
 import { matchLang } from '@/utilities/matchLang'
@@ -20,13 +19,14 @@ import { ReviewsGlobalDefaults as defaults } from './defaults'
 export function INTERNAL_ReviewDialogContentClient({
 	global,
 	className,
+	locale,
 }: {
 	global: ReviewsGlobal
 	className?: {
 		triggerButton?: string
 	}
+	locale: Lang
 }): React.JSX.Element {
-	const { lang: locale } = useClientLang()
 	const [dialogOpen, setDialogOpen] = useState(false)
 	const { register, handleSubmit } = useForm<SendReviewInputType>()
 	const [rating, setRating] = useState<number>(5)
