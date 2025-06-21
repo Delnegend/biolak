@@ -6,7 +6,7 @@ import { ContentBlock } from '@/blocks/Content/Component'
 import { FormBlock } from '@/blocks/Form/Component'
 import { MediaBlockComponent } from '@/blocks/MediaBlock/Component'
 import type { Page, Post, PostCategory, Product } from '@/payload-types'
-import { getClientLang } from '@/utilities/getClientLang'
+import { getClientLang } from '@/utilities/getClientLocale'
 
 import { ArchiveBlockConf } from './ArchiveBlock/config'
 import { BannerBlock } from './Banner/Component'
