@@ -73,10 +73,10 @@ export default buildConfig({
 			],
 		},
 		autoLogin:
-			process.env.NODE_ENV === 'development'
+			process.env.NODE_ENV === 'development' && process.env.DEV_EMAIL && process.env.DEV_PASSWORD
 				? {
-						email: process.env.DEV_EMAIL ?? '',
-						password: process.env.DEV_PASSWORD ?? '',
+						email: process.env.DEV_EMAIL,
+						password: process.env.DEV_PASSWORD,
 					}
 				: false,
 	},
