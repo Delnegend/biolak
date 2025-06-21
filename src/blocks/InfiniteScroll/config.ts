@@ -25,7 +25,6 @@ export const InfiniteScrollBlockConf: Block = {
 				[Lang.English]: 'Graphic',
 				[Lang.Vietnamese]: 'Ảnh đồ họa',
 			},
-			required: true,
 			localized: true,
 			relationTo: MediaSlug,
 		},
