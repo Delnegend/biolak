@@ -33,12 +33,20 @@ export async function arrayDepthHandler<T extends object>({
 	data,
 	fetch,
 }: {
-	data?: (T | number)[]
+	data?: (T | number)[] | null
 	fetch: (ids: number[]) => Promise<T[]>
 }): ReturnType<typeof tryCatch<T[]>> {
-	if (!data || typeof data[0] === 'object') {
+	if (!data) {
 		return {
 			data: [],
+			ok: true,
+			error: null,
+		}
+	}
+
+	if (typeof data[0] === 'object') {
+		return {
+			data: data as T[],
 			ok: true,
 			error: null,
 		}
