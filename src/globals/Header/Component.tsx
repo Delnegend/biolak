@@ -14,7 +14,7 @@ import { ContactFormGlobalComponent } from '../ContactForm/Component'
 import { INTERNAL_CartSidebar } from './components/CartSidebar.client'
 import { INTERNAL_LanguageSwitcher } from './components/LanguageSwitcher.client'
 import { INTERNAL_ProductsDropdown } from './components/ProductsDropdown'
-import { HeaderGlobalSlug } from './config'
+import { HeaderGlobalSlug } from './slug'
 
 const prebuilds: Record<
 	NonNullable<
