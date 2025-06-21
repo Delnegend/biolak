@@ -1,11 +1,18 @@
-import { CollectionConfig } from 'payload'
+import { CollectionConfig, NumberFieldSingleValidation, TextFieldSingleValidation } from 'payload'
 
 import { allow, Role } from '@/access/allow'
+import { CheckoutPageGlobalDefaults } from '@/globals/CheckoutPage/defaults'
+import { Order } from '@/payload-types'
+import { calculatePrices } from '@/utilities/calculatePrices'
+import { arrayDepthHandler, depthHandler } from '@/utilities/depthHandler'
 import { Lang } from '@/utilities/lang'
+import { matchLang } from '@/utilities/matchLang'
 import { tryCatch } from '@/utilities/tryCatch'
 
 import { CustomersSlug } from '../Customers/slug'
+import { DiscountCodesSlug } from '../DiscountCode/slug'
 import { ProductsSlug } from '../Products/slug'
+import { UsersSlug } from '../Users/slug'
 import { OrdersSlug } from './slug'
 
 export const OrdersCollection: CollectionConfig<typeof OrdersSlug> = {
@@ -28,85 +35,941 @@ export const OrdersCollection: CollectionConfig<typeof OrdersSlug> = {
 	},
 	fields: [
 		{
-			name: 'review',
-			type: 'group',
-			label: {
-				[Lang.English]: 'Review',
-				[Lang.Vietnamese]: 'Đánh giá',
-			},
-			access: {
-				create: allow(Role.Admin, Role.SalesManager, Role.ContentManager),
-				update: allow(Role.Admin, Role.SalesManager, Role.ContentManager),
-				read: allow(Role.Admin, Role.SalesManager, Role.ContentManager),
-			},
-			fields: [
-				{
-					name: 'rating',
-					type: 'number',
-					label: {
-						[Lang.English]: 'Rating (1-5)',
-						[Lang.Vietnamese]: 'Đánh giá (1-5)',
-					},
-					min: 1,
-					max: 5,
-					access: {
-						read: allow(Role.Admin, Role.SalesManager, Role.ContentManager),
-						update: allow(Role.NoOne),
-						create: allow(Role.NoOne),
-					},
-				},
-				{
-					name: 'content',
-					type: 'textarea',
-					label: {
-						[Lang.English]: 'Content',
-						[Lang.Vietnamese]: 'Nội dung',
-					},
-					access: {
-						read: allow(Role.Admin, Role.SalesManager, Role.ContentManager),
-						update: allow(Role.NoOne),
-						create: allow(Role.NoOne),
-					},
-				},
-				{
-					name: 'approved',
-					type: 'checkbox',
-					label: {
-						[Lang.English]: 'Approved',
-						[Lang.Vietnamese]: 'Đã duyệt',
-					},
-					access: {
-						update: allow(Role.Admin, Role.SalesManager, Role.ContentManager),
-					},
-					defaultValue: false,
-				},
-			],
-		},
-		{
-			name: ProductsSlug,
-			type: 'relationship',
-			relationTo: ProductsSlug,
-			label: {
-				[Lang.English]: 'Product',
-				[Lang.Vietnamese]: 'Sản phẩm',
-			},
-			required: true,
-		},
-		{
-			name: CustomersSlug,
 			type: 'relationship',
 			relationTo: CustomersSlug,
+			name: 'customer',
 			label: {
 				[Lang.English]: 'Customer',
 				[Lang.Vietnamese]: 'Khách hàng',
 			},
 			required: true,
+			access: {
+				read: allow(Role.Admin, Role.SalesManager),
+				update: allow(Role.NoOne),
+				create: allow(Role.Admin, Role.SalesManager),
+			},
+		},
+		{
+			type: 'textarea',
+			name: 'note',
+			label: {
+				[Lang.English]: 'Note',
+				[Lang.Vietnamese]: 'Ghi chú',
+			},
+			access: {
+				read: allow(Role.Admin, Role.SalesManager),
+				update: allow(Role.Admin, Role.SalesManager),
+				create: allow(Role.Admin, Role.SalesManager),
+			},
+			admin: {
+				description: {
+					[Lang.English]:
+						'This note is for internal use only, it will not be shown to the customer.',
+					[Lang.Vietnamese]:
+						'Ghi chú này chỉ sử dụng nội bộ, sẽ không hiển thị cho khách hàng.',
+				},
+			},
+		},
+		{
+			type: 'tabs',
+			tabs: [
+				{
+					name: 'cart',
+					label: {
+						[Lang.English]: 'Cart',
+						[Lang.Vietnamese]: 'Giỏ hàng',
+					},
+					fields: [
+						{
+							type: 'array',
+							name: 'products',
+							label: false,
+							labels: {
+								singular: {
+									[Lang.English]: 'Product',
+									[Lang.Vietnamese]: 'Sản phẩm',
+								},
+								plural: {
+									[Lang.English]: 'Products',
+									[Lang.Vietnamese]: 'Sản phẩm',
+								},
+							},
+							fields: [
+								{
+									name: 'product',
+									type: 'relationship',
+									relationTo: ProductsSlug,
+									label: {
+										[Lang.English]: 'Product',
+										[Lang.Vietnamese]: 'Sản phẩm',
+									},
+									required: true,
+								},
+								{
+									type: 'row',
+									fields: [
+										{
+											name: 'sku',
+											type: 'text',
+											label: {
+												[Lang.English]: 'SKU',
+												[Lang.Vietnamese]: 'Mã SKU loại',
+											},
+											required: true,
+											unique: true,
+											validate: (async (value, ctx) => {
+												const locale =
+													ctx.req.locale === Lang.English
+														? Lang.English
+														: Lang.Vietnamese
+
+												const product_ = (
+													ctx.siblingData as NonNullable<
+														NonNullable<Partial<Order>['cart']>['products']
+													>[number]
+												)?.product
+												if (!product_)
+													return matchLang({
+														[Lang.English]: 'Product not selected',
+														[Lang.Vietnamese]: 'Chưa chọn sản phẩm',
+													})(locale)
+												const {
+													data: product,
+													ok: productOk,
+													error: productError,
+												} = await tryCatch(async () => {
+													if (typeof product_ === 'object') return product_
+													return ctx.req.payload.findByID({
+														collection: ProductsSlug,
+														id: product_,
+													})
+												})
+												if (!productOk) {
+													console.error(
+														"[Orders/SKU validation] Can't fetch product:",
+														productError,
+													)
+													return matchLang({
+														[Lang.English]: 'Product not found',
+														[Lang.Vietnamese]: 'Không tìm thấy sản phẩm',
+													})(locale)
+												}
+
+												const { variants } = product
+												if (!variants?.length)
+													return matchLang({
+														[Lang.English]: 'Product has no variants',
+														[Lang.Vietnamese]: 'Sản phẩm không có loại nào',
+													})(locale)
+
+												return (
+													variants.find((v) => v.sku === value) ??
+													`${matchLang({
+														[Lang.English]: 'SKU must be one of',
+														[Lang.Vietnamese]:
+															'Mã SKU chỉ có thể là một trong các loại',
+													})(locale)}: ${variants?.map((v) => v.sku).join(', ')}`
+												)
+											}) as TextFieldSingleValidation,
+										},
+										{
+											name: 'quantity',
+											type: 'number',
+											label: {
+												[Lang.English]: 'Quantity',
+												[Lang.Vietnamese]: 'Số lượng',
+											},
+											required: true,
+											validate: (async (value, ctx) => {
+												const locale =
+													ctx.req.locale === Lang.English
+														? Lang.English
+														: Lang.Vietnamese
+												const siblingData = ctx.siblingData as NonNullable<
+													NonNullable<Partial<Order>['cart']>['products']
+												>[number]
+
+												if (!siblingData.product)
+													return matchLang({
+														[Lang.English]: 'Product not selected',
+														[Lang.Vietnamese]: 'Chưa chọn sản phẩm',
+													})(locale)
+												const {
+													data: product,
+													ok: productOk,
+													error: productError,
+												} = await depthHandler({
+													data: siblingData.product,
+													fetch: (id) =>
+														ctx.req.payload.findByID({
+															collection: ProductsSlug,
+															id,
+															select: {
+																variants: true,
+															},
+														}),
+												})
+												if (!productOk) {
+													console.error(
+														"[Orders/quantity validation] Can't fetch product:",
+														productError,
+													)
+													return matchLang({
+														[Lang.English]: 'Product not found',
+														[Lang.Vietnamese]: 'Không tìm thấy sản phẩm',
+													})(locale)
+												}
+
+												const matchedVariant = product?.variants.find(
+													(v) => v.sku === siblingData.sku,
+												)
+												if (!matchedVariant)
+													return matchLang({
+														[Lang.English]: 'Variant not found',
+														[Lang.Vietnamese]: 'Không tìm thấy loại',
+													})(locale)
+
+												if ((value ?? 0) < 1)
+													return matchLang({
+														[Lang.English]: 'Quantity must be at least 1',
+														[Lang.Vietnamese]: 'Số lượng phải lớn hơn hoặc bằng 1',
+													})(locale)
+
+												if ((value ?? 0) > matchedVariant.stock)
+													return matchLang({
+														[Lang.English]: 'Quantity exceeds stock',
+														[Lang.Vietnamese]: 'Số lượng vượt quá tồn kho',
+													})(locale)
+
+												return true
+											}) as NumberFieldSingleValidation,
+										},
+									],
+								},
+								{
+									type: 'row',
+									fields: [
+										{
+											name: 'previewPrice',
+											type: 'number',
+											label: {
+												[Lang.English]: 'Price',
+												[Lang.Vietnamese]: 'Đơn giá',
+											},
+											virtual: true,
+											admin: {
+												placeholder: '0',
+											},
+											access: {
+												read: allow(Role.Admin, Role.SalesManager),
+												update: allow(Role.NoOne),
+												create: allow(Role.NoOne),
+											},
+										},
+										{
+											name: 'previewTotal',
+											type: 'number',
+											label: {
+												[Lang.English]: 'Total',
+												[Lang.Vietnamese]: 'Tổng',
+											},
+											virtual: true,
+											admin: {
+												placeholder: '0',
+											},
+											access: {
+												read: allow(Role.Admin, Role.SalesManager),
+												update: allow(Role.NoOne),
+												create: allow(Role.NoOne),
+											},
+										},
+									],
+								},
+							],
+						},
+						{
+							name: 'discountCode',
+							type: 'relationship',
+							relationTo: DiscountCodesSlug,
+							label: {
+								[Lang.English]: 'Discount Code',
+								[Lang.Vietnamese]: 'Mã giảm giá',
+							},
+							access: {
+								read: allow(Role.Admin, Role.SalesManager),
+								update: allow(Role.Admin, Role.SalesManager),
+								create: allow(Role.Admin, Role.SalesManager),
+							},
+						},
+						{
+							name: 'prices',
+							type: 'group',
+							label: {
+								[Lang.English]: 'Prices',
+								[Lang.Vietnamese]: 'Giá',
+							},
+							virtual: true,
+							fields: [
+								{
+									name: 'provisional',
+									type: 'number',
+									label: {
+										[Lang.English]: 'Provisional Total',
+										[Lang.Vietnamese]: 'Tổng tạm tính',
+									},
+									admin: {
+										placeholder: '0',
+									},
+
+									access: {
+										read: allow(Role.Admin, Role.SalesManager),
+										update: allow(Role.NoOne),
+										create: allow(Role.NoOne),
+									},
+								},
+								{
+									name: 'shipping',
+									type: 'number',
+									label: {
+										[Lang.English]: 'Shipping Fee',
+										[Lang.Vietnamese]: 'Phí vận chuyển',
+									},
+									admin: {
+										placeholder: '0',
+									},
+
+									access: {
+										read: allow(Role.Admin, Role.SalesManager),
+										update: allow(Role.NoOne),
+										create: allow(Role.NoOne),
+									},
+								},
+								{
+									name: 'discount',
+									type: 'number',
+									label: {
+										[Lang.English]: 'Discount',
+										[Lang.Vietnamese]: 'Giảm giá',
+									},
+									admin: {
+										placeholder: '0',
+									},
+
+									access: {
+										read: allow(Role.Admin, Role.SalesManager),
+										update: allow(Role.NoOne),
+										create: allow(Role.NoOne),
+									},
+								},
+								{
+									name: 'total',
+									type: 'number',
+									label: {
+										[Lang.English]: 'Total',
+										[Lang.Vietnamese]: 'Tổng cộng',
+									},
+									admin: {
+										placeholder: '0',
+									},
+
+									access: {
+										read: allow(Role.Admin, Role.SalesManager),
+										update: allow(Role.NoOne),
+										create: allow(Role.NoOne),
+									},
+								},
+							],
+						},
+					],
+				},
+				{
+					name: 'billing',
+					label: {
+						[Lang.English]: 'Billing',
+						[Lang.Vietnamese]: 'Thông tin thanh toán',
+					},
+					fields: [
+						{
+							name: 'method',
+							type: 'select',
+							label: {
+								[Lang.English]: 'Payment Method',
+								[Lang.Vietnamese]: 'Phương thức thanh toán',
+							},
+							admin: {
+								placeholder: 'Chọn phương thức thanh toán',
+							},
+							defaultValue: 'cod',
+							access: {
+								read: allow(Role.Admin, Role.SalesManager),
+								update: allow(Role.Admin, Role.SalesManager),
+								create: allow(Role.Admin, Role.SalesManager),
+							},
+							options: [
+								{
+									value: 'cod',
+									label: {
+										[Lang.English]: 'Cash on Delivery',
+										[Lang.Vietnamese]: 'Thanh toán khi nhận hàng',
+									},
+								},
+								{
+									value: 'bankTransfer',
+									label: {
+										[Lang.English]: 'Bank Transfer',
+										[Lang.Vietnamese]: 'Chuyển khoản ngân hàng',
+									},
+								},
+							],
+						},
+						{
+							name: 'paidInFull',
+							type: 'checkbox',
+							label: {
+								[Lang.English]: 'Paid in full',
+								[Lang.Vietnamese]: 'Đã thanh toán đủ',
+							},
+							defaultValue: false,
+							access: {
+								read: allow(Role.Admin, Role.SalesManager),
+								update: allow(Role.Admin, Role.SalesManager),
+								create: allow(Role.Admin, Role.SalesManager),
+							},
+						},
+						{
+							name: 'transactionInfo',
+							type: 'group',
+							required: false,
+							fields: [
+								{
+									name: 'id',
+									type: 'text',
+									label: {
+										[Lang.English]: 'Transaction ID',
+										[Lang.Vietnamese]: 'ID giao dịch',
+									},
+									access: {
+										read: allow(Role.Admin, Role.SalesManager),
+										update: allow(Role.NoOne),
+										create: allow(Role.NoOne),
+									},
+									unique: true,
+								},
+								{
+									name: 'gateway',
+									type: 'text',
+									label: {
+										[Lang.English]: 'Payment Gateway',
+										[Lang.Vietnamese]: 'Cổng thanh toán',
+									},
+									access: {
+										read: allow(Role.Admin, Role.SalesManager),
+										update: allow(Role.NoOne),
+										create: allow(Role.NoOne),
+									},
+								},
+								{
+									name: 'transactionDate',
+									type: 'date',
+									label: {
+										[Lang.English]: 'Transaction Date',
+										[Lang.Vietnamese]: 'Ngày giao dịch',
+									},
+									access: {
+										read: allow(Role.Admin, Role.SalesManager),
+										update: allow(Role.NoOne),
+										create: allow(Role.NoOne),
+									},
+								},
+								{
+									name: 'accountNumber',
+									type: 'text',
+									label: {
+										[Lang.English]: 'Account Number',
+										[Lang.Vietnamese]: 'Số tài khoản ngân hàng',
+									},
+									access: {
+										read: allow(Role.Admin, Role.SalesManager),
+										update: allow(Role.NoOne),
+										create: allow(Role.NoOne),
+									},
+								},
+								{
+									name: 'code',
+									type: 'text',
+									label: {
+										[Lang.English]: 'Code',
+										[Lang.Vietnamese]: 'Mã code thanh toán',
+									},
+									admin: {
+										description: {
+											[Lang.English]:
+												'This is the code used to identify the transaction in the payment gateway.',
+											[Lang.Vietnamese]:
+												'Đây là mã được sử dụng để xác định giao dịch trong cổng thanh toán.',
+										},
+									},
+									access: {
+										read: allow(Role.Admin, Role.SalesManager),
+										update: allow(Role.NoOne),
+										create: allow(Role.NoOne),
+									},
+								},
+								{
+									name: 'content',
+									type: 'text',
+									label: {
+										[Lang.English]: 'Content',
+										[Lang.Vietnamese]: 'Nội dung chuyển khoản',
+									},
+									admin: {
+										description: {
+											[Lang.English]:
+												'This is the content of the transaction, usually includes order information.',
+											[Lang.Vietnamese]:
+												'Đây là nội dung của giao dịch, thường bao gồm thông tin đơn hàng.',
+										},
+									},
+								},
+								{
+									name: 'transferAmount',
+									type: 'number',
+									label: {
+										[Lang.English]: 'Transfer Amount',
+										[Lang.Vietnamese]: 'Số tiền chuyển khoản',
+									},
+									admin: {
+										description: {
+											[Lang.English]:
+												'This is the amount of money being transferred in the transaction.',
+											[Lang.Vietnamese]:
+												'Đây là số tiền được chuyển khoản trong giao dịch.',
+										},
+									},
+								},
+								{
+									name: 'referenceCode',
+									type: 'text',
+									label: {
+										[Lang.English]: 'Reference Code',
+										[Lang.Vietnamese]: 'Mã tham chiếu',
+									},
+								},
+								{
+									name: 'description',
+									type: 'text',
+									label: {
+										[Lang.English]: 'Description',
+										[Lang.Vietnamese]: 'Mô tả',
+									},
+									admin: {
+										description: {
+											[Lang.English]: 'Full SMS content of the transaction.',
+											[Lang.Vietnamese]: 'Toàn bộ nội dung tin nhắn SMS của giao dịch.',
+										},
+									},
+								},
+							],
+						},
+					],
+				},
+				{
+					name: 'shippingInfo',
+					label: {
+						[Lang.English]: 'Shipping Info',
+						[Lang.Vietnamese]: 'Thông tin giao hàng',
+					},
+					fields: [
+						{
+							name: 'address',
+							type: 'group',
+							label: {
+								[Lang.English]: 'Shipping Address',
+								[Lang.Vietnamese]: 'Địa chỉ giao hàng',
+							},
+							fields: [
+								{
+									name: 'city',
+									type: 'text',
+									label: {
+										[Lang.English]: 'City',
+										[Lang.Vietnamese]: 'Thành phố',
+									},
+									required: true,
+									access: {
+										read: allow(Role.Admin, Role.SalesManager),
+										update: allow(Role.Admin, Role.SalesManager),
+										create: allow(Role.Admin, Role.SalesManager),
+									},
+								},
+								{
+									name: 'district',
+									type: 'text',
+									label: {
+										[Lang.English]: 'District',
+										[Lang.Vietnamese]: 'Quận',
+									},
+									required: true,
+									access: {
+										read: allow(Role.Admin, Role.SalesManager),
+										update: allow(Role.Admin, Role.SalesManager),
+										create: allow(Role.Admin, Role.SalesManager),
+									},
+								},
+								{
+									name: 'ward',
+									type: 'text',
+									label: {
+										[Lang.English]: 'Ward',
+										[Lang.Vietnamese]: 'Phường',
+									},
+									required: true,
+									access: {
+										read: allow(Role.Admin, Role.SalesManager),
+										update: allow(Role.Admin, Role.SalesManager),
+										create: allow(Role.Admin, Role.SalesManager),
+									},
+								},
+								{
+									name: 'houseNumber',
+									type: 'text',
+									label: {
+										[Lang.English]: 'House Number',
+										[Lang.Vietnamese]: 'Số nhà',
+									},
+									required: true,
+									access: {
+										read: allow(Role.Admin, Role.SalesManager),
+										update: allow(Role.Admin, Role.SalesManager),
+										create: allow(Role.Admin, Role.SalesManager),
+									},
+								},
+							],
+						},
+						{
+							name: 'method',
+							type: 'select',
+							label: {
+								[Lang.English]: 'Shipping Method',
+								[Lang.Vietnamese]: 'Phương thức giao hàng',
+							},
+							admin: {
+								placeholder: 'Giao hàng tiêu chuẩn',
+							},
+							defaultValue: 'standard',
+							access: {
+								read: allow(Role.Admin, Role.SalesManager),
+								update: allow(Role.Admin, Role.SalesManager),
+								create: allow(Role.Admin, Role.SalesManager),
+							},
+							options: [
+								{
+									value: 'standard',
+									label: {
+										[Lang.English]: 'Standard Shipping',
+										[Lang.Vietnamese]: 'Giao hàng tiêu chuẩn',
+									},
+								},
+								{
+									value: 'express',
+									label: {
+										[Lang.English]: 'Express Shipping',
+										[Lang.Vietnamese]: 'Giao hàng nhanh',
+									},
+								},
+							],
+						},
+						{
+							name: 'tracking',
+							type: 'text',
+							label: {
+								[Lang.English]: 'Tracking Number',
+								[Lang.Vietnamese]: 'Mã vận đơn',
+							},
+							access: {
+								read: allow(Role.Admin, Role.SalesManager),
+								update: allow(Role.Admin, Role.SalesManager),
+								create: allow(Role.Admin, Role.SalesManager),
+							},
+							admin: {
+								description: {
+									[Lang.English]: 'Get from the shipping provider',
+									[Lang.Vietnamese]: 'Lấy từ nhà cung cấp vận chuyển',
+								},
+							},
+							unique: true,
+						},
+					],
+				},
+				{
+					name: 'message',
+					label: {
+						[Lang.English]: 'Message',
+						[Lang.Vietnamese]: 'Lời nhắn',
+					},
+					fields: [
+						{
+							name: 'sender',
+							type: 'text',
+							label: {
+								[Lang.English]: 'Sender',
+								[Lang.Vietnamese]: 'Người gửi',
+							},
+							access: {
+								read: allow(Role.Admin, Role.SalesManager, Role.ContentManager),
+								update: allow(Role.NoOne),
+								create: allow(Role.NoOne),
+							},
+						},
+						{
+							name: 'receiver',
+							type: 'textarea',
+							label: {
+								[Lang.English]: 'Receiver',
+								[Lang.Vietnamese]: 'Người nhận',
+							},
+							access: {
+								read: allow(Role.Admin, Role.SalesManager, Role.ContentManager),
+								update: allow(Role.NoOne),
+								create: allow(Role.NoOne),
+							},
+						},
+						{
+							name: 'content',
+							type: 'textarea',
+							label: {
+								[Lang.English]: 'Content',
+								[Lang.Vietnamese]: 'Nội dung',
+							},
+							access: {
+								read: allow(Role.Admin, Role.SalesManager, Role.ContentManager),
+								update: allow(Role.NoOne),
+								create: allow(Role.NoOne),
+							},
+						},
+					],
+				},
+				{
+					name: 'review',
+					label: {
+						[Lang.English]: 'Review',
+						[Lang.Vietnamese]: 'Đánh giá',
+					},
+					fields: [
+						{
+							name: 'rating',
+							type: 'number',
+							label: {
+								[Lang.English]: 'Rating (1-5)',
+								[Lang.Vietnamese]: 'Đánh giá (1-5)',
+							},
+							min: 1,
+							max: 5,
+							access: {
+								read: allow(Role.Admin, Role.SalesManager, Role.ContentManager),
+								update: allow(Role.NoOne),
+								create: allow(Role.NoOne),
+							},
+						},
+						{
+							name: 'content',
+							type: 'textarea',
+							label: {
+								[Lang.English]: 'Content',
+								[Lang.Vietnamese]: 'Nội dung',
+							},
+							access: {
+								read: allow(Role.Admin, Role.SalesManager, Role.ContentManager),
+								update: allow(Role.NoOne),
+								create: allow(Role.NoOne),
+							},
+						},
+						{
+							name: 'approved',
+							type: 'checkbox',
+							label: {
+								[Lang.English]: 'Approved',
+								[Lang.Vietnamese]: 'Đã duyệt',
+							},
+							access: {
+								create: allow(Role.Admin, Role.SalesManager, Role.ContentManager),
+								read: allow(Role.Admin, Role.SalesManager, Role.ContentManager),
+								update: allow(Role.Admin, Role.SalesManager, Role.ContentManager),
+							},
+							defaultValue: false,
+						},
+					],
+				},
+			],
 		},
 	],
 	timestamps: true,
+	versions: true,
 	hooks: {
+		beforeChange: [
+			({ data }) => {
+				const typedData = data as Partial<Order>
+				delete typedData.cart?.prices
+				for (const product of typedData.cart?.products ?? []) {
+					delete product.previewPrice
+					delete product.previewTotal
+				}
+				return data
+			},
+		],
 		afterChange: [
-			async ({ doc, req: { payload } }) => {
+			async ({ doc, req: { payload }, operation }) => {
+				if (operation !== 'create') return doc
+				const typedDoc = doc as Partial<Order>
+
+				const {
+					data: customer,
+					ok: customerOk,
+					error: customerError,
+				} = await tryCatch(() =>
+					payload.findByID({
+						collection: CustomersSlug,
+						id: doc.customer?.id,
+						select: {
+							name: true,
+						},
+					}),
+				)
+				if (!customerOk) {
+					console.error("[Orders/After change] Can't fetch customer:", customerError)
+					return doc
+				}
+
+				const {
+					data: productsInfos,
+					error: productsInfosError,
+					ok: productsInfosOk,
+				} = await arrayDepthHandler({
+					data: typedDoc.cart?.products?.map((i) => i.product),
+					fetch: (ids) =>
+						payload
+							.find({
+								collection: ProductsSlug,
+								where: {
+									id: {
+										in: ids,
+									},
+								},
+								depth: 1,
+								pagination: false,
+								limit: 1000,
+							})
+							.then((result) => result.docs),
+				})
+				if (!productsInfosOk) {
+					console.error("[Orders/After change] Can't fetch products:", productsInfosError)
+					return doc
+				}
+
+				let text =
+					`Tên khách hàng: ${customer.name ?? 'Không xác định'}\n` +
+					`Số điện thoại: ${typedDoc.cart?.products?.[0]?.sku ?? 'Không xác định'}\n` +
+					`Địa chỉ giao hàng: ${typedDoc.shippingInfo?.address?.houseNumber ?? 'Không xác định'}, ` +
+					`${typedDoc.shippingInfo?.address?.ward ?? 'Không xác định'}, ` +
+					`${typedDoc.shippingInfo?.address?.district ?? 'Không xác định'}, ` +
+					`${typedDoc.shippingInfo?.address?.city ?? 'Không xác định'}\n` +
+					`Phương thức giao hàng: ${typedDoc.shippingInfo?.method === 'express' ? 'Giao hàng nhanh' : 'Giao hàng tiêu chuẩn'}\n`
+
+				if (typedDoc.cart?.products?.length) {
+					text += `\nChi tiết đơn hàng:\n`
+					for (const product of typedDoc.cart.products) {
+						const matchedProduct = productsInfos.find(
+							(p) =>
+								p.id ===
+								(typeof product.product === 'object'
+									? product.product.id
+									: product.product),
+						)
+						if (!matchedProduct) continue
+						const matchedVariant = matchedProduct.variants.find((v) => v.sku === product.sku)
+						if (!matchedVariant) continue
+						text +=
+							`- Sản phẩm: ${matchedProduct.title ?? 'Không xác định'}, ` +
+							`SKU: ${product.sku}, ` +
+							`Số lượng: ${product.quantity}, ` +
+							`Đơn giá: ${matchedVariant.price ?? 0}, ` +
+							`Tổng: ${matchedVariant.price * product.quantity}\n`
+					}
+					const {
+						data: code,
+						ok,
+						error,
+					} = await depthHandler({
+						data: typedDoc.cart?.discountCode,
+						fetch(id) {
+							return payload.findByID({
+								collection: DiscountCodesSlug,
+								id,
+							})
+						},
+					})
+					if (!ok) {
+						console.error("[Orders/After change] Can't fetch discount code:", error)
+					}
+					const prices = calculatePrices({
+						code,
+						shipping:
+							typedDoc.shippingInfo?.method === 'express'
+								? CheckoutPageGlobalDefaults.shipping.fastShippingPrice
+								: CheckoutPageGlobalDefaults.shipping.standardShippingPrice,
+						products: typedDoc.cart.products.map((item) => {
+							const matchedProduct = productsInfos.find(
+								(p) =>
+									p.id ===
+									(typeof item.product === 'object' ? item.product.id : item.product),
+							)
+							const matchedVariant = matchedProduct?.variants.find((v) => v.sku === item.sku)
+							return {
+								id: typeof item.product === 'object' ? item.product.id : item.product,
+								variant: {
+									price: matchedVariant?.price ?? 0,
+									quantity: item.quantity,
+								},
+								categoryIds: matchedProduct?.productCategories?.map((c) =>
+									typeof c === 'object' ? c.id : c,
+								),
+								subCategoryIds: matchedProduct?.productSubCategories?.map((c) =>
+									typeof c === 'object' ? c.id : c,
+								),
+							}
+						}),
+					})
+					text += `\nTổng tạm tính: ${prices.provisional}\n`
+					text += `Phí vận chuyển: ${prices.shipping}\n`
+					text += `Giảm giá: ${prices.discount}\n`
+					text += `Tổng cộng: ${prices.total}\n`
+				}
+
+				const {
+					data: users,
+					ok,
+					error,
+				} = await tryCatch(() =>
+					payload.find({
+						collection: UsersSlug,
+						where: {
+							receiveOrderEmail: {
+								equals: true,
+							},
+						},
+						pagination: false,
+						limit: 1000,
+					}),
+				)
+				if (!ok) {
+					console.error("[Orders/After change] Can't fetch users for email:", error)
+					return doc
+				}
+				const to = users.docs
+					.map((user) => user.email)
+					.filter((email) => !!email)
+					.join(', ')
+
 				const {
 					ok: resultOk,
 					error: resultError,
@@ -114,17 +977,149 @@ export const OrdersCollection: CollectionConfig<typeof OrdersSlug> = {
 				} = await tryCatch(() =>
 					payload.sendEmail({
 						from: process.env.SMTP_FROM,
-						to: 'bar@example.com, baz@example.com',
-						subject: 'Hello ✔',
-						text: 'BioLAK có đơn hàng mới từ ' + doc[CustomersSlug]?.name,
+						to,
+						subject: 'BioLAK có đơn hàng mới từ ' + doc.customer?.name,
+						text,
 					}),
 				)
 				if (!resultOk) {
-					console.error('Error sending email:', resultError)
+					console.error("[Orders/After change] Can't send email:", resultError)
 					return doc
 				}
-				console.log('Message sent:', result)
+				console.log('[Orders/After change] Message sent:', result)
 				return doc
+			},
+			async ({ doc, operation }) => {
+				if (operation !== 'update') return doc
+				const typedDoc = doc as Partial<Order>
+				if (typedDoc.billing?.method !== 'bankTransfer') return doc
+
+				const billing = typedDoc.cart?.prices?.total ?? 0
+				const paid = typedDoc.billing?.transactionInfo?.transferAmount ?? 0
+				typedDoc.billing.paidInFull = billing <= paid
+
+				return typedDoc
+			},
+		],
+		afterRead: [
+			async ({ doc, req: { payload } }) => {
+				const typedData = doc as Partial<Order>
+				if (!typedData.cart?.products) return typedData
+
+				const {
+					data: productsInfos,
+					ok: productsInfosOk,
+					error: productsInfosError,
+				} = await arrayDepthHandler({
+					data: typedData.cart.products.map((item) => item.product),
+					fetch: (ids) =>
+						payload
+							.find({
+								collection: ProductsSlug,
+								where: {
+									id: {
+										in: ids,
+									},
+								},
+								select: {
+									id: true,
+									variants: true,
+									productCategories: true,
+									productSubCategories: true,
+								},
+								depth: 1,
+								pagination: false,
+								limit: 1000,
+							})
+							.then((result) => result.docs),
+				})
+				if (!productsInfosOk) {
+					console.error("[Orders/After read] Can't fetch products:", productsInfosError)
+					return typedData
+				}
+
+				const products = typedData.cart?.products
+					.map((cartItem) => {
+						const matchedProduct = productsInfos.find(
+							(p) =>
+								p.id ===
+								(typeof cartItem.product === 'object'
+									? cartItem.product.id
+									: cartItem.product),
+						)
+						if (!matchedProduct) return null
+						const matchedVariant = matchedProduct.variants.find((v) => v.sku === cartItem.sku)
+						if (!matchedVariant) return null
+						return {
+							id: matchedProduct.id,
+							variant: {
+								price: matchedVariant.price,
+								quantity: cartItem.quantity,
+							},
+							categoryIds: matchedProduct.productCategories?.map((c) =>
+								typeof c === 'object' ? c.id : c,
+							),
+							subCategoryIds: matchedProduct.productSubCategories?.map((c) =>
+								typeof c === 'object' ? c.id : c,
+							),
+						} satisfies Parameters<typeof calculatePrices>[0]['products'][number]
+					})
+					.filter((item) => item !== null)
+
+				if (!products) {
+					console.error(
+						"[Orders/After read] Either 'cart' or 'products' is not defined",
+						'orderId',
+						typedData.id,
+					)
+				}
+
+				const {
+					data: code,
+					ok: codeOk,
+					error: codeError,
+				} = await depthHandler({
+					data: typedData.cart?.discountCode,
+					fetch(id) {
+						return payload.findByID({
+							collection: DiscountCodesSlug,
+							id,
+						})
+					},
+				})
+				if (!codeOk) {
+					console.error("[Orders/After read] Can't fetch discount code:", codeError)
+				}
+
+				// fill final prices
+				if (typedData.cart)
+					typedData.cart.prices = calculatePrices({
+						code,
+						shipping:
+							typedData.shippingInfo?.method === 'express'
+								? CheckoutPageGlobalDefaults.shipping.fastShippingPrice
+								: CheckoutPageGlobalDefaults.shipping.standardShippingPrice,
+						products: products,
+					})
+
+				// fill individual product prices
+				for (const product of typedData.cart?.products ?? []) {
+					const matchedVariant = productsInfos
+						.find(
+							(p) =>
+								p.id ===
+								(typeof product.product === 'object'
+									? product.product.id
+									: product.product),
+						)
+						?.variants.find((v) => v.sku === product.sku)
+					if (!matchedVariant) continue
+
+					product.previewPrice = matchedVariant.price
+					product.previewTotal = matchedVariant.price * product.quantity
+				}
+
+				return typedData
 			},
 		],
 	},
