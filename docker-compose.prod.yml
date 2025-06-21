@@ -21,16 +21,19 @@ services:
             condition: service_started
       environment:
          DATABASE_URI: postgres://postgres:postgres@biolak-postgres:5432/biolak
-         PAYLOAD_SECRET: YOUR_PAYLOAD_SECRET_HERE
          NEXT_PUBLIC_SERVER_URL: https://YOUR_DOMAIN_HERE.com
-         CRON_SECRET: YOUR_CRON_SECRET_HERE
-         PREVIEW_SECRET: YOUR_SECRET_HERE
 
-         SMTP_HOST: smtp.example.com
-         SMTP_PORT: 587
-         SMTP_USER: example@example.com
-         SMTP_PASS: example_password
-         SMTP_FROM: example@example.com
+         PAYLOAD_SECRET:
+         CRON_SECRET:
+         PREVIEW_SECRET:
+
+         SMTP_HOST:
+         SMTP_PORT:
+         SMTP_USER:
+         SMTP_PASS:
+         SMTP_FROM:
+
+         SEPAY_API_KEY:
       volumes:
          - .:/home/node/app
          - biolak-nextjs:/home/node/app/.next
@@ -41,21 +44,17 @@ services:
 
    cloudflared:
       container_name: cloudflared
-      image: cloudflare/cloudflared:2025.5.0
+      image: cloudflare/cloudflared:2025.6.1
       restart: unless-stopped
       dns:
          - 1.1.1.1
          - 1.0.0.1
       environment:
          NO_AUTOUPDATE: 'true'
-         TUNNEL_TOKEN: 'CHANGE_ME'
+         TUNNEL_TOKEN:
          TUNNEL_TRANSPORT_PROTOCOL: 'quic'
       networks:
          - web
-      deploy:
-         resources:
-            limits:
-               memory: 40MB
       command: tunnel run
 
 volumes:
