@@ -11,7 +11,7 @@ import { PayloadRedirects } from '@/components/PayloadRedirects'
 import { FooterGlobalComponent } from '@/globals/Footer/Component'
 import { RenderHero } from '@/heros/RenderHero'
 import { generateMeta } from '@/utilities/generateMeta'
-import { getClientLang } from '@/utilities/getClientLang'
+import { getClientLang } from '@/utilities/getClientLocale'
 import { tryCatch } from '@/utilities/tryCatch'
 
 import PageClient from './page.client'
