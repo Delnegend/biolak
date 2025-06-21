@@ -23,6 +23,7 @@ import { ThreePhotoBlockConf } from '@/blocks/ThreePhoto/config'
 import { FooterSizeField } from '@/fields/footer'
 import { metaTab } from '@/fields/metaTab'
 import { slugField } from '@/fields/slug'
+import { revalidateHeaderForCollection } from '@/globals/Header/hooks/revalidateHeader'
 import { Lang } from '@/utilities/lang'
 
 import { adminOrPublished } from '../../access/adminOrPublished'
@@ -257,7 +258,7 @@ export const PostsCollection: CollectionConfig<typeof PostsSlug> = {
 		FooterSizeField,
 	],
 	hooks: {
-		afterChange: [revalidatePost],
+		afterChange: [revalidatePost, revalidateHeaderForCollection],
 		afterRead: [populateAuthors],
 		afterDelete: [revalidateDelete],
 	},

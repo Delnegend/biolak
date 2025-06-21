@@ -193,16 +193,6 @@ export const HeaderGlobalConf: GlobalConfig<typeof HeaderGlobalSlug> = {
 		},
 	],
 	hooks: {
-		afterChange: [
-			({ doc, req: { payload, context } }) => {
-				if (!context.disableRevalidate) {
-					payload.logger.info(`Revalidating header`)
-
-					revalidateTag(HeaderGlobalSlug)
-				}
-
-				return doc
-			},
-		],
+		afterChange: [revalidateHeader],
 	},
 }
