@@ -6,12 +6,9 @@ export function middleware(request: NextRequest) {
 	switch (request.nextUrl.pathname) {
 		case '/':
 			return Response.redirect(new URL('/home', request.url), 307)
-		case '/posts':
-			return Response.redirect(new URL('/events', request.url), 307)
 		case '/search':
 			return Response.redirect(new URL('/home', request.url), 307)
 		default:
-			// return undefined
 			const headers = new Headers(request.headers)
 			headers.set(HeaderName.CurrentPath, request.nextUrl.pathname)
 			headers.set(HeaderName.RequestQuery, request.nextUrl.search)
