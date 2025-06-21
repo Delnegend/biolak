@@ -8,8 +8,8 @@ import { Media } from '@/payload-types'
 import { Lang } from '@/utilities/lang'
 import { matchLang } from '@/utilities/matchLang'
 
-export function InfiniteScrollBlockCC(props: {
-	graphic: Media
+export function INTERNAL_InfiniteScrollBlock(props: {
+	graphic?: Media | null
 	animationDuration: number
 	locale?: Lang
 }): React.JSX.Element {

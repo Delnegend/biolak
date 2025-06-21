@@ -11,7 +11,7 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from '@/components/ui/select'
-import { getClientLang } from '@/utilities/getClientLang'
+import { getClientLang } from '@/utilities/getClientLocale'
 import { Lang } from '@/utilities/lang'
 import { matchLang } from '@/utilities/matchLang'
 
