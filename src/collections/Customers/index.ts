@@ -40,6 +40,7 @@ export const CustomersCollection: CollectionConfig<typeof CustomersSlug> = {
 				[Lang.English]: 'Email',
 				[Lang.Vietnamese]: 'Email',
 			},
+			unique: true,
 		},
 		{
 			name: 'phoneNumber',
@@ -48,14 +49,7 @@ export const CustomersCollection: CollectionConfig<typeof CustomersSlug> = {
 				[Lang.English]: 'Phone Number',
 				[Lang.Vietnamese]: 'Số điện thoại',
 			},
-		},
-		{
-			name: 'address',
-			type: 'text',
-			label: {
-				[Lang.English]: 'Address',
-				[Lang.Vietnamese]: 'Địa chỉ',
-			},
+			unique: true,
 		},
 		{
 			name: OrdersSlug,
@@ -65,7 +59,7 @@ export const CustomersCollection: CollectionConfig<typeof CustomersSlug> = {
 				[Lang.Vietnamese]: 'Đơn hàng',
 			},
 			collection: OrdersSlug,
-			on: CustomersSlug,
+			on: 'customer',
 		},
 	],
 	admin: {
