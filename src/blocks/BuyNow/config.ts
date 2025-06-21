@@ -28,7 +28,6 @@ export const BuyNowBlockConf: Block = {
 				[Lang.Vietnamese]: 'Nhãn nút',
 			},
 			localized: true,
-			defaultValue: defaults.buttonLabel,
 			admin: {
 				placeholder: defaults.buttonLabel(Lang.Vietnamese),
 			},
