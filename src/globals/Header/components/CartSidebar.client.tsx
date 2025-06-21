@@ -13,95 +13,9 @@ import {
 	SheetTrigger,
 } from '@/components/ui/sheet'
 import { useCartManager } from '@/hooks/useCartManager'
-import { useClientLang } from '@/hooks/useClientLang'
 import { formatPrice } from '@/utilities/formatPrice'
 import { Lang } from '@/utilities/lang'
 import { matchLang } from '@/utilities/matchLang'
-
-function CartContentWithData(): React.JSX.Element {
-	const { cart, uncheckAll } = useCartManager({
-		syncWithLocalStorage: true,
-	})
-	const { lang: locale } = useClientLang()
-
-	return (
-		<div className="flex h-[calc(100%-6rem)] flex-col justify-between gap-10">
-			<CartListClient locale={locale} showCheckbox={true} />
-
-			<SheetFooter>
-				<div
-					className="grid w-full grid-cols-2"
-					style={{
-						gridTemplateAreas: `"clear clear"
-																"hr hr"
-																"sum checkout"
-																"price checkout"`,
-					}}
-				>
-					<button
-						style={{ gridArea: 'clear' }}
-						className="hover-underline-animation ml-auto flex w-fit justify-end font-bold"
-						onClick={uncheckAll}
-					>
-						{matchLang({
-							[Lang.English]: 'Unselect all',
-							[Lang.Vietnamese]: 'Bỏ chọn tất cả',
-						})(locale)}
-					</button>
-
-					<hr style={{ gridArea: 'hr' }} className="my-6 border-border" />
-
-					<div style={{ gridArea: 'sum' }} className="text-base">
-						{matchLang({
-							[Lang.English]: 'Total',
-							[Lang.Vietnamese]: 'Tạm tính',
-						})(locale)}
-					</div>
-
-					<div style={{ gridArea: 'price' }} className="text-[1.75rem] font-semibold">
-						{formatPrice(
-							cart
-								.filter((item) => item.checked)
-								.map((item) => item.variant.price * item.quantity)
-								.reduce((prev, curr) => prev + curr, 0),
-						)}
-					</div>
-
-					<Button style={{ gridArea: 'checkout' }} size="lg" className="px-0" asChild>
-						{/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
-						<a href="/checkout">
-							{matchLang({
-								[Lang.English]: 'Checkout',
-								[Lang.Vietnamese]: 'Thanh toán',
-							})(locale)}
-						</a>
-					</Button>
-				</div>
-			</SheetFooter>
-		</div>
-	)
-}
-
-function CartContentWithoutData(): React.JSX.Element {
-	const { lang: locale } = useClientLang()
-
-	return (
-		<div className="flex h-[calc(100%-6rem)] flex-col items-center justify-center gap-4">
-			<h2 className="font-serif text-[2.5rem] font-semibold text-muted-foreground">
-				{matchLang({
-					[Lang.English]: 'Peek-a-boo...',
-					[Lang.Vietnamese]: 'Ú òa...',
-				})(locale)}
-			</h2>
-			<div className="text-balance text-center text-2xl text-[#271D13]">
-				{matchLang({
-					[Lang.English]: 'Your cart is empty',
-					[Lang.Vietnamese]: 'Hiện không có sản phẩm nào trong giỏ của bạn',
-				})(locale)}
-			</div>
-		</div>
-	)
-}
 
 export function INTERNAL_CartSidebar({
 	label,
@@ -110,7 +24,7 @@ export function INTERNAL_CartSidebar({
 	label?: string
 	locale: Lang
 }): React.JSX.Element {
-	const { cart } = useCartManager({
+	const { cart, uncheckAll } = useCartManager({
 		syncWithLocalStorage: true,
 	})
 	const [open, setOpen] = useState(false)
@@ -144,7 +58,77 @@ export function INTERNAL_CartSidebar({
 						})(locale)}
 					</SheetTitle>
 				</SheetHeader>
-				{cart.length > 0 ? <CartContentWithData /> : <CartContentWithoutData />}
+				{cart.length > 0 ? (
+					<div className="flex h-[calc(100%-6rem)] flex-col justify-between gap-10">
+						<CartListClient locale={locale} showCheckbox={true} />
+
+						<SheetFooter>
+							<div
+								className="grid w-full grid-cols-2"
+								style={{
+									gridTemplateAreas: `"clear clear"
+																"hr hr"
+																"sum checkout"
+																"price checkout"`,
+								}}
+							>
+								<button
+									style={{ gridArea: 'clear' }}
+									className="hover-underline-animation ml-auto flex w-fit justify-end font-bold"
+									onClick={uncheckAll}
+								>
+									{matchLang({
+										[Lang.English]: 'Unselect all',
+										[Lang.Vietnamese]: 'Bỏ chọn tất cả',
+									})(locale)}
+								</button>
+
+								<hr style={{ gridArea: 'hr' }} className="my-6 border-border" />
+
+								<div style={{ gridArea: 'sum' }} className="text-base">
+									{matchLang({
+										[Lang.English]: 'Total',
+										[Lang.Vietnamese]: 'Tạm tính',
+									})(locale)}
+								</div>
+
+								<div style={{ gridArea: 'price' }} className="text-[1.75rem] font-semibold">
+									{formatPrice(
+										cart
+											.filter((item) => item.checked)
+											.map((item) => item.variant.price * item.quantity)
+											.reduce((prev, curr) => prev + curr, 0),
+									)}
+								</div>
+
+								<Button style={{ gridArea: 'checkout' }} size="lg" className="px-0" asChild>
+									{/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
+									<a href="/checkout">
+										{matchLang({
+											[Lang.English]: 'Checkout',
+											[Lang.Vietnamese]: 'Thanh toán',
+										})(locale)}
+									</a>
+								</Button>
+							</div>
+						</SheetFooter>
+					</div>
+				) : (
+					<div className="flex h-[calc(100%-6rem)] flex-col items-center justify-center gap-4">
+						<h2 className="font-serif text-[2.5rem] font-semibold text-muted-foreground">
+							{matchLang({
+								[Lang.English]: 'Peek-a-boo...',
+								[Lang.Vietnamese]: 'Ú òa...',
+							})(locale)}
+						</h2>
+						<div className="text-balance text-center text-2xl text-[#271D13]">
+							{matchLang({
+								[Lang.English]: 'Your cart is empty',
+								[Lang.Vietnamese]: 'Hiện không có sản phẩm nào trong giỏ của bạn',
+							})(locale)}
+						</div>
+					</div>
+				)}
 			</SheetContent>
 		</Sheet>
 	)
