@@ -60,7 +60,6 @@ export const CallToActionCenterBlockConf: Block = {
 		},
 		link({
 			overrides: {
-				defaultValue: defaults.buttonLabel,
 				required: true,
 				localized: true,
 			},
