@@ -6,7 +6,7 @@ import { HeartsRow } from '@/components/HeartsRow'
 import { ReviewsGlobalSlug } from '@/globals/Reviews/config'
 import { INTERNAL_ReviewDialogContentClient } from '@/globals/Reviews/ReviewDialogContent.client'
 import { Order, ReviewsGlobal } from '@/payload-types'
-import { getClientLang } from '@/utilities/getClientLang'
+import { getClientLang } from '@/utilities/getClientLocale'
 import { getCachedGlobal } from '@/utilities/getGlobals'
 import { Lang } from '@/utilities/lang'
 import { matchLang } from '@/utilities/matchLang'
@@ -41,7 +41,7 @@ export async function ReviewsGlobalComponent({
 				if (
 					order.review &&
 					order.review.approved &&
-					typeof order.customers === 'object' &&
+					typeof order.customer === 'object' &&
 					order.review.rating
 				) {
 					acc += order.review.rating
@@ -52,11 +52,11 @@ export async function ReviewsGlobalComponent({
 
 	const reviews =
 		ordersWithRating?.reduce((acc, order) => {
-			if (order.review && typeof order.customers === 'object' && order.review.rating) {
+			if (order.review && typeof order.customer === 'object' && order.review.rating) {
 				acc.push({
 					id: order.id,
 					customer:
-						order.customers?.name ??
+						order.customer?.name ??
 						matchLang({
 							[Lang.English]: 'Anonymous',
 							[Lang.Vietnamese]: 'Ẩn danh',
@@ -100,6 +100,7 @@ export async function ReviewsGlobalComponent({
 				<INTERNAL_ReviewDialogContentClient
 					global={global}
 					className={{ triggerButton: 'self-center' }}
+					locale={locale}
 				/>
 			</div>
 		)
@@ -130,7 +131,7 @@ export async function ReviewsGlobalComponent({
 					})}
 				</div>
 
-				<INTERNAL_ReviewDialogContentClient global={global} />
+				<INTERNAL_ReviewDialogContentClient global={global} locale={locale} />
 			</div>
 
 			<hr className="col-span-2 mb-10 mt-20 border-border" />
