@@ -10,7 +10,6 @@ import useSWR from 'swr'
 import { ProductsSlug } from '@/collections/Products/slug'
 import { ProductSubCategoriesSlug } from '@/collections/ProductSubCategories/slug'
 import { HeadlessImage } from '@/components/Media/HeadlessImage'
-import { useClientLang } from '@/hooks/useClientLang'
 import { Product, ProductCategory, ProductSubCategory } from '@/payload-types'
 import { getPriceRange } from '@/utilities/getPriceRange'
 import { Lang } from '@/utilities/lang'
@@ -102,12 +101,12 @@ function DropdownColumn({
 export function INTERNAL_ProductsDropdownClient({
 	categories,
 	label,
+	locale,
 }: {
 	categories: PaginatedDocs<ProductCategory>
 	label?: string
+	locale: Lang
 }): React.JSX.Element {
-	const { lang: locale } = useClientLang()
-
 	const [open, setOpen] = useState(false)
 	const dropdownElement = useRef<HTMLDivElement | null>(null)
 
