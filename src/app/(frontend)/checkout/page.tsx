@@ -7,8 +7,7 @@ import React from 'react'
 import { ProductsSlug } from '@/collections/Products/slug'
 import { CheckoutPageGlobalSlug } from '@/globals/CheckoutPage/config'
 import { CheckoutPageGlobal } from '@/payload-types'
-import { findValidProductVariant } from '@/utilities/findValidProductVariant'
-import { getClientLang } from '@/utilities/getClientLang'
+import { getClientLang } from '@/utilities/getClientLocale'
 import { getCachedGlobal } from '@/utilities/getGlobals'
 import { HeaderName } from '@/utilities/headerName'
 import { Lang } from '@/utilities/lang'
@@ -28,15 +27,15 @@ export default async function Checkout(): Promise<React.JSX.Element> {
 		getCachedGlobal<CheckoutPageGlobal>(CheckoutPageGlobalSlug, 1, locale)(),
 		tryCatch(async () => {
 			const requestQuery = new URLSearchParams(headers.get(HeaderName.RequestQuery) ?? '')
-			const overrideProductIdNumber = Number(requestQuery.get('product'))
+			const overrideProductId = Number(requestQuery.get('product'))
 			const overrideVariantSku = requestQuery.get('variant') ?? null
-			if (!overrideVariantSku || Number.isNaN(overrideProductIdNumber)) return null
+			if (!overrideVariantSku || Number.isNaN(overrideProductId)) return null
 
-			const product = await payload.find({
+			const products = await payload.find({
 				collection: ProductsSlug,
 				where: {
 					id: {
-						equals: overrideProductIdNumber,
+						equals: overrideProductId,
 					},
 				},
 				select: {
@@ -45,23 +44,27 @@ export default async function Checkout(): Promise<React.JSX.Element> {
 					icon: true,
 					slug: true,
 				},
+				limit: 1,
+				locale,
 			})
-			if (product.docs.length <= 0 || !product.docs[0]) return null
-
-			const validVariant = findValidProductVariant(product.docs[0].variants)
+			const product = products.docs[0]
+			if (!product) return null
+			const validVariant = product.variants.find(
+				(v) => v.stock > 0 && v.sku === overrideVariantSku,
+			)
 			if (!validVariant) return null
 
 			return {
 				product: {
-					id: overrideProductIdNumber,
-					title: product.docs[0].title,
-					slug: product.docs[0].slug,
+					id: overrideProductId,
+					title: product.title,
+					slug: product.slug,
 				},
 				variant: {
 					sku: validVariant.sku,
 					title: validVariant.title,
 					price: validVariant.price,
-					image: validVariant.image ?? product.docs[0].icon,
+					image: validVariant.image ?? product.icon,
 				},
 			}
 		}),
@@ -83,6 +86,7 @@ export default async function Checkout(): Promise<React.JSX.Element> {
 			<PageClient
 				global={global}
 				override={overrideProduct.ok && overrideProduct.data ? overrideProduct.data : undefined}
+				locale={locale}
 			/>
 		</div>
 	)

@@ -31,6 +31,10 @@ export function ConfirmDetailsActionSchema(locale: Lang) {
 						[Lang.Vietnamese]: 'Số điện thoại là bắt buộc',
 					})(locale),
 				),
+			})
+			.required(),
+		shippingInfo: z.object({
+			address: z.object({
 				city: z.enum(Object.keys(CITY_DISTRICT_WARD) as [string, ...string[]]),
 				district: z.string().min(
 					1,
@@ -53,17 +57,25 @@ export function ConfirmDetailsActionSchema(locale: Lang) {
 						[Lang.Vietnamese]: 'Số nhà là bắt buộc',
 					})(locale),
 				),
-			})
-			.required(),
-		transportationMethod: z.enum(['standard', 'express']),
+			}),
+			method: z.enum(['standard', 'express']),
+		}),
+		billingMethod: z.enum(['cod', 'bankTransfer']).optional().nullable(),
 		paymentMethod: z.enum(['cod', 'bankTransfer']),
-		sendGift: z
-			.object({
-				sender: z.string().optional(),
-				receiver: z.string().optional(),
-				message: z.string().max(1000).optional(),
-			})
-			.optional(),
-		discountCode: z.string().optional(),
+		cart: z.object({
+			products: z.array(
+				z.object({
+					product: z.number().int(),
+					sku: z.string(),
+					quantity: z.number().int().min(1),
+				}),
+			),
+			discountCode: z.string().optional(),
+		}),
+		sendGift: z.object({
+			sender: z.string().optional(),
+			receiver: z.string().optional(),
+			message: z.string().optional(),
+		}),
 	})
 }
