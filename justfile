@@ -108,7 +108,7 @@ backup-prod:
   docker compose up -d
 
 update:
-  docker compose down && git pull --rebase && docker compose up -d
+  docker compose down biolak-payload && git pull --rebase && docker compose up -d biolak-payload
 
 # check if the prod would build successfully
 test-build: lint
