@@ -4,7 +4,7 @@ import Link from 'next/link'
 
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog'
 import type { HeaderGlobal } from '@/payload-types'
-import { getClientLang } from '@/utilities/getClientLang'
+import { getClientLang } from '@/utilities/getClientLocale'
 import { getCachedGlobal } from '@/utilities/getGlobals'
 import { Lang } from '@/utilities/lang'
 import { matchLang } from '@/utilities/matchLang'
@@ -54,7 +54,7 @@ const prebuilds: Record<
 			</DialogContent>
 		</Dialog>
 	),
-	'vie-en': ({ label }) => <INTERNAL_LanguageSwitcher label={label} />,
+	'vie-en': ({ label, locale }) => <INTERNAL_LanguageSwitcher label={label} locale={locale} />,
 	cart: (props) => <INTERNAL_CartSidebar {...props} />,
 }
 

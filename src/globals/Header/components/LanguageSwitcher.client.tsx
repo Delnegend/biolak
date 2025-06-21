@@ -2,23 +2,23 @@
 
 import React from 'react'
 
-import { useClientLang } from '@/hooks/useClientLang'
-import { Lang } from '@/utilities/lang'
+import { Lang, PreferredLocaleCookieName } from '@/utilities/lang'
 
-export function INTERNAL_LanguageSwitcher({ label }: { label?: string }): React.JSX.Element {
-	const { lang, setLang } = useClientLang()
-
+export function INTERNAL_LanguageSwitcher({
+	label,
+	locale,
+}: {
+	label?: string
+	locale: Lang
+}): React.JSX.Element {
 	return (
 		<button
 			onClick={() => {
-				if (lang === Lang.Vietnamese) {
-					setLang(Lang.English)
-				} else {
-					setLang(Lang.Vietnamese)
-				}
+				document.cookie = `${PreferredLocaleCookieName}=${locale === Lang.English ? Lang.Vietnamese : Lang.English}; path=/`
+				window.location.reload()
 			}}
 		>
-			{label ?? <>{lang === Lang.Vietnamese ? 'English' : 'Tiếng Việt'}</>}
+			{label ?? <>{locale === Lang.Vietnamese ? 'English' : 'Tiếng Việt'}</>}
 		</button>
 	)
 }
