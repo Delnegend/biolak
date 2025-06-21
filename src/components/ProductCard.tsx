@@ -2,7 +2,7 @@ import { CirclePlus } from 'lucide-react'
 import Link from 'next/link'
 
 import { Product } from '@/payload-types'
-import { getClientLang } from '@/utilities/getClientLang'
+import { getClientLang } from '@/utilities/getClientLocale'
 import { getPriceRange } from '@/utilities/getPriceRange'
 import { Lang } from '@/utilities/lang'
 import { matchLang } from '@/utilities/matchLang'
