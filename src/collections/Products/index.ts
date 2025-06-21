@@ -346,4 +346,7 @@ export const ProductsCollection: CollectionConfig<typeof ProductsSlug> = {
 				req,
 			}),
 	},
+	hooks: {
+		afterChange: [revalidateHeaderForCollection],
+	},
 }

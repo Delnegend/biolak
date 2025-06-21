@@ -3,6 +3,7 @@ import { CollectionConfig } from 'payload'
 import { allow, Role } from '@/access/allow'
 import { FooterSizeField } from '@/fields/footer'
 import { slugField } from '@/fields/slug'
+import { revalidateHeaderForCollection } from '@/globals/Header/hooks/revalidateHeader'
 import { Lang } from '@/utilities/lang'
 
 import { ProductCategoriesSlug } from '../ProductCategories/slug'
@@ -63,5 +64,8 @@ export const ProductSubCategoriesCollection: CollectionConfig<typeof ProductSubC
 	],
 	admin: {
 		useAsTitle: 'title',
+	},
+	hooks: {
+		afterChange: [revalidateHeaderForCollection],
 	},
 }

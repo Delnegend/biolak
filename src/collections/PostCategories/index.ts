@@ -5,6 +5,7 @@ import { CallToActionPostBlockConf } from '@/blocks/CallToActionPost/config'
 import { PostsGridBlockConf } from '@/blocks/PostsGrid/config'
 import { FooterSizeField } from '@/fields/footer'
 import { slugField } from '@/fields/slug'
+import { revalidateHeaderForCollection } from '@/globals/Header/hooks/revalidateHeader'
 import { Lang } from '@/utilities/lang'
 
 import { PostsSlug } from '../Posts/slug'
@@ -74,4 +75,7 @@ export const PostCategoriesCollection: CollectionConfig<typeof PostCategoriesSlu
 		...slugField(),
 		FooterSizeField,
 	],
+	hooks: {
+		afterChange: [revalidateHeaderForCollection],
+	},
 }
