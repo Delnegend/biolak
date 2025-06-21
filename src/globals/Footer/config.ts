@@ -49,7 +49,6 @@ export const FooterGlobalConf: GlobalConfig<typeof FooterGlobalSlug> = {
 							type: 'text',
 							label: false,
 							localized: true,
-							defaultValue: defaults.contactUs.title,
 							admin: {
 								placeholder: defaults.contactUs.title(Lang.Vietnamese),
 							},
@@ -59,7 +58,6 @@ export const FooterGlobalConf: GlobalConfig<typeof FooterGlobalSlug> = {
 							type: 'text',
 							label: false,
 							localized: true,
-							defaultValue: defaults.contactUs.emailInputLabel,
 							admin: {
 								placeholder: defaults.contactUs.emailInputLabel(Lang.Vietnamese),
 							},
@@ -69,7 +67,6 @@ export const FooterGlobalConf: GlobalConfig<typeof FooterGlobalSlug> = {
 							type: 'text',
 							label: false,
 							localized: true,
-							defaultValue: defaults.contactUs.description,
 							admin: {
 								placeholder: defaults.contactUs.description(Lang.Vietnamese),
 							},
@@ -85,7 +82,6 @@ export const FooterGlobalConf: GlobalConfig<typeof FooterGlobalSlug> = {
 							type: 'text',
 							label: false,
 							localized: true,
-							defaultValue: defaults.legal.title,
 							admin: {
 								placeholder: defaults.legal.title(Lang.Vietnamese),
 							},
@@ -95,7 +91,6 @@ export const FooterGlobalConf: GlobalConfig<typeof FooterGlobalSlug> = {
 							type: 'textarea',
 							label: false,
 							localized: true,
-							defaultValue: defaults.legal.content,
 							admin: {
 								placeholder: defaults.legal.content(Lang.Vietnamese),
 							},
@@ -114,7 +109,6 @@ export const FooterGlobalConf: GlobalConfig<typeof FooterGlobalSlug> = {
 							type: 'text',
 							label: false,
 							localized: true,
-							defaultValue: defaults.legal.copyright,
 							admin: {
 								placeholder: defaults.legal.copyright(Lang.Vietnamese),
 							},
