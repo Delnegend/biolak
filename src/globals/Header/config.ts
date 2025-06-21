@@ -1,10 +1,10 @@
-import { revalidateTag } from 'next/cache'
 import type { Field, GlobalConfig } from 'payload'
 
 import { allow, Role } from '@/access/allow'
 import { LinkFieldRelations } from '@/fields/link'
 import { Lang } from '@/utilities/lang'
 
+import { revalidateHeader } from './hooks/revalidateHeader'
 const fields: Field[] = [
 	{
 		name: 'kind',
