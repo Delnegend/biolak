@@ -193,7 +193,6 @@ export interface Customer {
   name?: string | null;
   email?: string | null;
   phoneNumber?: string | null;
-  address?: string | null;
   orders?: {
     docs?: (number | Order)[];
     hasNextPage?: boolean;
@@ -208,13 +207,80 @@ export interface Customer {
  */
 export interface Order {
   id: number;
+  customer: number | Customer;
+  /**
+   * This note is for internal use only, it will not be shown to the customer.
+   */
+  note?: string | null;
+  cart?: {
+    products?:
+      | {
+          product: number | Product;
+          sku: string;
+          quantity: number;
+          previewPrice?: number | null;
+          previewTotal?: number | null;
+          id?: string | null;
+        }[]
+      | null;
+    discountCode?: (number | null) | DiscountCode;
+    prices?: {
+      provisional?: number | null;
+      shipping?: number | null;
+      discount?: number | null;
+      total?: number | null;
+    };
+  };
+  billing?: {
+    method?: ('cod' | 'bankTransfer') | null;
+    paidInFull?: boolean | null;
+    transactionInfo?: {
+      id?: string | null;
+      gateway?: string | null;
+      transactionDate?: string | null;
+      accountNumber?: string | null;
+      /**
+       * This is the code used to identify the transaction in the payment gateway.
+       */
+      code?: string | null;
+      /**
+       * This is the content of the transaction, usually includes order information.
+       */
+      content?: string | null;
+      /**
+       * This is the amount of money being transferred in the transaction.
+       */
+      transferAmount?: number | null;
+      referenceCode?: string | null;
+      /**
+       * Full SMS content of the transaction.
+       */
+      description?: string | null;
+    };
+  };
+  shippingInfo: {
+    address: {
+      city: string;
+      district: string;
+      ward: string;
+      houseNumber: string;
+    };
+    method?: ('standard' | 'express') | null;
+    /**
+     * Get from the shipping provider
+     */
+    tracking?: string | null;
+  };
+  message?: {
+    sender?: string | null;
+    receiver?: string | null;
+    content?: string | null;
+  };
   review?: {
     rating?: number | null;
     content?: string | null;
     approved?: boolean | null;
   };
-  products: number | Product;
-  customers: number | Customer;
   updatedAt: string;
   createdAt: string;
 }
@@ -1282,7 +1348,7 @@ export interface HighlightLeftBlockProps {
  * via the `definition` "InfiniteScrollBlockProps".
  */
 export interface InfiniteScrollBlockProps {
-  graphic: number | Media;
+  graphic?: (number | null) | Media;
   animationDuration?: number | null;
   id?: string | null;
   blockName?: string | null;
@@ -1477,6 +1543,7 @@ export interface User {
   id: number;
   name?: string | null;
   role: 'admin' | 'sales-manager' | 'content-manager';
+  receiveOrderEmail?: boolean | null;
   updatedAt: string;
   createdAt: string;
   email: string;
@@ -1518,19 +1585,6 @@ export interface HowToUseProductBlockProps {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "contactForm".
- */
-export interface ContactForm {
-  id: number;
-  username: string;
-  email?: string | null;
-  phoneNumber: string;
-  message: string;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "discountCodes".
  */
 export interface DiscountCode {
@@ -1562,7 +1616,19 @@ export interface DiscountCode {
       )[]
     | null;
   allProducts?: boolean | null;
-  allCategories?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "contactForm".
+ */
+export interface ContactForm {
+  id: number;
+  username: string;
+  email?: string | null;
+  phoneNumber: string;
+  message: string;
   updatedAt: string;
   createdAt: string;
 }
@@ -1856,7 +1922,6 @@ export interface CustomersSelect<T extends boolean = true> {
   name?: T;
   email?: T;
   phoneNumber?: T;
-  address?: T;
   orders?: T;
   updatedAt?: T;
   createdAt?: T;
@@ -1888,7 +1953,6 @@ export interface DiscountCodesSelect<T extends boolean = true> {
   applicableProducts?: T;
   applicableCategories?: T;
   allProducts?: T;
-  allCategories?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -2601,6 +2665,71 @@ export interface ProductSubCategoriesSelect<T extends boolean = true> {
  * via the `definition` "orders_select".
  */
 export interface OrdersSelect<T extends boolean = true> {
+  customer?: T;
+  note?: T;
+  cart?:
+    | T
+    | {
+        products?:
+          | T
+          | {
+              product?: T;
+              sku?: T;
+              quantity?: T;
+              previewPrice?: T;
+              previewTotal?: T;
+              id?: T;
+            };
+        discountCode?: T;
+        prices?:
+          | T
+          | {
+              provisional?: T;
+              shipping?: T;
+              discount?: T;
+              total?: T;
+            };
+      };
+  billing?:
+    | T
+    | {
+        method?: T;
+        paidInFull?: T;
+        transactionInfo?:
+          | T
+          | {
+              id?: T;
+              gateway?: T;
+              transactionDate?: T;
+              accountNumber?: T;
+              code?: T;
+              content?: T;
+              transferAmount?: T;
+              referenceCode?: T;
+              description?: T;
+            };
+      };
+  shippingInfo?:
+    | T
+    | {
+        address?:
+          | T
+          | {
+              city?: T;
+              district?: T;
+              ward?: T;
+              houseNumber?: T;
+            };
+        method?: T;
+        tracking?: T;
+      };
+  message?:
+    | T
+    | {
+        sender?: T;
+        receiver?: T;
+        content?: T;
+      };
   review?:
     | T
     | {
@@ -2608,8 +2737,6 @@ export interface OrdersSelect<T extends boolean = true> {
         content?: T;
         approved?: T;
       };
-  products?: T;
-  customers?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -2620,6 +2747,7 @@ export interface OrdersSelect<T extends boolean = true> {
 export interface UsersSelect<T extends boolean = true> {
   name?: T;
   role?: T;
+  receiveOrderEmail?: T;
   updatedAt?: T;
   createdAt?: T;
   email?: T;
@@ -2909,6 +3037,8 @@ export interface CheckoutPageGlobal {
     title?: string | null;
     standardShippingLabel?: string | null;
     fastShippingLabel?: string | null;
+    standardShippingPrice?: number | null;
+    fastShippingPrice?: number | null;
   };
   payment?: {
     title?: string | null;
@@ -3170,6 +3300,8 @@ export interface CheckoutPageGlobalSelect<T extends boolean = true> {
         title?: T;
         standardShippingLabel?: T;
         fastShippingLabel?: T;
+        standardShippingPrice?: T;
+        fastShippingPrice?: T;
       };
   payment?:
     | T
