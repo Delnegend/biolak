@@ -22,10 +22,10 @@ export const UsersCollection: CollectionConfig<typeof UsersSlug> = {
 		admin: allow(Role.Admin, Role.ContentManager, Role.SalesManager),
 		create: allow(Role.Admin),
 		delete: ({ req, data }) => {
-			const typedData = data as User
+			const typedData = data as User | null
 
 			const fromAdmin = req?.user?.role === Role.Admin
-			const toAdmin = typedData.role === Role.Admin
+			const toAdmin = typedData?.role === Role.Admin
 			if (fromAdmin && !toAdmin) return true
 
 			return false
