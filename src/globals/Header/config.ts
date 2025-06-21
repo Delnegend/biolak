@@ -5,6 +5,8 @@ import { LinkFieldRelations } from '@/fields/link'
 import { Lang } from '@/utilities/lang'
 
 import { revalidateHeader } from './hooks/revalidateHeader'
+import { HeaderGlobalSlug } from './slug'
+
 const fields: Field[] = [
 	{
 		name: 'kind',
@@ -135,7 +137,6 @@ const fields: Field[] = [
 	},
 ]
 
-export const HeaderGlobalSlug = 'headerGlobal'
 export const HeaderGlobalConf: GlobalConfig<typeof HeaderGlobalSlug> = {
 	slug: HeaderGlobalSlug,
 	label: {
