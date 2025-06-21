@@ -26,6 +26,7 @@ services:
          PAYLOAD_SECRET:
          CRON_SECRET:
          PREVIEW_SECRET:
+         SEPAY_SECRET:
 
          SMTP_HOST:
          SMTP_PORT:
@@ -33,7 +34,6 @@ services:
          SMTP_PASS:
          SMTP_FROM:
 
-         SEPAY_API_KEY:
       volumes:
          - .:/home/node/app
          - biolak-nextjs:/home/node/app/.next
