@@ -10,7 +10,7 @@ import { LivePreviewListener } from '@/components/LivePreviewListener'
 import { PayloadRedirects } from '@/components/PayloadRedirects'
 import { FooterGlobalComponent } from '@/globals/Footer/Component'
 import { type PostCategory } from '@/payload-types'
-import { getClientLang } from '@/utilities/getClientLang'
+import { getClientLang } from '@/utilities/getClientLocale'
 
 import PageClient from './page.client'
 

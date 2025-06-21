@@ -12,7 +12,7 @@ import { ReviewsGlobalComponent } from '@/globals/Reviews/Component'
 import { ProductHero } from '@/heros/ProductHero'
 import { ProductVariantContextProvider } from '@/heros/ProductHero/ProductVariantContext'
 import { generateMeta } from '@/utilities/generateMeta'
-import { getClientLang } from '@/utilities/getClientLang'
+import { getClientLang } from '@/utilities/getClientLocale'
 
 import PageClient from './page.client'
 

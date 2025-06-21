@@ -12,7 +12,7 @@ import { PayloadRedirects } from '@/components/PayloadRedirects'
 import { FooterGlobalComponent } from '@/globals/Footer/Component'
 import { PostHero } from '@/heros/PostHero'
 import { generateMeta } from '@/utilities/generateMeta'
-import { getClientLang } from '@/utilities/getClientLang'
+import { getClientLang } from '@/utilities/getClientLocale'
 
 import PageClient from './page.client'
 
