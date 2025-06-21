@@ -20,8 +20,8 @@ import {
 import { TextInput } from '@/components/ui/text-input'
 import { CheckoutPageGlobalDefaults as defaults } from '@/globals/CheckoutPage/defaults'
 import { useCartManager } from '@/hooks/useCartManager'
-import { useClientLang } from '@/hooks/useClientLang'
 import { CheckoutPageGlobal, Product } from '@/payload-types'
+import { calculatePrices } from '@/utilities/calculatePrices'
 import { formatPrice } from '@/utilities/formatPrice'
 import { Lang } from '@/utilities/lang'
 import { matchLang } from '@/utilities/matchLang'
@@ -96,8 +96,7 @@ function CustomizedCheckbox({
 	)
 }
 
-function CartListWithAccordion(): React.JSX.Element {
-	const { lang: locale } = useClientLang()
+function CartListWithAccordion({ locale }: { locale: Lang }): React.JSX.Element {
 	const [open, setOpen] = useState(true)
 
 	return (
@@ -144,6 +143,7 @@ function CartListWithAccordion(): React.JSX.Element {
 export default function PageClient({
 	global,
 	override,
+	locale,
 }: {
 	global: CheckoutPageGlobal
 	override?: {
@@ -159,13 +159,30 @@ export default function PageClient({
 			image?: Product['variants'][number]['image'] | null
 		}
 	} | null
+	locale: Lang
 }): React.JSX.Element {
 	const { cart, loadedFromLocalStorageDone, loadProduct } = useCartManager({
 		syncWithLocalStorage: !override,
 	})
-	const provisional = cart.reduce((acc, item) => acc + item.variant.price * item.quantity, 0)
-	const { lang: locale } = useClientLang()
 	const Schema = ConfirmDetailsActionSchema(locale)
+
+	const [shippingMethod, setShippingMethod] = useState<'standard' | 'express'>('standard')
+	const prices = calculatePrices({
+		code: null,
+		shipping:
+			shippingMethod === 'express'
+				? defaults.shipping.fastShippingPrice
+				: defaults.shipping.standardShippingPrice,
+		products: cart.map((item) => ({
+			id: item.product.id,
+			variant: {
+				price: item.variant.price,
+				quantity: item.quantity,
+			},
+			categoryIds: item.product.categoryIds,
+			subCategoryIds: item.product.subCategoryIds,
+		})),
+	})
 
 	useEffect(() => {
 		if (override)
@@ -188,17 +205,22 @@ export default function PageClient({
 				email: '',
 				confirmReceiveEmail: false,
 				phoneNumber: '',
-				city: '',
-				district: '',
-				ward: '',
-				houseNumber: '',
 			},
-			transportationMethod: 'standard',
 			paymentMethod: 'cod',
 			sendGift: {
 				sender: '',
 				receiver: '',
 				message: '',
+			},
+			billingMethod: 'bankTransfer',
+			shippingInfo: {
+				address: {
+					city: '',
+					district: '',
+					ward: '',
+					houseNumber: '',
+				},
+				method: 'standard',
 			},
 		},
 	})
@@ -206,7 +228,7 @@ export default function PageClient({
 	const [saveInfoForNextTime, setSaveInfoForNextTime] = useState(false)
 
 	async function onSubmit(data: z.infer<typeof Schema>): Promise<void> {
-		const { city, district, ward } = data.personalDetails
+		const { city, district, ward } = data.shippingInfo.address
 		const cityDistrictWard: Record<
 			string,
 			Record<string, string[]>
@@ -371,7 +393,7 @@ export default function PageClient({
 
 							<FormField
 								control={form.control}
-								name="personalDetails.city"
+								name="shippingInfo.address.city"
 								render={({ field }) => (
 									<FormItem>
 										<Select
@@ -408,10 +430,10 @@ export default function PageClient({
 
 							<FormField
 								control={form.control}
-								name="personalDetails.district"
+								name="shippingInfo.address.district"
 								render={({ field }) => {
 									selectedDistrictOnChangeFn.current = field.onChange
-									const selectedCity = form.getValues('personalDetails.city')
+									const selectedCity = form.getValues('shippingInfo.address.city')
 
 									return (
 										<FormItem>
@@ -456,11 +478,11 @@ export default function PageClient({
 
 							<FormField
 								control={form.control}
-								name="personalDetails.ward"
+								name="shippingInfo.address.ward"
 								render={({ field }) => {
 									selectedWardOnChangeFn.current = field.onChange
-									const selectedCity = form.getValues('personalDetails.city')
-									const selectedDistrict = form.getValues('personalDetails.district')
+									const selectedCity = form.getValues('shippingInfo.address.city')
+									const selectedDistrict = form.getValues('shippingInfo.address.district')
 
 									return (
 										<FormItem>
@@ -500,7 +522,7 @@ export default function PageClient({
 
 							<FormField
 								control={form.control}
-								name="personalDetails.houseNumber"
+								name="shippingInfo.address.houseNumber"
 								render={({ field }) => (
 									<FormItem>
 										<FormControl>
@@ -532,7 +554,7 @@ export default function PageClient({
 						<Title>{global.shipping?.title ?? defaults.shipping.title(locale)}</Title>
 						<FormField
 							control={form.control}
-							name="transportationMethod"
+							name="shippingInfo.method"
 							render={({ field }) => (
 								<FormItem>
 									<CustomizedCheckbox
@@ -542,9 +564,10 @@ export default function PageClient({
 											defaults.shipping.standardShippingLabel(locale)
 										}
 										checked={field.value === 'standard'}
-										onCheckedChange={(value) =>
+										onCheckedChange={(value) => {
+											setShippingMethod(value ? 'standard' : 'express')
 											field.onChange(value ? 'standard' : 'express')
-										}
+										}}
 									/>
 									<CustomizedCheckbox
 										id="fastShipping"
@@ -553,9 +576,10 @@ export default function PageClient({
 											defaults.shipping.fastShippingLabel(locale)
 										}
 										checked={field.value === 'express'}
-										onCheckedChange={(value) =>
+										onCheckedChange={(value) => {
+											setShippingMethod(value ? 'express' : 'standard')
 											field.onChange(value ? 'express' : 'standard')
-										}
+										}}
 									/>
 								</FormItem>
 							)}
@@ -658,14 +682,14 @@ export default function PageClient({
 
 				<Card className="h-fit">
 					<Title>{global.order?.title ?? defaults.order.title(locale)}</Title>
-					<CartListWithAccordion />
+					<CartListWithAccordion locale={locale} />
 					<hr />
 
 					<Title>{global.discount?.title ?? defaults.discount.title(locale)}</Title>
 					<div className="flex h-[4.5rem] items-center justify-between rounded-[0.5rem] border border-primary p-[0.625rem]">
 						<FormField
 							control={form.control}
-							name="discountCode"
+							name="cart.discountCode"
 							render={({ field }) => (
 								<FormItem>
 									<FormControl>
@@ -708,19 +732,19 @@ export default function PageClient({
 								{global.orderSummary?.provisional ??
 									defaults.orderSummary.provisional(locale)}
 							</div>
-							<div className="place-self-end">{formatPrice(provisional)}</div>
+							<div className="place-self-end">{formatPrice(prices.provisional)}</div>
 							<div className="font-bold">
 								{global.orderSummary?.shipping ?? defaults.orderSummary.shipping(locale)}
 							</div>
-							<div className="place-self-end">{formatPrice(0)}</div>
+							<div className="place-self-end">{formatPrice(prices.shipping)}</div>
 							<div className="font-bold">
 								{global.orderSummary?.discount ?? defaults.orderSummary.discount(locale)}
 							</div>
-							<div className="place-self-end">{formatPrice(0)}</div>
+							<div className="place-self-end">{formatPrice(prices.discount)}</div>
 							<div className="font-bold">
 								{global.orderSummary?.total ?? defaults.orderSummary.total(locale)}
 							</div>
-							<div className="place-self-end">{formatPrice(provisional)}</div>
+							<div className="place-self-end">{formatPrice(prices.total)}</div>
 						</div>
 						<ul className="my-6 text-balance italic">
 							<li>
