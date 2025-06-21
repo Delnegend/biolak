@@ -315,7 +315,7 @@ export const ProductsCollection: CollectionConfig<typeof ProductsSlug> = {
 							label: false,
 							type: 'join',
 							collection: OrdersSlug,
-							on: ProductsSlug,
+							on: `cart.products.product`,
 							access: {
 								read: allow(Role.Admin, Role.SalesManager),
 							},
