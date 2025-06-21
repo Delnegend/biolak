@@ -14,6 +14,8 @@ const ProductInCartInLocalStorageSchema = z.object({
 		id: z.number(),
 		title: z.string().optional().default(''),
 		slug: z.string().optional().default(''),
+		categoryIds: z.array(z.number()).optional().default([]),
+		subCategoryIds: z.array(z.number()).optional().default([]),
 	}),
 	variant: z.object({
 		sku: z.string(),
@@ -32,6 +34,8 @@ export interface ProductInCart {
 		id: Product['id']
 		title: Product['title']
 		slug?: Product['slug']
+		categoryIds?: number[]
+		subCategoryIds?: number[]
 	}
 	variant: {
 		sku: Product['variants'][number]['sku']
@@ -137,6 +141,8 @@ export function useCartManager({
 								variants: true,
 								title: true,
 								slug: true,
+								productCategories: true,
+								productSubCategories: true,
 							} satisfies Partial<Record<keyof Product, true>>,
 						},
 						{
@@ -164,6 +170,8 @@ export function useCartManager({
 							variants: Product['variants']
 							slug: Product['slug']
 							title: Product['title']
+							productCategories: Product['productCategories']
+							productSubCategories: Product['productSubCategories']
 						}>
 					>,
 			)
@@ -199,6 +207,14 @@ export function useCartManager({
 							id: productInResponse.id,
 							title: productInResponse.title,
 							slug: productInResponse.slug,
+							categoryIds:
+								productInResponse.productCategories?.map((p) =>
+									typeof p === 'object' ? p.id : p,
+								) ?? [],
+							subCategoryIds:
+								productInResponse.productSubCategories?.map((p) =>
+									typeof p === 'object' ? p.id : p,
+								) ?? [],
 						},
 						variant: {
 							sku: variantInResponse.sku,
