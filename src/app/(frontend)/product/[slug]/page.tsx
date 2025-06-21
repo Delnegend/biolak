@@ -53,7 +53,7 @@ const queryProductBySlug = cache(async ({ slug }: { slug: string }) => {
 				equals: slug,
 			},
 		},
-		depth: 2,
+		depth: 1,
 		joins: {
 			orders: {
 				count: true,
