@@ -24,7 +24,6 @@ export const FloatingGlobalConf: GlobalConfig<typeof FloatingGlobalSlug> = {
 			type: 'text',
 			label: false,
 			localized: true,
-			defaultValue: defaults.contact,
 			admin: {
 				placeholder: defaults.contact(Lang.Vietnamese),
 			},
