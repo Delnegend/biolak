@@ -28,7 +28,6 @@ export const BestSellerBlockConf: Block = {
 				[Lang.English]: 'Title',
 			},
 			localized: true,
-			defaultValue: defaults.title,
 			admin: {
 				placeholder: defaults.title(Lang.Vietnamese),
 			},
