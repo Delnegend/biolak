@@ -2,7 +2,7 @@ import { Phudu } from 'next/font/google'
 import React from 'react'
 
 import type { Post } from '@/payload-types'
-import { getClientLang } from '@/utilities/getClientLang'
+import { getClientLang } from '@/utilities/getClientLocale'
 import { Lang } from '@/utilities/lang'
 import { matchLang } from '@/utilities/matchLang'
 import { cn } from '@/utilities/ui'
