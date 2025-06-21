@@ -74,6 +74,15 @@ export const UsersCollection: CollectionConfig<typeof UsersSlug> = {
 				[Lang.Vietnamese]: 'Quyền',
 			},
 		},
+		{
+			name: 'receiveOrderEmail',
+			type: 'checkbox',
+			defaultValue: true,
+			label: {
+				[Lang.English]: 'Receive order email notifications',
+				[Lang.Vietnamese]: 'Nhận thông báo email đơn hàng',
+			},
+		},
 	],
 	timestamps: true,
 }
