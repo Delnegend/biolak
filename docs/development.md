@@ -15,7 +15,7 @@ ATTENTION: Always execute `just test-build` to verify that the migrations will r
 - For the documents' fields and admin panel, refer to [Payload's documentation on localization](https://payloadcms.com/docs/configuration/localization).
 - For the frontend:
    - `utilities/lang.ts` contains the reusable `Lang` enum.
-   - Use `useClientLang()` to get/set the preferred language ON CLIENT-SIDE ONLY.
+   - Use `setLocale()` to set the preferred language ON CLIENT-SIDE ONLY.
    - Use `getClientLang()` to get the preferred language ON SERVER-SIDE ONLY.
 
 ## Misc
