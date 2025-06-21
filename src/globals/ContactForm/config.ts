@@ -23,7 +23,6 @@ export const ContactFormGlobalConf: GlobalConfig<typeof ContactFormGlobalSlug> =
 			type: 'text',
 			localized: true,
 			label: false,
-			defaultValue: defaults.title,
 			admin: {
 				placeholder: defaults.title(Lang.Vietnamese),
 			},
@@ -33,7 +32,6 @@ export const ContactFormGlobalConf: GlobalConfig<typeof ContactFormGlobalSlug> =
 			type: 'text',
 			label: false,
 			localized: true,
-			defaultValue: defaults.name,
 			admin: {
 				placeholder: defaults.name(Lang.Vietnamese),
 			},
@@ -43,7 +41,6 @@ export const ContactFormGlobalConf: GlobalConfig<typeof ContactFormGlobalSlug> =
 			type: 'text',
 			label: false,
 			localized: true,
-			defaultValue: defaults.phoneNumber,
 			admin: {
 				placeholder: defaults.phoneNumber(Lang.Vietnamese),
 			},
@@ -53,7 +50,6 @@ export const ContactFormGlobalConf: GlobalConfig<typeof ContactFormGlobalSlug> =
 			type: 'text',
 			label: false,
 			localized: true,
-			defaultValue: defaults.email,
 			admin: {
 				placeholder: defaults.email(Lang.Vietnamese),
 			},
@@ -63,7 +59,6 @@ export const ContactFormGlobalConf: GlobalConfig<typeof ContactFormGlobalSlug> =
 			type: 'text',
 			label: false,
 			localized: true,
-			defaultValue: defaults.question,
 			admin: {
 				placeholder: defaults.question(Lang.Vietnamese),
 			},
@@ -73,7 +68,6 @@ export const ContactFormGlobalConf: GlobalConfig<typeof ContactFormGlobalSlug> =
 			type: 'text',
 			label: false,
 			localized: true,
-			defaultValue: defaults.actionSend,
 			admin: {
 				placeholder: defaults.actionSend(Lang.Vietnamese),
 			},
@@ -82,7 +76,6 @@ export const ContactFormGlobalConf: GlobalConfig<typeof ContactFormGlobalSlug> =
 			name: 'biolakPhoneNumber',
 			type: 'text',
 			label: false,
-			defaultValue: defaults.biolakPhoneNumber,
 			localized: true,
 			admin: {
 				placeholder: defaults.biolakPhoneNumber(Lang.Vietnamese),
@@ -93,7 +86,6 @@ export const ContactFormGlobalConf: GlobalConfig<typeof ContactFormGlobalSlug> =
 			type: 'text',
 			label: false,
 			localized: true,
-			defaultValue: defaults.actionCall,
 			admin: {
 				placeholder: defaults.actionCall(Lang.Vietnamese),
 			},
