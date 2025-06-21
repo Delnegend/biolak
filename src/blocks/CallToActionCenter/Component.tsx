@@ -55,7 +55,7 @@ export function CallToActionCenterBlock(
 						asChild
 					>
 						<CMSLink
-							className="grid"
+							className="justify-between"
 							{...props.link}
 							type={props.link?.type ?? undefined}
 							label={props.link?.label ?? defaults.buttonLabel(props.__locale)}
