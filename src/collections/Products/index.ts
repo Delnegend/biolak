@@ -22,6 +22,7 @@ import { ThreePhotoBlockConf } from '@/blocks/ThreePhoto/config'
 import { FooterSizeField } from '@/fields/footer'
 import { metaTab } from '@/fields/metaTab'
 import { slugField } from '@/fields/slug'
+import { revalidateHeaderForCollection } from '@/globals/Header/hooks/revalidateHeader'
 import { generatePreviewPath } from '@/utilities/generatePreviewPath'
 import { Lang } from '@/utilities/lang'
 
@@ -308,6 +309,11 @@ export const ProductsCollection: CollectionConfig<typeof ProductsSlug> = {
 					label: {
 						[Lang.English]: 'Orders',
 						[Lang.Vietnamese]: 'Đơn hàng',
+					},
+					access: {
+						read: allow(Role.Admin, Role.SalesManager),
+						create: allow(Role.Admin, Role.SalesManager),
+						update: allow(Role.Admin, Role.SalesManager),
 					},
 					fields: [
 						{
