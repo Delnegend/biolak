@@ -77,6 +77,8 @@ export const CheckoutPageGlobalDefaults = {
 			[Lang.English]: 'Fast shipping (<3 days)',
 			[Lang.Vietnamese]: 'Giao hàng nhanh (<3 ngày)',
 		}),
+		standardShippingPrice: 30000,
+		fastShippingPrice: 50000,
 	},
 	payment: {
 		/** `Phương thức thanh toán` */

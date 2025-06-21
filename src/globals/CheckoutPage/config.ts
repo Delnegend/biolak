@@ -33,7 +33,6 @@ export const CheckoutPageGlobalConf: GlobalConfig<typeof CheckoutPageGlobalSlug>
 							type: 'text',
 							label: false,
 							localized: true,
-							defaultValue: defaults.contacts.title,
 							admin: {
 								placeholder: defaults.contacts.title(Lang.Vietnamese),
 							},
@@ -43,7 +42,6 @@ export const CheckoutPageGlobalConf: GlobalConfig<typeof CheckoutPageGlobalSlug>
 							type: 'text',
 							label: false,
 							localized: true,
-							defaultValue: defaults.contacts.emailInputLabel,
 							admin: {
 								placeholder: defaults.contacts.emailInputLabel(Lang.Vietnamese),
 							},
@@ -53,7 +51,6 @@ export const CheckoutPageGlobalConf: GlobalConfig<typeof CheckoutPageGlobalSlug>
 							type: 'text',
 							label: false,
 							localized: true,
-							defaultValue: defaults.contacts.acceptNewsletter,
 							admin: {
 								placeholder: defaults.contacts.acceptNewsletter(Lang.Vietnamese),
 							},
@@ -72,7 +69,6 @@ export const CheckoutPageGlobalConf: GlobalConfig<typeof CheckoutPageGlobalSlug>
 							type: 'text',
 							label: false,
 							localized: true,
-							defaultValue: defaults.address.title,
 							admin: {
 								placeholder: defaults.address.title(Lang.Vietnamese),
 							},
@@ -82,7 +78,6 @@ export const CheckoutPageGlobalConf: GlobalConfig<typeof CheckoutPageGlobalSlug>
 							type: 'text',
 							label: false,
 							localized: true,
-							defaultValue: defaults.address.nameInputLabel,
 							admin: {
 								placeholder: defaults.address.nameInputLabel(Lang.Vietnamese),
 							},
@@ -91,7 +86,6 @@ export const CheckoutPageGlobalConf: GlobalConfig<typeof CheckoutPageGlobalSlug>
 							name: 'phoneInputLabel',
 							type: 'text',
 							label: false,
-							defaultValue: defaults.address.phoneInputLabel,
 							admin: {
 								placeholder: defaults.address.phoneInputLabel(Lang.Vietnamese),
 							},
@@ -101,7 +95,6 @@ export const CheckoutPageGlobalConf: GlobalConfig<typeof CheckoutPageGlobalSlug>
 							type: 'text',
 							label: false,
 							localized: true,
-							defaultValue: defaults.address.provinceCityInputLabel,
 							admin: {
 								placeholder: defaults.address.provinceCityInputLabel(Lang.Vietnamese),
 							},
@@ -111,7 +104,6 @@ export const CheckoutPageGlobalConf: GlobalConfig<typeof CheckoutPageGlobalSlug>
 							type: 'text',
 							label: false,
 							localized: true,
-							defaultValue: defaults.address.districtInputLabel,
 							admin: {
 								placeholder: defaults.address.districtInputLabel(Lang.Vietnamese),
 							},
@@ -121,7 +113,6 @@ export const CheckoutPageGlobalConf: GlobalConfig<typeof CheckoutPageGlobalSlug>
 							type: 'text',
 							label: false,
 							localized: true,
-							defaultValue: defaults.address.wardInputLabel,
 							admin: {
 								placeholder: defaults.address.wardInputLabel(Lang.Vietnamese),
 							},
@@ -131,7 +122,6 @@ export const CheckoutPageGlobalConf: GlobalConfig<typeof CheckoutPageGlobalSlug>
 							type: 'text',
 							label: false,
 							localized: true,
-							defaultValue: defaults.address.details,
 							admin: {
 								placeholder: defaults.address.details(Lang.Vietnamese),
 							},
@@ -141,7 +131,6 @@ export const CheckoutPageGlobalConf: GlobalConfig<typeof CheckoutPageGlobalSlug>
 							type: 'text',
 							label: false,
 							localized: true,
-							defaultValue: defaults.address.saveForNextTime,
 							admin: {
 								placeholder: defaults.address.saveForNextTime(Lang.Vietnamese),
 							},
@@ -160,30 +149,59 @@ export const CheckoutPageGlobalConf: GlobalConfig<typeof CheckoutPageGlobalSlug>
 							type: 'text',
 							label: false,
 							localized: true,
-							defaultValue: defaults.shipping.title,
 							admin: {
 								placeholder: defaults.shipping.title(Lang.Vietnamese),
 							},
 						},
 						{
-							name: 'standardShippingLabel',
-							type: 'text',
-							label: false,
-							localized: true,
-							defaultValue: defaults.shipping.standardShippingLabel,
-							admin: {
-								placeholder: defaults.shipping.standardShippingLabel(Lang.Vietnamese),
-							},
+							type: 'row',
+							fields: [
+								{
+									name: 'standardShippingLabel',
+									type: 'text',
+									label: false,
+									localized: true,
+									admin: {
+										placeholder: defaults.shipping.standardShippingLabel(Lang.Vietnamese),
+									},
+								},
+								{
+									name: 'fastShippingLabel',
+									type: 'text',
+									label: false,
+									localized: true,
+									admin: {
+										placeholder: defaults.shipping.fastShippingLabel(Lang.Vietnamese),
+									},
+								},
+							],
 						},
 						{
-							name: 'fastShippingLabel',
-							type: 'text',
-							label: false,
-							localized: true,
-							defaultValue: defaults.shipping.fastShippingLabel,
-							admin: {
-								placeholder: defaults.shipping.fastShippingLabel(Lang.Vietnamese),
-							},
+							type: 'row',
+							fields: [
+								{
+									name: 'standardShippingPrice',
+									type: 'number',
+									label: {
+										[Lang.English]: 'Standard Shipping Price',
+										[Lang.Vietnamese]: 'Giá vận chuyển tiêu chuẩn',
+									},
+									admin: {
+										placeholder: defaults.shipping.standardShippingPrice.toString(),
+									},
+								},
+								{
+									name: 'fastShippingPrice',
+									type: 'number',
+									label: {
+										[Lang.English]: 'Fast Shipping Price',
+										[Lang.Vietnamese]: 'Giá vận chuyển nhanh',
+									},
+									admin: {
+										placeholder: defaults.shipping.fastShippingPrice.toString(),
+									},
+								},
+							],
 						},
 					],
 				},
@@ -199,7 +217,6 @@ export const CheckoutPageGlobalConf: GlobalConfig<typeof CheckoutPageGlobalSlug>
 							type: 'text',
 							label: false,
 							localized: true,
-							defaultValue: defaults.payment.title,
 							admin: {
 								placeholder: defaults.payment.title(Lang.Vietnamese),
 							},
@@ -209,7 +226,6 @@ export const CheckoutPageGlobalConf: GlobalConfig<typeof CheckoutPageGlobalSlug>
 							type: 'text',
 							label: false,
 							localized: true,
-							defaultValue: defaults.payment.codLabel,
 							admin: {
 								placeholder: defaults.payment.codLabel(Lang.Vietnamese),
 							},
@@ -219,7 +235,6 @@ export const CheckoutPageGlobalConf: GlobalConfig<typeof CheckoutPageGlobalSlug>
 							type: 'text',
 							label: false,
 							localized: true,
-							defaultValue: defaults.payment.bankTransferLabel,
 							admin: {
 								placeholder: defaults.payment.bankTransferLabel(Lang.Vietnamese),
 							},
@@ -238,7 +253,6 @@ export const CheckoutPageGlobalConf: GlobalConfig<typeof CheckoutPageGlobalSlug>
 							type: 'text',
 							label: false,
 							localized: true,
-							defaultValue: defaults.gift.title,
 							admin: {
 								placeholder: defaults.gift.title(Lang.Vietnamese),
 							},
@@ -248,7 +262,6 @@ export const CheckoutPageGlobalConf: GlobalConfig<typeof CheckoutPageGlobalSlug>
 							type: 'text',
 							label: false,
 							localized: true,
-							defaultValue: defaults.gift.sender,
 							admin: {
 								placeholder: defaults.gift.sender(Lang.Vietnamese),
 							},
@@ -258,7 +271,6 @@ export const CheckoutPageGlobalConf: GlobalConfig<typeof CheckoutPageGlobalSlug>
 							type: 'text',
 							label: false,
 							localized: true,
-							defaultValue: defaults.gift.recipient,
 							admin: {
 								placeholder: defaults.gift.recipient(Lang.Vietnamese),
 							},
@@ -268,7 +280,6 @@ export const CheckoutPageGlobalConf: GlobalConfig<typeof CheckoutPageGlobalSlug>
 							type: 'text',
 							label: false,
 							localized: true,
-							defaultValue: defaults.gift.message,
 							admin: {
 								placeholder: defaults.gift.message(Lang.Vietnamese),
 							},
@@ -287,7 +298,6 @@ export const CheckoutPageGlobalConf: GlobalConfig<typeof CheckoutPageGlobalSlug>
 							type: 'text',
 							label: false,
 							localized: true,
-							defaultValue: defaults.order.title,
 							admin: {
 								placeholder: defaults.order.title(Lang.Vietnamese),
 							},
@@ -306,7 +316,6 @@ export const CheckoutPageGlobalConf: GlobalConfig<typeof CheckoutPageGlobalSlug>
 							type: 'text',
 							label: false,
 							localized: true,
-							defaultValue: defaults.discount.title,
 							admin: {
 								placeholder: defaults.discount.title(Lang.Vietnamese),
 							},
@@ -316,7 +325,6 @@ export const CheckoutPageGlobalConf: GlobalConfig<typeof CheckoutPageGlobalSlug>
 							type: 'text',
 							label: false,
 							localized: true,
-							defaultValue: defaults.discount.inputLabel,
 							admin: {
 								placeholder: defaults.discount.inputLabel(Lang.Vietnamese),
 							},
@@ -326,7 +334,6 @@ export const CheckoutPageGlobalConf: GlobalConfig<typeof CheckoutPageGlobalSlug>
 							type: 'text',
 							label: false,
 							localized: true,
-							defaultValue: defaults.discount.applyButton,
 							admin: {
 								placeholder: defaults.discount.applyButton(Lang.Vietnamese),
 							},
@@ -345,7 +352,6 @@ export const CheckoutPageGlobalConf: GlobalConfig<typeof CheckoutPageGlobalSlug>
 							type: 'text',
 							label: false,
 							localized: true,
-							defaultValue: defaults.orderSummary.provisional,
 							admin: {
 								placeholder: defaults.orderSummary.provisional(Lang.Vietnamese),
 							},
@@ -355,7 +361,6 @@ export const CheckoutPageGlobalConf: GlobalConfig<typeof CheckoutPageGlobalSlug>
 							type: 'text',
 							label: false,
 							localized: true,
-							defaultValue: defaults.orderSummary.discount,
 							admin: {
 								placeholder: defaults.orderSummary.discount(Lang.Vietnamese),
 							},
@@ -365,7 +370,6 @@ export const CheckoutPageGlobalConf: GlobalConfig<typeof CheckoutPageGlobalSlug>
 							type: 'text',
 							label: false,
 							localized: true,
-							defaultValue: defaults.orderSummary.shipping,
 							admin: {
 								placeholder: defaults.orderSummary.shipping(Lang.Vietnamese),
 							},
@@ -375,7 +379,6 @@ export const CheckoutPageGlobalConf: GlobalConfig<typeof CheckoutPageGlobalSlug>
 							type: 'text',
 							label: false,
 							localized: true,
-							defaultValue: defaults.orderSummary.total,
 							admin: {
 								placeholder: defaults.orderSummary.total(Lang.Vietnamese),
 							},
@@ -385,7 +388,6 @@ export const CheckoutPageGlobalConf: GlobalConfig<typeof CheckoutPageGlobalSlug>
 							type: 'text',
 							label: false,
 							localized: true,
-							defaultValue: defaults.orderSummary.acknowledge,
 							admin: {
 								placeholder: defaults.orderSummary.acknowledge(Lang.Vietnamese),
 							},
@@ -395,7 +397,6 @@ export const CheckoutPageGlobalConf: GlobalConfig<typeof CheckoutPageGlobalSlug>
 							type: 'text',
 							label: false,
 							localized: true,
-							defaultValue: defaults.orderSummary.orderButton,
 							admin: {
 								placeholder: defaults.orderSummary.orderButton(Lang.Vietnamese),
 							},
