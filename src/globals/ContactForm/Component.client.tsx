@@ -9,7 +9,6 @@ import { ZodError } from 'zod/v4'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { TextInput } from '@/components/ui/text-input'
-import { useClientLang } from '@/hooks/useClientLang'
 import { ContactFormGlobal } from '@/payload-types'
 import { Lang } from '@/utilities/lang'
 import { matchLang } from '@/utilities/matchLang'
@@ -20,9 +19,14 @@ import {
 } from './actions/submitContactFormAction'
 import { ContactFormGlobalDefaults as defaults } from './defaults'
 
-export function INTERNAL_ContactFormClient({ global }: { global: ContactFormGlobal }) {
+export function INTERNAL_ContactFormClient({
+	global,
+	locale,
+}: {
+	global: ContactFormGlobal
+	locale: Lang
+}) {
 	const { register, handleSubmit } = useForm<ContactFormInputType>()
-	const { lang: locale } = useClientLang()
 
 	const onSubmit: SubmitHandler<ContactFormInputType> = (data) => {
 		void (async (): Promise<void> => {

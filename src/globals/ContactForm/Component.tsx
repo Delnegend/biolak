@@ -1,6 +1,6 @@
 import { DialogTitle } from '@/components/ui/dialog'
 import { ContactFormGlobal } from '@/payload-types'
-import { getClientLang } from '@/utilities/getClientLang'
+import { getClientLang } from '@/utilities/getClientLocale'
 import { getCachedGlobal } from '@/utilities/getGlobals'
 
 import { INTERNAL_ContactFormClient } from './Component.client'
@@ -15,9 +15,9 @@ export async function ContactFormGlobalComponent({ inDialog }: { inDialog?: bool
 		return (
 			<>
 				<DialogTitle className="sr-only">{global.title ?? defaults.title(locale)}</DialogTitle>
-				<INTERNAL_ContactFormClient global={global} />
+				<INTERNAL_ContactFormClient global={global} locale={locale} />
 			</>
 		)
 	}
-	return <INTERNAL_ContactFormClient global={global} />
+	return <INTERNAL_ContactFormClient global={global} locale={locale} />
 }
