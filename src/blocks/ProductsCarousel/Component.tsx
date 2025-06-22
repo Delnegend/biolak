@@ -1,12 +1,17 @@
+import config from '@payload-config'
 import { ArrowRight } from 'lucide-react'
 import { Phudu } from 'next/font/google'
 import Link from 'next/link'
+import { getPayload } from 'payload'
 
+import { MediaSlug } from '@/collections/Media/slug'
+import { ProductsSlug } from '@/collections/Products/slug'
 import { CMSLink } from '@/components/CMSLink'
 import { HeadlessImage } from '@/components/Media/HeadlessImage'
 import { Button } from '@/components/ui/button'
 import { Carousel, CarouselContent, CarouselItem } from '@/components/ui/carousel'
 import type { ProductsCarouselBlockProps } from '@/payload-types'
+import { arrayDepthHandler, depthHandler } from '@/utilities/depthHandler'
 import { Lang } from '@/utilities/lang'
 import { matchLang } from '@/utilities/matchLang'
 import { cn } from '@/utilities/ui'
@@ -21,25 +26,59 @@ const phudu = Phudu({
 
 export async function ProductsCarouselBlock(
 	props: ProductsCarouselBlockProps & {
-		__lang?: Lang
+		__locale?: Lang
 	},
 ): Promise<React.JSX.Element> {
-	const products = props.products?.filter((p) => typeof p === 'object') ?? []
+	const payload = await getPayload({ config })
+	const {
+		data: products,
+		ok: productsOk,
+		error: productsError,
+	} = await arrayDepthHandler({
+		data: props.products,
+		fetch: async (ids) =>
+			payload
+				.find({
+					collection: ProductsSlug,
+					where: {
+						id: {
+							in: ids,
+						},
+					},
+					pagination: false,
+				})
+				.then((res) => res.docs),
+	})
+	if (!productsOk) {
+		console.error(`[Block/ProductsCarousel] Error fetching products: ${productsError}`)
+	}
 
 	return (
-		<div className="relative max-h-[55rem] overflow-hidden">
+		<div className="relative overflow-hidden">
 			{products && products.length > 0 && (
 				<Carousel opts={{ loop: true }}>
 					<CarouselContent>
-						{products.map((product) => {
-							const img =
-								product.gallery &&
-								product.gallery[0] &&
-								typeof product.gallery[0] === 'object'
-									? product.gallery[0]
-									: undefined
+						{products.map(async (product) => {
+							const {
+								data: img,
+								ok,
+								error,
+							} = await depthHandler({
+								data: product.gallery?.[0],
+								fetch: async (id) =>
+									(await getPayload({ config })).findByID({
+										collection: MediaSlug,
+										id,
+									}),
+							})
+							if (!ok) {
+								console.error(`Error fetching image for product ${product.id}: ${error}`)
+							}
 							return (
-								<CarouselItem key={product.id} className="grid grid-cols-2">
+								<CarouselItem
+									key={product.id}
+									className="grid max-md:grid-rows-[auto_auto] md:grid-cols-[3fr_4fr] xl:grid-cols-2"
+								>
 									<HeadlessImage
 										media={product.gallery?.[0]}
 										alt={
@@ -48,16 +87,18 @@ export async function ProductsCarouselBlock(
 											matchLang({
 												[Lang.English]: 'Product Image',
 												[Lang.Vietnamese]: 'Hình ảnh sản phẩm',
-											})(props.__lang)
+											})(props.__locale)
 										}
 										placeholder={{ width: 720, height: 880 }}
 										className="size-full max-h-[55rem] object-cover"
 									/>
-									<div className="flex flex-col justify-center gap-3 text-balance bg-[#210E0A] px-14 text-[#F1DAAE]">
-										<div className="text-xl font-medium">
-											{props.title ?? defaults.title(props.__lang)}
+									<div className="flex flex-col justify-center gap-3 text-balance bg-[#210E0A] px-14 py-12 text-[#F1DAAE] max-md:h-fit max-md:px-4 max-md:py-6">
+										<div className="text-xl font-medium max-md:text-base">
+											{props.title ?? defaults.title(props.__locale)}
 										</div>
-										<div className="font-serif text-7xl font-bold">{product.title}</div>
+										<div className="font-serif text-7xl font-bold max-md:text-[2.5rem]">
+											{product.title}
+										</div>
 										<div className="my-5">{product.shortDescription}</div>
 
 										<Button
@@ -70,12 +111,12 @@ export async function ProductsCarouselBlock(
 												as={product.slug ? `/product/${product.slug}` : '#'}
 											>
 												{props.watchMoreBtnLabel ??
-													defaults.watchMoreBtnLabel(props.__lang)}
+													defaults.watchMoreBtnLabel(props.__locale)}
 												<ArrowRight />
 											</Link>
 										</Button>
 
-										<div className="my-3 flex flex-row gap-3">
+										<div className="mt-3 flex flex-row gap-3">
 											{products.map((pDot, index) => (
 												<svg
 													key={`${pDot.id}-${index}`}
@@ -98,12 +139,14 @@ export async function ProductsCarouselBlock(
 
 										<CMSLink
 											className={cn(
-												'text-xl font-medium text-[#FFF9ED]',
+												'text-xl font-medium text-[#FFF9ED] max-md:hidden',
 												phudu.className,
 											)}
 											{...props.apb}
 											type={props.apb?.type ?? undefined}
-											label={defaults.allProductsBtnLabel(props.__lang)}
+											label={
+												props.apb.label ?? defaults.allProductsBtnLabel(props.__locale)
+											}
 										/>
 									</div>
 								</CarouselItem>
@@ -112,9 +155,12 @@ export async function ProductsCarouselBlock(
 					</CarouselContent>
 					<ProductsCarouselNavButton
 						direction="previous"
-						className="absolute left-0 top-1/2"
+						className="absolute left-0 top-1/2 max-md:hidden"
 					/>
-					<ProductsCarouselNavButton direction="next" className="absolute right-0 top-1/2" />
+					<ProductsCarouselNavButton
+						direction="next"
+						className="absolute right-0 top-1/2 max-md:hidden"
+					/>
 				</Carousel>
 			)}
 		</div>
