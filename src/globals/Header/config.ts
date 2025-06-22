@@ -1,6 +1,7 @@
 import type { Field, GlobalConfig } from 'payload'
 
 import { allow, Role } from '@/access/allow'
+import { MediaSlug } from '@/collections/Media/slug'
 import { LinkFieldRelations } from '@/fields/link'
 import { Lang } from '@/utilities/lang'
 
@@ -191,6 +192,15 @@ export const HeaderGlobalConf: GlobalConfig<typeof HeaderGlobalSlug> = {
 			//     RowLabel: '@/globals/Header/RowLabel#RowLabel',
 			//   },
 			// },
+		},
+		{
+			name: 'logo',
+			type: 'upload',
+			relationTo: MediaSlug,
+			label: {
+				[Lang.English]: 'Logo',
+				[Lang.Vietnamese]: 'Logo',
+			},
 		},
 	],
 	hooks: {
