@@ -32,7 +32,7 @@ export function MediaBlockComponent(
 		>
 			{(props.media || props.staticImage) && (
 				<Media
-					imgClassName={cn('border border-border rounded-[0.8rem]', props.imgClassName)}
+					imgClassName={cn('rounded-[0.8rem] border border-border', props.imgClassName)}
 					resource={props.media}
 					src={props.staticImage}
 				/>
