@@ -134,14 +134,11 @@ html[data-theme='light'] {
 }
 
 .safe-width {
-	max-width: var(--safe-width-max-width);
-	width: var(--safe-width-width);
-	@apply mx-auto;
+	@apply mx-auto w-[--safe-width-width] max-w-[--safe-width-max-width];
 }
 
 .hover-underline-animation {
-	display: inline-block;
-	position: relative;
+	@apply relative inline-block;
 }
 
 .hover-underline-animation::after {
