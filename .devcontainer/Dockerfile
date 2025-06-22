@@ -1,4 +1,4 @@
-FROM debian:12-slim
+FROM docker.io/library/debian:12-slim
 
 RUN apt-get update && apt-get install -y sudo parallel zsh curl git python3 && apt-get clean
 
