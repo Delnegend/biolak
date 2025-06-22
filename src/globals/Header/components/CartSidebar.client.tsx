@@ -1,5 +1,6 @@
 'use client'
 
+import { ShoppingCart } from 'lucide-react'
 import React, { useState } from 'react'
 
 import { CartListClient } from '@/components/CartList.client'
@@ -16,13 +17,16 @@ import { useCartManager } from '@/hooks/useCartManager'
 import { formatPrice } from '@/utilities/formatPrice'
 import { Lang } from '@/utilities/lang'
 import { matchLang } from '@/utilities/matchLang'
+import { cn } from '@/utilities/ui'
 
 export function INTERNAL_CartSidebar({
 	label,
 	locale,
+	size = 'lg',
 }: {
 	label?: string
 	locale: Lang
+	size?: 'lg' | 'sm'
 }): React.JSX.Element {
 	const { cart, uncheckAll } = useCartManager({
 		syncWithLocalStorage: true,
@@ -34,14 +38,26 @@ export function INTERNAL_CartSidebar({
 		<Sheet open={open} onOpenChange={setOpen}>
 			<SheetTrigger asChild>
 				<Button
-					variant="default"
-					className="relative h-14 rounded-full bg-primary px-6 font-sans text-xl font-medium"
+					variant={size === 'lg' ? 'default' : 'outline'}
+					className={cn('relative h-14 font-sans font-medium', {
+						'rounded-full bg-primary px-6 font-sans text-xl font-medium': size === 'lg',
+						'w-14 border border-transparent bg-transparent text-base text-primary hover:border-primary hover:bg-transparent':
+							size === 'sm',
+					})}
 					hideArrow
 				>
-					{label ??
-						matchLang({ [Lang.English]: 'Cart', [Lang.Vietnamese]: 'Giỏ hàng' })(locale)}
+					<span className={cn(size === 'sm' && 'hidden')}>
+						{label ??
+							matchLang({ [Lang.English]: 'Cart', [Lang.Vietnamese]: 'Giỏ hàng' })(locale)}
+					</span>
+					<span className={cn(size === 'lg' && 'hidden')}>
+						<span className="sr-only">
+							{matchLang({ [Lang.English]: 'Cart', [Lang.Vietnamese]: 'Giỏ hàng' })(locale)}
+						</span>
+						<ShoppingCart />
+					</span>
 
-					{cartProductCount > 0 && (
+					{cartProductCount > 0 && size === 'lg' && (
 						<div className="absolute -top-2 right-0 flex aspect-square size-7 items-center justify-center overflow-hidden rounded-full bg-[#FF8200] text-base text-primary">
 							{cartProductCount}
 						</div>
