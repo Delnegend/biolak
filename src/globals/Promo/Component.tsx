@@ -11,7 +11,7 @@ export async function PromoGlobalComponent(): Promise<React.JSX.Element> {
 	if (!global.message) return <></>
 
 	return (
-		<div className="flex h-10 w-full items-center justify-center bg-black text-primary-foreground">
+		<div className="sticky top-0 flex h-10 w-full items-center justify-center bg-black text-primary-foreground">
 			<CMSLink
 				className="underline-offset-2 hover:underline"
 				{...global.link}
