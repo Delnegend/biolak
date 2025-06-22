@@ -28,7 +28,6 @@ export const CertificatesBlockConf: Block = {
 				[Lang.Vietnamese]: 'Tiêu đề',
 			},
 			localized: true,
-			defaultValue: defaults.title,
 			admin: {
 				placeholder: defaults.title(Lang.Vietnamese),
 			},
