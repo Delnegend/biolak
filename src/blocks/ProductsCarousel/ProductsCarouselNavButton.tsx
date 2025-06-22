@@ -17,6 +17,7 @@ export function ProductsCarouselNavButton(props: {
 			className={cn(
 				'mx-auto grid size-16 grid-cols-1 p-0 [&>svg]:place-self-center',
 				props.className,
+				props.direction === 'next' ? 'rounded-r-sm' : 'rounded-l-sm',
 			)}
 			hideArrow
 		>
