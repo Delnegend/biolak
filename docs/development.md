@@ -19,6 +19,6 @@ ATTENTION: Always execute `just test-build` to verify that the migrations will r
    - Use `getClientLang()` to get the preferred language ON SERVER-SIDE ONLY.
 
 ## Misc
-- If a component is prefixed with `INTERNAL_`, the reason it is a separate one instead of inline (mainly) is that it needs to be a client component.
-- Always fill in the `defaultValue` and `admin.placeholder` if possible.
 - Create the first admin account, then fill in the `.env` file `DEV_EMAIL` and `DEV_PASSWORD` so you don't have to re-login every single time.
+- If a component is prefixed with `INTERNAL_`, the reason it is a separate one instead of inline (mainly) is that it needs to be a client component.
+- Don't use `defaultValue` for fields since it doesn't actually fallback to it when they're empty.
