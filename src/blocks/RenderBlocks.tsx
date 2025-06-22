@@ -126,7 +126,7 @@ export async function RenderBlocks({
 						// @ts-expect-error same
 						__product={product}
 						// @ts-expect-error same
-						locale={locale}
+						__locale={locale}
 					/>
 				)
 			})}
