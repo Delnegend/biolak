@@ -15,19 +15,19 @@ export const buttonVariants = cva(
 		variants: {
 			size: {
 				clear: '',
-				default: 'h-16 px-6 rounded-[0.6rem] py-4 text-[1.75rem]',
+				default: 'h-16 rounded-[0.6rem] px-6 py-4 text-[1.75rem]',
 				icon: 'h-10 w-10',
 				lg: 'h-[5.25rem] rounded-[10px] px-8 text-[28px]',
 				sm: 'h-9 rounded px-3',
-				md: 'h-[4.375rem] text-xl rounded-[0.5rem] px-6',
+				md: 'h-[4.375rem] rounded-[0.5rem] px-6 text-xl',
 			},
 			variant: {
 				default: 'bg-black text-primary-foreground hover:bg-primary/90',
 				destructive: 'bg-destructive text-destructive-foreground hover:bg-destructive/90',
 				ghost: 'hover:bg-card hover:text-accent-foreground',
-				link: 'text-primary items-start justify-start underline-offset-4 hover:underline',
+				link: 'items-start justify-start text-primary underline-offset-4 hover:underline',
 				outline:
-					'border text-[#E7B27E] border-[#E7B27E] bg-background hover:border-black hover:text-black',
+					'border border-[#E7B27E] bg-background text-[#E7B27E] hover:border-black hover:text-black',
 				secondary: 'bg-secondary text-secondary-foreground hover:bg-secondary/80',
 			},
 		},
