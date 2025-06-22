@@ -1,16 +1,9 @@
-import { DM_Sans } from 'next/font/google'
-
 import { HeadlessImage } from '@/components/Media/HeadlessImage'
 import { CertificatesBlockProps } from '@/payload-types'
 import { Lang } from '@/utilities/lang'
 import { cn } from '@/utilities/ui'
 
 import { CertificatesBlockDefaults as defaults } from './defaults'
-
-const dmsans = DM_Sans({
-	subsets: ['latin'],
-	weight: ['400'],
-})
 
 export function CertificatesBlock(
 	props: CertificatesBlockProps & {
@@ -34,12 +27,7 @@ export function CertificatesBlock(
 							<div className="text-center font-serif text-5xl font-semibold leading-8 text-primary">
 								{org.title}
 							</div>
-							<div
-								className={cn(
-									dmsans.className,
-									'text-balance text-center text-xl leading-8 text-primary',
-								)}
-							>
+							<div className={cn('text-balance text-center text-xl leading-8 text-primary')}>
 								{org.description}
 							</div>
 						</div>
