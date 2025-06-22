@@ -34,7 +34,7 @@ export const UsersCollection: CollectionConfig<typeof UsersSlug> = {
 		update: allow(Role.Admin),
 	},
 	admin: {
-		defaultColumns: ['name', 'email', 'role'],
+		defaultColumns: ['name', 'email', 'role', 'receiveOrderEmail'],
 		useAsTitle: 'name',
 	},
 	auth: true,
