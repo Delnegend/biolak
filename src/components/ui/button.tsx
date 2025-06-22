@@ -17,7 +17,7 @@ export const buttonVariants = cva(
 				clear: '',
 				default: 'h-16 rounded-[0.6rem] px-6 py-4 text-[1.75rem]',
 				icon: 'h-10 w-10',
-				lg: 'h-[5.25rem] rounded-[10px] px-8 text-[28px]',
+				lg: 'h-[5.25rem] rounded-[10px] px-8 text-[28px] max-md:h-[3.75rem] max-md:p-4 max-md:text-xl',
 				sm: 'h-9 rounded px-3',
 				md: 'h-[4.375rem] rounded-[0.5rem] px-6 text-xl',
 			},
