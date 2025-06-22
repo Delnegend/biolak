@@ -22,7 +22,7 @@ export function CallToActionCenterBlock(
 
 	return (
 		<div
-			className="flex h-[60rem] items-center justify-center"
+			className="flex h-[60rem] items-center justify-center max-md:h-auto"
 			style={{
 				backgroundImage: `url(${bgUrl})`,
 				backgroundSize: 'cover',
@@ -30,25 +30,25 @@ export function CallToActionCenterBlock(
 				backgroundRepeat: 'no-repeat',
 			}}
 		>
-			<Card className="flex w-5/6 max-w-[46rem] flex-col justify-center rounded-[0.5rem] border-none bg-primary-foreground p-12">
-				<CardHeader>
+			<Card className="flex w-5/6 max-w-[46rem] flex-col justify-center rounded-[0.5rem] border-none bg-primary-foreground p-12 max-md:mx-4 max-md:my-12 max-md:w-full max-md:px-4 max-md:py-6">
+				<CardHeader className="max-md:p-0 max-md:pb-4">
 					{props['sub-title'] && (
 						<div className="text-center text-[2rem] font-bold text-primary">
 							{props['sub-title']}
 						</div>
 					)}
-					<CardTitle className="whitespace-pre-wrap text-center text-7xl font-bold leading-[4.5rem] text-primary">
+					<CardTitle className="whitespace-pre-wrap text-center text-7xl font-bold leading-[4.5rem] text-primary max-md:text-[2.5rem] max-md:leading-none">
 						{props.title}
 					</CardTitle>
 					{props.description && (
 						<RichText
 							data={props.description}
 							enableGutter={false}
-							className="text-balance text-center text-2xl text-[#834621]"
+							className="text-balance text-center text-2xl text-[#834621] max-md:text-base"
 						/>
 					)}
 				</CardHeader>
-				<CardContent className="grid max-w-[38.5rem]">
+				<CardContent className="grid max-w-[38.5rem] max-md:p-0">
 					<Button
 						size="lg"
 						className="w-full max-w-[28rem] justify-between place-self-center"
