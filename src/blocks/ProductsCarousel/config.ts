@@ -4,7 +4,7 @@ import { ProductsSlug } from '@/collections/Products/slug'
 import { link } from '@/fields/link'
 import { Lang } from '@/utilities/lang'
 
-import { ProductsCarouselBlockDefaults } from './defaults'
+import { ProductsCarouselBlockDefaults as defaults } from './defaults'
 
 export const ProductsCarouselBlockConf: Block = {
 	slug: 'productsCarousel',
@@ -29,9 +29,8 @@ export const ProductsCarouselBlockConf: Block = {
 				[Lang.Vietnamese]: 'Tiêu đề',
 			},
 			localized: true,
-			defaultValue: ProductsCarouselBlockDefaults.title,
 			admin: {
-				placeholder: ProductsCarouselBlockDefaults.title(Lang.Vietnamese),
+				placeholder: defaults.title(Lang.Vietnamese),
 			},
 		},
 		{
@@ -52,9 +51,8 @@ export const ProductsCarouselBlockConf: Block = {
 				[Lang.Vietnamese]: 'Nhãn nút xem thêm',
 			},
 			localized: true,
-			defaultValue: ProductsCarouselBlockDefaults.watchMoreBtnLabel,
 			admin: {
-				placeholder: ProductsCarouselBlockDefaults.watchMoreBtnLabel(Lang.Vietnamese),
+				placeholder: defaults.watchMoreBtnLabel(Lang.Vietnamese),
 			},
 		},
 		link({
@@ -66,10 +64,9 @@ export const ProductsCarouselBlockConf: Block = {
 				},
 				localized: true,
 				required: true,
-				defaultValue: ProductsCarouselBlockDefaults.allProductsBtnLabel,
 			},
 			label: {
-				placeholder: ProductsCarouselBlockDefaults.allProductsBtnLabel(Lang.Vietnamese),
+				placeholder: defaults.allProductsBtnLabel(Lang.Vietnamese),
 				required: false,
 			},
 		}),
