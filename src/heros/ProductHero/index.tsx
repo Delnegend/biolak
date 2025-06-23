@@ -33,9 +33,9 @@ export async function ProductHero({
 	const validVariant = findValidProductVariant(p.variants)
 
 	return (
-		<div className="relative grid min-h-[50dvw] grid-cols-2 text-balance">
-			<div />
-			<div className="pointer-events-none absolute inset-0 z-0 overflow-hidden">
+		<div className="text-balance max-md:flex max-md:flex-col md:relative md:grid md:min-h-[50dvw] md:grid-cols-[2fr_3fr] lg:grid-cols-2">
+			<div className="max-md:hidden" />
+			<div className="pointer-events-none inset-0 z-0 overflow-hidden md:absolute">
 				<HeadlessImage
 					media={p.gallery?.[0]}
 					alt={matchLang({
@@ -43,10 +43,10 @@ export async function ProductHero({
 						[Lang.Vietnamese]: 'Hình ảnh chính sản phẩm',
 					})(locale)}
 					placeholder={{ width: 1000, height: 1000 }}
-					className="h-full w-1/2 overflow-hidden object-cover"
+					className="h-full overflow-hidden object-cover max-md:w-full md:w-2/5 lg:w-1/2"
 				/>
 			</div>
-			<div className="flex size-full flex-col justify-center p-[7rem] text-primary">
+			<div className="flex size-full flex-col justify-center text-primary max-md:p-4 max-md:py-6 md:p-20 lg:p-28">
 				{subtitle && <div className="mb-1 text-xl font-medium">{subtitle}</div>}
 				<div className="mb-4 font-serif text-5xl font-medium">{p.title}</div>
 				{p.longDescription ? (
