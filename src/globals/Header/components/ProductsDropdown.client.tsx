@@ -1,10 +1,11 @@
 'use client'
+import { X } from 'lucide-react'
 import { AnimatePresence, motion, Variants } from 'motion/react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { PaginatedDocs, Where } from 'payload'
 import { stringify } from 'qs-esm'
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import useSWR from 'swr'
 
 import { ProductsSlug } from '@/collections/Products/slug'
@@ -102,16 +103,19 @@ export function INTERNAL_ProductsDropdownClient({
 	categories,
 	label,
 	locale,
+	size: size_ = 'lg',
 }: {
 	categories: PaginatedDocs<ProductCategory>
 	label?: string
 	locale: Lang
+	size?: 'lg' | 'sm'
 }): React.JSX.Element {
-	const [open, setOpen] = useState(false)
-	const dropdownElement = useRef<HTMLDivElement | null>(null)
+	const size = 'sm'
 
+	const [open, setOpen] = useState(false)
 	const [activeCategory, setActiveCategory] = useState<ProductCategory | null>(null)
 	const [activeSubCategory, setActiveSubCategory] = useState<ProductSubCategory | null>(null)
+	const [clickAnywhereToClose, setClickAnywhereToClose] = useState(true)
 
 	const { data: products } = useSWR(
 		`/api/${ProductsSlug}${stringify(
@@ -142,14 +146,26 @@ export function INTERNAL_ProductsDropdownClient({
 	}
 
 	// find the minimum height for the dropdown for it to fill the screen perfectly
-	const spaceAbove = useRef(0)
+	const [allTopBarsHeight, setAllTopBarsHeight] = useState(0)
 	useEffect(() => {
-		document.body.style.overflowY = open ? 'hidden' : 'auto'
-		if (!dropdownElement.current) return
-		if (spaceAbove.current === 0)
-			spaceAbove.current = dropdownElement.current.getBoundingClientRect().top ?? 0
-		dropdownElement.current.style.minHeight = `calc(100dvh - ${spaceAbove.current}px)`
-	}, [open])
+		const header = document.querySelector('body > header')
+		if (!header) return
+		setAllTopBarsHeight(header.getBoundingClientRect().bottom)
+
+		const controller = new AbortController()
+
+		window.addEventListener(
+			'scroll',
+			() => {
+				const header = document.querySelector('body > header')
+				if (!header) return
+				setAllTopBarsHeight(header.getBoundingClientRect().bottom)
+			},
+			{ signal: controller.signal },
+		)
+
+		return () => controller.abort()
+	}, [])
 
 	// clear active things when closed
 	useEffect(() => {
@@ -177,24 +193,27 @@ export function INTERNAL_ProductsDropdownClient({
 			<AnimatePresence>
 				{open && (
 					<motion.div
-						ref={dropdownElement}
 						variants={panelAnimationVariants}
 						initial="initial"
 						animate="animate"
 						exit="exit"
-						className={cn(
-							'absolute left-[-6.5rem] top-[3.25rem] flex w-dvw border-t bg-black/85',
-						)}
-						onClick={(e) => {
-							if (e.target === dropdownElement.current) {
-								setOpen(false)
-							}
+						className="fixed left-0 flex h-dvh w-dvw border-t bg-black/85"
+						style={{
+							top: `${allTopBarsHeight}px`,
+							height: `calc(100dvh - ${allTopBarsHeight}px)`,
+						}}
+						onClick={() => {
+							if (!clickAnywhereToClose) return
+							setOpen((prev) => !prev)
 						}}
 					>
 						{/* categories */}
 						<DropdownColumn
-							className="z-50 h-[calc(100dvh-5rem)] overflow-y-auto border-r"
+							className="z-50 overflow-y-auto border-r"
 							key="categories"
+							style={{
+								height: `calc(100dvh - ${allTopBarsHeight}px)`,
+							}}
 						>
 							<DropdownLabel key="categories">
 								{matchLang({
@@ -222,15 +241,37 @@ export function INTERNAL_ProductsDropdownClient({
 						<AnimatePresence mode="wait">
 							{activeCategory?.productSubCategories?.docs?.length && (
 								<DropdownColumn
-									className="z-40 h-[calc(100dvh-5rem)] overflow-y-auto border-r"
+									className="z-40 overflow-y-auto border-r"
 									key="subCategoryPanel"
+									style={{
+										height: `calc(100dvh - ${allTopBarsHeight}px)`,
+									}}
 								>
-									<DropdownLabel key={activeCategory?.slug}>
-										{activeCategory?.title ??
-											matchLang({
-												[Lang.English]: 'Product category',
-												[Lang.Vietnamese]: 'Danh mục sản phẩm',
+									<DropdownLabel
+										key={activeCategory?.slug}
+										className="flex items-center justify-between"
+									>
+										<span>
+											{activeCategory?.title ??
+												matchLang({
+													[Lang.English]: 'Product category',
+													[Lang.Vietnamese]: 'Danh mục sản phẩm',
+												})(locale)}
+										</span>
+										<button
+											aria-label={matchLang({
+												[Lang.English]: 'Close subcategory',
+												[Lang.Vietnamese]: 'Đóng danh mục con',
 											})(locale)}
+											onClick={() => {
+												setOpen(true)
+												setActiveCategory(null)
+											}}
+											onMouseEnter={() => setClickAnywhereToClose(false)}
+											onMouseLeave={() => setClickAnywhereToClose(true)}
+										>
+											<X size={20} />
+										</button>
 									</DropdownLabel>
 									<DropdownItem key="allProducts" tabIndex={-1}>
 										<Link
@@ -269,17 +310,39 @@ export function INTERNAL_ProductsDropdownClient({
 
 						{/* products */}
 						<AnimatePresence mode="wait">
-							{activeSubCategory && (products?.docs?.length ?? 0) > 0 && (
+							{activeCategory && activeSubCategory && (products?.docs?.length ?? 0) > 0 && (
 								<DropdownColumn
-									className="z-30 h-[calc(100dvh-5rem)] overflow-y-auto"
+									className="z-30 overflow-y-auto"
 									key="productsPanel"
+									style={{
+										height: `calc(100dvh - ${allTopBarsHeight}px)`,
+									}}
 								>
-									<DropdownLabel key={activeSubCategory?.slug}>
-										{activeSubCategory?.title ??
-											matchLang({
-												[Lang.English]: 'Product category',
-												[Lang.Vietnamese]: 'Danh mục sản phẩm',
+									<DropdownLabel
+										key={activeSubCategory?.slug}
+										className="flex items-center justify-between"
+									>
+										<span>
+											{activeSubCategory?.title ??
+												matchLang({
+													[Lang.English]: 'Product category',
+													[Lang.Vietnamese]: 'Danh mục sản phẩm',
+												})(locale)}
+										</span>
+										<button
+											aria-label={matchLang({
+												[Lang.English]: 'Close products',
+												[Lang.Vietnamese]: 'Đóng sản phẩm',
 											})(locale)}
+											onClick={() => {
+												setOpen(true)
+												setActiveSubCategory(null)
+											}}
+											onMouseEnter={() => setClickAnywhereToClose(false)}
+											onMouseLeave={() => setClickAnywhereToClose(true)}
+										>
+											<X size={20} />
+										</button>
 									</DropdownLabel>
 									{products?.docs.map((product, index) => {
 										return (
