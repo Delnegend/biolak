@@ -33,9 +33,9 @@ export function HowToUseProductBlock(
 			.join(' • ')
 
 	return (
-		<div className="relative grid min-h-[50dvw] grid-cols-2">
-			<div />
-			<div className="absolute inset-0 z-0">
+		<div className="md:relative md:grid md:min-h-[50dvw] md:grid-cols-[2fr_3fr] lg:grid-cols-2">
+			<div className="max-md:hidden" />
+			<div className="md:absolute md:inset-0 md:z-0">
 				<HeadlessImage
 					media={props.image}
 					alt={matchLang({
@@ -43,15 +43,15 @@ export function HowToUseProductBlock(
 						[Lang.Vietnamese]: 'Hình nền hướng dẫn sử dụng sản phẩm',
 					})(props.__locale)}
 					placeholder={{ width: 1000, height: 1000 }}
-					className="h-full w-1/2 overflow-hidden object-cover"
+					className="h-full overflow-hidden object-cover max-md:w-full md:w-2/5 lg:w-1/2"
 				/>
 			</div>
-			<div className='text-primary" flex size-full flex-col justify-center p-[7rem]'>
+			<div className="flex size-full flex-col justify-center px-4 py-6 text-primary md:p-20 lg:p-28">
 				{!!subtitle && <div className="text-xl font-medium">{subtitle}</div>}
 				<div className="mb-4 mt-1 font-serif text-5xl font-medium">
 					{props.title ?? defaults.title(props.__locale)}
 				</div>
-				<RichText className="compact" data={props.content} enableGutter={false} />
+				<RichText className="compact mx-0" data={props.content} enableGutter={false} />
 			</div>
 		</div>
 	)
