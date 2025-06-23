@@ -3201,6 +3201,7 @@ export interface HeaderGlobal {
         id?: string | null;
       }[]
     | null;
+  logo?: (number | null) | Media;
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -3432,6 +3433,7 @@ export interface HeaderGlobalSelect<T extends boolean = true> {
         label?: T;
         id?: T;
       };
+  logo?: T;
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;
