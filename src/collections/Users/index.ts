@@ -37,7 +37,15 @@ export const UsersCollection: CollectionConfig<typeof UsersSlug> = {
 		defaultColumns: ['name', 'email', 'role', 'receiveOrderEmail'],
 		useAsTitle: 'name',
 	},
-	auth: true,
+	auth: {
+		tokenExpiration: 60 * 60 * 24 * 7, // 7 days
+		maxLoginAttempts: 3,
+		lockTime: 60 * 60 * 1000, // 1 hour
+		cookies: {
+			secure: process.env.NODE_ENV === 'production',
+			sameSite: true,
+		},
+	},
 	fields: [
 		{
 			name: 'name',
