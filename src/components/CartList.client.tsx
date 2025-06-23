@@ -33,13 +33,13 @@ function CartItem({
 
 	return (
 		<div
-			className={cn('grid items-center gap-3', {
+			className={cn('grid items-center gap-x-3 gap-y-2', {
 				'grid-cols-[auto_auto_1fr_auto]': showCheckbox,
 				'grid-cols-[auto_1fr_auto]': !showCheckbox,
 			})}
 			style={{
 				gridTemplateAreas: `"${showCheckbox ? 'select ' : ''}img title remove"
-														"${showCheckbox ? 'select ' : ''}img quantity price"`,
+									"${showCheckbox ? 'select ' : ''}img quantity price"`,
 			}}
 		>
 			{showCheckbox && (
@@ -93,7 +93,7 @@ function CartItem({
 			</button>
 			<div
 				style={{ gridArea: 'quantity' }}
-				className="flex h-5 w-[6.6rem] items-center justify-between border"
+				className="flex h-5 w-[6.6rem] items-center justify-between self-start border"
 			>
 				<button
 					className="flex aspect-square size-5 items-center justify-center border-r"
@@ -124,7 +124,10 @@ function CartItem({
 			</div>
 			<div
 				style={{ gridArea: 'price' }}
-				className={cn('place-self-end text-lg font-semibold text-primary', phudu.className)}
+				className={cn(
+					'place-self-end self-start text-lg font-semibold text-primary',
+					phudu.className,
+				)}
 			>
 				{formatPrice(productInCart.variant.price ?? 0)}
 			</div>
