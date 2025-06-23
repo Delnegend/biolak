@@ -134,7 +134,7 @@ html[data-theme='light'] {
 }
 
 .safe-width {
-	@apply mx-auto w-[--safe-width-width] max-w-[--safe-width-max-width];
+	@apply mx-auto max-md:px-4 md:w-[--safe-width-width] md:max-w-[--safe-width-max-width];
 }
 
 .hover-underline-animation {
