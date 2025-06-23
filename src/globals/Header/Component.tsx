@@ -1,7 +1,8 @@
-import { SearchIcon } from 'lucide-react'
-import Image from 'next/image'
+import { Menu, SearchIcon } from 'lucide-react'
 import Link from 'next/link'
 
+import { HeadlessImage } from '@/components/Media/HeadlessImage'
+import { Button } from '@/components/ui/button'
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog'
 import type { HeaderGlobal } from '@/payload-types'
 import { getClientLang } from '@/utilities/getClientLocale'
@@ -9,7 +10,6 @@ import { getCachedGlobal } from '@/utilities/getGlobals'
 import { Lang } from '@/utilities/lang'
 import { matchLang } from '@/utilities/matchLang'
 
-import biolakIcon from '../../../public/biolak-logo.svg'
 import { ContactFormGlobalComponent } from '../ContactForm/Component'
 import { INTERNAL_CartSidebar } from './components/CartSidebar.client'
 import { INTERNAL_LanguageSwitcher } from './components/LanguageSwitcher.client'
@@ -22,7 +22,11 @@ const prebuilds: Record<
 			HeaderGlobal['headerItemsLeft'] | HeaderGlobal['headerItemsRight']
 		>[number]['prebuilt']
 	>,
-	(props: { label?: string; locale: Lang }) => React.JSX.Element | Promise<React.JSX.Element>
+	(props: {
+		label?: string
+		locale: Lang
+		size?: 'lg' | 'sm'
+	}) => React.JSX.Element | Promise<React.JSX.Element>
 > = {
 	search: ({ label, locale }) => (
 		<Link href="#" className="flex size-7 items-center justify-center">
@@ -143,19 +147,44 @@ export async function HeaderGlobalComponent() {
 	}
 
 	return (
-		<header className="relative z-20 flex h-20 w-full items-center bg-primary-foreground px-10">
-			<div className="grid w-full grid-cols-[1fr_auto_1fr]">
+		<header className="sticky top-0 z-20 flex h-20 w-full items-center bg-primary-foreground px-4 lg:px-10">
+			{/* large navbar */}
+			<div className="grid w-full grid-cols-[1fr_auto_1fr] max-lg:hidden">
 				<nav className="flex items-center gap-9 text-xl">
 					<RenderNav props={global?.headerItemsLeft ?? []} />
 				</nav>
 
 				<Link href="/home">
-					<Image priority src={biolakIcon} alt="BioLAK Logo" className="h-12" />
+					<HeadlessImage
+						media={global.logo}
+						placeholder={{ width: 96, height: 50 }}
+						alt={matchLang({
+							[Lang.English]: 'BioLAK Logo',
+							[Lang.Vietnamese]: 'Logo BioLAK',
+						})(locale)}
+					/>
 				</Link>
 
 				<nav className="flex items-center justify-end gap-9 text-xl">
 					<RenderNav props={global?.headerItemsRight ?? []} />
 				</nav>
+			</div>
+
+			{/* small navbar */}
+			<div className="grid w-full grid-cols-3 items-center lg:hidden">
+				<Button variant="outline" hideArrow className="size-14 border-transparent p-0">
+					<Menu className="text-primary" />
+				</Button>
+				<HeadlessImage
+					media={global.logo}
+					placeholder={{ width: 96, height: 50 }}
+					alt={matchLang({
+						[Lang.English]: 'BioLAK Logo',
+						[Lang.Vietnamese]: 'Logo BioLAK',
+					})(locale)}
+					className="h-10 w-auto place-self-center"
+				/>
+				<span className="place-self-end">{prebuilds.cart({ locale, size: 'sm' })}</span>
 			</div>
 		</header>
 	)

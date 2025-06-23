@@ -65,9 +65,9 @@ export function INTERNAL_CartSidebar({
 				</Button>
 			</SheetTrigger>
 
-			<SheetContent className="!max-w-[31.25rem] p-10" side="right">
+			<SheetContent className="!max-w-[31.25rem] p-10 max-md:w-full" side="right">
 				<SheetHeader>
-					<SheetTitle className="mb-14 !text-4xl">
+					<SheetTitle className="mb-14 text-left !text-4xl">
 						{matchLang({
 							[Lang.English]: 'Your cart',
 							[Lang.Vietnamese]: 'Giỏ hàng của bạn',
