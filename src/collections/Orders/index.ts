@@ -441,6 +441,10 @@ export const OrdersCollection: CollectionConfig<typeof OrdersSlug> = {
 							name: 'transactionInfo',
 							type: 'group',
 							required: false,
+							label: {
+								[Lang.English]: 'Transaction Information',
+								[Lang.Vietnamese]: 'Thông tin giao dịch',
+							},
 							fields: [
 								{
 									name: 'id',
@@ -698,7 +702,6 @@ export const OrdersCollection: CollectionConfig<typeof OrdersSlug> = {
 									[Lang.Vietnamese]: 'Lấy từ nhà cung cấp vận chuyển',
 								},
 							},
-							unique: true,
 						},
 					],
 				},
