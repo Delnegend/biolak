@@ -2,10 +2,13 @@ import config from '@payload-config'
 import { getPayload } from 'payload'
 
 import { InfiniteScrollBlockProps } from '@/payload-types'
+import { cnsoleBuilder } from '@/utilities/cnsole'
 import { depthHandler } from '@/utilities/depthHandler'
 import { Lang } from '@/utilities/lang'
 
 import { INTERNAL_InfiniteScrollBlock } from './Component.client'
+
+const cnsole = cnsoleBuilder('blocks/InfiniteScroll')
 
 export async function InfiniteScrollBlock({
 	graphic,
@@ -30,7 +33,7 @@ export async function InfiniteScrollBlock({
 			return result
 		},
 	})
-	if (!ok) console.error('Error fetching graphic for InfiniteScrollBlock:', error)
+	if (!ok) cnsole.error("Can't fetching graphic:", error)
 
 	return (
 		<INTERNAL_InfiniteScrollBlock

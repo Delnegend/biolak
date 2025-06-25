@@ -5,9 +5,12 @@ import { PostCategoriesSlug } from '@/collections/PostCategories/slug'
 import { PostsSlug } from '@/collections/Posts/slug'
 import { PostCard } from '@/components/PostCard'
 import { PostCategory, PostsGridBlockProps } from '@/payload-types'
+import { cnsoleBuilder } from '@/utilities/cnsole'
 import { depthHandler } from '@/utilities/depthHandler'
 import { Lang } from '@/utilities/lang'
 import { matchLang } from '@/utilities/matchLang'
+
+const cnsole = cnsoleBuilder('PostsGridBlock')
 
 export async function PostsGridBlock(
 	props: PostsGridBlockProps & {
@@ -50,10 +53,7 @@ export async function PostsGridBlock(
 							})
 
 							if (!ok) {
-								console.error(
-									"[Blocks/PostsGrid] Error fetching post category's name:",
-									error,
-								)
+								cnsole.error("Can't fetching post category's name:", error)
 							}
 
 							return (

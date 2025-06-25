@@ -11,6 +11,7 @@ import { HeadlessImage } from '@/components/Media/HeadlessImage'
 import { Button } from '@/components/ui/button'
 import { Carousel, CarouselContent, CarouselItem } from '@/components/ui/carousel'
 import type { ProductsCarouselBlockProps } from '@/payload-types'
+import { cnsoleBuilder } from '@/utilities/cnsole'
 import { arrayDepthHandler, depthHandler } from '@/utilities/depthHandler'
 import { Lang } from '@/utilities/lang'
 import { matchLang } from '@/utilities/matchLang'
@@ -18,6 +19,8 @@ import { cn } from '@/utilities/ui'
 
 import { ProductsCarouselBlockDefaults as defaults } from './defaults'
 import { ProductsCarouselNavButton } from './ProductsCarouselNavButton'
+
+const cnsole = cnsoleBuilder('blocks/ProductsCarousel')
 
 const phudu = Phudu({
 	subsets: ['vietnamese'],
@@ -50,7 +53,7 @@ export async function ProductsCarouselBlock(
 				.then((res) => res.docs),
 	})
 	if (!productsOk) {
-		console.error(`[Block/ProductsCarousel] Error fetching products: ${productsError}`)
+		cnsole.error("Can't fetching products:", productsError)
 	}
 
 	return (
@@ -72,7 +75,7 @@ export async function ProductsCarouselBlock(
 									}),
 							})
 							if (!ok) {
-								console.error(`Error fetching image for product ${product.id}: ${error}`)
+								cnsole.error(`Can't fetching image for product ${product.id}:`, error)
 							}
 							return (
 								<CarouselItem

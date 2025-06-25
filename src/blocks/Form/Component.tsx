@@ -7,9 +7,12 @@ import { FormProvider, useForm } from 'react-hook-form'
 
 import RichText from '@/components/RichText'
 import { Button } from '@/components/ui/button'
+import { cnsoleBuilder } from '@/utilities/cnsole'
 import { getClientSideURL } from '@/utilities/getURL'
 
 import { fields } from './fields'
+
+const cnsole = cnsoleBuilder('blocks/FormBlock')
 
 export type FormBlockType = {
 	blockName?: string
@@ -87,7 +90,7 @@ export function FormBlock(props: FormBlockType): React.JSX.Element {
 						if (redirectUrl) router.push(redirectUrl)
 					}
 				} catch (err) {
-					console.warn(err)
+					cnsole.warn("Can't submit form:", err)
 					setIsLoading(false)
 					setError({
 						message: 'Something went wrong.',
