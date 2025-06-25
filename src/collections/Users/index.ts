@@ -1,4 +1,4 @@
-import { CollectionConfig } from 'payload'
+import { Access, CollectionConfig } from 'payload'
 
 import { allow, Role } from '@/access/allow'
 import { User } from '@/payload-types'
@@ -21,15 +21,13 @@ export const UsersCollection: CollectionConfig<typeof UsersSlug> = {
 	access: {
 		admin: allow(Role.Admin, Role.ContentManager, Role.SalesManager),
 		create: allow(Role.Admin),
-		delete: ({ req, data }) => {
-			const typedData = data as User | null
-
+		delete: (({ req, data }) => {
 			const fromAdmin = req?.user?.role === Role.Admin
-			const toAdmin = typedData?.role === Role.Admin
+			const toAdmin = data?.role === Role.Admin
 			if (fromAdmin && !toAdmin) return true
 
 			return false
-		},
+		}) as Access<User>,
 		read: allow(Role.Admin),
 		update: allow(Role.Admin),
 	},
