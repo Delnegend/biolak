@@ -72,8 +72,6 @@ export default async function Page({ params: paramsPromise }: Args) {
 		return <PayloadRedirects url={url} />
 	}
 
-	const { hero, layout, footerSize } = page
-
 	return (
 		<article>
 			<PageClient />
@@ -82,9 +80,9 @@ export default async function Page({ params: paramsPromise }: Args) {
 
 			{draft && <LivePreviewListener />}
 
-			<RenderHero {...hero} />
-			<RenderBlocks blocks={layout} />
-			<FooterGlobalComponent size={footerSize} />
+			<RenderHero {...page.hero} />
+			<RenderBlocks blocks={page.pageLayout} />
+			<FooterGlobalComponent size={page.footerSize} />
 		</article>
 	)
 }
