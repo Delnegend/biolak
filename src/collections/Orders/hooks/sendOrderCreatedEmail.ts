@@ -7,23 +7,25 @@ import { UsersSlug } from '@/collections/Users/slug'
 import { CheckoutPageGlobalDefaults } from '@/globals/CheckoutPage/defaults'
 import { Order } from '@/payload-types'
 import { calculatePrices } from '@/utilities/calculatePrices'
+import { cnsoleBuilder } from '@/utilities/cnsole'
 import { arrayDepthHandler, depthHandler } from '@/utilities/depthHandler'
 import { tryCatch } from '@/utilities/tryCatch'
 
-export const sendNotificationEmail: CollectionAfterChangeHook<Order> = async ({
+const cnsole = cnsoleBuilder('Orders/sendOrderCreatedEmail')
+
+export const sendOrderCreatedEmail: CollectionAfterChangeHook<Order> = async ({
 	doc,
 	req: { payload },
 	operation,
 }) => {
 	if (operation !== 'create') return doc
-	const typedDoc = doc as Partial<Order>
 
 	const {
 		data: customer,
 		ok: customerOk,
 		error: customerError,
 	} = await depthHandler({
-		data: typedDoc.customer,
+		data: doc.customer,
 		fetch: (id) =>
 			payload.findByID({
 				collection: CustomersSlug,
@@ -34,7 +36,7 @@ export const sendNotificationEmail: CollectionAfterChangeHook<Order> = async ({
 			}),
 	})
 	if (!customerOk) {
-		console.error("[Orders/After change] Can't fetch customer:", customerError)
+		cnsole.error("Can't fetch customer:", customerError)
 		return doc
 	}
 
@@ -43,7 +45,7 @@ export const sendNotificationEmail: CollectionAfterChangeHook<Order> = async ({
 		error: productsInfosError,
 		ok: productsInfosOk,
 	} = await arrayDepthHandler({
-		data: typedDoc.cart?.products?.map((i) => i.product),
+		data: doc.cart?.products?.map((i) => i.product),
 		fetch: (ids) =>
 			payload
 				.find({
@@ -60,22 +62,22 @@ export const sendNotificationEmail: CollectionAfterChangeHook<Order> = async ({
 				.then((result) => result.docs),
 	})
 	if (!productsInfosOk) {
-		console.error("[Orders/After change] Can't fetch products:", productsInfosError)
+		cnsole.error("Can't fetch products:", productsInfosError)
 		return doc
 	}
 
 	let text =
 		`Tên khách hàng: ${customer?.name ?? 'Không xác định'}\n` +
-		`Số điện thoại: ${typedDoc.cart?.products?.[0]?.sku ?? 'Không xác định'}\n` +
-		`Địa chỉ giao hàng: ${typedDoc.shippingInfo?.address?.houseNumber ?? 'Không xác định'}, ` +
-		`${typedDoc.shippingInfo?.address?.ward ?? 'Không xác định'}, ` +
-		`${typedDoc.shippingInfo?.address?.district ?? 'Không xác định'}, ` +
-		`${typedDoc.shippingInfo?.address?.city ?? 'Không xác định'}\n` +
-		`Phương thức giao hàng: ${typedDoc.shippingInfo?.method === 'express' ? 'Giao hàng nhanh' : 'Giao hàng tiêu chuẩn'}\n`
+		`Số điện thoại: ${doc.cart?.products?.[0]?.sku ?? 'Không xác định'}\n` +
+		`Địa chỉ giao hàng: ${doc.shippingInfo?.address?.houseNumber ?? 'Không xác định'}, ` +
+		`${doc.shippingInfo?.address?.ward ?? 'Không xác định'}, ` +
+		`${doc.shippingInfo?.address?.district ?? 'Không xác định'}, ` +
+		`${doc.shippingInfo?.address?.city ?? 'Không xác định'}\n` +
+		`Phương thức giao hàng: ${doc.shippingInfo?.method === 'express' ? 'Giao hàng nhanh' : 'Giao hàng tiêu chuẩn'}\n`
 
-	if (typedDoc.cart?.products?.length) {
+	if (doc.cart?.products?.length) {
 		text += `\nChi tiết đơn hàng:\n`
-		for (const product of typedDoc.cart.products) {
+		for (const product of doc.cart.products) {
 			const matchedProduct = productsInfos.find(
 				(p) =>
 					p.id ===
@@ -96,7 +98,7 @@ export const sendNotificationEmail: CollectionAfterChangeHook<Order> = async ({
 			ok,
 			error,
 		} = await depthHandler({
-			data: typedDoc.cart?.discountCode,
+			data: doc.cart?.discountCode,
 			fetch(id) {
 				return payload.findByID({
 					collection: DiscountCodesSlug,
@@ -105,15 +107,15 @@ export const sendNotificationEmail: CollectionAfterChangeHook<Order> = async ({
 			},
 		})
 		if (!ok) {
-			console.error("[Orders/After change] Can't fetch discount code:", error)
+			cnsole.error("Can't fetch discount code:", error)
 		}
 		const prices = calculatePrices({
 			code,
 			shipping:
-				typedDoc.shippingInfo?.method === 'express'
+				doc.shippingInfo?.method === 'express'
 					? CheckoutPageGlobalDefaults.shipping.fastShippingPrice
 					: CheckoutPageGlobalDefaults.shipping.standardShippingPrice,
-			products: typedDoc.cart.products.map((item) => {
+			products: doc.cart.products.map((item) => {
 				const matchedProduct = productsInfos.find(
 					(p) => p.id === (typeof item.product === 'object' ? item.product.id : item.product),
 				)
@@ -156,7 +158,7 @@ export const sendNotificationEmail: CollectionAfterChangeHook<Order> = async ({
 		}),
 	)
 	if (!ok) {
-		console.error("[Orders/After change] Can't fetch users for email:", error)
+		cnsole.error("Can't fetch users for email:", error)
 		return doc
 	}
 	const to = users.docs
@@ -177,9 +179,9 @@ export const sendNotificationEmail: CollectionAfterChangeHook<Order> = async ({
 		}),
 	)
 	if (!resultOk) {
-		console.error("[Orders/After change] Can't send email:", resultError)
+		cnsole.error("Can't send email:", resultError)
 		return doc
 	}
-	console.log('[Orders/After change] Message sent:', result)
+	cnsole.info('Message sent:', result)
 	return doc
 }

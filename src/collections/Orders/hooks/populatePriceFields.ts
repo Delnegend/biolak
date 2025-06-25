@@ -5,21 +5,23 @@ import { ProductsSlug } from '@/collections/Products/slug'
 import { CheckoutPageGlobalDefaults } from '@/globals/CheckoutPage/defaults'
 import { Order } from '@/payload-types'
 import { calculatePrices } from '@/utilities/calculatePrices'
+import { cnsoleBuilder } from '@/utilities/cnsole'
 import { arrayDepthHandler, depthHandler } from '@/utilities/depthHandler'
 
-export const populateVirtualFields: CollectionAfterReadHook<Order> = async ({
+const cnsole = cnsoleBuilder('Orders/populatePriceFields')
+
+export const populatePriceFields: CollectionAfterReadHook<Order> = async ({
 	doc,
 	req: { payload },
 }) => {
-	const typedData = doc as Partial<Order>
-	if (!typedData.cart?.products) return typedData
+	if (!doc.cart?.products) return doc
 
 	const {
 		data: productsInfos,
 		ok: productsInfosOk,
 		error: productsInfosError,
 	} = await arrayDepthHandler({
-		data: typedData.cart.products.map((item) => item.product),
+		data: doc.cart.products.map((item) => item.product),
 		fetch: (ids) =>
 			payload
 				.find({
@@ -30,7 +32,6 @@ export const populateVirtualFields: CollectionAfterReadHook<Order> = async ({
 						},
 					},
 					select: {
-						id: true,
 						variants: true,
 						productCategories: true,
 						productSubCategories: true,
@@ -42,11 +43,11 @@ export const populateVirtualFields: CollectionAfterReadHook<Order> = async ({
 				.then((result) => result.docs),
 	})
 	if (!productsInfosOk) {
-		console.error("[Orders/After read] Can't fetch products:", productsInfosError)
-		return typedData
+		cnsole.error("Can't fetch products:", productsInfosError)
+		return doc
 	}
 
-	const products = typedData.cart?.products
+	const products = doc.cart?.products
 		.map((cartItem) => {
 			const matchedProduct = productsInfos.find(
 				(p) =>
@@ -68,16 +69,12 @@ export const populateVirtualFields: CollectionAfterReadHook<Order> = async ({
 				subCategoryIds: matchedProduct.productSubCategories?.map((c) =>
 					typeof c === 'object' ? c.id : c,
 				),
-			} satisfies Parameters<typeof calculatePrices>[0]['products'][number]
+			}
 		})
 		.filter((item) => item !== null)
 
 	if (!products) {
-		console.error(
-			"[Orders/After read] Either 'cart' or 'products' is not defined",
-			'orderId',
-			typedData.id,
-		)
+		cnsole.error("Either 'cart' or 'products' is not defined", 'orderId', doc.id)
 	}
 
 	const {
@@ -85,7 +82,7 @@ export const populateVirtualFields: CollectionAfterReadHook<Order> = async ({
 		ok: codeOk,
 		error: codeError,
 	} = await depthHandler({
-		data: typedData.cart?.discountCode,
+		data: doc.cart?.discountCode,
 		fetch(id) {
 			return payload.findByID({
 				collection: DiscountCodesSlug,
@@ -94,34 +91,32 @@ export const populateVirtualFields: CollectionAfterReadHook<Order> = async ({
 		},
 	})
 	if (!codeOk) {
-		console.error("[Orders/After read] Can't fetch discount code:", codeError)
+		cnsole.error("Can't fetch discount code:", codeError)
 	}
 
 	// fill final prices
-	if (typedData.cart)
-		typedData.cart.prices = calculatePrices({
+	if (doc.cart)
+		doc.cart.prices = calculatePrices({
 			code,
 			shipping:
-				typedData.shippingInfo?.method === 'express'
+				doc.shippingInfo?.method === 'express'
 					? CheckoutPageGlobalDefaults.shipping.fastShippingPrice
 					: CheckoutPageGlobalDefaults.shipping.standardShippingPrice,
 			products: products,
 		})
 
 	// fill individual product prices
-	for (const product of typedData.cart?.products ?? []) {
-		const matchedVariant = productsInfos
-			.find(
-				(p) =>
-					p.id ===
-					(typeof product.product === 'object' ? product.product.id : product.product),
-			)
-			?.variants.find((v) => v.sku === product.sku)
+	for (const product of doc.cart?.products ?? []) {
+		const matchedProduct = productsInfos.find(
+			(p) =>
+				p.id === (typeof product.product === 'object' ? product.product.id : product.product),
+		)
+		const matchedVariant = matchedProduct?.variants.find((v) => v.sku === product.sku)
 		if (!matchedVariant) continue
 
 		product.previewPrice = matchedVariant.price
 		product.previewTotal = matchedVariant.price * product.quantity
 	}
 
-	return typedData
+	return doc
 }
