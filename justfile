@@ -107,7 +107,7 @@ backup-prod:
   # Start the services
   docker compose up -d
 
-update:
+update: backup-prod
   docker compose down biolak-payload && git pull --rebase && docker compose up -d biolak-payload
 
 # check if the prod would build successfully
