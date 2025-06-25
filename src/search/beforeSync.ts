@@ -1,5 +1,9 @@
 import { BeforeSync, DocToSync } from '@payloadcms/plugin-search/types'
 
+import { cnsoleBuilder } from '@/utilities/cnsole'
+
+const cnsole = cnsoleBuilder('search/beforeSync')
+
 export const beforeSyncWithSearch: BeforeSync = async ({ originalDoc, searchDoc }) => {
 	const {
 		doc: { relationTo: collection },
@@ -33,9 +37,10 @@ export const beforeSyncWithSearch: BeforeSync = async ({ originalDoc, searchDoc 
 			})
 
 			modifiedDoc.categories = mappedCategories
-		} catch (_err) {
-			console.error(
-				`Failed. Category not found when syncing collection '${collection}' with id: '${id}' to search.`,
+		} catch (err) {
+			cnsole.error(
+				`Category not found when syncing collection '${collection}' with id: '${id}' to search.`,
+				err,
 			)
 		}
 	}
