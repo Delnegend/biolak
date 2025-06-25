@@ -55,6 +55,8 @@ import { ProductsCategoryBlock } from './ProductsCategory/Component'
 import { ProductsCategoryBlockConf } from './ProductsCategory/config'
 import { ThreePhotoBlock } from './ThreePhoto/Component'
 import { ThreePhotoBlockConf } from './ThreePhoto/config'
+import { VideoEmbedBlock } from './VideoEmbed/Component'
+import { VideoEmbedBlockConf } from './VideoEmbed/config'
 
 const blockComponents = {
 	[ArchiveBlockConf.slug]: ArchiveBlock,
@@ -83,6 +85,7 @@ const blockComponents = {
 	[ProductsCarouselBlockConf.slug]: ProductsCarouselBlock,
 	[ProductsCategoryBlockConf.slug]: ProductsCategoryBlock,
 	[ThreePhotoBlockConf.slug]: ThreePhotoBlock,
+	[VideoEmbedBlockConf.slug]: VideoEmbedBlock,
 }
 
 export async function RenderBlocks({
