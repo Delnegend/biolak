@@ -198,7 +198,7 @@ export const PagesCollection: CollectionConfig<typeof PagesSlug> = {
 					},
 					fields: [
 						{
-							name: 'layout',
+							name: 'pageLayout',
 							type: 'blocks',
 							blocks: [
 								ArchiveBlockConf,
