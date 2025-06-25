@@ -1,6 +1,7 @@
 import { Block } from 'payload'
 
 import { ProductsSlug } from '@/collections/Products/slug'
+import { link } from '@/fields/link'
 import { Lang } from '@/utilities/lang'
 
 import { BestSellerBlockDefaults as defaults } from './defaults'
@@ -51,5 +52,11 @@ export const BestSellerBlockConf: Block = {
 			relationTo: ProductsSlug,
 			hasMany: true,
 		},
+		link({
+			label: {
+				placeholder: defaults.viewAllProductsButton(Lang.Vietnamese),
+				required: false,
+			},
+		}),
 	],
 }

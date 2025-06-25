@@ -7,4 +7,8 @@ export const BestSellerBlockDefaults = {
 		[Lang.English]: 'Best Seller',
 		[Lang.Vietnamese]: 'Sản phẩm bán chạy',
 	}),
+	viewAllProductsButton: matchLang({
+		[Lang.English]: 'VIEW ALL PRODUCTS →',
+		[Lang.Vietnamese]: 'XEM TẤT CẢ SẢN PHẨM →',
+	}),
 } as const
