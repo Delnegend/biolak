@@ -7,7 +7,10 @@ import { z } from 'zod/v4'
 
 import { ProductsSlug } from '@/collections/Products/slug'
 import { type Product } from '@/payload-types'
+import { cnsoleBuilder } from '@/utilities/cnsole'
 import { tryCatch, tryCatchSync } from '@/utilities/tryCatch'
+
+const cnsole = cnsoleBuilder('hooks/useCartManager')
 
 const ProductInCartInLocalStorageSchema = z.object({
 	product: z.object({
@@ -97,7 +100,7 @@ export function useCartManager({
 		)
 		if (!ok) {
 			if (process.env.NODE_ENV === 'development')
-				console.error(`Failed to parse cart from localStorage: ${parsedUnvalidated}`)
+				cnsole.error("Can't parse cart from localStorage:", parsedUnvalidated)
 			localStorage.setItem(cartKey, JSON.stringify([]))
 			setLoadedFromLocalStorageDone(true)
 			return
@@ -108,7 +111,7 @@ export function useCartManager({
 			.safeParse(parsedUnvalidated)
 		if (!success) {
 			if (process.env.NODE_ENV === 'development')
-				console.error(`Failed to validate cart from localStorage: ${z.prettifyError(error)}`)
+				cnsole.error("Can't validate cart from localStorage:", z.prettifyError(error))
 			localStorage.setItem(cartKey, JSON.stringify([]))
 			setLoadedFromLocalStorageDone(true)
 			return
@@ -153,12 +156,12 @@ export function useCartManager({
 			)
 
 			if (!respOk) {
-				console.error(`Failed to refresh product in cart info: ${respError}`)
+				cnsole.error("Can't refresh product in cart info:", respError)
 				return
 			}
 
 			if (!resp.ok) {
-				console.error(`Failed to fetch products for cart: ${resp.status} ${resp.statusText}`)
+				cnsole.error("Can't fetch products for cart:", resp.status, resp.statusText)
 				return
 			}
 
@@ -177,7 +180,7 @@ export function useCartManager({
 			)
 
 			if (!ok) {
-				console.error(`Failed to parse products for cart: ${error}`)
+				cnsole.error("Can't parse products for cart:", error)
 				return
 			}
 
@@ -187,8 +190,8 @@ export function useCartManager({
 				for (const item of prev) {
 					const productInResponse = data.docs.find((prod) => prod.id === item.product.id)
 					if (!productInResponse) {
-						console.warn(
-							`Product with id ${item.product.id} not found in response, removing from cart`,
+						cnsole.warn(
+							`Product with id ${item.product.id} not found in response, removing from cart.`,
 						)
 						continue
 					}
@@ -196,8 +199,8 @@ export function useCartManager({
 						(variant) => variant.sku === item.variant.sku,
 					)
 					if (!variantInResponse) {
-						console.warn(
-							`Variant with sku ${item.variant.sku} not found for product ${item.product.id}, removing from cart`,
+						cnsole.warn(
+							`Variant with sku ${item.variant.sku} not found for product ${item.product.id}, removing from cart.`,
 						)
 						continue
 					}
