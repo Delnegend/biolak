@@ -150,44 +150,6 @@ export const PostsCollection: CollectionConfig<typeof PostsSlug> = {
 						},
 					],
 				},
-				{
-					fields: [
-						{
-							name: 'relatedPosts',
-							type: 'relationship',
-							admin: {
-								position: 'sidebar',
-							},
-							filterOptions: ({ id }) => {
-								return {
-									id: {
-										not_in: [id],
-									},
-								}
-							},
-							hasMany: true,
-							relationTo: PostsSlug,
-							label: {
-								[Lang.English]: 'Related Posts',
-								[Lang.Vietnamese]: 'Bài viết liên quan',
-							},
-						},
-						{
-							name: PostCategoriesSlug,
-							type: 'relationship',
-							admin: {
-								position: 'sidebar',
-							},
-							hasMany: true,
-							relationTo: PostCategoriesSlug,
-							label: {
-								[Lang.English]: 'Post Categories',
-								[Lang.Vietnamese]: 'Danh mục bài viết',
-							},
-						},
-					],
-					label: 'Meta',
-				},
 				metaTab,
 			],
 		},
@@ -215,6 +177,7 @@ export const PostsCollection: CollectionConfig<typeof PostsSlug> = {
 				[Lang.Vietnamese]: 'Ngày xuất bản',
 			},
 		},
+		...slugField(),
 		{
 			name: 'authors',
 			type: 'relationship',
@@ -226,6 +189,39 @@ export const PostsCollection: CollectionConfig<typeof PostsSlug> = {
 			label: {
 				[Lang.English]: 'Authors',
 				[Lang.Vietnamese]: 'Tác giả',
+			},
+		},
+		{
+			name: PostCategoriesSlug,
+			type: 'relationship',
+			admin: {
+				position: 'sidebar',
+			},
+			hasMany: true,
+			relationTo: PostCategoriesSlug,
+			label: {
+				[Lang.English]: 'Post Categories',
+				[Lang.Vietnamese]: 'Danh mục bài viết',
+			},
+		},
+		{
+			name: 'relatedPosts',
+			type: 'relationship',
+			admin: {
+				position: 'sidebar',
+			},
+			filterOptions: ({ id }) => {
+				return {
+					id: {
+						not_in: [id],
+					},
+				}
+			},
+			hasMany: true,
+			relationTo: PostsSlug,
+			label: {
+				[Lang.English]: 'Related Posts',
+				[Lang.Vietnamese]: 'Bài viết liên quan',
 			},
 		},
 		// This field is only used to populate the user data via the `populateAuthors` hook
@@ -256,7 +252,6 @@ export const PostsCollection: CollectionConfig<typeof PostsSlug> = {
 				[Lang.Vietnamese]: 'Tác giả đã được phân bổ',
 			},
 		},
-		...slugField(),
 		FooterSizeField,
 	],
 	hooks: {
