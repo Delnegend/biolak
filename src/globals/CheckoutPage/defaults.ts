@@ -177,4 +177,18 @@ export const CheckoutPageGlobalDefaults = {
 			[Lang.Vietnamese]: 'Đặt hàng',
 		}),
 	},
+	popup: {
+		successTitle: matchLang({
+			[Lang.English]: 'Order placed successfully',
+			[Lang.Vietnamese]: 'Đơn hàng đã được đặt thành công',
+		}),
+		successDescription: matchLang({
+			[Lang.English]: 'The order will be shipped to you in 2-3 days.',
+			[Lang.Vietnamese]: 'Đơn hàng sẽ được giao đến bạn trong 2-3 ngày.',
+		}),
+		backToHomeButton: matchLang({
+			[Lang.English]: 'Back to home',
+			[Lang.Vietnamese]: 'Quay về trang chủ',
+		}),
+	},
 } as const

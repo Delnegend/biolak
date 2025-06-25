@@ -403,6 +403,42 @@ export const CheckoutPageGlobalConf: GlobalConfig<typeof CheckoutPageGlobalSlug>
 						},
 					],
 				},
+				{
+					name: 'popup',
+					label: {
+						[Lang.English]: 'Order success popup',
+						[Lang.Vietnamese]: 'Hộp thoại đặt hàng thành công',
+					},
+					fields: [
+						{
+							name: 'successTitle',
+							type: 'text',
+							label: false,
+							localized: true,
+							admin: {
+								placeholder: defaults.popup.successTitle(Lang.Vietnamese),
+							},
+						},
+						{
+							name: 'successDescription',
+							type: 'textarea',
+							label: false,
+							localized: true,
+							admin: {
+								placeholder: defaults.popup.successDescription(Lang.Vietnamese),
+							},
+						},
+						{
+							name: 'backToHomeButtonLabel',
+							type: 'text',
+							label: false,
+							localized: true,
+							admin: {
+								placeholder: defaults.popup.backToHomeButton(Lang.Vietnamese),
+							},
+						},
+					],
+				},
 			],
 		},
 	],
