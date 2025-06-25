@@ -78,12 +78,13 @@ function CartItem({
 			<button
 				style={{ gridArea: 'remove' }}
 				className="place-self-end self-start text-primary"
-				onClick={() =>
+				onClick={(e) => {
+					e.preventDefault()
 					removeProduct({
 						productId: productInCart.product.id,
 						variantSku: productInCart.variant.sku,
 					})
-				}
+				}}
 				aria-label={matchLang({
 					[Lang.English]: `Remove ${productInCart.product.title} (${productInCart.variant.title}) from cart`,
 					[Lang.Vietnamese]: `Xoá ${productInCart.product.title} (${productInCart.variant.title}) khỏi giỏ hàng`,
@@ -97,12 +98,13 @@ function CartItem({
 			>
 				<button
 					className="flex aspect-square size-5 items-center justify-center border-r"
-					onClick={() =>
+					onClick={(e) => {
+						e.preventDefault()
 						unloadProduct({
 							productId: productInCart.product.id,
 							variantSku: productInCart.variant.sku,
 						})
-					}
+					}}
 					aria-label={matchLang({
 						[Lang.English]: `Decrease quantity of ${productInCart.product.title} (${productInCart.variant.title})`,
 						[Lang.Vietnamese]: `Giảm số lượng ${productInCart.product.title} (${productInCart.variant.title})`,
@@ -113,7 +115,10 @@ function CartItem({
 				<span className="text-sm">{productInCart.quantity}</span>
 				<button
 					className="flex aspect-square size-5 items-center justify-center border-l"
-					onClick={() => loadProduct(productInCart)}
+					onClick={(e) => {
+						e.preventDefault()
+						loadProduct(productInCart)
+					}}
 					aria-label={matchLang({
 						[Lang.English]: `Increase quantity of ${productInCart.product.title} (${productInCart.variant.title})`,
 						[Lang.Vietnamese]: `Tăng số lượng ${productInCart.product.title} (${productInCart.variant.title})`,
