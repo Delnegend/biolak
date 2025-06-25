@@ -20,6 +20,7 @@ import { InfiniteScrollBlockConf } from '@/blocks/InfiniteScroll/config'
 import { ProductsCarouselBlockConf } from '@/blocks/ProductsCarousel/config'
 import { ProductsCategoryBlockConf } from '@/blocks/ProductsCategory/config'
 import { ThreePhotoBlockConf } from '@/blocks/ThreePhoto/config'
+import { VideoEmbedBlockConf } from '@/blocks/VideoEmbed/config'
 import { FooterSizeField } from '@/fields/footer'
 import { metaTab } from '@/fields/metaTab'
 import { slugField } from '@/fields/slug'
@@ -129,6 +130,7 @@ export const PostsCollection: CollectionConfig<typeof PostsSlug> = {
 								ProductsCarouselBlockConf,
 								ProductsCategoryBlockConf,
 								ThreePhotoBlockConf,
+								VideoEmbedBlockConf,
 							],
 							required: true,
 							admin: {
