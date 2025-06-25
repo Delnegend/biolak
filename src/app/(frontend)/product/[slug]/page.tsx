@@ -104,7 +104,7 @@ export default async function Product({
 				<PayloadRedirects disableNotFound url={url} />
 				{draft && <LivePreviewListener />}
 				<ProductHero product={product} />
-				{product.content && <RenderBlocks blocks={product.content} product={product} />}
+				<RenderBlocks blocks={product.productLayout} product={product} />
 
 				{/* reviews */}
 				{product.reviewsVisible === 'show' && (
