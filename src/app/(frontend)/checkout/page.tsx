@@ -1,35 +1,43 @@
 import config from '@payload-config'
-import { headers as getHeaders } from 'next/headers'
 import Image from 'next/image'
 import { getPayload } from 'payload'
 import React from 'react'
 
 import { ProductsSlug } from '@/collections/Products/slug'
 import { CheckoutPageGlobalSlug } from '@/globals/CheckoutPage/config'
-import { CheckoutPageGlobal } from '@/payload-types'
+import { PaymentGlobalSlug } from '@/globals/Payment/slug'
+import { CheckoutPageGlobal, PaymentGlobal } from '@/payload-types'
 import { getClientLang } from '@/utilities/getClientLocale'
 import { getCachedGlobal } from '@/utilities/getGlobals'
-import { HeaderName } from '@/utilities/headerName'
 import { Lang } from '@/utilities/lang'
 import { matchLang } from '@/utilities/matchLang'
 import { tryCatch } from '@/utilities/tryCatch'
 
 import PageClient from './page.client'
 
-export default async function Checkout(): Promise<React.JSX.Element> {
-	const [locale, payload, headers] = await Promise.all([
+export default async function Checkout({
+	searchParams: searchParams_,
+}: {
+	searchParams: Promise<{ [key: string]: string | string[] | undefined }>
+}): Promise<React.JSX.Element> {
+	const [locale, payload, searchParams] = await Promise.all([
 		getClientLang(),
 		getPayload({ config }),
-		getHeaders(),
+		searchParams_,
 	])
 
-	const [global, overrideProduct] = await Promise.all([
+	const [global, paymentGlobal, overrideProduct] = await Promise.all([
 		getCachedGlobal<CheckoutPageGlobal>(CheckoutPageGlobalSlug, 1, locale)(),
+		getCachedGlobal<PaymentGlobal>(PaymentGlobalSlug, 1, locale)(),
 		tryCatch(async () => {
-			const requestQuery = new URLSearchParams(headers.get(HeaderName.RequestQuery) ?? '')
-			const overrideProductId = Number(requestQuery.get('product'))
-			const overrideVariantSku = requestQuery.get('variant') ?? null
-			if (!overrideVariantSku || Number.isNaN(overrideProductId)) return null
+			const overrideProductId = Number(searchParams.product)
+			const overrideVariantSku = searchParams.variant ? String(searchParams.variant) : null
+			if (
+				!overrideVariantSku ||
+				typeof searchParams.variant !== 'string' ||
+				Number.isNaN(overrideProductId)
+			)
+				return null
 
 			const products = await payload.find({
 				collection: ProductsSlug,
@@ -84,7 +92,11 @@ export default async function Checkout(): Promise<React.JSX.Element> {
 				unoptimized={true}
 			/>
 			<PageClient
-				global={global}
+				global={{
+					...global,
+					bankAccountNumber: paymentGlobal.bankAccountNumber,
+					bankName: paymentGlobal.bankName,
+				}}
 				override={overrideProduct.ok && overrideProduct.data ? overrideProduct.data : undefined}
 				locale={locale}
 			/>
