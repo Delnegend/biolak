@@ -47,6 +47,7 @@ export default [
 					caughtErrorsIgnorePattern: '^(_|ignore)',
 				},
 			],
+			'no-console': 'error',
 		},
 	},
 	{
