@@ -90,7 +90,7 @@ export async function RenderBlocks({
 	product,
 	// TODO: might need these in the future
 	post: _post,
-	postCategory: _postCategory,
+	postCategory,
 }: {
 	blocks: Page['layout'][0][] | Post['layout'][0][] | Product['content']
 	product?: Product | null
@@ -127,6 +127,8 @@ export async function RenderBlocks({
 						__product={product}
 						// @ts-expect-error same
 						__locale={locale}
+						// @ts-expect-error same
+						__postCategory={postCategory}
 					/>
 				)
 			})}
