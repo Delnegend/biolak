@@ -27,6 +27,7 @@ import { ContactFormGlobalConf } from './globals/ContactForm/config'
 import { FloatingGlobalConf } from './globals/Floating/config'
 import { FooterGlobalConf } from './globals/Footer/config'
 import { HeaderGlobalConf } from './globals/Header/config'
+import { PaymentGlobalConf } from './globals/Payment/config'
 import { PopupBannerGlobalConf } from './globals/PopupBanner/config'
 import { PromoGlobalConf } from './globals/Promo/config'
 import { ReviewsGlobalConf } from './globals/Reviews/config'
@@ -111,6 +112,7 @@ export default buildConfig({
 		PopupBannerGlobalConf,
 		PromoGlobalConf,
 		ReviewsGlobalConf,
+		PaymentGlobalConf,
 	],
 	plugins: [
 		...plugins,
