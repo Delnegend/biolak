@@ -282,6 +282,7 @@ export const ProductsCollection: CollectionConfig<typeof ProductsSlug> = {
 									[Lang.Vietnamese]: 'Các khối',
 								},
 							},
+							required: true,
 							blocks: [
 								ArchiveBlockConf,
 								BuyNowBlockConf,
