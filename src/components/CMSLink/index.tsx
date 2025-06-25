@@ -9,7 +9,14 @@ import { ProductsSlug } from '@/collections/Products/slug'
 import { ProductSubCategoriesSlug } from '@/collections/ProductSubCategories/slug'
 import { type ButtonProps } from '@/components/ui/button'
 import { LinkFieldRelationsType } from '@/fields/link'
-import type { Page, Post, PostCategory, ProductCategory, ProductSubCategory } from '@/payload-types'
+import type {
+	Page,
+	Post,
+	PostCategory,
+	Product,
+	ProductCategory,
+	ProductSubCategory,
+} from '@/payload-types'
 
 /**
  * Due to TS behavior, the `type` prop must be assigned seperately
@@ -26,7 +33,15 @@ export function CMSLink(
 		newTab?: boolean | null
 		reference?: {
 			relationTo?: LinkFieldRelationsType
-			value: Page | Post | PostCategory | ProductCategory | ProductSubCategory | string | number
+			value:
+				| Page
+				| Post
+				| PostCategory
+				| Product
+				| ProductCategory
+				| ProductSubCategory
+				| string
+				| number
 		} | null
 		size?: ButtonProps['size'] | null
 		type?: 'custom' | 'reference' | null
