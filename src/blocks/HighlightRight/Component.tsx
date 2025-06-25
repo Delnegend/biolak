@@ -40,7 +40,7 @@ export function HighlightRightBlock(
 
 			<div className="-order-1 self-center text-base md:text-[2rem]">
 				<div className="mb-1 font-serif italic md:mb-10"> {props.title}</div>
-				<div className="text-balance">{props.description}</div>
+				<div className="text-balance md:leading-tight">{props.description}</div>
 			</div>
 		</div>
 	)

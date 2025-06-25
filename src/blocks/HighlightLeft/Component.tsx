@@ -43,7 +43,9 @@ export function HighlightLeftBlock(
 					{' '}
 					{props.title}
 				</div>
-				<div className="text-balance text-base md:text-[2rem]">{props.description}</div>
+				<div className="text-balance text-base md:text-[2rem] md:leading-tight">
+					{props.description}
+				</div>
 			</div>
 		</div>
 	)
