@@ -19,6 +19,7 @@ import { LatestPostsBlockConf } from '@/blocks/LatestPosts/config'
 import { MediaBlockConf } from '@/blocks/MediaBlock/config'
 import { ProductsCarouselBlockConf } from '@/blocks/ProductsCarousel/config'
 import { ThreePhotoBlockConf } from '@/blocks/ThreePhoto/config'
+import { VideoEmbedBlockConf } from '@/blocks/VideoEmbed/config'
 import { FooterSizeField } from '@/fields/footer'
 import { metaTab } from '@/fields/metaTab'
 import { slugField } from '@/fields/slug'
@@ -302,6 +303,7 @@ export const ProductsCollection: CollectionConfig<typeof ProductsSlug> = {
 								MediaBlockConf,
 								ProductsCarouselBlockConf,
 								ThreePhotoBlockConf,
+								VideoEmbedBlockConf,
 							],
 						},
 					],
