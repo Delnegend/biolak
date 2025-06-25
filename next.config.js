@@ -25,6 +25,9 @@ const nextConfig = {
 	experimental: {
 		reactCompiler: true,
 	},
+	images: {
+		formats: ['image/avif', 'image/webp'],
+	},
 }
 
 export default withPayload(nextConfig, { devBundleServerPackages: false })
