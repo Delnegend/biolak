@@ -106,7 +106,7 @@ export const PostsCollection: CollectionConfig<typeof PostsSlug> = {
 					},
 					fields: [
 						{
-							name: 'layout',
+							name: 'postLayout',
 							type: 'blocks',
 							blocks: [
 								ArchiveBlockConf,
