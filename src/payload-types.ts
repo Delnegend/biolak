@@ -140,6 +140,7 @@ export interface Config {
     popupBannerGlobal: PopupBannerGlobal;
     promoGlobal: PromoGlobal;
     reviewsGlobal: ReviewsGlobal;
+    paymentGlobal: PaymentGlobal;
   };
   globalsSelect: {
     checkoutPageGlobal: CheckoutPageGlobalSelect<false> | CheckoutPageGlobalSelect<true>;
@@ -150,6 +151,7 @@ export interface Config {
     popupBannerGlobal: PopupBannerGlobalSelect<false> | PopupBannerGlobalSelect<true>;
     promoGlobal: PromoGlobalSelect<false> | PromoGlobalSelect<true>;
     reviewsGlobal: ReviewsGlobalSelect<false> | ReviewsGlobalSelect<true>;
+    paymentGlobal: PaymentGlobalSelect<false> | PaymentGlobalSelect<true>;
   };
   locale: 'en' | 'vi';
   user: User & {
@@ -207,6 +209,8 @@ export interface Customer {
  */
 export interface Order {
   id: number;
+  invoiceId: string;
+  title?: string | null;
   customer: number | Customer;
   /**
    * This note is for internal use only, it will not be shown to the customer.
@@ -229,34 +233,23 @@ export interface Order {
       shipping?: number | null;
       discount?: number | null;
       total?: number | null;
+      paidAmount?: number | null;
     };
   };
   billing?: {
     method?: ('cod' | 'bankTransfer') | null;
     paidInFull?: boolean | null;
-    transactionInfo?: {
-      id?: string | null;
-      gateway?: string | null;
-      transactionDate?: string | null;
-      accountNumber?: string | null;
-      /**
-       * This is the code used to identify the transaction in the payment gateway.
-       */
-      code?: string | null;
-      /**
-       * This is the content of the transaction, usually includes order information.
-       */
-      content?: string | null;
-      /**
-       * This is the amount of money being transferred in the transaction.
-       */
-      transferAmount?: number | null;
-      referenceCode?: string | null;
-      /**
-       * Full SMS content of the transaction.
-       */
-      description?: string | null;
-    };
+    transactions?:
+      | {
+          id?: string | null;
+          transactionDate?: string | null;
+          code?: string | null;
+          content?: string | null;
+          transferAmount?: number | null;
+          referenceCode?: string | null;
+          description?: string | null;
+        }[]
+      | null;
   };
   shippingInfo: {
     address: {
@@ -324,28 +317,27 @@ export interface Product {
   icon?: (number | null) | Media;
   gallery?: (number | Media)[] | null;
   reviewsVisible?: ('show' | 'hide') | null;
-  content?:
-    | (
-        | ArchiveBlockProps
-        | BuyNowBlockProps
-        | CallToActionCenterBlockProps
-        | CallToActionLeftBlockProps
-        | CallToActionRightBlockProps
-        | CallToAddToCartBlockProps
-        | CertificatesBlockProps
-        | ContentBlockProps
-        | FormBlockProps
-        | HighlightRightBlockProps
-        | HighlightCenterBlockProps
-        | HighlightLeftBlockProps
-        | HowToUseProductBlockProps
-        | InfiniteScrollBlockProps
-        | LatestPostsBlockProps
-        | MediaBlockProps
-        | ProductsCarouselBlockProps
-        | ThreePhotoBlockProps
-      )[]
-    | null;
+  productLayout: (
+    | ArchiveBlockProps
+    | BuyNowBlockProps
+    | CallToActionCenterBlockProps
+    | CallToActionLeftBlockProps
+    | CallToActionRightBlockProps
+    | CallToAddToCartBlockProps
+    | CertificatesBlockProps
+    | ContentBlockProps
+    | FormBlockProps
+    | HighlightRightBlockProps
+    | HighlightCenterBlockProps
+    | HighlightLeftBlockProps
+    | HowToUseProductBlockProps
+    | InfiniteScrollBlockProps
+    | LatestPostsBlockProps
+    | MediaBlockProps
+    | ProductsCarouselBlockProps
+    | ThreePhotoBlockProps
+    | VideoEmbedBlockProps
+  )[];
   orders?: {
     docs?: (number | Order)[];
     hasNextPage?: boolean;
@@ -547,7 +539,7 @@ export interface PostCategory {
     hasNextPage?: boolean;
     totalDocs?: number;
   };
-  layout?: (CallToActionPostBlockProps | PostsGridBlockProps)[] | null;
+  postCategoryLayout: (CallToActionPostBlockProps | PostsGridBlockProps)[];
   slug?: string | null;
   slugLock?: boolean | null;
   footerSize?: ('small' | 'medium' | 'large') | null;
@@ -570,7 +562,7 @@ export interface PostCategory {
 export interface Post {
   id: number;
   title: string;
-  layout: (
+  postLayout: (
     | ArchiveBlockProps
     | BuyNowBlockProps
     | CallToActionCenterBlockProps
@@ -591,9 +583,8 @@ export interface Post {
     | ProductsCarouselBlockProps
     | ProductsCategoryBlockProps
     | ThreePhotoBlockProps
+    | VideoEmbedBlockProps
   )[];
-  relatedPosts?: (number | Post)[] | null;
-  postCategories?: (number | PostCategory)[] | null;
   meta?: {
     meta?: {
       title?: string | null;
@@ -605,15 +596,17 @@ export interface Post {
     };
   };
   publishedAt?: string | null;
+  slug?: string | null;
+  slugLock?: boolean | null;
   authors?: (number | User)[] | null;
+  postCategories?: (number | PostCategory)[] | null;
+  relatedPosts?: (number | Post)[] | null;
   populatedAuthors?:
     | {
         id?: string | null;
         name?: string | null;
       }[]
     | null;
-  slug?: string | null;
-  slugLock?: boolean | null;
   footerSize?: ('small' | 'medium' | 'large') | null;
   updatedAt: string;
   createdAt: string;
@@ -752,7 +745,7 @@ export interface Page {
       | null;
     media?: (number | null) | Media;
   };
-  layout: (
+  pageLayout: (
     | ArchiveBlockProps
     | BannerBlockProps
     | BestSellerBlockProps
@@ -775,6 +768,7 @@ export interface Page {
     | ProductsCarouselBlockProps
     | ProductsCategoryBlockProps
     | ThreePhotoBlockProps
+    | VideoEmbedBlockProps
   )[];
   meta?: {
     meta?: {
@@ -827,6 +821,37 @@ export interface BestSellerBlockProps {
   title?: string | null;
   description?: string | null;
   products?: (number | Product)[] | null;
+  link?: {
+    type?: ('reference' | 'custom') | null;
+    newTab?: boolean | null;
+    reference?:
+      | ({
+          relationTo: 'pages';
+          value: number | Page;
+        } | null)
+      | ({
+          relationTo: 'postCategories';
+          value: number | PostCategory;
+        } | null)
+      | ({
+          relationTo: 'posts';
+          value: number | Post;
+        } | null)
+      | ({
+          relationTo: 'productCategories';
+          value: number | ProductCategory;
+        } | null)
+      | ({
+          relationTo: 'products';
+          value: number | Product;
+        } | null)
+      | ({
+          relationTo: 'productSubCategories';
+          value: number | ProductSubCategory;
+        } | null);
+    url?: string | null;
+    label?: string | null;
+  };
   id?: string | null;
   blockName?: string | null;
   blockType: 'bestSeller';
@@ -1381,6 +1406,7 @@ export interface MediaBlockProps {
  * via the `definition` "PostsGridBlockProps".
  */
 export interface PostsGridBlockProps {
+  showTitle?: boolean | null;
   postCategories?: (number | null) | PostCategory;
   id?: string | null;
   blockName?: string | null;
@@ -1459,6 +1485,16 @@ export interface ThreePhotoBlockProps {
   id?: string | null;
   blockName?: string | null;
   blockType: 'threePhoto';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "VideoEmbedBlockProps".
+ */
+export interface VideoEmbedBlockProps {
+  videoUrl: string;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'videoEmbed';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -2078,7 +2114,7 @@ export interface PagesSelect<T extends boolean = true> {
             };
         media?: T;
       };
-  layout?:
+  pageLayout?:
     | T
     | {
         archive?: T | ArchiveBlockPropsSelect<T>;
@@ -2103,6 +2139,7 @@ export interface PagesSelect<T extends boolean = true> {
         productsCarousel?: T | ProductsCarouselBlockPropsSelect<T>;
         productsCategory?: T | ProductsCategoryBlockPropsSelect<T>;
         threePhoto?: T | ThreePhotoBlockPropsSelect<T>;
+        videoEmbed?: T | VideoEmbedBlockPropsSelect<T>;
       };
   meta?:
     | T
@@ -2155,6 +2192,15 @@ export interface BestSellerBlockPropsSelect<T extends boolean = true> {
   title?: T;
   description?: T;
   products?: T;
+  link?:
+    | T
+    | {
+        type?: T;
+        newTab?: T;
+        reference?: T;
+        url?: T;
+        label?: T;
+      };
   id?: T;
   blockName?: T;
 }
@@ -2394,6 +2440,7 @@ export interface MediaBlockPropsSelect<T extends boolean = true> {
  * via the `definition` "PostsGridBlockProps_select".
  */
 export interface PostsGridBlockPropsSelect<T extends boolean = true> {
+  showTitle?: T;
   postCategories?: T;
   id?: T;
   blockName?: T;
@@ -2441,12 +2488,21 @@ export interface ThreePhotoBlockPropsSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "VideoEmbedBlockProps_select".
+ */
+export interface VideoEmbedBlockPropsSelect<T extends boolean = true> {
+  videoUrl?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "postCategories_select".
  */
 export interface PostCategoriesSelect<T extends boolean = true> {
   title?: T;
   posts?: T;
-  layout?:
+  postCategoryLayout?:
     | T
     | {
         'call-to-action-post'?: T | CallToActionPostBlockPropsSelect<T>;
@@ -2473,7 +2529,7 @@ export interface PostCategoriesSelect<T extends boolean = true> {
  */
 export interface PostsSelect<T extends boolean = true> {
   title?: T;
-  layout?:
+  postLayout?:
     | T
     | {
         archive?: T | ArchiveBlockPropsSelect<T>;
@@ -2496,9 +2552,8 @@ export interface PostsSelect<T extends boolean = true> {
         productsCarousel?: T | ProductsCarouselBlockPropsSelect<T>;
         productsCategory?: T | ProductsCategoryBlockPropsSelect<T>;
         threePhoto?: T | ThreePhotoBlockPropsSelect<T>;
+        videoEmbed?: T | VideoEmbedBlockPropsSelect<T>;
       };
-  relatedPosts?: T;
-  postCategories?: T;
   meta?:
     | T
     | {
@@ -2511,15 +2566,17 @@ export interface PostsSelect<T extends boolean = true> {
             };
       };
   publishedAt?: T;
+  slug?: T;
+  slugLock?: T;
   authors?: T;
+  postCategories?: T;
+  relatedPosts?: T;
   populatedAuthors?:
     | T
     | {
         id?: T;
         name?: T;
       };
-  slug?: T;
-  slugLock?: T;
   footerSize?: T;
   updatedAt?: T;
   createdAt?: T;
@@ -2593,7 +2650,7 @@ export interface ProductsSelect<T extends boolean = true> {
   icon?: T;
   gallery?: T;
   reviewsVisible?: T;
-  content?:
+  productLayout?:
     | T
     | {
         archive?: T | ArchiveBlockPropsSelect<T>;
@@ -2614,6 +2671,7 @@ export interface ProductsSelect<T extends boolean = true> {
         media?: T | MediaBlockPropsSelect<T>;
         productsCarousel?: T | ProductsCarouselBlockPropsSelect<T>;
         threePhoto?: T | ThreePhotoBlockPropsSelect<T>;
+        videoEmbed?: T | VideoEmbedBlockPropsSelect<T>;
       };
   orders?: T;
   meta?:
@@ -2665,6 +2723,8 @@ export interface ProductSubCategoriesSelect<T extends boolean = true> {
  * via the `definition` "orders_select".
  */
 export interface OrdersSelect<T extends boolean = true> {
+  invoiceId?: T;
+  title?: T;
   customer?: T;
   note?: T;
   cart?:
@@ -2688,6 +2748,7 @@ export interface OrdersSelect<T extends boolean = true> {
               shipping?: T;
               discount?: T;
               total?: T;
+              paidAmount?: T;
             };
       };
   billing?:
@@ -2695,13 +2756,11 @@ export interface OrdersSelect<T extends boolean = true> {
     | {
         method?: T;
         paidInFull?: T;
-        transactionInfo?:
+        transactions?:
           | T
           | {
               id?: T;
-              gateway?: T;
               transactionDate?: T;
-              accountNumber?: T;
               code?: T;
               content?: T;
               transferAmount?: T;
@@ -3067,6 +3126,11 @@ export interface CheckoutPageGlobal {
     acknowledgment?: string | null;
     orderButtonLabel?: string | null;
   };
+  popup?: {
+    successTitle?: string | null;
+    successDescription?: string | null;
+    backToHomeButtonLabel?: string | null;
+  };
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -3273,6 +3337,18 @@ export interface ReviewsGlobal {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "paymentGlobal".
+ */
+export interface PaymentGlobal {
+  id: number;
+  sepayApiKey?: string | null;
+  bankName?: string | null;
+  bankAccountNumber?: string | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "checkoutPageGlobal_select".
  */
 export interface CheckoutPageGlobalSelect<T extends boolean = true> {
@@ -3340,6 +3416,13 @@ export interface CheckoutPageGlobalSelect<T extends boolean = true> {
         total?: T;
         acknowledgment?: T;
         orderButtonLabel?: T;
+      };
+  popup?:
+    | T
+    | {
+        successTitle?: T;
+        successDescription?: T;
+        backToHomeButtonLabel?: T;
       };
   updatedAt?: T;
   createdAt?: T;
@@ -3478,6 +3561,18 @@ export interface ReviewsGlobalSelect<T extends boolean = true> {
   invoiceIdLabel?: T;
   contentLabel?: T;
   sendReviewBtnLabel?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "paymentGlobal_select".
+ */
+export interface PaymentGlobalSelect<T extends boolean = true> {
+  sepayApiKey?: T;
+  bankName?: T;
+  bankAccountNumber?: T;
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;
