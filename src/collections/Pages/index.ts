@@ -18,6 +18,7 @@ import { PostsGridBlockConf } from '@/blocks/PostsGrid/config'
 import { ProductsCarouselBlockConf } from '@/blocks/ProductsCarousel/config'
 import { ProductsCategoryBlockConf } from '@/blocks/ProductsCategory/config'
 import { ThreePhotoBlockConf } from '@/blocks/ThreePhoto/config'
+import { VideoEmbedBlockConf } from '@/blocks/VideoEmbed/config'
 import { FooterSizeField } from '@/fields/footer'
 import { linkGroup } from '@/fields/linkGroup'
 import { metaTab } from '@/fields/metaTab'
@@ -223,6 +224,7 @@ export const PagesCollection: CollectionConfig<typeof PagesSlug> = {
 								ProductsCarouselBlockConf,
 								ProductsCategoryBlockConf,
 								ThreePhotoBlockConf,
+								VideoEmbedBlockConf,
 							],
 							required: true,
 							admin: {
