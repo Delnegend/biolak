@@ -41,14 +41,7 @@ export const BuyNowBlockConf: Block = {
 				[Lang.Vietnamese]: 'Sản phẩm',
 			},
 			admin: {
-				condition: (data) => {
-					const isProductDocument =
-						!!data.reviewsVisible &&
-						!!data.variants &&
-						!!data.productCategories &&
-						data.productSubCategories
-					return !isProductDocument
-				},
+				condition: (data) => !data.productLayout,
 			},
 			required: true,
 		},
