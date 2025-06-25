@@ -53,7 +53,7 @@ export default async function PostCategory({
 			<PageClient />
 			<PayloadRedirects disableNotFound url={url} />
 			{draft && <LivePreviewListener />}
-			<RenderBlocks blocks={postCategory.layout} postCategory={postCategory} />
+			<RenderBlocks blocks={postCategory.postCategoryLayout} postCategory={postCategory} />
 			<FooterGlobalComponent size={postCategory.footerSize} />
 		</article>
 	)
