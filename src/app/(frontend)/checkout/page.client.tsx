@@ -1,14 +1,20 @@
 'use client'
 import { standardSchemaResolver } from '@hookform/resolvers/standard-schema'
-import { ArrowRight, ChevronDown } from 'lucide-react'
+import { ArrowRight } from 'lucide-react'
 import React, { useEffect, useRef, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import { z } from 'zod/v4'
 
-import { CartListClient } from '@/components/CartList.client'
 import { Button } from '@/components/ui/button'
-import { Checkbox } from '@/components/ui/checkbox'
+import {
+	Dialog,
+	DialogContent,
+	DialogDescription,
+	DialogHeader,
+	DialogTitle,
+	DialogTrigger,
+} from '@/components/ui/dialog'
 import { Form, FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form'
 import {
 	Select,
@@ -27,117 +33,20 @@ import { Lang } from '@/utilities/lang'
 import { matchLang } from '@/utilities/matchLang'
 import { cn } from '@/utilities/ui'
 
+import { CheckoutSchema } from './actions/checkoutSchema'
 import CITY_DISTRICT_WARD from './actions/city-district-ward.json'
-import { confirmDetailsAction } from './actions/confirmDetailsAction'
-import { ConfirmDetailsActionSchema } from './actions/confirmDetailsActionSchema'
+import { confirmDetailsAction, ConfirmDetailsActionInput } from './actions/confirmDetailsAction'
+import { INTERNAL_Card } from './components/Card'
+import { INTERNAL_CardTitle as CartTitle } from './components/CardTitle'
+import { INTERNAl_CartListWithAccordion } from './components/CartListWithAccordion'
+import { INTERNAL_Checkbox as Checkbox } from './components/Checkbox'
+import { PaymentQR } from './components/PaymentQR'
 
-function Title({
-	children,
-	className,
-	...props
-}: React.ComponentPropsWithRef<'h3'>): React.JSX.Element {
-	return (
-		<h3
-			className={cn('font-sans text-xl font-bold leading-8 text-primary', className)}
-			{...props}
-		>
-			{children}
-		</h3>
-	)
-}
-
-function Card({
-	className,
-	children,
-	...props
-}: React.ComponentPropsWithRef<'div'> & {
-	className?: string
-	children: React.ReactNode
-}): React.JSX.Element {
-	return (
-		<div
-			className={cn('flex flex-col gap-y-4 rounded-xl bg-white p-6 text-primary', className)}
-			{...props}
-		>
-			{children}
-		</div>
-	)
-}
-
-function CustomizedCheckbox({
-	classNames,
-	label,
-	id,
-	checked,
-	onCheckedChange,
-}: {
-	classNames?: {
-		container?: string
-		checkbox?: string
-		label?: string
-	}
-	label: string
-	id: string
-	checked: boolean
-	onCheckedChange?: (value: boolean) => void
-}): React.JSX.Element {
-	return (
-		<div className={cn('mt-4 flex items-center gap-x-3', classNames?.container)}>
-			<Checkbox
-				id={id}
-				className={classNames?.checkbox}
-				checked={checked}
-				onCheckedChange={onCheckedChange}
-			/>
-			<label htmlFor={id} className={cn('text-xl text-muted-foreground', classNames?.label)}>
-				{label}
-			</label>
-		</div>
-	)
-}
-
-function CartListWithAccordion({ locale }: { locale: Lang }): React.JSX.Element {
-	const [open, setOpen] = useState(true)
-
-	return (
-		<div>
-			<div
-				className={cn('grid transition-all', {
-					'grid-rows-[1fr]': open,
-					'grid-rows-[0fr]': !open,
-				})}
-			>
-				<CartListClient
-					showCheckbox={false}
-					className="mb-4 min-h-0 overflow-hidden"
-					locale={locale}
-				/>
-			</div>
-
-			<button
-				className="!flex w-full flex-row items-center justify-between font-sans text-xl"
-				aria-label={matchLang({
-					[Lang.English]: 'Toggle cart details',
-					[Lang.Vietnamese]: 'Ẩn hiện chi tiết giỏ hàng',
-				})(locale)}
-				onClick={(e) => {
-					e.preventDefault()
-					setOpen((prev) => !prev)
-				}}
-			>
-				{matchLang({
-					[Lang.English]: open ? 'Hide details' : 'Cart details',
-					[Lang.Vietnamese]: open ? 'Ẩn chi tiết' : 'Chi tiết giỏ hàng',
-				})(locale)}
-				<ChevronDown
-					className={cn('transition-all', {
-						'rotate-180': open,
-						'rotate-0': !open,
-					})}
-				/>
-			</button>
-		</div>
-	)
+enum ProcessingState {
+	Idle = 'idle',
+	Processing = 'processing',
+	Success = 'success',
+	Error = 'error',
 }
 
 export default function PageClient({
@@ -145,7 +54,10 @@ export default function PageClient({
 	override,
 	locale,
 }: {
-	global: CheckoutPageGlobal
+	global: CheckoutPageGlobal & {
+		bankName?: string | null
+		bankAccountNumber?: string | null
+	}
 	override?: {
 		product: {
 			id: Product['id']
@@ -164,7 +76,7 @@ export default function PageClient({
 	const { cart, loadedFromLocalStorageDone, loadProduct } = useCartManager({
 		syncWithLocalStorage: !override,
 	})
-	const Schema = ConfirmDetailsActionSchema(locale)
+	const checkoutSchema = CheckoutSchema(locale)
 
 	const [shippingMethod, setShippingMethod] = useState<'standard' | 'express'>('standard')
 	const prices = calculatePrices({
@@ -173,15 +85,17 @@ export default function PageClient({
 			shippingMethod === 'express'
 				? defaults.shipping.fastShippingPrice
 				: defaults.shipping.standardShippingPrice,
-		products: cart.map((item) => ({
-			id: item.product.id,
-			variant: {
-				price: item.variant.price,
-				quantity: item.quantity,
-			},
-			categoryIds: item.product.categoryIds,
-			subCategoryIds: item.product.subCategoryIds,
-		})),
+		products: cart
+			.filter((item) => item.checked)
+			.map((item) => ({
+				id: item.product.id,
+				variant: {
+					price: item.variant.price,
+					quantity: item.quantity,
+				},
+				categoryIds: item.product.categoryIds,
+				subCategoryIds: item.product.subCategoryIds,
+			})),
 	})
 
 	useEffect(() => {
@@ -197,8 +111,8 @@ export default function PageClient({
 	const selectedDistrictOnChangeFn = useRef<(value: string) => void>(null)
 	const selectedWardOnChangeFn = useRef<(value: string) => void>(null)
 
-	const form = useForm<z.infer<typeof Schema>>({
-		resolver: standardSchemaResolver(Schema),
+	const form = useForm<z.infer<typeof checkoutSchema>>({
+		resolver: standardSchemaResolver(checkoutSchema),
 		defaultValues: {
 			personalDetails: {
 				name: '',
@@ -226,8 +140,19 @@ export default function PageClient({
 	})
 
 	const [saveInfoForNextTime, setSaveInfoForNextTime] = useState(false)
+	const [processingState, setProcessingState] = useState<ProcessingState>(ProcessingState.Idle)
+	const [successDialog, setSuccessDialog] = useState(true)
+	const [postDetails, setPostDetails] = useState<{
+		invoiceId: string
+		paymentMethod: 'cod' | 'bankTransfer'
+	}>({
+		invoiceId: '',
+		paymentMethod: 'cod',
+	})
 
-	async function onSubmit(data: z.infer<typeof Schema>): Promise<void> {
+	async function onSubmit(data: z.infer<typeof checkoutSchema>): Promise<void> {
+		setProcessingState(ProcessingState.Processing)
+
 		const { city, district, ward } = data.shippingInfo.address
 		const cityDistrictWard: Record<
 			string,
@@ -244,30 +169,45 @@ export default function PageClient({
 					[Lang.Vietnamese]: 'Quận hoặc phường không hợp lệ cho thành phố đã chọn',
 				})(locale),
 			)
+			setProcessingState(ProcessingState.Idle)
 			return
 		}
-		const result = await confirmDetailsAction(data)
-		if (!result.success) {
+		const {
+			data: result,
+			success,
+			error,
+		} = await confirmDetailsAction({
+			cart: cart
+				.filter((item) => item.checked)
+				.map((item) => ({
+					product: item.product.id,
+					sku: item.variant.sku,
+					quantity: item.quantity,
+				})),
+			details: data,
+		} satisfies ConfirmDetailsActionInput)
+		if (!success) {
 			toast.error(
 				matchLang({
 					[Lang.English]: "Can't process your request",
 					[Lang.Vietnamese]: 'Không thể xử lý yêu cầu của bạn',
 				})(locale),
 				{
-					description: <span className="whitespace-pre-wrap">{result.error}</span>,
+					description: <span className="whitespace-pre-wrap">{error}</span>,
 				},
 			)
+			setProcessingState(ProcessingState.Idle)
 			return
 		}
-		toast.success(
-			matchLang({
-				[Lang.English]: 'Details confirmed successfully',
-				[Lang.Vietnamese]: 'Xác nhận thông tin thành công',
-			})(locale),
-		)
+
+		setPostDetails({
+			invoiceId: result.invoiceId,
+			paymentMethod: data.paymentMethod,
+		})
+		setProcessingState(ProcessingState.Success)
 	}
 
-	if (cart.length === 0) {
+	if (cart.length === 0)
 		return (
 			<div className="flex flex-col gap-10">
 				<h2>
@@ -294,17 +234,83 @@ export default function PageClient({
 				)}
 			</div>
 		)
-	}
+
+	if (processingState === ProcessingState.Success)
+		if (postDetails.paymentMethod === 'cod' || !global.bankAccountNumber || !global.bankName)
+			return (
+				<div>
+					<h2>
+						{matchLang({
+							[Lang.English]: 'Order Success',
+							[Lang.Vietnamese]: 'Đặt hàng thành công',
+						})(locale)}
+					</h2>
+					<div>
+						{matchLang({
+							[Lang.English]: 'Thank you for your order! We will process it shortly.',
+							[Lang.Vietnamese]:
+								'Cảm ơn bạn đã đặt hàng! BioLAK sẽ xử lý đơn hàng của bạn sớm nhất có thể.',
+						})(locale)}
+					</div>
+				</div>
+			)
+		else
+			return (
+				<div className="flex flex-col gap-3">
+					<h2>
+						{matchLang({
+							[Lang.English]: 'Order Payment',
+							[Lang.Vietnamese]: 'Thanh toán đơn hàng',
+						})(locale)}
+					</h2>
+					<div>
+						{matchLang({
+							[Lang.English]:
+								'BioLAK received your order, after you complete the payment, we will process it shortly.',
+							[Lang.Vietnamese]:
+								'BioLAK đã nhận được đơn hàng của bạn, sau khi hoàn tất thanh toán, chúng tôi sẽ xử lý đơn hàng của bạn sớm nhất có thể.',
+						})(locale)}
+					</div>
+					<PaymentQR
+						locale={locale}
+						amount={prices.total}
+						invoiceId={postDetails.invoiceId}
+						bankAccountNumber={global.bankAccountNumber}
+						bankName={global.bankName}
+					/>
+				</div>
+			)
 
 	return (
 		<Form {...form}>
+			<Dialog open={successDialog} onOpenChange={setSuccessDialog}>
+				<DialogTrigger />
+				<DialogContent className="overflow-hidden rounded-3xl">
+					<DialogHeader>
+						<DialogTitle className="text-center">
+							{global.popup?.successTitle ?? defaults.popup.successTitle(locale)}
+						</DialogTitle>
+						<DialogDescription className="text-center">
+							{global.popup?.successDescription ?? defaults.popup.successDescription(locale)}
+						</DialogDescription>
+					</DialogHeader>
+					<Button className="justify-between" asChild>
+						{/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
+						<a href="/" className="w-full">
+							{global.popup?.backToHomeButtonLabel ??
+								defaults.popup.backToHomeButton(locale)}
+							<ArrowRight />
+						</a>
+					</Button>
+				</DialogContent>
+			</Dialog>
 			<form
 				onSubmit={form.handleSubmit(onSubmit)}
 				className="grid grid-cols-[2fr_minmax(24rem,1fr)] gap-x-5 max-[1100px]:grid-cols-1"
 			>
 				<div className="flex flex-col gap-y-5">
-					<Card>
-						<Title>{global.contacts?.title ?? defaults.contacts.title(locale)}</Title>
+					<INTERNAL_Card>
+						<CartTitle>{global.contacts?.title ?? defaults.contacts.title(locale)}</CartTitle>
 
 						<div>
 							<FormField
@@ -332,7 +338,7 @@ export default function PageClient({
 								render={({ field }) => {
 									return (
 										<FormItem>
-											<CustomizedCheckbox
+											<Checkbox
 												id="newsletter"
 												label={
 													global.contacts?.acceptNewsletter ??
@@ -348,7 +354,7 @@ export default function PageClient({
 							/>
 						</div>
 
-						<Title>{global.address?.title ?? defaults.address.title(locale)}</Title>
+						<CartTitle>{global.address?.title ?? defaults.address.title(locale)}</CartTitle>
 
 						<div className="grid grid-cols-2 gap-x-6 gap-y-9">
 							<FormField
@@ -424,6 +430,7 @@ export default function PageClient({
 												))}
 											</SelectContent>
 										</Select>
+										<FormMessage />
 									</FormItem>
 								)}
 							/>
@@ -471,6 +478,7 @@ export default function PageClient({
 													))}
 												</SelectContent>
 											</Select>
+											<FormMessage />
 										</FormItem>
 									)
 								}}
@@ -515,6 +523,7 @@ export default function PageClient({
 													))}
 												</SelectContent>
 											</Select>
+											<FormMessage />
 										</FormItem>
 									)
 								}}
@@ -539,7 +548,7 @@ export default function PageClient({
 							/>
 						</div>
 
-						<CustomizedCheckbox
+						<Checkbox
 							id="saveForNextTime"
 							label={
 								global.address?.saveForNextTime ?? defaults.address.saveForNextTime(locale)
@@ -548,16 +557,16 @@ export default function PageClient({
 							checked={saveInfoForNextTime}
 							onCheckedChange={setSaveInfoForNextTime}
 						/>
-					</Card>
+					</INTERNAL_Card>
 
-					<Card>
-						<Title>{global.shipping?.title ?? defaults.shipping.title(locale)}</Title>
+					<INTERNAL_Card>
+						<CartTitle>{global.shipping?.title ?? defaults.shipping.title(locale)}</CartTitle>
 						<FormField
 							control={form.control}
 							name="shippingInfo.method"
 							render={({ field }) => (
 								<FormItem>
-									<CustomizedCheckbox
+									<Checkbox
 										id="standardShipping"
 										label={
 											global.shipping?.standardShippingLabel ??
@@ -569,7 +578,7 @@ export default function PageClient({
 											field.onChange(value ? 'standard' : 'express')
 										}}
 									/>
-									<CustomizedCheckbox
+									<Checkbox
 										id="fastShipping"
 										label={
 											global.shipping?.fastShippingLabel ??
@@ -584,16 +593,16 @@ export default function PageClient({
 								</FormItem>
 							)}
 						/>
-					</Card>
+					</INTERNAL_Card>
 
-					<Card>
-						<Title>{global.payment?.title ?? defaults.payment.title(locale)}</Title>
+					<INTERNAL_Card>
+						<CartTitle>{global.payment?.title ?? defaults.payment.title(locale)}</CartTitle>
 						<FormField
 							control={form.control}
 							name="paymentMethod"
 							render={({ field }) => (
 								<FormItem>
-									<CustomizedCheckbox
+									<Checkbox
 										id="cod"
 										label={global.payment?.codLabel ?? defaults.payment.codLabel(locale)}
 										checked={field.value === 'cod'}
@@ -601,7 +610,7 @@ export default function PageClient({
 											field.onChange(value ? 'cod' : 'bankTransfer')
 										}
 									/>
-									<CustomizedCheckbox
+									<Checkbox
 										id="bankTransfer"
 										label={
 											global.payment?.bankTransferLabel ??
@@ -615,10 +624,10 @@ export default function PageClient({
 								</FormItem>
 							)}
 						/>
-					</Card>
+					</INTERNAL_Card>
 
-					<Card>
-						<Title>{global.gift?.title ?? defaults.gift.title(locale)}</Title>
+					<INTERNAL_Card>
+						<CartTitle>{global.gift?.title ?? defaults.gift.title(locale)}</CartTitle>
 						<div className="grid grid-cols-2 gap-x-6 gap-y-3">
 							<FormField
 								control={form.control}
@@ -677,19 +686,19 @@ export default function PageClient({
 								)}
 							/>
 						</div>
-					</Card>
+					</INTERNAL_Card>
 				</div>
 
-				<Card className="h-fit">
-					<Title>{global.order?.title ?? defaults.order.title(locale)}</Title>
-					<CartListWithAccordion locale={locale} />
+				<INTERNAL_Card className="h-fit">
+					<CartTitle>{global.order?.title ?? defaults.order.title(locale)}</CartTitle>
+					<INTERNAl_CartListWithAccordion locale={locale} />
 					<hr />
 
-					<Title>{global.discount?.title ?? defaults.discount.title(locale)}</Title>
+					<CartTitle>{global.discount?.title ?? defaults.discount.title(locale)}</CartTitle>
 					<div className="flex h-[4.5rem] items-center justify-between rounded-[0.5rem] border border-primary p-[0.625rem]">
 						<FormField
 							control={form.control}
-							name="cart.discountCode"
+							name="discountCode"
 							render={({ field }) => (
 								<FormItem>
 									<FormControl>
@@ -752,12 +761,20 @@ export default function PageClient({
 									defaults.orderSummary.acknowledge(locale)}
 							</li>
 						</ul>
-						<Button size="md" className="h-14 w-full" hideArrow>
+						<Button
+							size="md"
+							className={cn(
+								'h-14 w-full',
+								processingState === ProcessingState.Processing && 'animate-pulse',
+							)}
+							hideArrow
+							disabled={processingState !== ProcessingState.Idle}
+						>
 							{global.orderSummary?.orderButtonLabel ??
 								defaults.orderSummary.orderButton(locale)}
 						</Button>
 					</div>
-				</Card>
+				</INTERNAL_Card>
 			</form>
 		</Form>
 	)

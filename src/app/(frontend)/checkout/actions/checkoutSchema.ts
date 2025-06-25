@@ -5,7 +5,7 @@ import { matchLang } from '@/utilities/matchLang'
 
 import CITY_DISTRICT_WARD from './city-district-ward.json'
 
-export function ConfirmDetailsActionSchema(locale: Lang) {
+export function CheckoutSchema(locale: Lang) {
 	return z.object({
 		personalDetails: z
 			.object({
@@ -16,21 +16,36 @@ export function ConfirmDetailsActionSchema(locale: Lang) {
 						[Lang.Vietnamese]: 'Họ và tên là bắt buộc',
 					})(locale),
 				),
-				email: z.email().min(
-					1,
-					matchLang({
-						[Lang.English]: 'Email is required',
-						[Lang.Vietnamese]: 'Email là bắt buộc',
-					})(locale),
-				),
+				email: z
+					.email({
+						error: matchLang({
+							[Lang.English]: 'Invalid email address',
+							[Lang.Vietnamese]: 'Địa chỉ email không hợp lệ',
+						})(locale),
+					})
+					.min(
+						1,
+						matchLang({
+							[Lang.English]: 'Email is required',
+							[Lang.Vietnamese]: 'Email là bắt buộc',
+						})(locale),
+					),
 				confirmReceiveEmail: z.boolean().optional(),
-				phoneNumber: z.string().min(
-					1,
-					matchLang({
-						[Lang.English]: 'Phone number is required',
-						[Lang.Vietnamese]: 'Số điện thoại là bắt buộc',
-					})(locale),
-				),
+				phoneNumber: z
+					.string()
+					.min(
+						1,
+						matchLang({
+							[Lang.English]: 'Phone number is required',
+							[Lang.Vietnamese]: 'Số điện thoại là bắt buộc',
+						})(locale),
+					)
+					.regex(/^\d+$/, {
+						message: matchLang({
+							[Lang.English]: 'Phone number must contain only digits',
+							[Lang.Vietnamese]: 'Số điện thoại chỉ được chứa chữ số',
+						})(locale),
+					}),
 			})
 			.required(),
 		shippingInfo: z.object({
@@ -62,16 +77,7 @@ export function ConfirmDetailsActionSchema(locale: Lang) {
 		}),
 		billingMethod: z.enum(['cod', 'bankTransfer']).optional().nullable(),
 		paymentMethod: z.enum(['cod', 'bankTransfer']),
-		cart: z.object({
-			products: z.array(
-				z.object({
-					product: z.number().int(),
-					sku: z.string(),
-					quantity: z.number().int().min(1),
-				}),
-			),
-			discountCode: z.string().optional(),
-		}),
+		discountCode: z.string().optional(),
 		sendGift: z.object({
 			sender: z.string().optional(),
 			receiver: z.string().optional(),
