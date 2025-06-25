@@ -95,7 +95,11 @@ export async function RenderBlocks({
 	post: _post,
 	postCategory,
 }: {
-	blocks: Page['layout'][0][] | Post['layout'][0][] | Product['content']
+	blocks:
+		| Page['pageLayout']
+		| Post['postLayout']
+		| Product['productLayout']
+		| PostCategory['postCategoryLayout']
 	product?: Product | null
 	post?: Post | null
 	postCategory?: PostCategory | null
