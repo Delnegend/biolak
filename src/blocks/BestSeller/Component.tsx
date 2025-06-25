@@ -8,11 +8,14 @@ import { CMSLink } from '@/components/CMSLink'
 import { ProductCard } from '@/components/ProductCard'
 import { Carousel, CarouselContent, CarouselItem } from '@/components/ui/carousel'
 import { BestSellerBlockProps } from '@/payload-types'
+import { cnsoleBuilder } from '@/utilities/cnsole'
 import { arrayDepthHandler } from '@/utilities/depthHandler'
 import { Lang } from '@/utilities/lang'
 import { cn } from '@/utilities/ui'
 
 import { BestSellerBlockDefaults as defaults } from './defaults'
+
+const cnsole = cnsoleBuilder('blocks/BestSeller')
 
 const phudu = Phudu({
 	subsets: ['vietnamese'],
@@ -47,7 +50,7 @@ export async function BestSellerBlock({
 				.then((res) => res.docs),
 	})
 	if (!productsOk) {
-		console.error(`[Block/BestSeller] Error fetching products: ${productsError}`)
+		cnsole.error("Can't fetching products:", productsError)
 	}
 
 	return (
