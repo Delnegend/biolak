@@ -1,19 +1,19 @@
-import { CollectionConfig, NumberFieldSingleValidation, TextFieldSingleValidation } from 'payload'
+import { nanoid } from 'nanoid'
+import { CollectionConfig } from 'payload'
 
 import { allow, Role } from '@/access/allow'
-import { Order } from '@/payload-types'
-import { depthHandler } from '@/utilities/depthHandler'
 import { Lang } from '@/utilities/lang'
-import { matchLang } from '@/utilities/matchLang'
-import { tryCatch } from '@/utilities/tryCatch'
 
 import { CustomersSlug } from '../Customers/slug'
 import { DiscountCodesSlug } from '../DiscountCode/slug'
 import { ProductsSlug } from '../Products/slug'
 import { checkPaidInFull } from './hooks/checkPaidInFull'
-import { populateVirtualFields } from './hooks/populateVirtualFieds'
+import { populatePriceFields } from './hooks/populatePriceFields'
+import { populateTitleField } from './hooks/populateTitleFIeld'
 import { removeVirtualFields } from './hooks/removeVirtualFields'
-import { sendNotificationEmail } from './hooks/sendNotificationEmail'
+import { sendOrderCreatedEmail } from './hooks/sendOrderCreatedEmail'
+import { validateQuantity } from './hooks/validateQuantity'
+import { validateSku } from './hooks/validateSku'
 import { OrdersSlug } from './slug'
 
 export const OrdersCollection: CollectionConfig<typeof OrdersSlug> = {
@@ -35,6 +35,35 @@ export const OrdersCollection: CollectionConfig<typeof OrdersSlug> = {
 		update: allow(Role.Admin, Role.SalesManager),
 	},
 	fields: [
+		{
+			name: 'invoiceId',
+			type: 'text',
+			required: true,
+			unique: true,
+			defaultValue: () => nanoid(),
+			access: {
+				read: allow(Role.Admin, Role.SalesManager, Role.ContentManager),
+				update: allow(Role.NoOne),
+				create: allow(Role.NoOne),
+			},
+			label: {
+				[Lang.English]: 'Invoice ID',
+				[Lang.Vietnamese]: 'Mã hóa đơn',
+			},
+		},
+		{
+			name: 'title',
+			type: 'text',
+			access: {
+				read: allow(Role.Admin, Role.SalesManager, Role.ContentManager),
+				update: allow(Role.NoOne),
+				create: allow(Role.NoOne),
+			},
+			virtual: true,
+			admin: {
+				hidden: true,
+			},
+		},
 		{
 			type: 'relationship',
 			relationTo: CustomersSlug,
@@ -117,61 +146,7 @@ export const OrdersCollection: CollectionConfig<typeof OrdersSlug> = {
 												[Lang.Vietnamese]: 'Mã SKU loại',
 											},
 											required: true,
-											unique: true,
-											validate: (async (value, ctx) => {
-												const locale =
-													ctx.req.locale === Lang.English
-														? Lang.English
-														: Lang.Vietnamese
-
-												const product_ = (
-													ctx.siblingData as NonNullable<
-														NonNullable<Partial<Order>['cart']>['products']
-													>[number]
-												)?.product
-												if (!product_)
-													return matchLang({
-														[Lang.English]: 'Product not selected',
-														[Lang.Vietnamese]: 'Chưa chọn sản phẩm',
-													})(locale)
-												const {
-													data: product,
-													ok: productOk,
-													error: productError,
-												} = await tryCatch(async () => {
-													if (typeof product_ === 'object') return product_
-													return ctx.req.payload.findByID({
-														collection: ProductsSlug,
-														id: product_,
-													})
-												})
-												if (!productOk) {
-													console.error(
-														"[Orders/SKU validation] Can't fetch product:",
-														productError,
-													)
-													return matchLang({
-														[Lang.English]: 'Product not found',
-														[Lang.Vietnamese]: 'Không tìm thấy sản phẩm',
-													})(locale)
-												}
-
-												const { variants } = product
-												if (!variants?.length)
-													return matchLang({
-														[Lang.English]: 'Product has no variants',
-														[Lang.Vietnamese]: 'Sản phẩm không có loại nào',
-													})(locale)
-
-												return (
-													variants.find((v) => v.sku === value) ??
-													`${matchLang({
-														[Lang.English]: 'SKU must be one of',
-														[Lang.Vietnamese]:
-															'Mã SKU chỉ có thể là một trong các loại',
-													})(locale)}: ${variants?.map((v) => v.sku).join(', ')}`
-												)
-											}) as TextFieldSingleValidation,
+											validate: validateSku,
 										},
 										{
 											name: 'quantity',
@@ -181,69 +156,7 @@ export const OrdersCollection: CollectionConfig<typeof OrdersSlug> = {
 												[Lang.Vietnamese]: 'Số lượng',
 											},
 											required: true,
-											validate: (async (value, ctx) => {
-												const locale =
-													ctx.req.locale === Lang.English
-														? Lang.English
-														: Lang.Vietnamese
-												const siblingData = ctx.siblingData as NonNullable<
-													NonNullable<Partial<Order>['cart']>['products']
-												>[number]
-
-												if (!siblingData.product)
-													return matchLang({
-														[Lang.English]: 'Product not selected',
-														[Lang.Vietnamese]: 'Chưa chọn sản phẩm',
-													})(locale)
-												const {
-													data: product,
-													ok: productOk,
-													error: productError,
-												} = await depthHandler({
-													data: siblingData.product,
-													fetch: (id) =>
-														ctx.req.payload.findByID({
-															collection: ProductsSlug,
-															id,
-															select: {
-																variants: true,
-															},
-														}),
-												})
-												if (!productOk) {
-													console.error(
-														"[Orders/quantity validation] Can't fetch product:",
-														productError,
-													)
-													return matchLang({
-														[Lang.English]: 'Product not found',
-														[Lang.Vietnamese]: 'Không tìm thấy sản phẩm',
-													})(locale)
-												}
-
-												const matchedVariant = product?.variants.find(
-													(v) => v.sku === siblingData.sku,
-												)
-												if (!matchedVariant)
-													return matchLang({
-														[Lang.English]: 'Variant not found',
-														[Lang.Vietnamese]: 'Không tìm thấy loại',
-													})(locale)
-
-												if ((value ?? 0) < 1)
-													return matchLang({
-														[Lang.English]: 'Quantity must be at least 1',
-														[Lang.Vietnamese]: 'Số lượng phải lớn hơn hoặc bằng 1',
-													})(locale)
-
-												if ((value ?? 0) > matchedVariant.stock)
-													return matchLang({
-														[Lang.English]: 'Quantity exceeds stock',
-														[Lang.Vietnamese]: 'Số lượng vượt quá tồn kho',
-													})(locale)
-
-												return true
-											}) as NumberFieldSingleValidation,
+											validate: validateQuantity,
 										},
 									],
 								},
@@ -379,6 +292,19 @@ export const OrdersCollection: CollectionConfig<typeof OrdersSlug> = {
 										create: allow(Role.NoOne),
 									},
 								},
+								{
+									name: 'paidAmount',
+									type: 'number',
+									label: {
+										[Lang.English]: 'Paid Amount',
+										[Lang.Vietnamese]: 'Số tiền đã thanh toán',
+									},
+									access: {
+										read: allow(Role.Admin, Role.SalesManager),
+										update: allow(Role.NoOne),
+										create: allow(Role.NoOne),
+									},
+								},
 							],
 						},
 					],
@@ -438,12 +364,11 @@ export const OrdersCollection: CollectionConfig<typeof OrdersSlug> = {
 							},
 						},
 						{
-							name: 'transactionInfo',
-							type: 'group',
-							required: false,
+							name: 'transactions',
+							type: 'array',
 							label: {
-								[Lang.English]: 'Transaction Information',
-								[Lang.Vietnamese]: 'Thông tin giao dịch',
+								[Lang.English]: 'Transactions',
+								[Lang.Vietnamese]: 'Các lần giao dịch',
 							},
 							fields: [
 								{
@@ -452,20 +377,6 @@ export const OrdersCollection: CollectionConfig<typeof OrdersSlug> = {
 									label: {
 										[Lang.English]: 'Transaction ID',
 										[Lang.Vietnamese]: 'ID giao dịch',
-									},
-									access: {
-										read: allow(Role.Admin, Role.SalesManager),
-										update: allow(Role.NoOne),
-										create: allow(Role.NoOne),
-									},
-									unique: true,
-								},
-								{
-									name: 'gateway',
-									type: 'text',
-									label: {
-										[Lang.English]: 'Payment Gateway',
-										[Lang.Vietnamese]: 'Cổng thanh toán',
 									},
 									access: {
 										read: allow(Role.Admin, Role.SalesManager),
@@ -487,32 +398,11 @@ export const OrdersCollection: CollectionConfig<typeof OrdersSlug> = {
 									},
 								},
 								{
-									name: 'accountNumber',
-									type: 'text',
-									label: {
-										[Lang.English]: 'Account Number',
-										[Lang.Vietnamese]: 'Số tài khoản ngân hàng',
-									},
-									access: {
-										read: allow(Role.Admin, Role.SalesManager),
-										update: allow(Role.NoOne),
-										create: allow(Role.NoOne),
-									},
-								},
-								{
 									name: 'code',
 									type: 'text',
 									label: {
 										[Lang.English]: 'Code',
 										[Lang.Vietnamese]: 'Mã code thanh toán',
-									},
-									admin: {
-										description: {
-											[Lang.English]:
-												'This is the code used to identify the transaction in the payment gateway.',
-											[Lang.Vietnamese]:
-												'Đây là mã được sử dụng để xác định giao dịch trong cổng thanh toán.',
-										},
 									},
 									access: {
 										read: allow(Role.Admin, Role.SalesManager),
@@ -527,13 +417,10 @@ export const OrdersCollection: CollectionConfig<typeof OrdersSlug> = {
 										[Lang.English]: 'Content',
 										[Lang.Vietnamese]: 'Nội dung chuyển khoản',
 									},
-									admin: {
-										description: {
-											[Lang.English]:
-												'This is the content of the transaction, usually includes order information.',
-											[Lang.Vietnamese]:
-												'Đây là nội dung của giao dịch, thường bao gồm thông tin đơn hàng.',
-										},
+									access: {
+										read: allow(Role.Admin, Role.SalesManager),
+										update: allow(Role.NoOne),
+										create: allow(Role.NoOne),
 									},
 								},
 								{
@@ -543,13 +430,10 @@ export const OrdersCollection: CollectionConfig<typeof OrdersSlug> = {
 										[Lang.English]: 'Transfer Amount',
 										[Lang.Vietnamese]: 'Số tiền chuyển khoản',
 									},
-									admin: {
-										description: {
-											[Lang.English]:
-												'This is the amount of money being transferred in the transaction.',
-											[Lang.Vietnamese]:
-												'Đây là số tiền được chuyển khoản trong giao dịch.',
-										},
+									access: {
+										read: allow(Role.Admin, Role.SalesManager),
+										update: allow(Role.NoOne),
+										create: allow(Role.NoOne),
 									},
 								},
 								{
@@ -559,6 +443,11 @@ export const OrdersCollection: CollectionConfig<typeof OrdersSlug> = {
 										[Lang.English]: 'Reference Code',
 										[Lang.Vietnamese]: 'Mã tham chiếu',
 									},
+									access: {
+										read: allow(Role.Admin, Role.SalesManager),
+										update: allow(Role.NoOne),
+										create: allow(Role.NoOne),
+									},
 								},
 								{
 									name: 'description',
@@ -567,14 +456,18 @@ export const OrdersCollection: CollectionConfig<typeof OrdersSlug> = {
 										[Lang.English]: 'Description',
 										[Lang.Vietnamese]: 'Mô tả',
 									},
-									admin: {
-										description: {
-											[Lang.English]: 'Full SMS content of the transaction.',
-											[Lang.Vietnamese]: 'Toàn bộ nội dung tin nhắn SMS của giao dịch.',
-										},
+									access: {
+										read: allow(Role.Admin, Role.SalesManager),
+										update: allow(Role.NoOne),
+										create: allow(Role.NoOne),
 									},
 								},
 							],
+							access: {
+								read: allow(Role.Admin, Role.SalesManager),
+								update: allow(Role.NoOne),
+								create: allow(Role.NoOne),
+							},
 						},
 					],
 				},
@@ -810,8 +703,8 @@ export const OrdersCollection: CollectionConfig<typeof OrdersSlug> = {
 	timestamps: true,
 	versions: true,
 	hooks: {
-		beforeChange: [removeVirtualFields],
-		afterChange: [sendNotificationEmail, checkPaidInFull],
-		afterRead: [populateVirtualFields],
+		beforeChange: [removeVirtualFields, checkPaidInFull],
+		afterChange: [sendOrderCreatedEmail],
+		afterRead: [populatePriceFields, populateTitleField],
 	},
 }
