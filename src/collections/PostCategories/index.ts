@@ -70,6 +70,7 @@ export const PostCategoriesCollection: CollectionConfig<typeof PostCategoriesSlu
 				},
 			},
 			type: 'blocks',
+			required: true,
 			blocks: [CallToActionPostBlockConf, PostsGridBlockConf],
 		},
 		...slugField(),
