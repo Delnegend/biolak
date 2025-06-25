@@ -1,6 +1,7 @@
 import { Block } from 'payload'
 
 import { PostCategoriesSlug } from '@/collections/PostCategories/slug'
+import { PostCategory } from '@/payload-types'
 import { Lang } from '@/utilities/lang'
 
 export const PostsGridBlockConf: Block = {
@@ -19,6 +20,15 @@ export const PostsGridBlockConf: Block = {
 	},
 	fields: [
 		{
+			name: 'showTitle',
+			type: 'checkbox',
+			label: {
+				[Lang.English]: 'Show post category title',
+				[Lang.Vietnamese]: 'Hiển thị tiêu đề danh mục bài viết',
+			},
+			defaultValue: false,
+		},
+		{
 			name: PostCategoriesSlug,
 			label: {
 				[Lang.English]: 'Post Category',
@@ -26,6 +36,10 @@ export const PostsGridBlockConf: Block = {
 			},
 			type: 'relationship',
 			relationTo: PostCategoriesSlug,
+			required: true,
+			admin: {
+				condition: (data: Partial<PostCategory>) => !data.postCategoryLayout,
+			},
 		},
 	],
 }
