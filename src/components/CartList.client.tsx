@@ -155,7 +155,7 @@ export function CartListClient({
 
 	return (
 		<div className={cn('flex flex-col gap-5', className)}>
-			{cart.map((item) => (
+			{(showCheckbox ? cart : cart.filter((item) => item.checked)).map((item) => (
 				<CartItem
 					key={`${item.product.id}-${item.variant.sku}`}
 					productInCart={item}
