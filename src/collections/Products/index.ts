@@ -269,7 +269,7 @@ export const ProductsCollection: CollectionConfig<typeof ProductsSlug> = {
 					},
 					fields: [
 						{
-							name: 'content',
+							name: 'productLayout',
 							type: 'blocks',
 							label: false,
 							labels: {
