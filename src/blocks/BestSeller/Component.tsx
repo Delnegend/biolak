@@ -8,7 +8,6 @@ import { Carousel, CarouselContent, CarouselItem } from '@/components/ui/carouse
 import { BestSellerBlockProps } from '@/payload-types'
 import { arrayDepthHandler } from '@/utilities/depthHandler'
 import { Lang } from '@/utilities/lang'
-import { cn } from '@/utilities/ui'
 
 import { BestSellerBlockDefaults as defaults } from './defaults'
 
@@ -45,14 +44,12 @@ export async function BestSellerBlock(
 	return (
 		<div className="safe-width flex h-[48rem]">
 			<div className="flex h-full w-[40rem] flex-col justify-end gap-9 py-24 pr-16">
-				<div
-					className={cn(
-						'font-serif text-7xl font-semibold italic leading-[3.5rem] text-primary',
-					)}
-				>
+				<div className="font-serif text-7xl font-semibold italic leading-[3.5rem] text-primary">
 					{props.title ?? defaults.title(props.__locale)}
 				</div>
-				{props.description && <div className={cn('text-balance')}>{props.description}</div>}
+				{props.description && (
+					<div className="text-balance opacity-60">{props.description}</div>
+				)}
 			</div>
 
 			<Carousel opts={{ dragFree: true }} className="py-24">
