@@ -40,7 +40,7 @@ export function calculatePrices({
 		maxDiscount?: DiscountCode['maxDiscount']
 	} | null
 	shipping: number
-	products: Array<{
+	products?: Array<{
 		id: Product['id']
 		categoryIds?: number[]
 		subCategoryIds?: number[]
