@@ -352,14 +352,14 @@ export const ProductsCollection: CollectionConfig<typeof ProductsSlug> = {
 			url: ({ data, req }) =>
 				generatePreviewPath({
 					slug: typeof data?.slug === 'string' ? data.slug : '',
-					collection: 'products',
+					collection: ProductsSlug,
 					req,
 				}),
 		},
 		preview: (data, { req }) =>
 			generatePreviewPath({
 				slug: typeof data?.slug === 'string' ? data.slug : '',
-				collection: 'products',
+				collection: ProductsSlug,
 				req,
 			}),
 	},
