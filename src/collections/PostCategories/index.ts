@@ -55,8 +55,8 @@ export const PostCategoriesCollection: CollectionConfig<typeof PostCategoriesSlu
 		{
 			name: 'postCategoryLayout',
 			label: {
-				[Lang.English]: 'Content',
-				[Lang.Vietnamese]: 'Nội dung',
+				[Lang.English]: 'Page Layout',
+				[Lang.Vietnamese]: 'Bố cục trang',
 			},
 			labels: {
 				singular: {

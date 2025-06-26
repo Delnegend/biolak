@@ -271,7 +271,10 @@ export const ProductsCollection: CollectionConfig<typeof ProductsSlug> = {
 						{
 							name: 'productLayout',
 							type: 'blocks',
-							label: false,
+							label: {
+								[Lang.English]: 'Page Layout',
+								[Lang.Vietnamese]: 'Bố cục trang',
+							},
 							labels: {
 								singular: {
 									[Lang.English]: 'Block',
@@ -320,10 +323,13 @@ export const ProductsCollection: CollectionConfig<typeof ProductsSlug> = {
 					fields: [
 						{
 							name: OrdersSlug,
-							label: false,
+							label: {
+								[Lang.English]: 'Orders',
+								[Lang.Vietnamese]: 'Đơn hàng',
+							},
 							type: 'join',
 							collection: OrdersSlug,
-							on: `cart.products.product`,
+							on: 'cart.products.product',
 							access: {
 								read: allow(Role.Admin, Role.SalesManager),
 							},

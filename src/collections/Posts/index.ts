@@ -135,7 +135,10 @@ export const PostsCollection: CollectionConfig<typeof PostsSlug> = {
 							admin: {
 								initCollapsed: true,
 							},
-							label: false,
+							label: {
+								[Lang.English]: 'Page Layout',
+								[Lang.Vietnamese]: 'Bố cục trang',
+							},
 							labels: {
 								singular: {
 									[Lang.English]: 'Block',
