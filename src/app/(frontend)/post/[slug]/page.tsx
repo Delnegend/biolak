@@ -13,26 +13,39 @@ import { FooterGlobalComponent } from '@/globals/Footer/Component'
 import { PostHero } from '@/heros/PostHero'
 import { generateMeta } from '@/utilities/generateMeta'
 import { getClientLang } from '@/utilities/getClientLocale'
+import { tryCatch } from '@/utilities/tryCatch'
 
 import PageClient from './page.client'
 
 export async function generateStaticParams() {
-	const payload = await getPayload({ config: configPromise })
+	const {
+		data: payload,
+		ok: payloadOk,
+		error: payloadError,
+	} = await tryCatch(() => getPayload({ config: configPromise }))
+	if (!payloadOk) throw new Error(`Failed to initialize Payload: ${payloadError}`)
 	const locale = await getClientLang()
 
-	const posts = await payload.find({
-		collection: PostsSlug,
-		draft: false,
-		limit: 1000,
-		overrideAccess: false,
-		pagination: false,
-		select: {
-			slug: true,
-		},
-		locale,
-	})
+	const {
+		data: posts,
+		ok: postsOk,
+		error: postsError,
+	} = await tryCatch(() =>
+		payload.find({
+			collection: PostsSlug,
+			draft: false,
+			limit: 1000,
+			overrideAccess: false,
+			pagination: false,
+			select: {
+				slug: true,
+			},
+			locale,
+		}),
+	)
+	if (!postsOk) throw new Error(`Failed to fetch posts: ${postsError}`)
 
-	return posts.docs.map(({ slug }) => ({ slug }))
+	return posts.docs.map(({ slug }) => ({ slug: slug ?? '' }))
 }
 
 type Args = {
@@ -84,22 +97,34 @@ export async function generateMetadata({ params: paramsPromise }: Args): Promise
 
 const queryPostBySlug = cache(async ({ slug }: { slug: string }) => {
 	const { isEnabled: draft } = await draftMode()
-	const payload = await getPayload({ config: configPromise })
+	const {
+		data: payload,
+		ok: payloadOk,
+		error: payloadError,
+	} = await tryCatch(() => getPayload({ config: configPromise }))
+	if (!payloadOk) throw new Error(`Failed to initialize Payload: ${payloadError}`)
 	const locale = await getClientLang()
 
-	const result = await payload.find({
-		collection: PostsSlug,
-		draft,
-		limit: 1,
-		overrideAccess: draft,
-		pagination: false,
-		where: {
-			slug: {
-				equals: slug,
+	const {
+		data: result,
+		ok: resultOk,
+		error: resultError,
+	} = await tryCatch(() =>
+		payload.find({
+			collection: PostsSlug,
+			draft,
+			limit: 1,
+			overrideAccess: draft,
+			pagination: false,
+			where: {
+				slug: {
+					equals: slug,
+				},
 			},
-		},
-		locale,
-	})
+			locale,
+		}),
+	)
+	if (!resultOk) throw new Error(`Failed to fetch post by slug "${slug}": ${resultError}`)
 
 	return result.docs?.[0] || null
 })

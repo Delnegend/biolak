@@ -11,29 +11,39 @@ import { PayloadRedirects } from '@/components/PayloadRedirects'
 import { FooterGlobalComponent } from '@/globals/Footer/Component'
 import { type PostCategory } from '@/payload-types'
 import { getClientLang } from '@/utilities/getClientLocale'
+import { tryCatch } from '@/utilities/tryCatch'
 
 import PageClient from './page.client'
 
 export async function generateStaticParams() {
-	const payload = await getPayload({ config })
+	const {
+		data: payload,
+		ok: payloadOk,
+		error: payloadError,
+	} = await tryCatch(() => getPayload({ config }))
+	if (!payloadOk) throw new Error(`Failed to initialize Payload: ${payloadError}`)
 	const locale = await getClientLang()
 
-	const postCategories = await payload.find({
-		collection: PostCategoriesSlug,
-		draft: false,
-		limit: 1000,
-		overrideAccess: false,
-		pagination: false,
-		select: {
-			slug: true,
-		},
-		locale,
-	})
+	const {
+		data: postCategories,
+		ok: postCategoriesOk,
+		error: postCategoriesError,
+	} = await tryCatch(() =>
+		payload.find({
+			collection: PostCategoriesSlug,
+			draft: false,
+			limit: 1000,
+			overrideAccess: false,
+			pagination: false,
+			select: {
+				slug: true,
+			},
+			locale,
+		}),
+	)
+	if (!postCategoriesOk) throw new Error(`Failed to fetch post categories: ${postCategoriesError}`)
 
-	return postCategories.docs
-		.map((c) => c.slug)
-		.filter((slug): slug is string => typeof slug === 'string' && slug.length > 0)
-		.map((slug) => ({ slug }))
+	return postCategories.docs.map((c) => c.slug).map((slug) => ({ slug: slug ?? '' }))
 }
 
 export default async function PostCategory({
@@ -61,19 +71,32 @@ export default async function PostCategory({
 
 const queryPostCategoryBySlug = cache(
 	async ({ slug: categorySlug }: { slug: string }): Promise<PostCategory | null> => {
-		const payload = await getPayload({ config })
+		const {
+			data: payload,
+			ok: payloadOk,
+			error: payloadError,
+		} = await tryCatch(() => getPayload({ config }))
+		if (!payloadOk) throw new Error(`Failed to initialize Payload: ${payloadError}`)
 		const locale = await getClientLang()
 
-		const result = await payload.find({
-			collection: PostCategoriesSlug,
-			draft: false,
-			where: {
-				slug: {
-					equals: categorySlug,
+		const {
+			data: result,
+			ok: resultOk,
+			error: resultError,
+		} = await tryCatch(() =>
+			payload.find({
+				collection: PostCategoriesSlug,
+				draft: false,
+				where: {
+					slug: {
+						equals: categorySlug,
+					},
 				},
-			},
-			locale,
-		})
+				locale,
+			}),
+		)
+		if (!resultOk)
+			throw new Error(`Failed to fetch post category by slug "${categorySlug}": ${resultError}`)
 
 		return result.docs?.[0] ?? null
 	},
