@@ -23,7 +23,6 @@ import { FooterSizeField } from '@/fields/footer'
 import { linkGroup } from '@/fields/linkGroup'
 import { metaTab } from '@/fields/metaTab'
 import { slugField } from '@/fields/slug'
-import { revalidateHeaderForCollection } from '@/globals/Header/hooks/revalidateHeader'
 import { Lang } from '@/utilities/lang'
 
 import { adminOrPublished } from '../../access/adminOrPublished'
@@ -262,7 +261,7 @@ export const PagesCollection: CollectionConfig<typeof PagesSlug> = {
 		FooterSizeField,
 	],
 	hooks: {
-		afterChange: [revalidatePage, revalidateHeaderForCollection],
+		afterChange: [revalidatePage],
 		beforeChange: [populatePublishedAt],
 		afterDelete: [revalidateDelete],
 	},
