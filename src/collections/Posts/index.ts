@@ -24,7 +24,6 @@ import { VideoEmbedBlockConf } from '@/blocks/VideoEmbed/config'
 import { FooterSizeField } from '@/fields/footer'
 import { metaTab } from '@/fields/metaTab'
 import { slugField } from '@/fields/slug'
-import { revalidateHeaderForCollection } from '@/globals/Header/hooks/revalidateHeader'
 import { Lang } from '@/utilities/lang'
 
 import { adminOrPublished } from '../../access/adminOrPublished'
@@ -255,7 +254,7 @@ export const PostsCollection: CollectionConfig<typeof PostsSlug> = {
 		FooterSizeField,
 	],
 	hooks: {
-		afterChange: [revalidatePost, revalidateHeaderForCollection],
+		afterChange: [revalidatePost],
 		afterRead: [populateAuthors],
 		afterDelete: [revalidateDelete],
 	},

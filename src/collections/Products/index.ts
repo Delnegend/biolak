@@ -23,7 +23,6 @@ import { VideoEmbedBlockConf } from '@/blocks/VideoEmbed/config'
 import { FooterSizeField } from '@/fields/footer'
 import { metaTab } from '@/fields/metaTab'
 import { slugField } from '@/fields/slug'
-import { revalidateHeaderForCollection } from '@/globals/Header/hooks/revalidateHeader'
 import { generatePreviewPath } from '@/utilities/generatePreviewPath'
 import { Lang } from '@/utilities/lang'
 
@@ -354,8 +353,5 @@ export const ProductsCollection: CollectionConfig<typeof ProductsSlug> = {
 				collection: 'products',
 				req,
 			}),
-	},
-	hooks: {
-		afterChange: [revalidateHeaderForCollection],
 	},
 }
