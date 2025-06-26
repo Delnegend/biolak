@@ -333,6 +333,9 @@ export const ProductsCollection: CollectionConfig<typeof ProductsSlug> = {
 							access: {
 								read: allow(Role.Admin, Role.SalesManager),
 							},
+							admin: {
+								disableListColumn: true,
+							},
 						},
 					],
 				},
