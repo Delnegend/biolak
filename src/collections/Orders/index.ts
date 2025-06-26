@@ -9,7 +9,6 @@ import { DiscountCodesSlug } from '../DiscountCode/slug'
 import { ProductsSlug } from '../Products/slug'
 import { checkPaidInFull } from './hooks/checkPaidInFull'
 import { populatePriceFields } from './hooks/populatePriceFields'
-import { populateTitleField } from './hooks/populateTitleFIeld'
 import { removeVirtualFields } from './hooks/removeVirtualFields'
 import { sendOrderCreatedEmail } from './hooks/sendOrderCreatedEmail'
 import { validateQuantity } from './hooks/validateQuantity'
@@ -49,19 +48,6 @@ export const OrdersCollection: CollectionConfig<typeof OrdersSlug> = {
 			label: {
 				[Lang.English]: 'Invoice ID',
 				[Lang.Vietnamese]: 'Mã hóa đơn',
-			},
-		},
-		{
-			name: 'title',
-			type: 'text',
-			access: {
-				read: allow(Role.Admin, Role.SalesManager, Role.ContentManager),
-				update: allow(Role.NoOne),
-				create: allow(Role.NoOne),
-			},
-			virtual: true,
-			admin: {
-				hidden: true,
 			},
 		},
 		{
@@ -705,6 +691,6 @@ export const OrdersCollection: CollectionConfig<typeof OrdersSlug> = {
 	hooks: {
 		beforeChange: [removeVirtualFields, checkPaidInFull],
 		afterChange: [sendOrderCreatedEmail],
-		afterRead: [populatePriceFields, populateTitleField],
+		afterRead: [populatePriceFields],
 	},
 }
