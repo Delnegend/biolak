@@ -67,7 +67,7 @@ db-create-migrate:
   just minify-migrations
 
 db-dev-pg-start:
-  docker compose up -d postgres-dev
+  podman compose up -d postgres-dev
 
 lint:
   pnpm next lint --fix && pnpm prettier --write --list-different .
@@ -85,35 +85,120 @@ backup-prod:
   #!/usr/bin/env bash
   set -euo pipefail
 
-  # Stop the services
-  docker compose down
-
   # Create backup directory if it doesn't exist
   mkdir -p ./backup
 
   # Get current timestamp
   TIMESTAMP=$(date +%Y-%m-%d-%H-%M-%S)
-
   # Define the backup file name
   BACKUP_FILE="./backup/$TIMESTAMP.tar.gz"
 
-  # Create the archive
-  tar -czvf "$BACKUP_FILE" \
+  # Get current git commit hash and write to a temporary file
+  COMMIT_HASH=$(git rev-parse HEAD)
+  echo "$COMMIT_HASH" > ./commit-checkpoint
+  echo "Backing up with commit checkpoint: $COMMIT_HASH"
+
+  # Create the archive, including the commit checkpoint
+  # Using sudo because postgres-data is likely owned by a different user
+  sudo tar -czvf "$BACKUP_FILE" \
     --exclude="./public/thumbs" \
-    ./postgres-data ./public
+    ./postgres-data ./public ./commit-checkpoint
+
+  # Clean up the temporary file
+  rm ./commit-checkpoint
 
   echo "Backup created: $BACKUP_FILE"
 
-  # Start the services
-  docker compose up -d
+restore-prod:
+  #!/usr/bin/env bash
+  set -euo pipefail
 
-update: backup-prod
-  docker compose down biolak-payload && git pull --rebase && docker compose up -d biolak-payload
+  BACKUP_DIR="./backup"
+
+  if ! git diff --quiet || ! git diff --cached --quiet; then
+    echo "Error: Your working directory or staging area is not clean." >&2
+    echo "Please commit or stash your changes before restoring." >&2
+    exit 1
+  fi
+
+  if [ ! -d "$BACKUP_DIR" ] || [ -z "$(ls -A "$BACKUP_DIR"/*.tar.gz 2>/dev/null)" ]; then
+    echo "Error: No backups found in '$BACKUP_DIR'." >&2
+    exit 1
+  fi
+
+  echo "Please select a backup to restore:"
+  # Use find to get files, read them into an array, sorted newest first
+  mapfile -t backups < <(find "$BACKUP_DIR" -maxdepth 1 -name "*.tar.gz" -print0 | xargs -0 ls -t)
+
+  # PS3 is the prompt for the select command
+  PS3="Enter the number of the backup to restore (or Ctrl+C to cancel): "
+  select backup_file in "${backups[@]}" "Cancel"; do
+    if [[ "$REPLY" == "Cancel" || "$REPLY" -eq $((${#backups[@]} + 1)) ]]; then
+        echo "Restore cancelled."
+        exit 0
+    fi
+    if [[ -n "$backup_file" ]]; then
+      echo "You selected: $backup_file"
+      break
+    else
+      echo "Invalid selection. Please try again."
+    fi
+  done
+
+  # Extract commit hash from archive to stdout, without creating a file
+  COMMIT_HASH=$(tar -xOzf "$backup_file" ./commit-checkpoint 2>/dev/null)
+
+  if [ -z "$COMMIT_HASH" ]; then
+    echo "Error: Could not read commit hash from backup file '$backup_file'." >&2
+    echo "This may be an old backup without a commit checkpoint." >&2
+    exit 1
+  fi
+
+  echo
+  echo "------------------------------------------------------------"
+  echo "WARNING: This is a destructive operation."
+  echo "This will restore the application state to commit: $COMMIT_HASH"
+  echo "The following will happen:"
+  echo "  1. Your current HEAD will be moved to commit $COMMIT_HASH."
+  echo "  2. The following directories will be DELETED and REPLACED:"
+  echo "     - ./postgres-data"
+  echo "     - ./public"
+  echo "------------------------------------------------------------"
+  read -p "Are you absolutely sure you want to continue? (y/N) " -n 1 -r
+  echo # move to a new line
+
+  if [[ ! $REPLY =~ ^[Yy]$ ]]; then
+    echo "Restore cancelled."
+    exit 1
+  fi
+
+  echo "Proceeding with restore..."
+
+  # echo "Stopping services..."
+  # podman compose down
+
+  echo "Checking out commit $COMMIT_HASH..."
+  git checkout "$COMMIT_HASH"
+
+  echo "Removing old data directories..."
+  sudo rm -rf ./postgres-data ./public
+
+  echo "Restoring data from backup '$backup_file'..."
+  # Extract postgres-data and public directories to the current location
+  sudo tar -xzvf "$backup_file" ./postgres-data ./public
+
+  echo "Restore complete."
+  echo "You may need to restart your services (e.g., 'podman compose up -d')."
+  # echo "Starting services..."
+  # podman compose up -d
+
+update:
+  podman compose down biolak-payload && git pull --rebase && podman compose up -d biolak-payload
 
 # check if the prod would build successfully
 test-build: lint
-  docker compose up postgres-test-prod server-test-prod
-  docker compose down postgres-test-prod server-test-prod
+  podman compose up postgres-test-prod server-test-prod
+  podman compose down postgres-test-prod server-test-prod
 
 test-google-drive-upload:
   #!/usr/bin/env bash
