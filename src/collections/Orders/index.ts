@@ -98,8 +98,11 @@ export const OrdersCollection: CollectionConfig<typeof OrdersSlug> = {
 					fields: [
 						{
 							type: 'array',
-							name: 'products',
-							label: false,
+							name: ProductsSlug,
+							label: {
+								[Lang.English]: 'Products',
+								[Lang.Vietnamese]: 'Sản phẩm',
+							},
 							labels: {
 								singular: {
 									[Lang.English]: 'Product',
