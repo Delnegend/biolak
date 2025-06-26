@@ -22,9 +22,7 @@ export async function generateStaticParams() {
 		tryCatch(() => getPayload({ config })),
 	])
 
-	if (!payloadOk) {
-		throw new Error(`Failed to initialize Payload: ${payloadError}`)
-	}
+	if (!payloadOk) throw new Error(`Failed to initialize Payload: ${payloadError}`)
 
 	const {
 		ok: pagesOk,
@@ -42,17 +40,9 @@ export async function generateStaticParams() {
 			locale,
 		}),
 	)
-	if (!pagesOk) {
-		throw new Error(`Failed to fetch pages: ${pagesError}`)
-	}
+	if (!pagesOk) throw new Error(`Failed to fetch pages: ${pagesError}`)
 
-	return pages.docs
-		?.filter((doc) => {
-			return doc.slug !== 'home'
-		})
-		.map(({ slug }) => {
-			return { slug }
-		})
+	return pages.docs.map(({ slug }) => ({ slug: slug ?? '' }))
 }
 
 type Args = {
@@ -64,7 +54,7 @@ type Args = {
 export default async function Page({ params: paramsPromise }: Args) {
 	const { isEnabled: draft } = await draftMode()
 	const { slug = 'home' } = await paramsPromise
-	const url = '/' + slug
+	const url = '/' + (slug || 'home')
 
 	const page = await queryPageBySlug({ slug })
 
@@ -89,9 +79,7 @@ export default async function Page({ params: paramsPromise }: Args) {
 
 export async function generateMetadata({ params: paramsPromise }: Args): Promise<Metadata> {
 	const { slug = 'home' } = await paramsPromise
-	const page = await queryPageBySlug({
-		slug,
-	})
+	const page = await queryPageBySlug({ slug })
 
 	return generateMeta({ doc: page })
 }
@@ -102,19 +90,26 @@ const queryPageBySlug = cache(async ({ slug }: { slug: string }) => {
 
 	if (!payloadOk) throw new Error(`Failed to initialize Payload: ${payloadError}`)
 
-	const result = await payload.find({
-		collection: PagesSlug,
-		draft,
-		limit: 1,
-		pagination: false,
-		overrideAccess: draft,
-		where: {
-			slug: {
-				equals: slug,
+	const {
+		data: result,
+		ok,
+		error,
+	} = await tryCatch(() =>
+		payload.find({
+			collection: PagesSlug,
+			draft,
+			limit: 1,
+			pagination: false,
+			overrideAccess: draft,
+			where: {
+				slug: {
+					equals: slug,
+				},
 			},
-		},
-		locale,
-	})
+			locale,
+		}),
+	)
+	if (!ok) throw new Error(`Failed to fetch page by slug "${slug}": ${error}`)
 
 	return result.docs?.[0] || null
 })

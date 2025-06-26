@@ -13,59 +13,70 @@ import { ProductHero } from '@/heros/ProductHero'
 import { ProductVariantContextProvider } from '@/heros/ProductHero/ProductVariantContext'
 import { generateMeta } from '@/utilities/generateMeta'
 import { getClientLang } from '@/utilities/getClientLocale'
+import { tryCatch } from '@/utilities/tryCatch'
 
 import PageClient from './page.client'
 
 export async function generateStaticParams() {
-	const payload = await getPayload({ config: configPromise })
+	const {
+		data: payload,
+		ok: payloadOk,
+		error: payloadError,
+	} = await tryCatch(() => getPayload({ config: configPromise }))
+	if (!payloadOk) throw new Error(`Failed to initialize Payload: ${payloadError}`)
 	const locale = await getClientLang()
 
-	const products = await payload.find({
-		collection: ProductsSlug,
-		limit: 1000,
-		overrideAccess: false,
-		pagination: false,
-		select: {
-			slug: true,
-		},
-		locale,
-	})
+	const {
+		data: products,
+		ok: productsOk,
+		error: productsError,
+	} = await tryCatch(() =>
+		payload.find({
+			collection: ProductsSlug,
+			limit: 1000,
+			overrideAccess: false,
+			pagination: false,
+			select: {
+				slug: true,
+			},
+			locale,
+		}),
+	)
+	if (!productsOk) throw new Error(`Failed to fetch products: ${productsError}`)
 
-	return products.docs
-		.map((doc) => doc.slug)
-		.filter((slug): slug is string => typeof slug === 'string' && slug.length > 0)
-		.map((slug) => ({ slug }))
+	return products.docs.map((doc) => doc.slug).map((slug) => ({ slug: slug ?? '' }))
 }
 
 const queryProductBySlug = cache(async ({ slug }: { slug: string }) => {
 	const { isEnabled: draft } = await draftMode()
-	const payload = await getPayload({ config: configPromise })
+	const {
+		data: payload,
+		ok: payloadOk,
+		error: payloadError,
+	} = await tryCatch(() => getPayload({ config: configPromise }))
+	if (!payloadOk) throw new Error(`Failed to initialize Payload: ${payloadError}`)
 	const locale = await getClientLang()
 
-	const result = await payload.find({
-		collection: ProductsSlug,
-		draft,
-		limit: 1,
-		overrideAccess: false,
-		pagination: false,
-		where: {
-			slug: {
-				equals: slug,
-			},
-		},
-		depth: 1,
-		joins: {
-			orders: {
-				count: true,
-				where: {
-					'review.approved': {
-						equals: true,
-					},
+	const {
+		data: result,
+		ok: resultOk,
+		error: resultError,
+	} = await tryCatch(() =>
+		payload.find({
+			collection: ProductsSlug,
+			draft,
+			limit: 1,
+			overrideAccess: draft,
+			pagination: false,
+			where: {
+				slug: {
+					equals: slug,
 				},
 			},
-		},
-		locale,
-	})
+			locale,
+		}),
+	)
+	if (!resultOk) throw new Error(`Failed to fetch product by slug "${slug}": ${resultError}`)
 
 	return result.docs?.[0] || null
 })
@@ -80,7 +91,7 @@ export async function generateMetadata({
 	return generateMeta({
 		doc: {
 			...doc,
-			title: doc && 'title' in doc && doc.title ? doc.title : undefined,
+			title: doc?.title,
 		},
 	})
 }
