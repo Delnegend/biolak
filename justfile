@@ -67,7 +67,7 @@ db-create-migrate:
   just minify-migrations
 
 db-dev-pg-start:
-  podman compose up -d postgres-dev
+  docker compose up -d postgres-dev
 
 lint:
   pnpm next lint --fix && pnpm prettier --write --list-different .
@@ -197,8 +197,8 @@ update:
 
 # check if the prod would build successfully
 test-build: lint
-  podman compose up postgres-test-prod server-test-prod
-  podman compose down postgres-test-prod server-test-prod
+  docker compose up postgres-test-prod server-test-prod
+  docker compose down postgres-test-prod server-test-prod
 
 test-google-drive-upload:
   #!/usr/bin/env bash
