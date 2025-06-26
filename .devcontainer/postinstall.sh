@@ -28,7 +28,12 @@ else
 fi
 rm -f /tmp/fzf.tar.gz
 
-echo 'alias j=just' >> ~/.zshrc
+if ! grep -qF 'alias j=just' ~/.zshrc; then
+  echo 'alias j=just' >> ~/.zshrc
+fi
+if ! grep -qF 'alias podman=docker' ~/.zshrc; then
+  echo 'alias podman=docker' >> ~/.zshrc
+fi
 
 curl https://get.volta.sh | bash
 export VOLTA_HOME="$HOME/.volta"
