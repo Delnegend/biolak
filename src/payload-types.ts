@@ -210,7 +210,6 @@ export interface Customer {
 export interface Order {
   id: number;
   invoiceId: string;
-  title?: string | null;
   customer: number | Customer;
   /**
    * This note is for internal use only, it will not be shown to the customer.
@@ -2724,7 +2723,6 @@ export interface ProductSubCategoriesSelect<T extends boolean = true> {
  */
 export interface OrdersSelect<T extends boolean = true> {
   invoiceId?: T;
-  title?: T;
   customer?: T;
   note?: T;
   cart?:
