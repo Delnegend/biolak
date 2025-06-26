@@ -696,4 +696,7 @@ export const OrdersCollection: CollectionConfig<typeof OrdersSlug> = {
 		afterChange: [sendOrderCreatedEmail],
 		afterRead: [populatePriceFields],
 	},
+	admin: {
+		useAsTitle: 'id',
+	},
 }
