@@ -146,7 +146,7 @@ export async function confirmDetailsAction(input: unknown): Promise<
 	}
 
 	let customer = matchedCustomer.docs[0]
-	if (!matchedCustomer.docs) {
+	if (!customer) {
 		const {
 			data,
 			ok: newCustomerOk,
