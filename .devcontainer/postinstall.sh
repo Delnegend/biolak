@@ -44,7 +44,7 @@ fi
 if ! grep -qF 'export PATH="$VOLTA_HOME/bin:$PATH"' ~/.zshrc; then
   echo 'export PATH="$VOLTA_HOME/bin:$PATH"' >> ~/.zshrc
 fi
-volta install node@lts pnpm
+volta install node@24 pnpm
 pnpm config set store-dir ~/.pnpm-store
 pnpm i
 
