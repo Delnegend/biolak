@@ -141,7 +141,7 @@ export default function PageClient({
 
 	const [saveInfoForNextTime, setSaveInfoForNextTime] = useState(false)
 	const [processingState, setProcessingState] = useState<ProcessingState>(ProcessingState.Idle)
-	const [successDialog, setSuccessDialog] = useState(true)
+	const [successDialog, setSuccessDialog] = useState(false)
 	const [postDetails, setPostDetails] = useState<{
 		invoiceId: string
 		paymentMethod: 'cod' | 'bankTransfer'
@@ -205,6 +205,7 @@ export default function PageClient({
 			paymentMethod: data.paymentMethod,
 		})
 		setProcessingState(ProcessingState.Success)
+		setSuccessDialog(true)
 	}
 
 	if (cart.length === 0)
@@ -235,52 +236,6 @@ export default function PageClient({
 			</div>
 		)
 
-	if (processingState === ProcessingState.Success)
-		if (postDetails.paymentMethod === 'cod' || !global.bankAccountNumber || !global.bankName)
-			return (
-				<div>
-					<h2>
-						{matchLang({
-							[Lang.English]: 'Order Success',
-							[Lang.Vietnamese]: 'Đặt hàng thành công',
-						})(locale)}
-					</h2>
-					<div>
-						{matchLang({
-							[Lang.English]: 'Thank you for your order! We will process it shortly.',
-							[Lang.Vietnamese]:
-								'Cảm ơn bạn đã đặt hàng! BioLAK sẽ xử lý đơn hàng của bạn sớm nhất có thể.',
-						})(locale)}
-					</div>
-				</div>
-			)
-		else
-			return (
-				<div className="flex flex-col gap-3">
-					<h2>
-						{matchLang({
-							[Lang.English]: 'Order Payment',
-							[Lang.Vietnamese]: 'Thanh toán đơn hàng',
-						})(locale)}
-					</h2>
-					<div>
-						{matchLang({
-							[Lang.English]:
-								'BioLAK received your order, after you complete the payment, we will process it shortly.',
-							[Lang.Vietnamese]:
-								'BioLAK đã nhận được đơn hàng của bạn, sau khi hoàn tất thanh toán, chúng tôi sẽ xử lý đơn hàng của bạn sớm nhất có thể.',
-						})(locale)}
-					</div>
-					<PaymentQR
-						locale={locale}
-						amount={prices.total}
-						invoiceId={postDetails.invoiceId}
-						bankAccountNumber={global.bankAccountNumber}
-						bankName={global.bankName}
-					/>
-				</div>
-			)
-
 	return (
 		<Form {...form}>
 			<Dialog open={successDialog} onOpenChange={setSuccessDialog}>
@@ -292,6 +247,17 @@ export default function PageClient({
 						</DialogTitle>
 						<DialogDescription className="text-center">
 							{global.popup?.successDescription ?? defaults.popup.successDescription(locale)}
+							{postDetails.paymentMethod === 'bankTransfer' && (
+								<>
+									<PaymentQR
+										bankName={global.bankName ?? ''}
+										bankAccountNumber={global.bankAccountNumber ?? ''}
+										amount={prices.total}
+										locale={locale}
+										invoiceId={postDetails.invoiceId}
+									/>
+								</>
+							)}
 						</DialogDescription>
 					</DialogHeader>
 					<Button className="justify-between" asChild>
