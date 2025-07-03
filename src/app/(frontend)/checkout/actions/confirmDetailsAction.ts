@@ -252,7 +252,7 @@ export async function confirmDetailsAction(input: unknown): Promise<
 						details.shippingInfo.address.city,
 					]
 						.filter(Boolean)
-						.join(', '),
+						.join('\n'),
 					method: details.shippingInfo.method,
 				},
 				cart: {
