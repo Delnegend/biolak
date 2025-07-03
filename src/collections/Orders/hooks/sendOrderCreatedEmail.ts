@@ -164,7 +164,7 @@ export const sendOrderCreatedEmail: CollectionAfterChangeHook<Order> = async ({
 	}
 	const to = users.docs
 		.map((user) => user.email)
-		.filter((email) => !!email)
+		.filter(Boolean)
 		.join(', ')
 
 	const {
