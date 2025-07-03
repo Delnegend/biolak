@@ -469,69 +469,11 @@ export const OrdersCollection: CollectionConfig<typeof OrdersSlug> = {
 					fields: [
 						{
 							name: 'address',
-							type: 'group',
+							type: 'textarea',
 							label: {
 								[Lang.English]: 'Shipping Address',
 								[Lang.Vietnamese]: 'Địa chỉ giao hàng',
 							},
-							fields: [
-								{
-									name: 'city',
-									type: 'text',
-									label: {
-										[Lang.English]: 'City',
-										[Lang.Vietnamese]: 'Thành phố',
-									},
-									required: true,
-									access: {
-										read: allow(Role.Admin, Role.SalesManager),
-										update: allow(Role.Admin, Role.SalesManager),
-										create: allow(Role.Admin, Role.SalesManager),
-									},
-								},
-								{
-									name: 'district',
-									type: 'text',
-									label: {
-										[Lang.English]: 'District',
-										[Lang.Vietnamese]: 'Quận',
-									},
-									required: true,
-									access: {
-										read: allow(Role.Admin, Role.SalesManager),
-										update: allow(Role.Admin, Role.SalesManager),
-										create: allow(Role.Admin, Role.SalesManager),
-									},
-								},
-								{
-									name: 'ward',
-									type: 'text',
-									label: {
-										[Lang.English]: 'Ward',
-										[Lang.Vietnamese]: 'Phường',
-									},
-									required: true,
-									access: {
-										read: allow(Role.Admin, Role.SalesManager),
-										update: allow(Role.Admin, Role.SalesManager),
-										create: allow(Role.Admin, Role.SalesManager),
-									},
-								},
-								{
-									name: 'houseNumber',
-									type: 'text',
-									label: {
-										[Lang.English]: 'House Number',
-										[Lang.Vietnamese]: 'Số nhà',
-									},
-									required: true,
-									access: {
-										read: allow(Role.Admin, Role.SalesManager),
-										update: allow(Role.Admin, Role.SalesManager),
-										create: allow(Role.Admin, Role.SalesManager),
-									},
-								},
-							],
 						},
 						{
 							name: 'method',
