@@ -50,7 +50,13 @@ export function CheckoutSchema(locale: Lang) {
 			.required(),
 		shippingInfo: z.object({
 			address: z.object({
-				city: z.enum(Object.keys(CITY_DISTRICT_WARD) as [string, ...string[]]),
+				city: z.string().min(
+					1,
+					matchLang({
+						[Lang.English]: 'City is required',
+						[Lang.Vietnamese]: 'Tỉnh/Thành phố là bắt buộc',
+					})(locale),
+				),
 				district: z.string().min(
 					1,
 					matchLang({
