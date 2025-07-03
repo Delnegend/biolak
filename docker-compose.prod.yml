@@ -2,37 +2,40 @@ services:
    biolak-postgres:
       container_name: biolak-postgres
       image: docker.io/library/postgres:17-alpine
-      ports:
-         - '5432:5432'
+      # ports:
+      #    - '5432:5432'
       volumes:
          - ./postgres-data:/var/lib/postgresql/data
       environment:
          - POSTGRES_USER=postgres
          - POSTGRES_PASSWORD=postgres
          - POSTGRES_DB=biolak
+      networks:
+         - biolak-network
 
    biolak-payload:
       container_name: biolak-payload
       image: docker.io/library/node:24-alpine
-      ports:
-         - '3000:3000'
+      # ports:
+      #    - '3000:3000'
       depends_on:
          biolak-postgres:
             condition: service_started
       environment:
          DATABASE_URI: postgres://postgres:postgres@biolak-postgres:5432/biolak
-         NEXT_PUBLIC_SERVER_URL: https://YOUR_DOMAIN_HERE.com
+         NEXT_PUBLIC_SERVER_URL: https://biolak.vn
 
          PAYLOAD_SECRET:
          CRON_SECRET:
          PREVIEW_SECRET:
-         SEPAY_SECRET:
 
          SMTP_HOST:
          SMTP_PORT:
          SMTP_USER:
          SMTP_PASS:
          SMTP_FROM:
+      networks:
+         - biolak-network
 
       volumes:
          - .:/home/node/app
@@ -53,11 +56,14 @@ services:
          NO_AUTOUPDATE: 'true'
          TUNNEL_TOKEN:
          TUNNEL_TRANSPORT_PROTOCOL: 'quic'
-      networks:
-         - web
       command: tunnel run
+      networks:
+         - biolak-network
 
 volumes:
    biolak-nextjs:
    biolak-pnpm-store:
    biolak-node_modules:
+
+networks:
+   biolak-network:
