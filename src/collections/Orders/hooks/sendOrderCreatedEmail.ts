@@ -32,6 +32,7 @@ export const sendOrderCreatedEmail: CollectionAfterChangeHook<Order> = async ({
 				id,
 				select: {
 					name: true,
+					phoneNumber: true,
 				},
 			}),
 	})
@@ -68,7 +69,7 @@ export const sendOrderCreatedEmail: CollectionAfterChangeHook<Order> = async ({
 
 	let text =
 		`Tên khách hàng: ${customer?.name ?? 'Không xác định'}\n` +
-		`Số điện thoại: ${doc.cart?.products?.[0]?.sku ?? 'Không xác định'}\n` +
+		`Số điện thoại: ${customer?.phoneNumber ?? 'Không xác định'}\n` +
 		`Địa chỉ giao hàng: ${doc.shippingInfo?.address?.houseNumber ?? 'Không xác định'}, ` +
 		`${doc.shippingInfo?.address?.ward ?? 'Không xác định'}, ` +
 		`${doc.shippingInfo?.address?.district ?? 'Không xác định'}, ` +
