@@ -193,7 +193,11 @@ restore-prod:
   # podman compose up -d
 
 update:
-  podman compose down biolak-payload && git pull --rebase && podman compose up -d biolak-payload
+  #!/usr/bin/env bash
+  podman compose down biolak-payload
+  just backup-prod
+  git pull --rebase
+  podman compose up -d biolak-payload
 
 # check if the prod would build successfully
 test-build: lint
