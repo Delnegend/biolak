@@ -43,6 +43,14 @@ export const CustomersCollection: CollectionConfig<typeof CustomersSlug> = {
 			unique: true,
 		},
 		{
+			name: 'receivePromotions',
+			type: 'checkbox',
+			label: {
+				[Lang.English]: 'Receive Promotions Email',
+				[Lang.Vietnamese]: 'Nhận Email Khuyến Mãi',
+			},
+		},
+		{
 			name: 'phoneNumber',
 			type: 'text',
 			label: {
