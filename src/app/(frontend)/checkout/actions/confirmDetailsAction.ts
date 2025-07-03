@@ -244,7 +244,17 @@ export async function confirmDetailsAction(input: unknown): Promise<
 				billing: {
 					method: details.billingMethod,
 				},
-				shippingInfo: details.shippingInfo,
+				shippingInfo: {
+					address: [
+						details.shippingInfo.address.houseNumber,
+						details.shippingInfo.address.ward,
+						details.shippingInfo.address.district,
+						details.shippingInfo.address.city,
+					]
+						.filter(Boolean)
+						.join(', '),
+					method: details.shippingInfo.method,
+				},
 				cart: {
 					discountCode,
 					products: cart,
