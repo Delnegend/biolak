@@ -1,25 +1,33 @@
 # Development
 
+## Workflow
+- Open in devcontainer
+- Start DB: `j db-dev-pg-start`
+- Start dev server: `j dev`
+- Make changes
+- Test build & migrations: `j test-build`
+- Commit & push
+
+## Production Update
+Run `just update` to stop production, back up, pull changes, and restart.
+
 ## Migrations
-`minify-migrations` is always called after creating migrations to minify the JSONs in the `src/migrations` directory.
+- After creating migrations, run `minify-migrations` to minify `src/migrations` JSONs.
+- Always run `j test-build` to verify migrations before committing.
 
-ATTENTION: Always execute `just test-build` to verify that the migrations will run successfully before committing the migration files.
-
-## Workaround notes
-- If there's a database conflict and you can't interact with Drizzle's conflict resolver in the terminal:
-   1. `Ctrl + C` then `j dev` to restart the dev server
-   2. Go to `http://localhost:3000` for it to compile a layout, fetch the database schema, and ask to resolve the conflicts; it should not let you interact just yet (if it does, then congrats)
-   3. Go to `http://localhost:3000/admin` for it to compile another layout, refetch the database schema, and now you should be able to interact with the conflict resolver
+## Drizzle Conflict Resolution
+If you can't interact with the DB conflicts resolver in terminal:
+1. `Ctrl+C`, then `j dev` to restart
+2. Visit `http://localhost:3000` (triggers 1st schema fetch)
+3. Visit `http://localhost:3000/admin` (triggers 2nd schema fetch, should now able to interact with the resolver)
 
 ## Localization
-- For the documents' fields and admin panel, refer to [Payload's documentation on localization](https://payloadcms.com/docs/configuration/localization).
-- For the frontend:
-   - `utilities/lang.ts` contains the reusable `Lang` enum.
-   - Use `setLocale()` to set the preferred language ON CLIENT-SIDE ONLY.
-   - Use `getClientLang()` to get the preferred language ON SERVER-SIDE ONLY.
+- Admin/docs: [Payload localization docs](https://payloadcms.com/docs/configuration/localization)
+- Frontend:
+  - Use `utilities/lang.ts` for `Lang` enum.
+  - `setLocale()` for client-side, `getClientLang()` for server-side.
 
-## Misc
-- Create the first admin account, then fill in the `.env` file `DEV_EMAIL` and `DEV_PASSWORD` so you don't have to re-login every single time.
-- If a component is prefixed with `INTERNAL_`, the reason it is a separate one instead of inline (mainly) is that it needs to be a client component.
-- Don't use `defaultValue` for fields since it doesn't actually fallback to it when they're empty.
-- Don't use `console`, use `cnsole` instead
+## Tips
+- After creating the first admin, set `DEV_EMAIL` and `DEV_PASSWORD` in `.env` for auto-login.
+- Components prefixed with `INTERNAL_` are single-use client components.
+- Use `cnsole` instead of `console`.
