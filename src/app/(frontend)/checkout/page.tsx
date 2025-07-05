@@ -102,3 +102,17 @@ export default async function Checkout({
 		</div>
 	)
 }
+
+export async function generateMetadata(): Promise<{
+	metadataBase: URL
+	title: string
+}> {
+	const locale = await getClientLang()
+	return {
+		metadataBase: new URL('https://biolak.vn'),
+		title: matchLang({
+			[Lang.English]: 'Checkout | BioLAK',
+			[Lang.Vietnamese]: 'Thanh toán | BioLAK',
+		})(locale),
+	}
+}
