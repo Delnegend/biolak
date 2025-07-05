@@ -70,10 +70,7 @@ export const sendOrderCreatedEmail: CollectionAfterChangeHook<Order> = async ({
 	let text =
 		`Tên khách hàng: ${customer?.name ?? 'Không xác định'}\n` +
 		`Số điện thoại: ${customer?.phoneNumber ?? 'Không xác định'}\n` +
-		`Địa chỉ giao hàng: ${doc.shippingInfo?.address?.houseNumber ?? 'Không xác định'}, ` +
-		`${doc.shippingInfo?.address?.ward ?? 'Không xác định'}, ` +
-		`${doc.shippingInfo?.address?.district ?? 'Không xác định'}, ` +
-		`${doc.shippingInfo?.address?.city ?? 'Không xác định'}\n` +
+		`Địa chỉ giao hàng: ${doc.shippingInfo?.address?.split('\n').join(', ') ?? 'Không xác định'}\n` +
 		`Phương thức giao hàng: ${doc.shippingInfo?.method === 'express' ? 'Giao hàng nhanh' : 'Giao hàng tiêu chuẩn'}\n`
 
 	if (doc.cart?.products?.length) {
