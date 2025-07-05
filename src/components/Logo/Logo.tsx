@@ -14,14 +14,14 @@ export function Logo(props: {
 	return (
 		/* eslint-disable @next/next/no-img-element */
 		<img
-			alt="Payload Logo"
-			width={193}
-			height={34}
+			alt="BioLAK Logo"
+			width={96}
+			height={49}
 			loading={loading}
 			fetchPriority={priority}
 			decoding="async"
 			className={clsx('h-[34px] w-full max-w-[9.375rem]', className)}
-			src="https://raw.githubusercontent.com/payloadcms/payload/main/packages/ui/src/assets/payload-logo-light.svg"
+			src="/biolak-logo.svg"
 		/>
 	)
 }
