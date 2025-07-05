@@ -1,6 +1,6 @@
 'use client'
 
-import React from 'react'
+import { useState } from 'react'
 
 import { cn } from '@/utilities/ui'
 
@@ -17,7 +17,7 @@ export function TextInput({
 	size?: 'sm' | 'lg'
 	classNames?: { container?: string; input?: string; label?: string }
 }): React.JSX.Element {
-	const [elevated, setElevated] = React.useState(false)
+	const [elevated, setElevated] = useState(!!props.value || !!props.defaultValue)
 
 	return (
 		<div
