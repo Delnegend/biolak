@@ -194,6 +194,7 @@ export interface Customer {
   id: number;
   name?: string | null;
   email?: string | null;
+  receivePromotions?: boolean | null;
   phoneNumber?: string | null;
   orders?: {
     docs?: (number | Order)[];
@@ -250,13 +251,8 @@ export interface Order {
         }[]
       | null;
   };
-  shippingInfo: {
-    address: {
-      city: string;
-      district: string;
-      ward: string;
-      houseNumber: string;
-    };
+  shippingInfo?: {
+    address?: string | null;
     method?: ('standard' | 'express') | null;
     /**
      * Get from the shipping provider
@@ -1956,6 +1952,7 @@ export interface PayloadMigration {
 export interface CustomersSelect<T extends boolean = true> {
   name?: T;
   email?: T;
+  receivePromotions?: T;
   phoneNumber?: T;
   orders?: T;
   updatedAt?: T;
@@ -2769,14 +2766,7 @@ export interface OrdersSelect<T extends boolean = true> {
   shippingInfo?:
     | T
     | {
-        address?:
-          | T
-          | {
-              city?: T;
-              district?: T;
-              ward?: T;
-              houseNumber?: T;
-            };
+        address?: T;
         method?: T;
         tracking?: T;
       };
@@ -3263,7 +3253,6 @@ export interface HeaderGlobal {
         id?: string | null;
       }[]
     | null;
-  logo?: (number | null) | Media;
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -3514,7 +3503,6 @@ export interface HeaderGlobalSelect<T extends boolean = true> {
         label?: T;
         id?: T;
       };
-  logo?: T;
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;
