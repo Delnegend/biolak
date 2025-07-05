@@ -229,7 +229,6 @@ export default function PageClient({
 				try {
 					const result = personalDetailsSchemaLocal.safeParse(JSON.parse(checkoutDetails))
 					if (result.success) {
-						console.log(result.data.address)
 						form.setValue('personalDetails.name', result.data.name ?? '')
 						form.setValue('personalDetails.email', result.data.email ?? '')
 						form.setValue('personalDetails.phoneNumber', result.data.phoneNumber ?? '')
