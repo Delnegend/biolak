@@ -32,6 +32,7 @@ export function HeadlessImage({
 			width={image?.width ?? placeholder?.width ?? 300}
 			height={image?.height ?? placeholder?.height ?? 300}
 			unoptimized={!image}
+			quality={90}
 		/>
 	)
 }
