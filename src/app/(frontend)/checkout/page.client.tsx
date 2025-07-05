@@ -42,12 +42,33 @@ import { INTERNAl_CartListWithAccordion } from './components/CartListWithAccordi
 import { INTERNAL_Checkbox as Checkbox } from './components/Checkbox'
 import { PaymentQR } from './components/PaymentQR'
 
-enum ProcessingState {
-	Idle = 'idle',
-	Processing = 'processing',
-	Success = 'success',
-	Error = 'error',
-}
+type ProcessingState =
+	| {
+			state: 'idle'
+	  }
+	| {
+			state: 'processing'
+	  }
+	| {
+			state: 'success'
+			invoiceId: string
+			paymentMethod: 'cod' | 'bankTransfer'
+	  }
+
+const personalDetailsSchemaLocal = z.object({
+	email: z.string().optional(),
+	confirmReceiveEmail: z.boolean().optional(),
+	name: z.string().optional(),
+	phoneNumber: z.string().optional(),
+	address: z
+		.object({
+			city: z.string().optional(),
+			district: z.string().optional(),
+			ward: z.string().optional(),
+			houseNumber: z.string().optional(),
+		})
+		.optional(),
+})
 
 export default function PageClient({
 	global,
@@ -79,6 +100,11 @@ export default function PageClient({
 	const checkoutSchema = CheckoutSchema(locale)
 
 	const [shippingMethod, setShippingMethod] = useState<'standard' | 'express'>('standard')
+	const [processingState, setProcessingState] = useState<ProcessingState>({ state: 'idle' })
+
+	const selectedDistrictOnChangeFn = useRef<(value: string) => void>(null)
+	const selectedWardOnChangeFn = useRef<(value: string) => void>(null)
+
 	const prices = calculatePrices({
 		code: null,
 		shipping:
@@ -98,6 +124,95 @@ export default function PageClient({
 			})),
 	})
 
+	const [form, onSubmit] = [
+		useForm<z.infer<typeof checkoutSchema>>({
+			resolver: standardSchemaResolver(checkoutSchema),
+			defaultValues: {
+				personalDetails: {
+					email: '',
+					confirmReceiveEmail: false,
+					name: '',
+					phoneNumber: '',
+				},
+				shippingInfo: {
+					address: {
+						city: '',
+						district: '',
+						ward: '',
+						houseNumber: '',
+					},
+					method: 'standard',
+				},
+				paymentMethod: 'cod',
+				sendGift: {
+					sender: '',
+					receiver: '',
+					message: '',
+				},
+				discountCode: '',
+			},
+		}),
+		async (data: z.infer<typeof checkoutSchema>): Promise<void> => {
+			setProcessingState({ state: 'processing' })
+
+			const { city, district, ward } = data.shippingInfo.address
+			const cityDistrictWard: Record<
+				string,
+				Record<string, string[]>
+			> = CITY_DISTRICT_WARD as Record<string, Record<string, string[]>>
+
+			if (
+				!cityDistrictWard[city] ||
+				!cityDistrictWard[city][district] ||
+				!cityDistrictWard[city][district].includes(ward)
+			) {
+				toast.error(
+					matchLang({
+						[Lang.English]: 'Invalid district or ward for the selected city',
+						[Lang.Vietnamese]: 'Quận hoặc phường không hợp lệ cho thành phố đã chọn',
+					})(locale),
+				)
+				setProcessingState({ state: 'idle' })
+				return
+			}
+
+			const {
+				data: result,
+				success,
+				error,
+			} = await confirmDetailsAction({
+				cart: cart
+					.filter((item) => item.checked)
+					.map((item) => ({
+						product: item.product.id,
+						sku: item.variant.sku,
+						quantity: item.quantity,
+					})),
+				details: data,
+			} satisfies ConfirmDetailsActionInput)
+
+			if (!success) {
+				toast.error(
+					matchLang({
+						[Lang.English]: "Can't process your request",
+						[Lang.Vietnamese]: 'Không thể xử lý yêu cầu của bạn',
+					})(locale),
+					{
+						description: <span className="whitespace-pre-wrap">{error}</span>,
+					},
+				)
+				setProcessingState({ state: 'idle' })
+				return
+			}
+
+			setProcessingState({
+				state: 'success',
+				invoiceId: result.invoiceId,
+				paymentMethod: data.paymentMethod,
+			})
+		},
+	]
+
 	useEffect(() => {
 		if (override)
 			loadProduct({
@@ -105,107 +220,59 @@ export default function PageClient({
 				quantity: 1,
 				checked: true,
 			})
+
+		// Load personal details from localStorage if "save-details" is true
+		if (typeof window !== 'undefined' && localStorage.getItem('save-details') === 'true') {
+			setLoadPersonalDetailsOnLoad(true)
+			const checkoutDetails = localStorage.getItem('checkout-details')
+			if (checkoutDetails)
+				try {
+					const result = personalDetailsSchemaLocal.safeParse(JSON.parse(checkoutDetails))
+					if (result.success) {
+						console.log(result.data.address)
+						form.setValue('personalDetails.name', result.data.name ?? '')
+						form.setValue('personalDetails.email', result.data.email ?? '')
+						form.setValue('personalDetails.phoneNumber', result.data.phoneNumber ?? '')
+						form.setValue('shippingInfo.address.city', result.data.address?.city ?? '')
+						form.setValue(
+							'shippingInfo.address.district',
+							result.data.address?.district ?? '',
+						)
+						form.setValue('shippingInfo.address.ward', result.data.address?.ward ?? '')
+						form.setValue(
+							'shippingInfo.address.houseNumber',
+							result.data.address?.houseNumber ?? '',
+						)
+						form.setValue(
+							'personalDetails.confirmReceiveEmail',
+							result.data.confirmReceiveEmail ?? false,
+						)
+					}
+				} catch {}
+		}
+
+		// Save personal details to localStorage when the form changes
+		const subscription = form.watch((value, { name: _ }) => {
+			if (value.personalDetails || value.shippingInfo)
+				localStorage.setItem(
+					'checkout-details',
+					JSON.stringify({
+						...value.personalDetails,
+						address: value.shippingInfo?.address,
+					} satisfies z.infer<typeof personalDetailsSchemaLocal>),
+				)
+		})
+
+		return () => subscription.unsubscribe()
+
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [])
 
-	const selectedDistrictOnChangeFn = useRef<(value: string) => void>(null)
-	const selectedWardOnChangeFn = useRef<(value: string) => void>(null)
-
-	const form = useForm<z.infer<typeof checkoutSchema>>({
-		resolver: standardSchemaResolver(checkoutSchema),
-		defaultValues: {
-			personalDetails: {
-				name: '',
-				email: '',
-				confirmReceiveEmail: false,
-				phoneNumber: '',
-			},
-			paymentMethod: 'cod',
-			sendGift: {
-				sender: '',
-				receiver: '',
-				message: '',
-			},
-			billingMethod: 'bankTransfer',
-			shippingInfo: {
-				address: {
-					city: '',
-					district: '',
-					ward: '',
-					houseNumber: '',
-				},
-				method: 'standard',
-			},
-		},
-	})
-
-	const [saveInfoForNextTime, setSaveInfoForNextTime] = useState(false)
-	const [processingState, setProcessingState] = useState<ProcessingState>(ProcessingState.Idle)
-	const [successDialog, setSuccessDialog] = useState(false)
-	const [postDetails, setPostDetails] = useState<{
-		invoiceId: string
-		paymentMethod: 'cod' | 'bankTransfer'
-	}>({
-		invoiceId: '',
-		paymentMethod: 'cod',
-	})
-
-	async function onSubmit(data: z.infer<typeof checkoutSchema>): Promise<void> {
-		setProcessingState(ProcessingState.Processing)
-
-		const { city, district, ward } = data.shippingInfo.address
-		const cityDistrictWard: Record<
-			string,
-			Record<string, string[]>
-		> = CITY_DISTRICT_WARD as Record<string, Record<string, string[]>>
-		if (
-			!cityDistrictWard[city] ||
-			!cityDistrictWard[city][district] ||
-			!cityDistrictWard[city][district].includes(ward)
-		) {
-			toast.error(
-				matchLang({
-					[Lang.English]: 'Invalid district or ward for the selected city',
-					[Lang.Vietnamese]: 'Quận hoặc phường không hợp lệ cho thành phố đã chọn',
-				})(locale),
-			)
-			setProcessingState(ProcessingState.Idle)
-			return
-		}
-		const {
-			data: result,
-			success,
-			error,
-		} = await confirmDetailsAction({
-			cart: cart
-				.filter((item) => item.checked)
-				.map((item) => ({
-					product: item.product.id,
-					sku: item.variant.sku,
-					quantity: item.quantity,
-				})),
-			details: data,
-		} satisfies ConfirmDetailsActionInput)
-		if (!success) {
-			toast.error(
-				matchLang({
-					[Lang.English]: "Can't process your request",
-					[Lang.Vietnamese]: 'Không thể xử lý yêu cầu của bạn',
-				})(locale),
-				{
-					description: <span className="whitespace-pre-wrap">{error}</span>,
-				},
-			)
-			setProcessingState(ProcessingState.Idle)
-			return
-		}
-
-		setPostDetails({
-			invoiceId: result.invoiceId,
-			paymentMethod: data.paymentMethod,
-		})
-		setProcessingState(ProcessingState.Success)
-		setSuccessDialog(true)
+	const [loadPersonalDetailsOnLoad, setLoadPersonalDetailsOnLoad_] = useState(false)
+	function setLoadPersonalDetailsOnLoad(value: boolean) {
+		setLoadPersonalDetailsOnLoad_(value)
+		if (typeof window !== 'undefined')
+			localStorage.setItem('save-details', value ? 'true' : 'false')
 	}
 
 	if (cart.length === 0)
@@ -238,26 +305,29 @@ export default function PageClient({
 
 	return (
 		<Form {...form}>
-			<Dialog open={successDialog} onOpenChange={setSuccessDialog}>
+			<Dialog open={processingState.state === 'success'} onOpenChange={() => {}}>
 				<DialogTrigger />
-				<DialogContent className="overflow-hidden rounded-3xl">
+				<DialogContent className="overflow-hidden rounded-3xl [&>button]:hidden">
 					<DialogHeader>
 						<DialogTitle className="text-center">
 							{global.popup?.successTitle ?? defaults.popup.successTitle(locale)}
 						</DialogTitle>
 						<DialogDescription className="text-center">
 							{global.popup?.successDescription ?? defaults.popup.successDescription(locale)}
-							{postDetails.paymentMethod === 'bankTransfer' && (
-								<>
-									<PaymentQR
-										bankName={global.bankName ?? ''}
-										bankAccountNumber={global.bankAccountNumber ?? ''}
-										amount={prices.total}
-										locale={locale}
-										invoiceId={postDetails.invoiceId}
-									/>
-								</>
-							)}
+							{processingState.state === 'success' &&
+								processingState.paymentMethod === 'bankTransfer' &&
+								global.bankName &&
+								global.bankAccountNumber && (
+									<>
+										<PaymentQR
+											bankName={global.bankName}
+											bankAccountNumber={global.bankAccountNumber}
+											amount={prices.total}
+											locale={locale}
+											invoiceId={processingState.invoiceId}
+										/>
+									</>
+								)}
 						</DialogDescription>
 					</DialogHeader>
 					<Button className="justify-between" asChild>
@@ -275,6 +345,7 @@ export default function PageClient({
 				className="grid grid-cols-[2fr_minmax(24rem,1fr)] gap-x-5 max-[1100px]:grid-cols-1"
 			>
 				<div className="flex flex-col gap-y-5">
+					{/* personal info */}
 					<INTERNAL_Card>
 						<CartTitle>{global.contacts?.title ?? defaults.contacts.title(locale)}</CartTitle>
 
@@ -432,10 +503,9 @@ export default function PageClient({
 												</SelectTrigger>
 												<SelectContent>
 													{Object.keys(
-														selectedCity && selectedCity in CITY_DISTRICT_WARD
-															? CITY_DISTRICT_WARD[
-																	selectedCity as keyof typeof CITY_DISTRICT_WARD
-																]
+														selectedCity
+															? // @ts-expect-error - idc
+																(CITY_DISTRICT_WARD[selectedCity] ?? {})
 															: {},
 													).map((district) => (
 														<SelectItem key={district} value={district}>
@@ -520,11 +590,12 @@ export default function PageClient({
 								global.address?.saveForNextTime ?? defaults.address.saveForNextTime(locale)
 							}
 							classNames={{ container: 'col-span-2' }}
-							checked={saveInfoForNextTime}
-							onCheckedChange={setSaveInfoForNextTime}
+							checked={loadPersonalDetailsOnLoad}
+							onCheckedChange={setLoadPersonalDetailsOnLoad}
 						/>
 					</INTERNAL_Card>
 
+					{/* shipping method */}
 					<INTERNAL_Card>
 						<CartTitle>{global.shipping?.title ?? defaults.shipping.title(locale)}</CartTitle>
 						<FormField
@@ -561,6 +632,7 @@ export default function PageClient({
 						/>
 					</INTERNAL_Card>
 
+					{/* payment method */}
 					<INTERNAL_Card>
 						<CartTitle>{global.payment?.title ?? defaults.payment.title(locale)}</CartTitle>
 						<FormField
@@ -592,6 +664,7 @@ export default function PageClient({
 						/>
 					</INTERNAL_Card>
 
+					{/* send as gift */}
 					<INTERNAL_Card>
 						<CartTitle>{global.gift?.title ?? defaults.gift.title(locale)}</CartTitle>
 						<div className="grid grid-cols-2 gap-x-6 gap-y-3">
@@ -731,10 +804,10 @@ export default function PageClient({
 							size="md"
 							className={cn(
 								'h-14 w-full',
-								processingState === ProcessingState.Processing && 'animate-pulse',
+								processingState.state === 'processing' && 'animate-pulse',
 							)}
 							hideArrow
-							disabled={processingState !== ProcessingState.Idle}
+							disabled={processingState.state !== 'idle'}
 						>
 							{global.orderSummary?.orderButtonLabel ??
 								defaults.orderSummary.orderButton(locale)}
