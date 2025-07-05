@@ -3,8 +3,6 @@ import { z } from 'zod/v4'
 import { Lang } from '@/utilities/lang'
 import { matchLang } from '@/utilities/matchLang'
 
-import CITY_DISTRICT_WARD from './city-district-ward.json'
-
 export function CheckoutSchema(locale: Lang) {
 	return z.object({
 		personalDetails: z
@@ -81,7 +79,6 @@ export function CheckoutSchema(locale: Lang) {
 			}),
 			method: z.enum(['standard', 'express']),
 		}),
-		billingMethod: z.enum(['cod', 'bankTransfer']).optional().nullable(),
 		paymentMethod: z.enum(['cod', 'bankTransfer']),
 		discountCode: z.string().optional(),
 		sendGift: z.object({
