@@ -81,15 +81,14 @@ export default async function Checkout({
 	return (
 		<div className="safe-width mb-16">
 			<Image
-				src="https://placehold.co/128x64"
-				width={1000}
-				height={1000}
+				width={96}
+				height={49}
+				src="/biolak-logo.svg"
 				alt={matchLang({
 					[Lang.English]: 'Brand Logo',
 					[Lang.Vietnamese]: 'Logo thuơng hiệu',
 				})(locale)}
 				className="my-16 h-16 w-32 overflow-hidden object-contain"
-				unoptimized={true}
 			/>
 			<PageClient
 				global={{
