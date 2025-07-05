@@ -164,6 +164,11 @@ export const sendOrderCreatedEmail: CollectionAfterChangeHook<Order> = async ({
 		.filter(Boolean)
 		.join(', ')
 
+	if (!to) {
+		cnsole.info('No users to send email to, skipping email sending')
+		return doc
+	}
+
 	const {
 		ok: resultOk,
 		error: resultError,
