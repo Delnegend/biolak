@@ -242,7 +242,7 @@ export async function confirmDetailsAction(input: unknown): Promise<
 				note,
 				customer,
 				billing: {
-					method: details.billingMethod,
+					method: details.paymentMethod,
 				},
 				shippingInfo: {
 					address: [
