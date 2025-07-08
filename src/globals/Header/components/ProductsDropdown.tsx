@@ -8,8 +8,10 @@ import { INTERNAL_ProductsDropdownClient } from './ProductsDropdown.client'
 
 export async function INTERNAL_ProductsDropdown({
 	label,
+	size,
 }: {
 	label?: string
+	size: 'lg' | 'sm'
 }): Promise<React.JSX.Element> {
 	const [payload, locale] = await Promise.all([
 		getPayload({ config: configPromise }),
@@ -21,5 +23,12 @@ export async function INTERNAL_ProductsDropdown({
 		depth: 2,
 	})
 
-	return <INTERNAL_ProductsDropdownClient categories={categories} label={label} locale={locale} />
+	return (
+		<INTERNAL_ProductsDropdownClient
+			categories={categories}
+			label={label}
+			locale={locale}
+			size={size}
+		/>
+	)
 }
