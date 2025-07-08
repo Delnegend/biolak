@@ -1,4 +1,5 @@
 import { Phudu } from 'next/font/google'
+import Image from 'next/image'
 
 import { HeadlessImage } from '@/components/Media/HeadlessImage'
 import { TextInput } from '@/components/ui/text-input'
@@ -21,18 +22,12 @@ export async function FooterGlobalComponent({
 }) {
 	const locale = await getClientLang()
 	const global = await getCachedGlobal<FooterGlobal>(FooterGlobalSlug, 1, locale)()
-	const { legal } = global
-
-	const stamp_ =
-		legal?.stamp !== undefined && typeof legal?.stamp === 'object' && legal?.stamp !== null
-			? legal?.stamp
-			: null
 
 	switch (size) {
 		case 'large':
-			return <FooterLarge global={global} stamp={stamp_} locale={locale} />
+			return <FooterLarge global={global} locale={locale} />
 		case 'medium':
-			return <FooterMedium global={global} stamp={stamp_} locale={locale} />
+			return <FooterMedium global={global} locale={locale} />
 		default:
 			return <FooterSmall global={global} />
 	}
@@ -40,11 +35,9 @@ export async function FooterGlobalComponent({
 async function FooterLarge({
 	global: { contactUs, legal, image },
 	locale,
-	stamp,
 }: {
 	global: FooterGlobal
 	locale: Lang
-	stamp?: Media | null
 }): Promise<React.JSX.Element> {
 	return (
 		<footer className="relative flex overflow-hidden max-lg:flex-col">
@@ -95,11 +88,14 @@ async function FooterLarge({
 						{legal?.content ?? defaults.legal.content(locale)}
 					</div>
 
-					<HeadlessImage
-						media={stamp}
-						alt={stamp?.alt ?? 'Đã thông báo bộ Công Thương'}
-						placeholder={{ width: 200, height: 100 }}
+					<Image
+						src="/bo-cong-thuong.webp"
+						alt={matchLang({
+							[Lang.English]: 'Noticed by the Board of Directors',
+							[Lang.Vietnamese]: 'Đã thông báo bộ Công Thương',
+						})(locale)}
 						className="my-6 h-14 w-auto object-contain"
+						quality={90}
 					/>
 
 					<div className="text-xs font-normal text-[#F1DAAE]">{legal?.copyright}</div>
