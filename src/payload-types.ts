@@ -3173,7 +3173,6 @@ export interface FooterGlobal {
   legal?: {
     title?: string | null;
     content?: string | null;
-    stamp?: (number | null) | Media;
     copyright?: string | null;
   };
   updatedAt?: string | null;
@@ -3471,7 +3470,6 @@ export interface FooterGlobalSelect<T extends boolean = true> {
     | {
         title?: T;
         content?: T;
-        stamp?: T;
         copyright?: T;
       };
   updatedAt?: T;
