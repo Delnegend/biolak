@@ -47,7 +47,7 @@ async function FooterLarge({
 	stamp?: Media | null
 }): Promise<React.JSX.Element> {
 	return (
-		<footer className="relative flex overflow-hidden">
+		<footer className="relative flex overflow-hidden max-lg:flex-col">
 			<HeadlessImage
 				media={image?.image}
 				alt={matchLang({
@@ -55,16 +55,24 @@ async function FooterLarge({
 					[Lang.Vietnamese]: 'Ảnh Lanscape',
 				})(locale)}
 				placeholder={{ width: 1000, height: 1000 }}
-				className="absolute top-1/2 h-full w-1/2 -translate-y-1/2 object-cover"
+				className="h-full object-cover max-lg:w-full lg:absolute lg:top-1/2 lg:w-1/2 lg:-translate-y-1/2"
 			/>
 
-			<div className="w-1/2 translate-x-full">
-				<div className="flex flex-col gap-6 px-28 py-[5.25rem]">
+			<div className="lg:w-1/2 lg:translate-x-full">
+				<div className="flex flex-col gap-6 max-lg:px-4 max-lg:py-6 lg:px-28 lg:py-[5.25rem]">
 					{/* contact us */}
-					<div className="font-serif text-7xl font-medium">
+					<div className="font-serif text-7xl font-medium max-lg:text-[2.5rem]">
 						{contactUs?.title ?? defaults.contactUs.title(locale)}
 					</div>
 					<TextInput
+						classNames={{ container: 'lg:hidden' }}
+						size="sm"
+						label={contactUs?.emailInputLabel ?? defaults.contactUs.emailInputLabel(locale)}
+						required
+					/>
+					<TextInput
+						classNames={{ container: 'max-lg:hidden' }}
+						size="lg"
 						label={contactUs?.emailInputLabel ?? defaults.contactUs.emailInputLabel(locale)}
 						required
 					/>
@@ -74,12 +82,15 @@ async function FooterLarge({
 				</div>
 
 				{/* legal stuffs */}
-				<div className={'bg-[#210E0A] px-24 py-9 text-[#F1DAAE]'}>
+				<div className="bg-[#210E0A] px-24 py-9 text-[#F1DAAE] max-lg:px-4 max-lg:py-6">
 					<div className={cn('mb-6 text-2xl font-bold uppercase leading-6', phudu.className)}>
 						{legal?.title ?? defaults.legal.title(locale)}
 					</div>
 					<div
-						className={cn('whitespace-pre text-base font-normal uppercase', phudu.className)}
+						className={cn(
+							'whitespace-pre-wrap text-base font-normal uppercase',
+							phudu.className,
+						)}
 					>
 						{legal?.content ?? defaults.legal.content(locale)}
 					</div>
