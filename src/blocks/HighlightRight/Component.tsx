@@ -18,7 +18,7 @@ export function HighlightRightBlock(
 ): React.JSX.Element {
 	return (
 		<div className="safe-width my-28 grid grid-cols-[1fr_5.625rem] gap-12 text-primary max-md:max-w-md md:grid-cols-[1fr_25rem] md:gap-12 lg:gap-20">
-			<div>
+			<div className="self-center">
 				<HeadlessImage
 					media={props.image}
 					alt={matchLang({

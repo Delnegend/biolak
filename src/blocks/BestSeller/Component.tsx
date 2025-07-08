@@ -55,7 +55,7 @@ export async function BestSellerBlock({
 
 	return (
 		<div className="safe-width my-[2.5rem] flex flex-col items-center gap-[2.5rem] lg:my-24 lg:flex-row lg:items-end lg:gap-16">
-			<div className="flex h-full max-w-[40rem] flex-col justify-end lg:gap-9">
+			<div className="flex h-full flex-col justify-end lg:max-w-[40rem] lg:gap-9">
 				<div className="font-serif text-[2.5rem] font-semibold italic leading-[3.5rem] text-primary lg:text-7xl">
 					{props.title ?? defaults.title(__locale)}
 				</div>
@@ -75,7 +75,7 @@ export async function BestSellerBlock({
 				/>
 			</div>
 
-			<Carousel opts={{ dragFree: true }} className="">
+			<Carousel opts={{ dragFree: true }} className="max-lg:w-full">
 				<CarouselContent>
 					{products?.map((p) => (
 						<ProductCard product={p} key={p.id} component={CarouselItem} />

@@ -22,8 +22,23 @@ export function CallToActionRightBlock(
 	},
 ): React.JSX.Element {
 	return (
-		<div className="safe-width flex h-[48rem] justify-between bg-background">
-			<Carousel opts={{ dragFree: true }} className="place-self-center">
+		<div className="safe-width my-6 flex justify-between gap-10 bg-background max-lg:flex-col-reverse lg:my-16 lg:gap-24">
+			<Button
+				className="flex w-full items-center justify-between gap-2 lg:hidden"
+				variant="outline"
+				size="lg"
+				asChild
+			>
+				<CMSLink
+					{...props.link}
+					type={props.link.type ?? undefined}
+					label={props.link.label ?? defaults.buttonLabel(props.__locale)}
+				>
+					<ArrowRight />
+				</CMSLink>
+			</Button>
+
+			<Carousel opts={{ dragFree: true }} className="place-self-center lg:mb-16">
 				<CarouselContent>
 					{props.gallery?.map((item, idx) => {
 						return (
@@ -46,27 +61,29 @@ export function CallToActionRightBlock(
 				</CarouselContent>
 			</Carousel>
 
-			<div className="box-content flex max-w-[28rem] flex-col gap-6 self-end py-16 pl-24">
-				<div className="leading -mb-8 whitespace-pre-wrap font-serif text-7xl font-semibold italic leading-[5rem] text-primary">
+			<div className="box-content flex max-w-[28rem] flex-col gap-6 self-center lg:self-end">
+				<div className="lg:leading -mb-8 whitespace-pre-wrap font-serif font-semibold italic text-primary max-lg:text-[2.5rem] lg:text-7xl lg:leading-[5rem]">
 					{props['sub-title']}
 				</div>
 				<div
 					className={cn(
-						'leading whitespace-pre-wrap font-serif text-7xl font-semibold leading-[5rem] text-primary',
-						phudu.className,
+						'lg:leading whitespace-pre-wrap font-serif font-semibold text-primary max-lg:text-[2.5rem] max-lg:lowercase max-lg:italic lg:text-7xl lg:leading-[5rem]',
+						`lg:${phudu.className}`,
 					)}
 				>
 					{props.title}
 				</div>
+
+				{/* only on large screen */}
 				{props.description && (
 					<RichText
 						data={props.description}
 						enableGutter={false}
-						className="text-balance text-xl leading-8 text-primary"
+						className="text-balance text-xl leading-8 text-primary opacity-60 max-lg:hidden"
 					/>
 				)}
 				<Button
-					className="flex w-full items-center justify-between gap-2"
+					className="flex w-full items-center justify-between gap-2 max-lg:hidden"
 					variant="outline"
 					size="lg"
 					asChild

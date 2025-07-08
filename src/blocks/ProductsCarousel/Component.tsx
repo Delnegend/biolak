@@ -80,7 +80,7 @@ export async function ProductsCarouselBlock(
 							return (
 								<CarouselItem
 									key={product.id}
-									className="grid max-md:grid-rows-[auto_auto] md:grid-cols-[3fr_4fr] xl:grid-cols-2"
+									className="grid pl-0 max-md:grid-rows-[auto_auto] md:grid-cols-[3fr_4fr] xl:grid-cols-2"
 								>
 									<HeadlessImage
 										media={product.gallery?.[0]}
