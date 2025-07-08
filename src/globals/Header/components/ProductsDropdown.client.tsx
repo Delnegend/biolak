@@ -101,10 +101,8 @@ function DropdownColumn({
 			exit="exit"
 			className={cn(
 				'flex flex-col gap-1 bg-primary-foreground px-20 py-12',
-				{
-					'w-1/3': size === 'lg',
-					'fixed left-0 w-full': size === 'sm',
-				},
+				size === 'lg' && 'w-1/3',
+				size === 'sm' && 'fixed left-0 w-full',
 				className,
 			)}
 			style={{
@@ -120,14 +118,13 @@ export function INTERNAL_ProductsDropdownClient({
 	categories,
 	label,
 	locale,
-	size: _size = 'lg',
+	size,
 }: {
 	categories: PaginatedDocs<ProductCategory>
 	label?: string
 	locale: Lang
-	size?: 'lg' | 'sm'
+	size: 'lg' | 'sm'
 }): React.JSX.Element {
-	const size = 'sm' as 'sm' | 'lg'
 	const { allTopBarsHeight } = useHeaderContext()
 
 	const [open, setOpen] = useState(false)
@@ -261,7 +258,7 @@ export function INTERNAL_ProductsDropdownClient({
 						<AnimatePresence mode="wait">
 							{activeCategory?.productSubCategories?.docs?.length && (
 								<DropdownColumn
-									className={cn('overflow-y-auto', size === 'lg' && 'z-40')}
+									className={cn('overflow-y-auto', size === 'lg' && 'z-40 border-r')}
 									key="subCategoryPanel"
 									style={{
 										height: `calc(100dvh - ${allTopBarsHeight}px)`,
@@ -294,7 +291,7 @@ export function INTERNAL_ProductsDropdownClient({
 											<X size={20} />
 										</button>
 									</DropdownLabel>
-									<DropdownItem key="allProducts" tabIndex={-1}>
+									<DropdownItem key={`allProducts-${activeCategory?.slug}`} tabIndex={-1}>
 										<Link
 											href={`/category/${activeCategory?.slug}`}
 											className="group grid gap-x-4"
@@ -370,7 +367,7 @@ export function INTERNAL_ProductsDropdownClient({
 									{products?.docs.map((product, index) => {
 										return (
 											<motion.button
-												key={product.slug}
+												key={`${activeSubCategory?.slug}-${product.slug}`}
 												custom={index}
 												variants={itemAnimationVariants}
 												initial="initial"

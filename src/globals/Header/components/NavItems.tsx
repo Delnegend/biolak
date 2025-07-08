@@ -22,7 +22,7 @@ export const NavItems: Record<
 	(props: {
 		label?: string
 		locale: Lang
-		size?: 'lg' | 'sm'
+		size: 'lg' | 'sm'
 	}) => React.JSX.Element | Promise<React.JSX.Element>
 > = {
 	search: ({ label, locale }) => (
