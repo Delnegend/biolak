@@ -10,7 +10,7 @@ export function CertificatesBlock(
 	},
 ): React.JSX.Element {
 	return (
-		<div className="my-16 flex w-full flex-col items-center justify-center">
+		<div className="safe-width flex w-full flex-col items-center justify-center max-lg:my-6 lg:my-16">
 			<div className="mb-6 text-balance text-center font-serif text-5xl font-bold text-primary md:mb-16">
 				{props.title ?? defaults.title(props.__locale)}
 			</div>
