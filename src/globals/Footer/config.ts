@@ -96,15 +96,6 @@ export const FooterGlobalConf: GlobalConfig<typeof FooterGlobalSlug> = {
 							},
 						},
 						{
-							name: 'stamp',
-							type: 'upload',
-							relationTo: MediaSlug,
-							label: {
-								[Lang.English]: 'Stamp',
-								[Lang.Vietnamese]: 'Dấu',
-							},
-						},
-						{
 							name: 'copyright',
 							type: 'text',
 							label: false,
