@@ -1,6 +1,7 @@
 'use client'
 
 import { CirclePlus, Heart, X } from 'lucide-react'
+import { AnimatePresence, motion } from 'motion/react'
 import { useEffect, useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { toast } from 'sonner'
@@ -116,13 +117,16 @@ export function INTERNAL_ReviewDialogContentClient({
 					</Button>
 				</DialogTrigger>
 				<DialogContent
-					className="w-full max-w-[60rem] overflow-hidden p-20"
+					className="w-full max-w-[60rem] overflow-hidden"
 					aria-label={matchLang({
 						[Lang.English]: 'Send a review for your order dialog',
 						[Lang.Vietnamese]: 'Hộp thoại gửi đánh giá cho đơn hàng của bạn',
 					})(locale)}
 				>
-					<form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-9">
+					<form
+						onSubmit={handleSubmit(onSubmit)}
+						className="flex flex-col gap-9 overflow-x-auto"
+					>
 						<DialogTitle>
 							{global.reviewDialogTitle ?? defaults.reviewDialogTitle(locale)}
 						</DialogTitle>
@@ -169,47 +173,56 @@ export function INTERNAL_ReviewDialogContentClient({
 						></TextInput>
 
 						<div className="flex flex-row gap-6 overflow-auto">
-							{reviewImages?.map((image, index) => (
-								<div
-									key={index}
-									className="relative flex aspect-square size-[12.5rem] items-center justify-center overflow-clip rounded-xl border-2"
-								>
-									{/* eslint-disable-next-line @next/next/no-img-element */}
-									<img
-										src={URL.createObjectURL(image)}
-										alt={matchLang({
-											[Lang.English]: `Review image ${index + 1}`,
-											[Lang.Vietnamese]: `Hình ảnh đánh giá ${index + 1}`,
-										})(locale)}
-										className="size-full overflow-hidden object-cover"
-									/>
-									<button
-										onClick={(e) => {
-											e.preventDefault()
-											setReviewImages((prev) => {
-												const newImages = [...prev]
-												newImages.splice(index, 1)
-												return newImages
-											})
-											const reviewImageUpload = document.getElementById(
-												'review-image-upload',
-											) as HTMLInputElement
-											if (!reviewImageUpload) return
-
-											const dataTransfer = new DataTransfer()
-											if (reviewImageUpload.files) {
-												Array.from(reviewImageUpload.files).forEach((file, idx) => {
-													if (idx !== index) dataTransfer.items.add(file)
-												})
-											}
-
-											reviewImageUpload.files = dataTransfer.files
-										}}
+							<AnimatePresence initial={false}>
+								{reviewImages?.map((image, index) => (
+									<motion.div
+										key={image.name + image.lastModified + index}
+										className="relative flex aspect-square size-[12.5rem] items-center justify-center overflow-clip rounded-xl border-2"
+										initial={{ opacity: 0, x: -24 }}
+										animate={{ opacity: 1, x: 0 }}
+										exit={{ opacity: 0, x: -24 }}
+										transition={{ duration: 0.25 }}
 									>
-										<X className="absolute right-2 top-2" color="white" />
-									</button>
-								</div>
-							))}
+										{/* eslint-disable-next-line @next/next/no-img-element */}
+										<img
+											src={URL.createObjectURL(image)}
+											alt={matchLang({
+												[Lang.English]: `Review image ${index + 1}`,
+												[Lang.Vietnamese]: `Hình ảnh đánh giá ${index + 1}`,
+											})(locale)}
+											className="size-full overflow-hidden object-cover"
+										/>
+										<button
+											onClick={(e) => {
+												e.preventDefault()
+												setReviewImages((prev) => {
+													const newImages = [...prev]
+													newImages.splice(index, 1)
+													return newImages
+												})
+												const reviewImageUpload = document.getElementById(
+													'review-image-upload',
+												) as HTMLInputElement
+												if (!reviewImageUpload) return
+
+												const dataTransfer = new DataTransfer()
+												if (reviewImageUpload.files) {
+													Array.from(reviewImageUpload.files).forEach((file, idx) => {
+														if (idx !== index) dataTransfer.items.add(file)
+													})
+												}
+
+												reviewImageUpload.files = dataTransfer.files
+											}}
+										>
+											<X
+												className="absolute right-2 top-2 rounded-full bg-black/50 p-1"
+												color="white"
+											/>
+										</button>
+									</motion.div>
+								))}
+							</AnimatePresence>
 							<input
 								type="file"
 								accept="image/*"
