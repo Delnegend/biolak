@@ -36,7 +36,7 @@ export function HighlightCenterBlock(
 					{props.title}
 				</div>
 			</div>
-			<p className="text-balance text-center text-base md:text-[2rem] md:leading-tight">
+			<p className="text-balance text-center text-base md:text-2xl md:leading-tight lg:text-[2rem]">
 				{props.description}
 			</p>
 		</div>
