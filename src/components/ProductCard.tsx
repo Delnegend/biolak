@@ -1,4 +1,3 @@
-import { CirclePlus } from 'lucide-react'
 import Link from 'next/link'
 
 import { Product } from '@/payload-types'
@@ -9,7 +8,7 @@ import { matchLang } from '@/utilities/matchLang'
 import { cn } from '@/utilities/ui'
 
 import { HeadlessImage } from './Media/HeadlessImage'
-import { Button } from './ui/button'
+import { INTERNAL_ProductCardAddToCart } from './ProductCardAddToCart.client'
 
 export async function ProductCard({
 	product: p,
@@ -23,7 +22,10 @@ export async function ProductCard({
 		shortDescription?: Product['shortDescription']
 		gallery?: Product['gallery']
 		variants: Array<{
+			sku: Product['variants'][number]['sku']
+			title: Product['variants'][number]['title']
 			price: Product['variants'][number]['price']
+			image?: Product['variants'][number]['image']
 			stock: Product['variants'][number]['stock']
 		}>
 	}
@@ -84,14 +86,14 @@ export async function ProductCard({
 						})(locale)}
 			</div>
 			<div style={{ gridArea: 'add-to-cart' }}>
-				<Button
-					hideArrow={true}
-					className="group flex size-12 items-center justify-center rounded-[0.5rem] border-[#E7B27E] bg-[#E7B27E] p-0 transition-all hover:border hover:bg-transparent"
-					title="Thêm vào giỏ hàng"
-					disabled={!priceRange}
-				>
-					<CirclePlus className="w-full transition-colors group-hover:text-[#E7B27E]" />
-				</Button>
+				<INTERNAL_ProductCardAddToCart
+					product={{
+						id: p.id,
+						title: p.title,
+					}}
+					priceRange={priceRange}
+					variants={p.variants}
+				/>
 			</div>
 		</Comp>
 	)
