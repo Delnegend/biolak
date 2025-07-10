@@ -96,6 +96,8 @@ async function FooterLarge({
 						})(locale)}
 						className="my-6 h-14 w-auto object-contain"
 						quality={90}
+						width={600}
+						height={227}
 					/>
 
 					<div className="text-xs font-normal text-[#F1DAAE]">{legal?.copyright}</div>
