@@ -3,11 +3,14 @@
 import { PaginatedDocs } from 'payload'
 import { stringify } from 'qs-esm'
 import { createContext, useContext, useEffect, useState } from 'react'
+import { toast } from 'sonner'
 import { z } from 'zod/v4'
 
 import { ProductsSlug } from '@/collections/Products/slug'
 import { type Product } from '@/payload-types'
 import { cnsoleBuilder } from '@/utilities/cnsole'
+import { defaultLocale, Lang } from '@/utilities/lang'
+import { matchLang } from '@/utilities/matchLang'
 import { tryCatch, tryCatchSync } from '@/utilities/tryCatch'
 
 const cnsole = cnsoleBuilder('hooks/useCartManager')
@@ -70,8 +73,10 @@ const cartKey = 'cart'
 
 export function useCartManager({
 	syncWithLocalStorage = true,
+	showNotification = false,
 }: {
 	syncWithLocalStorage?: boolean
+	showNotification?: boolean
 }) {
 	const cartCtx = useContext(CartContext)
 	const [loadedFromLocalStorageDone, setLoadedFromLocalStorageDone] = useState(false)
@@ -266,6 +271,14 @@ export function useCartManager({
 
 				return updatedCart
 			})
+
+			if (showNotification)
+				toast.success(
+					matchLang({
+						[Lang.English]: `Added ${product.product.title} (${product.variant.title}) to cart`,
+						[Lang.Vietnamese]: `Đã thêm ${product.product.title} (${product.variant.title}) vào giỏ hàng`,
+					})(defaultLocale),
+				)
 		},
 
 		unloadProduct(product: {
