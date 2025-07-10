@@ -40,10 +40,9 @@ export function HighlightLeftBlock(
 
 			<div className="gap-12 self-center">
 				<div className="mb-1 font-serif text-base italic md:mb-10 md:text-[2rem]">
-					{' '}
 					{props.title}
 				</div>
-				<div className="text-balance text-base md:text-[2rem] md:leading-tight">
+				<div className="text-balance text-base md:text-2xl md:leading-tight lg:text-[2rem]">
 					{props.description}
 				</div>
 			</div>
