@@ -8,7 +8,13 @@ import { Lang } from '@/utilities/lang'
 import { matchLang } from '@/utilities/matchLang'
 import { cn } from '@/utilities/ui'
 
-export function INTERNAl_CartListWithAccordion({ locale }: { locale: Lang }): React.JSX.Element {
+export function INTERNAl_CartListWithAccordion({
+	locale,
+	syncWithLocalStorage,
+}: {
+	locale: Lang
+	syncWithLocalStorage: boolean
+}): React.JSX.Element {
 	const [open, setOpen] = useState(true)
 
 	return (
@@ -23,6 +29,7 @@ export function INTERNAl_CartListWithAccordion({ locale }: { locale: Lang }): Re
 					showCheckbox={false}
 					className="mb-4 min-h-0 overflow-hidden"
 					locale={locale}
+					syncWithLocalStorage={syncWithLocalStorage}
 				/>
 			</div>
 

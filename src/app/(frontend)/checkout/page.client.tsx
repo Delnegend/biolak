@@ -72,14 +72,14 @@ const personalDetailsSchemaLocal = z.object({
 
 export default function PageClient({
 	global,
-	override,
+	overrideProduct,
 	locale,
 }: {
 	global: CheckoutPageGlobal & {
 		bankName?: string | null
 		bankAccountNumber?: string | null
 	}
-	override?: {
+	overrideProduct?: {
 		product: {
 			id: Product['id']
 			title: Product['title']
@@ -94,8 +94,10 @@ export default function PageClient({
 	} | null
 	locale: Lang
 }): React.JSX.Element {
+	const syncWithLocalStorage = !overrideProduct
+
 	const { cart, loadedFromLocalStorageDone, loadProduct } = useCartManager({
-		syncWithLocalStorage: !override,
+		syncWithLocalStorage,
 	})
 	const checkoutSchema = CheckoutSchema(locale)
 
@@ -214,9 +216,9 @@ export default function PageClient({
 	]
 
 	useEffect(() => {
-		if (override)
+		if (overrideProduct)
 			loadProduct({
-				...override,
+				...overrideProduct,
 				quantity: 1,
 				checked: true,
 			})
@@ -729,7 +731,10 @@ export default function PageClient({
 
 				<INTERNAL_Card className="h-fit">
 					<CartTitle>{global.order?.title ?? defaults.order.title(locale)}</CartTitle>
-					<INTERNAl_CartListWithAccordion locale={locale} />
+					<INTERNAl_CartListWithAccordion
+						locale={locale}
+						syncWithLocalStorage={syncWithLocalStorage}
+					/>
 					<hr />
 
 					<CartTitle>{global.discount?.title ?? defaults.discount.title(locale)}</CartTitle>
