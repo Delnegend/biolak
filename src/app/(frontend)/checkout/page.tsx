@@ -96,7 +96,9 @@ export default async function Checkout({
 					bankAccountNumber: paymentGlobal.bankAccountNumber,
 					bankName: paymentGlobal.bankName,
 				}}
-				override={overrideProduct.ok && overrideProduct.data ? overrideProduct.data : undefined}
+				overrideProduct={
+					overrideProduct.ok && overrideProduct.data ? overrideProduct.data : undefined
+				}
 				locale={locale}
 			/>
 		</div>

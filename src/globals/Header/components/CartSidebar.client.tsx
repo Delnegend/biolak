@@ -28,8 +28,10 @@ export function INTERNAL_CartSidebar({
 	locale: Lang
 	size?: 'lg' | 'sm'
 }): React.JSX.Element {
+	const syncWithLocalStorage = true
+
 	const { cart, uncheckAll } = useCartManager({
-		syncWithLocalStorage: true,
+		syncWithLocalStorage,
 	})
 	const [open, setOpen] = useState(false)
 	const cartProductCount = cart.map((item) => item.quantity).reduce((prev, curr) => prev + curr, 0)
@@ -76,7 +78,11 @@ export function INTERNAL_CartSidebar({
 				</SheetHeader>
 				{cart.length > 0 ? (
 					<div className="flex h-[calc(100%-6rem)] flex-col justify-between gap-10">
-						<CartListClient locale={locale} showCheckbox={true} />
+						<CartListClient
+							locale={locale}
+							showCheckbox={true}
+							syncWithLocalStorage={syncWithLocalStorage}
+						/>
 
 						<SheetFooter>
 							<div

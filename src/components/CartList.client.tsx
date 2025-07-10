@@ -22,13 +22,15 @@ function CartItem({
 	productInCart,
 	showCheckbox,
 	locale,
+	syncWithLocalStorage,
 }: {
 	productInCart: ProductInCart
 	showCheckbox: boolean
 	locale?: Lang
+	syncWithLocalStorage?: boolean
 }): React.JSX.Element {
 	const { removeProduct, toggleCheck, loadProduct, unloadProduct } = useCartManager({
-		syncWithLocalStorage: true,
+		syncWithLocalStorage,
 	})
 
 	return (
@@ -144,13 +146,15 @@ export function CartListClient({
 	className,
 	showCheckbox,
 	locale,
+	syncWithLocalStorage,
 }: {
 	showCheckbox: boolean
 	className?: string
 	locale?: Lang
+	syncWithLocalStorage: boolean
 }): React.JSX.Element {
 	const { cart } = useCartManager({
-		syncWithLocalStorage: true,
+		syncWithLocalStorage,
 	})
 
 	return (
@@ -161,6 +165,7 @@ export function CartListClient({
 					productInCart={item}
 					showCheckbox={showCheckbox}
 					locale={locale}
+					syncWithLocalStorage={syncWithLocalStorage}
 				/>
 			))}
 		</div>
