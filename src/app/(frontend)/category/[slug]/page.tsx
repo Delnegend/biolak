@@ -129,18 +129,18 @@ export default async function Category({
 	}
 
 	return (
-		<div className="safe-width mb-12 mt-24 flex flex-row">
+		<div className="safe-width my-6 flex flex-col justify-between max-lg:items-center lg:mb-12 lg:mt-24 lg:flex-row lg:gap-16 xl:gap-[8.75rem]">
 			<PageClient />
-			<div className="mr-[8.75rem] font-serif text-5xl font-semibold italic text-primary">
+			<div className="font-serif text-5xl font-semibold italic text-primary max-lg:my-6">
 				{category?.title ??
 					matchLang({
 						[Lang.English]: 'Category not found',
 						[Lang.Vietnamese]: 'Không tìm thấy danh mục',
 					})(locale)}
 			</div>
-			<div className="flex flex-row flex-wrap gap-6">
+			<div className="grid grid-cols-3 justify-center gap-6 max-xl:grid-cols-2 max-lg:w-full max-lg:grid-cols-[repeat(auto-fit,minmax(16rem,1fr))]">
 				{products.docs.map((p) => (
-					<ProductCard product={p} key={p.slug} size="sm" />
+					<ProductCard product={p} key={p.slug} size="sm" className="justify-self-center" />
 				))}
 			</div>
 		</div>
