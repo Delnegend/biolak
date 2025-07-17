@@ -14,6 +14,7 @@ export async function ProductCard({
 	product: p,
 	size = 'lg',
 	component,
+	className,
 }: {
 	product: {
 		id: Product['id']
@@ -31,6 +32,7 @@ export async function ProductCard({
 	}
 	size?: 'lg' | 'sm'
 	component?: React.ElementType
+	className?: string
 }): Promise<React.JSX.Element> {
 	const Comp = component ?? 'div'
 	const locale = await getClientLang()
@@ -42,6 +44,7 @@ export async function ProductCard({
 			className={cn(
 				'grid grid-cols-[1fr_auto] grid-rows-[auto]',
 				size === 'lg' ? 'max-w-96' : 'max-w-72',
+				className,
 			)}
 			style={{
 				gridTemplateAreas: `"img img"
