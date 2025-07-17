@@ -295,6 +295,9 @@ export function INTERNAL_ProductsDropdownClient({
 										<Link
 											href={`/category/${activeCategory?.slug}`}
 											className="group grid gap-x-4"
+											onClick={() => {
+												setOpen(false)
+											}}
 										>
 											{matchLang({
 												[Lang.English]: 'All',
