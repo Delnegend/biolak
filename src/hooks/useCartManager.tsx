@@ -9,7 +9,7 @@ import { z } from 'zod/v4'
 import { ProductsSlug } from '@/collections/Products/slug'
 import { type Product } from '@/payload-types'
 import { cnsoleBuilder } from '@/utilities/cnsole'
-import { defaultLocale, Lang } from '@/utilities/lang'
+import { Lang } from '@/utilities/lang'
 import { matchLang } from '@/utilities/matchLang'
 import { tryCatch, tryCatchSync } from '@/utilities/tryCatch'
 
@@ -74,9 +74,11 @@ const cartKey = 'cart'
 export function useCartManager({
 	syncWithLocalStorage = true,
 	showNotification = false,
+	locale,
 }: {
 	syncWithLocalStorage?: boolean
 	showNotification?: boolean
+	locale: Lang
 }) {
 	const cartCtx = useContext(CartContext)
 	const [loadedFromLocalStorageDone, setLoadedFromLocalStorageDone] = useState(false)
@@ -160,13 +162,8 @@ export function useCartManager({
 				),
 			)
 
-			if (!respOk) {
+			if (!respOk || !resp.ok) {
 				cnsole.error("Can't refresh product in cart info:", respError)
-				return
-			}
-
-			if (!resp.ok) {
-				cnsole.error("Can't fetch products for cart:", resp.status, resp.statusText)
 				return
 			}
 
@@ -250,6 +247,17 @@ export function useCartManager({
 		loadedFromLocalStorageDone,
 
 		loadProduct(product: ProductInCart): void {
+			if (cart.length >= 1000) {
+				toast.error(
+					matchLang({
+						[Lang.English]: 'Cart is full, please remove some items before adding more.',
+						[Lang.Vietnamese]:
+							'Giỏ hàng đã đầy, vui lòng xóa một số mặt hàng trước khi thêm.',
+					})(locale),
+				)
+				return
+			}
+
 			setCart((prev) => {
 				const existingProductIndex = prev?.findIndex(
 					(item) =>
@@ -277,7 +285,7 @@ export function useCartManager({
 					matchLang({
 						[Lang.English]: `Added ${product.product.title} (${product.variant.title}) to cart`,
 						[Lang.Vietnamese]: `Đã thêm ${product.product.title} (${product.variant.title}) vào giỏ hàng`,
-					})(defaultLocale),
+					})(locale),
 				)
 		},
 

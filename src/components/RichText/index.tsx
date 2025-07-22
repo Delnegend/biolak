@@ -19,6 +19,7 @@ import type {
 	CallToActionCenterBlockProps,
 	MediaBlockProps,
 } from '@/payload-types'
+import { Lang } from '@/utilities/lang'
 import { cn } from '@/utilities/ui'
 
 type NodeTypes =
@@ -39,39 +40,45 @@ const internalDocToHref = ({ linkNode }: { linkNode: SerializedLinkNode }) => {
 	return relationTo === 'posts' ? `/post/${slug}` : `/${slug}`
 }
 
-const jsxConverters: JSXConvertersFunction<NodeTypes> = ({ defaultConverters }) => ({
-	...defaultConverters,
-	...LinkJSXConverter({ internalDocToHref }),
-	blocks: {
-		banner: ({ node }) => <BannerBlock className="col-start-2 mb-4" {...node.fields} />,
-		mediaBlock: ({ node }: { node: SerializedBlockNode<MediaBlockProps> }) => (
-			<MediaBlockComponent
-				className="col-span-3 col-start-1"
-				imgClassName="m-0"
-				{...node.fields}
-				captionClassName="mx-auto max-w-[48rem]"
-				enableGutter={false}
-				disableInnerContainer={true}
-			/>
-		),
-		code: ({ node }) => <CodeBlock className="col-start-2" {...node.fields} />,
-		cta: ({ node }: { node: SerializedBlockNode<CallToActionCenterBlockProps> }) => (
-			<CallToActionCenterBlock {...node.fields} />
-		),
-	},
-})
+const jsxConverters =
+	(locale: Lang): JSXConvertersFunction<NodeTypes> =>
+	({ defaultConverters }) => ({
+		...defaultConverters,
+		...LinkJSXConverter({ internalDocToHref }),
+		blocks: {
+			banner: ({ node }) => (
+				<BannerBlock className="col-start-2 mb-4" __locale={locale} {...node.fields} />
+			),
+			mediaBlock: ({ node }: { node: SerializedBlockNode<MediaBlockProps> }) => (
+				<MediaBlockComponent
+					className="col-span-3 col-start-1"
+					imgClassName="m-0"
+					{...node.fields}
+					captionClassName="mx-auto max-w-[48rem]"
+					enableGutter={false}
+					disableInnerContainer={true}
+					__locale={locale}
+				/>
+			),
+			code: ({ node }) => <CodeBlock className="col-start-2" {...node.fields} />,
+			cta: ({ node }: { node: SerializedBlockNode<CallToActionCenterBlockProps> }) => (
+				<CallToActionCenterBlock {...node.fields} __locale={locale} />
+			),
+		},
+	})
 
 export default function RichText(
 	props: {
 		data: DefaultTypedEditorState
 		enableGutter?: boolean
 		enableProse?: boolean
+		locale: Lang
 	} & React.HTMLAttributes<HTMLDivElement>,
 ) {
-	const { className, enableProse = true, enableGutter = true, ...rest } = props
+	const { className, enableProse = true, enableGutter = true, locale, ...rest } = props
 	return (
 		<ConvertRichText
-			converters={jsxConverters}
+			converters={jsxConverters(locale)}
 			className={cn(
 				'payload-richtext',
 				{

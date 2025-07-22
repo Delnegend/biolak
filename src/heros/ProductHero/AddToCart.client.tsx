@@ -14,10 +14,10 @@ export function INTERNAL_AddToCartButton({
 	locale,
 	disabled,
 }: {
-	locale?: Lang
+	locale: Lang
 	disabled?: boolean
 }): React.JSX.Element {
-	const { loadProduct } = useCartManager({ syncWithLocalStorage: true })
+	const { loadProduct } = useCartManager({ syncWithLocalStorage: true, locale })
 	const { selectedProductVariant } = useSelectedProductVariant()
 
 	return (

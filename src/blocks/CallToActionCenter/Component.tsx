@@ -12,7 +12,7 @@ import { CallToActionCenterBlockDefaults as defaults } from './defaults'
 
 export function CallToActionCenterBlock(
 	props: CallToActionCenterBlockProps & {
-		__locale?: Lang
+		__locale: Lang
 	},
 ): React.JSX.Element {
 	const bgUrl =
@@ -45,6 +45,7 @@ export function CallToActionCenterBlock(
 							data={props.description}
 							enableGutter={false}
 							className="text-balance text-center text-2xl text-[#834621] max-md:text-base"
+							locale={props.__locale}
 						/>
 					)}
 				</CardHeader>

@@ -10,7 +10,7 @@ import { CallToAddToCartBlockDefaults as defaults } from './defaults'
 export function CallToAddToCartBlock(
 	props: CallToAddToCartBlockProps & {
 		__product?: Product | null
-		__locale?: Lang
+		__locale: Lang
 	},
 ): React.JSX.Element {
 	return (
@@ -25,10 +25,16 @@ export function CallToAddToCartBlock(
 				className="aspect-square size-full max-w-[38rem] rounded-full object-cover"
 			/>
 			{props.content && (
-				<RichText data={props.content} enableGutter={false} className="mt-4 [&_li]:text-xl" />
+				<RichText
+					data={props.content}
+					enableGutter={false}
+					className="mt-4 [&_li]:text-xl"
+					locale={props.__locale}
+				/>
 			)}
 			<INTERNAL_AddToCartClient
 				buttonLabel={props.buttonLabel ?? defaults.buttonLabel(props.__locale)}
+				locale={props.__locale}
 			/>
 		</div>
 	)

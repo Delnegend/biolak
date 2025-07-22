@@ -2,10 +2,12 @@ import React from 'react'
 
 import RichText from '@/components/RichText'
 import type { BannerBlockProps } from '@/payload-types'
+import { Lang } from '@/utilities/lang'
 import { cn } from '@/utilities/ui'
 
 type Props = {
 	className?: string
+	__locale: Lang
 } & BannerBlockProps
 
 export function BannerBlock(props: Props): React.JSX.Element {
@@ -19,7 +21,12 @@ export function BannerBlock(props: Props): React.JSX.Element {
 					'border-warning bg-warning/30': props.style === 'warning',
 				})}
 			>
-				<RichText data={props.content} enableGutter={false} enableProse={false} />
+				<RichText
+					data={props.content}
+					enableGutter={false}
+					enableProse={false}
+					locale={props.__locale}
+				/>
 			</div>
 		</div>
 	)

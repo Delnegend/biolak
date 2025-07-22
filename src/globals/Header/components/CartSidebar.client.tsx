@@ -32,6 +32,7 @@ export function INTERNAL_CartSidebar({
 
 	const { cart, uncheckAll } = useCartManager({
 		syncWithLocalStorage,
+		locale,
 	})
 	const [open, setOpen] = useState(false)
 	const cartProductCount = cart.map((item) => item.quantity).reduce((prev, curr) => prev + curr, 0)

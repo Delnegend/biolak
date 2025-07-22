@@ -5,6 +5,7 @@ import { CirclePlus } from 'lucide-react'
 import { useCartManager } from '@/hooks/useCartManager'
 import { Product } from '@/payload-types'
 import { findValidProductVariant } from '@/utilities/findValidProductVariant'
+import { Lang } from '@/utilities/lang'
 
 import { Button } from './ui/button'
 
@@ -12,6 +13,7 @@ export function INTERNAL_ProductCardAddToCart({
 	priceRange,
 	variants,
 	product,
+	locale,
 }: {
 	priceRange?: string | null
 	variants: Product['variants']
@@ -19,9 +21,14 @@ export function INTERNAL_ProductCardAddToCart({
 		id: Product['id']
 		title: Product['title']
 	}
+	locale: Lang
 }): React.JSX.Element {
 	const validVariant = findValidProductVariant(variants)
-	const { loadProduct } = useCartManager({ syncWithLocalStorage: true, showNotification: true })
+	const { loadProduct } = useCartManager({
+		syncWithLocalStorage: true,
+		showNotification: true,
+		locale,
+	})
 
 	return (
 		<Button

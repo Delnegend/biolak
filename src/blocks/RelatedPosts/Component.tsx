@@ -15,7 +15,7 @@ export type RelatedPostsProps = {
 
 export function RelatedPosts(
 	props: RelatedPostsProps & {
-		__locale?: Lang
+		__locale: Lang
 	},
 ): React.JSX.Element {
 	return (
@@ -26,6 +26,7 @@ export function RelatedPosts(
 				[Lang.English]: 'Related Posts',
 				[Lang.Vietnamese]: 'Bài viết liên quan',
 			})(props.__locale)}
+			__locale={props.__locale}
 		/>
 	)
 }

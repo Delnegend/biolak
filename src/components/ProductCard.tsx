@@ -96,6 +96,7 @@ export async function ProductCard({
 					}}
 					priceRange={priceRange}
 					variants={p.variants}
+					locale={locale}
 				/>
 			</div>
 		</Comp>

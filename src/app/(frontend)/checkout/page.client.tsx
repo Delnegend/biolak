@@ -98,6 +98,7 @@ export default function PageClient({
 
 	const { cart, loadedFromLocalStorageDone, loadProduct } = useCartManager({
 		syncWithLocalStorage,
+		locale,
 	})
 	const checkoutSchema = CheckoutSchema(locale)
 

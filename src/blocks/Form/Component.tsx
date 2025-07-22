@@ -9,6 +9,7 @@ import RichText from '@/components/RichText'
 import { Button } from '@/components/ui/button'
 import { cnsoleBuilder } from '@/utilities/cnsole'
 import { getClientSideURL } from '@/utilities/getURL'
+import { Lang } from '@/utilities/lang'
 
 import { fields } from './fields'
 
@@ -20,6 +21,7 @@ export type FormBlockType = {
 	enableIntro: boolean
 	form: FormType
 	introContent?: SerializedEditorState
+	__locale: Lang
 }
 
 export function FormBlock(props: FormBlockType): React.JSX.Element {
@@ -106,12 +108,17 @@ export function FormBlock(props: FormBlockType): React.JSX.Element {
 	return (
 		<div className="container lg:max-w-[48rem]">
 			{props.enableIntro && props.introContent && !hasSubmitted && (
-				<RichText className="mb-8 lg:mb-12" data={props.introContent} enableGutter={false} />
+				<RichText
+					className="mb-8 lg:mb-12"
+					data={props.introContent}
+					enableGutter={false}
+					locale={props.__locale}
+				/>
 			)}
 			<div className="rounded-[0.8rem] border border-border p-4 lg:p-6">
 				<FormProvider {...formMethods}>
 					{!isLoading && hasSubmitted && props.form.confirmationType === 'message' && (
-						<RichText data={props.form.confirmationMessage} />
+						<RichText data={props.form.confirmationMessage} locale={props.__locale} />
 					)}
 					{isLoading && !hasSubmitted && <p>Loading, please wait...</p>}
 					{error && <div>{`${error.status || '500'}: ${error.message || ''}`}</div>}
@@ -134,6 +141,7 @@ export function FormBlock(props: FormBlockType): React.JSX.Element {
 														control={control}
 														errors={errors}
 														register={register}
+														__locale={props.__locale}
 													/>
 												</div>
 											)

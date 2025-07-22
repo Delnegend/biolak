@@ -29,7 +29,7 @@ const phudu = Phudu({
 
 export async function ProductsCarouselBlock(
 	props: ProductsCarouselBlockProps & {
-		__locale?: Lang
+		__locale: Lang
 	},
 ): Promise<React.JSX.Element> {
 	const payload = await getPayload({ config })

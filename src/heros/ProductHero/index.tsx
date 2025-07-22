@@ -51,7 +51,7 @@ export async function ProductHero({
 				<div className="mb-4 font-serif text-5xl font-medium">{p.title}</div>
 				{p.longDescription ? (
 					<div className="compact text-xl leading-8">
-						<RichText data={p.longDescription} enableGutter={false} />
+						<RichText data={p.longDescription} enableGutter={false} locale={locale} />
 					</div>
 				) : p.shortDescription ? (
 					<div className="text-balance text-primary">{p.shortDescription}</div>

@@ -59,6 +59,7 @@ export default async function Post({ params: paramsPromise }: Args) {
 	const { slug = '' } = await paramsPromise
 	const url = '/post/' + slug
 	const post = await queryPostBySlug({ slug })
+	const locale = await getClientLang()
 
 	if (!post) return <PayloadRedirects url={url} />
 
@@ -79,6 +80,7 @@ export default async function Post({ params: paramsPromise }: Args) {
 					<RelatedPosts
 						className="col-span-3 col-start-1 mt-12 max-w-[52rem] grid-rows-[2fr] lg:grid lg:grid-cols-subgrid"
 						docs={post.relatedPosts.filter((post) => typeof post === 'object')}
+						__locale={locale}
 					/>
 				)}
 			</div>

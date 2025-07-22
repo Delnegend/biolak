@@ -6,7 +6,7 @@ import { matchLang } from '@/utilities/matchLang'
 
 export function FocusLeftSmallImageBlock(
 	props: FocusLeftSmallImageBlockProps & {
-		__locale?: Lang
+		__locale: Lang
 	},
 ): React.JSX.Element {
 	return (
@@ -20,7 +20,12 @@ export function FocusLeftSmallImageBlock(
 				})(props.__locale)}
 				className="size-full max-h-[35rem] max-w-[23rem] self-center object-cover px-11"
 			/>
-			<RichText data={props.content} enableGutter={false} className="self-center text-primary" />
+			<RichText
+				data={props.content}
+				enableGutter={false}
+				className="self-center text-primary"
+				locale={props.__locale}
+			/>
 		</div>
 	)
 }
