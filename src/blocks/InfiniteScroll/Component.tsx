@@ -15,7 +15,7 @@ export async function InfiniteScrollBlock({
 	animationDuration,
 	__locale,
 }: InfiniteScrollBlockProps & {
-	__locale?: Lang
+	__locale: Lang
 }): Promise<React.JSX.Element> {
 	const {
 		data: graphic_,

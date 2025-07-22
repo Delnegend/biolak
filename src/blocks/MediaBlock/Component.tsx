@@ -3,6 +3,7 @@ import React from 'react'
 
 import RichText from '@/components/RichText'
 import type { MediaBlockProps } from '@/payload-types'
+import { Lang } from '@/utilities/lang'
 import { cn } from '@/utilities/ui'
 
 import { Media } from '../../components/Media'
@@ -16,6 +17,7 @@ export function MediaBlockComponent(
 		imgClassName?: string
 		staticImage?: StaticImageData
 		disableInnerContainer?: boolean
+		__locale: Lang
 	},
 ): React.JSX.Element {
 	const caption = props.media && typeof props.media === 'object' ? props.media.caption : undefined
@@ -47,7 +49,7 @@ export function MediaBlockComponent(
 						props.captionClassName,
 					)}
 				>
-					<RichText data={caption} enableGutter={false} />
+					<RichText data={caption} enableGutter={false} locale={props.__locale} />
 				</div>
 			)}
 		</div>

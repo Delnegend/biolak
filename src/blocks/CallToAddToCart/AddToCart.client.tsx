@@ -3,13 +3,16 @@
 import { Button } from '@/components/ui/button'
 import { useSelectedProductVariant } from '@/heros/ProductHero/ProductVariantContext'
 import { useCartManager } from '@/hooks/useCartManager'
+import { Lang } from '@/utilities/lang'
 
 export function INTERNAL_AddToCartClient({
 	buttonLabel,
+	locale,
 }: {
 	buttonLabel: string
+	locale: Lang
 }): React.JSX.Element {
-	const { loadProduct } = useCartManager({ syncWithLocalStorage: true })
+	const { loadProduct } = useCartManager({ syncWithLocalStorage: true, locale })
 	const { selectedProductVariant } = useSelectedProductVariant()
 
 	return (

@@ -18,7 +18,7 @@ const phudu = Phudu({ subsets: ['vietnamese'], weight: ['400', '600'] })
 
 export function CallToActionRightBlock(
 	props: CallToActionRightBlockProps & {
-		__locale?: Lang
+		__locale: Lang
 	},
 ): React.JSX.Element {
 	return (
@@ -80,6 +80,7 @@ export function CallToActionRightBlock(
 						data={props.description}
 						enableGutter={false}
 						className="text-balance text-xl leading-8 text-primary opacity-60 max-lg:hidden"
+						locale={props.__locale}
 					/>
 				)}
 				<Button

@@ -5,7 +5,7 @@ import { matchLang } from '@/utilities/matchLang'
 
 export function ThreePhotoBlock(
 	props: ThreePhotoBlockProps & {
-		__locale?: Lang
+		__locale: Lang
 	},
 ): React.JSX.Element {
 	return (

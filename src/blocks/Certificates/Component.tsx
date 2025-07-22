@@ -6,7 +6,7 @@ import { CertificatesBlockDefaults as defaults } from './defaults'
 
 export function CertificatesBlock(
 	props: CertificatesBlockProps & {
-		__locale?: Lang
+		__locale: Lang
 	},
 ): React.JSX.Element {
 	return (

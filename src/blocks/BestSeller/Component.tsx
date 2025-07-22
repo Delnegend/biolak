@@ -26,7 +26,7 @@ export async function BestSellerBlock({
 	__locale,
 	...props
 }: BestSellerBlockProps & {
-	__locale?: Lang
+	__locale: Lang
 }): Promise<React.JSX.Element> {
 	const payload = await getPayload({ config })
 	const {

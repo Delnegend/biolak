@@ -11,7 +11,7 @@ import { CallToActionLeftBlockDefaults as defaults } from './defaults'
 
 export function CallToActionLeftBlock(
 	props: CallToActionLeftBlockProps & {
-		__locale?: Lang
+		__locale: Lang
 	},
 ): React.JSX.Element {
 	const bgUrl =
@@ -38,6 +38,7 @@ export function CallToActionLeftBlock(
 							data={props.description}
 							enableGutter={false}
 							className="mx-0 text-balance text-xl leading-8 text-white"
+							locale={props.__locale}
 						/>
 					)}
 					<Button className="w-full justify-between" size="lg" asChild>

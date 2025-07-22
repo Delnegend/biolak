@@ -5,7 +5,7 @@ import { Lang } from '@/utilities/lang'
 import { matchLang } from '@/utilities/matchLang'
 
 export function FocusRightLargeImageBlock(
-	props: FocusRightLargeImageBlockProps & { __locale?: Lang },
+	props: FocusRightLargeImageBlockProps & { __locale: Lang },
 ): React.JSX.Element {
 	return (
 		<div
@@ -16,7 +16,7 @@ export function FocusRightLargeImageBlock(
 				className="mr-16 max-w-[36rem] self-center justify-self-end"
 				style={{ gridArea: 'content' }}
 			>
-				<RichText data={props.content} enableGutter={false} />
+				<RichText data={props.content} enableGutter={false} locale={props.__locale} />
 			</div>
 			<HeadlessImage
 				media={props.image}

@@ -6,14 +6,19 @@ import { matchLang } from '@/utilities/matchLang'
 
 export function FocusRightSmallImageBlock(
 	props: FocusRightSmallImageBlockProps & {
-		__locale?: Lang
+		__locale: Lang
 	},
 ): React.JSX.Element {
 	const img = props.image && typeof props.image === 'object' ? props.image : null
 
 	return (
 		<div className="safe-width my-24 grid grid-cols-[3.5fr_3fr]">
-			<RichText data={props.content} enableGutter={false} className="self-center text-primary" />
+			<RichText
+				data={props.content}
+				enableGutter={false}
+				className="self-center text-primary"
+				locale={props.__locale}
+			/>
 			<HeadlessImage
 				media={img}
 				placeholder={{ width: 1000, height: 1000 }}

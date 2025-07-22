@@ -4,6 +4,7 @@ import React from 'react'
 
 import RichText from '@/components/RichText'
 import type { Page } from '@/payload-types'
+import { Lang } from '@/utilities/lang'
 
 interface ValidMedia {
 	url: string
@@ -12,7 +13,11 @@ interface ValidMedia {
 	alt: string
 }
 
-export function LowImpactHero(props: Page['hero']): React.JSX.Element {
+export function LowImpactHero(
+	props: Page['hero'] & {
+		__locale: Lang
+	},
+): React.JSX.Element {
 	let media: ValidMedia | undefined
 	if (
 		props.media !== undefined &&
@@ -42,7 +47,9 @@ export function LowImpactHero(props: Page['hero']): React.JSX.Element {
 				{props.subtitle && (
 					<h2 className="mb-4 text-2xl font-bold md:text-4xl lg:text-5xl">{props.subtitle}</h2>
 				)}
-				{props.description && <RichText data={props.description} enableGutter={false} />}
+				{props.description && (
+					<RichText data={props.description} enableGutter={false} locale={props.__locale} />
+				)}
 			</div>
 			<ArrowDown color="#485A1E" size={30} />
 		</div>

@@ -12,7 +12,7 @@ import { LatestPostsBlockDefaults as defaults } from './defaults'
 
 export function LatestPostsBlock(
 	props: LatestPostsBlockProps & {
-		__locale?: Lang
+		__locale: Lang
 	},
 ): React.JSX.Element {
 	const posts = props.posts.filter((post) => typeof post === 'object') ?? []

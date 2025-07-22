@@ -5,8 +5,9 @@ import { CMSLink } from '@/components/CMSLink'
 import { Media } from '@/components/Media'
 import RichText from '@/components/RichText'
 import type { Page } from '@/payload-types'
+import { Lang } from '@/utilities/lang'
 
-export function HighImpactHero(props: Page['hero']): React.JSX.Element {
+export function HighImpactHero(props: Page['hero'] & { __locale: Lang }): React.JSX.Element {
 	return (
 		<div
 			className="relative -mt-[10.4rem] flex items-center justify-center text-white"
@@ -23,7 +24,12 @@ export function HighImpactHero(props: Page['hero']): React.JSX.Element {
 						</h2>
 					)}
 					{props.description && (
-						<RichText className="mb-6" data={props.description} enableGutter={false} />
+						<RichText
+							className="mb-6"
+							data={props.description}
+							enableGutter={false}
+							locale={props.__locale}
+						/>
 					)}
 					{Array.isArray(props.links) && props.links.length > 0 && (
 						<ul className="flex gap-4 md:justify-center">

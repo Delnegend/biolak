@@ -9,7 +9,7 @@ import { BuyNowBlockDefaults as defaults } from './defaults'
 export function BuyNowBlock(
 	props: BuyNowBlockProps & {
 		__product?: Product | null
-		__locale?: Lang
+		__locale: Lang
 	},
 ) {
 	const p =

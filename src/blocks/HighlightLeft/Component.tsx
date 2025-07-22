@@ -13,7 +13,7 @@ const phudu = Phudu({
 
 export function HighlightLeftBlock(
 	props: HighlightLeftBlockProps & {
-		__locale?: Lang
+		__locale: Lang
 	},
 ): React.JSX.Element {
 	return (

@@ -1,22 +1,47 @@
+import config from '@payload-config'
+import { getPayload } from 'payload'
+
 import { ProductsSlug } from '@/collections/Products/slug'
 import { HeadlessImage } from '@/components/Media/HeadlessImage'
 import RichText from '@/components/RichText'
 import { HowToUseProductBlockProps, Product } from '@/payload-types'
+import { depthHandler } from '@/utilities/depthHandler'
 import { Lang } from '@/utilities/lang'
 import { matchLang } from '@/utilities/matchLang'
+import { tryCatch } from '@/utilities/tryCatch'
 
 import { HowToUseProductBlockDefaults as defaults } from './defaults'
 
-export function HowToUseProductBlock(
+export async function HowToUseProductBlock(
 	props: HowToUseProductBlockProps & {
 		__product?: Product | null
-		__locale?: Lang
+		__locale: Lang
 	},
-): React.JSX.Element {
-	const p =
-		typeof props[ProductsSlug] === 'object' && !!props[ProductsSlug]
-			? props[ProductsSlug]
-			: props?.__product
+): Promise<React.JSX.Element> {
+	const {
+		data: payload,
+		ok: payloadOk,
+		error: payloadError,
+	} = await tryCatch(() => getPayload({ config }))
+	if (!payloadOk) throw new Error(`Failed to get payload: ${payloadError}`)
+
+	const {
+		data: p,
+		ok,
+		error,
+	} = await depthHandler({
+		data: props.__product,
+		fetch: (id) =>
+			payload.findByID({
+				collection: ProductsSlug,
+				id,
+				locale: props.__locale,
+				overrideAccess: true,
+				draft: false,
+				depth: 1,
+			}),
+	})
+	if (!ok) throw new Error(`Failed to fetch product: ${error}`)
 
 	const subtitle =
 		props.subtitle ??
@@ -51,7 +76,12 @@ export function HowToUseProductBlock(
 				<div className="mb-4 mt-1 font-serif text-5xl font-medium">
 					{props.title ?? defaults.title(props.__locale)}
 				</div>
-				<RichText className="compact mx-0" data={props.content} enableGutter={false} />
+				<RichText
+					className="compact mx-0"
+					data={props.content}
+					enableGutter={false}
+					locale={props.__locale}
+				/>
 			</div>
 		</div>
 	)

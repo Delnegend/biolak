@@ -3,11 +3,17 @@ import React from 'react'
 import RichText from '@/components/RichText'
 import type { ContentBlockProps } from '@/payload-types'
 import { cssStringToStyle } from '@/utilities/cssStringToStyle'
+import { Lang } from '@/utilities/lang'
 import { cn } from '@/utilities/ui'
 
 import { CMSLink } from '../../components/CMSLink'
 
-export function ContentBlock({ columns }: ContentBlockProps): React.JSX.Element {
+export function ContentBlock({
+	columns,
+	__locale,
+}: ContentBlockProps & {
+	__locale: Lang
+}): React.JSX.Element {
 	const colsSpanClasses = {
 		full: '12',
 		half: '6',
@@ -34,7 +40,9 @@ export function ContentBlock({ columns }: ContentBlockProps): React.JSX.Element 
 								key={index}
 								style={cssStringToStyle(customCss)}
 							>
-								{richText && <RichText data={richText} enableGutter={false} />}
+								{richText && (
+									<RichText data={richText} enableGutter={false} locale={__locale} />
+								)}
 
 								{enableLink && link && <CMSLink {...link} type={link.type ?? undefined} />}
 							</div>

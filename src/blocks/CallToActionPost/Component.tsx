@@ -11,7 +11,7 @@ import { CallToActionPostBlockDefaults as defaults } from './defaults'
 
 export function CallToActionPostBlock(
 	props: CallToActionPostBlockProps & {
-		__locale?: Lang
+		__locale: Lang
 	},
 ): React.JSX.Element {
 	const post = props.post && typeof props.post === 'object' ? props.post : null

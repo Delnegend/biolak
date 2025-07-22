@@ -55,6 +55,7 @@ export default async function Page({ params: paramsPromise }: Args) {
 	const { isEnabled: draft } = await draftMode()
 	const { slug = 'home' } = await paramsPromise
 	const url = '/' + (slug || 'home')
+	const locale = await getClientLang()
 
 	const page = await queryPageBySlug({ slug })
 
@@ -70,7 +71,7 @@ export default async function Page({ params: paramsPromise }: Args) {
 
 			{draft && <LivePreviewListener />}
 
-			<RenderHero {...page.hero} />
+			<RenderHero {...page.hero} __locale={locale} />
 			<RenderBlocks blocks={page.pageLayout} />
 			<FooterGlobalComponent size={page.footerSize} />
 		</article>
