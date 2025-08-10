@@ -13,6 +13,8 @@ else
   echo 'alias j=just' >> ~/.zshrc
   sudo rm -f /usr/local/bin/just
   sudo tar -xzf /tmp/just.tar.gz -C /usr/local/bin just
+  just --completions zsh > ~/.just.zsh
+  echo '[[ -f ~/.just.zsh ]] && source ~/.just.zsh' >> ~/.zshrc
   [[ -f "/usr/local/bin/just" ]] && echo "just installed successfully"
 fi
 rm -f /tmp/just.tar.gz
