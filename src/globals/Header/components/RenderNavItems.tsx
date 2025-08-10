@@ -63,7 +63,7 @@ export function INTERNAL_RenderNavItems({
 
 						return item.internalUrl?.value ? (
 							<INTERNAL_CloseSmallNavWrapper asChild key={`header-left-${index}`}>
-								<Link href={url ?? '#'}>
+								<Link href={url ?? '#'} className="whitespace-nowrap">
 									{item.label ??
 										doc?.title ??
 										matchLang({
@@ -81,6 +81,7 @@ export function INTERNAL_RenderNavItems({
 									href={item.customUrl ?? '#'}
 									target="_blank"
 									rel="noopener noreferrer"
+									className="whitespace-nowrap"
 								>
 									{item.label ??
 										item.customUrl?.replaceAll(/https?:\/\//, '') ??
