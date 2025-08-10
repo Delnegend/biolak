@@ -1,14 +1,10 @@
 import { CollectionAfterChangeHook } from 'payload'
 
 import { CustomersSlug } from '@/collections/Customers/slug'
-import { DiscountCodesSlug } from '@/collections/DiscountCode/slug'
-import { ProductsSlug } from '@/collections/Products/slug'
 import { UsersSlug } from '@/collections/Users/slug'
-import { CheckoutPageGlobalDefaults } from '@/globals/CheckoutPage/defaults'
 import { Order } from '@/payload-types'
-import { calculatePrices } from '@/utilities/calculatePrices'
 import { cnsoleBuilder } from '@/utilities/cnsole'
-import { arrayDepthHandler, depthHandler } from '@/utilities/depthHandler'
+import { depthHandler } from '@/utilities/depthHandler'
 import { tryCatch } from '@/utilities/tryCatch'
 
 const cnsole = cnsoleBuilder('Orders/sendOrderCreatedEmail')
@@ -41,102 +37,26 @@ export const sendOrderCreatedEmail: CollectionAfterChangeHook<Order> = async ({
 		return doc
 	}
 
-	const {
-		data: productsInfos,
-		error: productsInfosError,
-		ok: productsInfosOk,
-	} = await arrayDepthHandler({
-		data: doc.cart?.products?.map((i) => i.product),
-		fetch: (ids) =>
-			payload
-				.find({
-					collection: ProductsSlug,
-					where: {
-						id: {
-							in: ids,
-						},
-					},
-					depth: 1,
-					pagination: false,
-					limit: 1000,
-				})
-				.then((result) => result.docs),
-	})
-	if (!productsInfosOk) {
-		cnsole.error("Can't fetch products:", productsInfosError)
-		return doc
-	}
-
 	let text =
-		`Tên khách hàng: ${customer?.name ?? 'Không xác định'}\n` +
-		`Số điện thoại: ${customer?.phoneNumber ?? 'Không xác định'}\n` +
-		`Địa chỉ giao hàng: ${doc.shippingInfo?.address?.split('\n').join(', ') ?? 'Không xác định'}\n` +
+		`Tên khách hàng: ${doc.receiverName ?? 'Không xác định'}\n` +
+		`Số điện thoại: ${doc.receiverPhoneNumber ?? 'Không xác định'}\n` +
+		`Địa chỉ giao hàng: ${doc.receiverAddress?.split('\n').join(', ') ?? 'Không xác định'}\n` +
 		`Phương thức giao hàng: ${doc.shippingInfo?.method === 'express' ? 'Giao hàng nhanh' : 'Giao hàng tiêu chuẩn'}\n`
 
-	if (doc.cart?.products?.length) {
+	if (doc.cart?.length) {
 		text += `\nChi tiết đơn hàng:\n`
-		for (const product of doc.cart.products) {
-			const matchedProduct = productsInfos.find(
-				(p) =>
-					p.id ===
-					(typeof product.product === 'object' ? product.product.id : product.product),
-			)
-			if (!matchedProduct) continue
-			const matchedVariant = matchedProduct.variants.find((v) => v.sku === product.sku)
-			if (!matchedVariant) continue
+		for (const item of doc.cart) {
 			text +=
-				`- Sản phẩm: ${matchedProduct.title ?? 'Không xác định'}, ` +
-				`SKU: ${product.sku}, ` +
-				`Số lượng: ${product.quantity}, ` +
-				`Đơn giá: ${matchedVariant.price ?? 0}, ` +
-				`Tổng: ${matchedVariant.price * product.quantity}\n`
+				`- Sản phẩm: ${item.title ?? 'Không xác định'}, ` +
+				`SKU: ${item.sku}, ` +
+				`Số lượng: ${item.quantity}, ` +
+				`Đơn giá: ${item.priceAtBuy}, ` +
+				`Tổng: ${item.previewTotal}\n`
 		}
-		const {
-			data: code,
-			ok,
-			error,
-		} = await depthHandler({
-			data: doc.cart?.discountCode,
-			fetch(id) {
-				return payload.findByID({
-					collection: DiscountCodesSlug,
-					id,
-				})
-			},
-		})
-		if (!ok) {
-			cnsole.error("Can't fetch discount code:", error)
-		}
-		const prices = calculatePrices({
-			code,
-			shipping:
-				doc.shippingInfo?.method === 'express'
-					? CheckoutPageGlobalDefaults.shipping.fastShippingPrice
-					: CheckoutPageGlobalDefaults.shipping.standardShippingPrice,
-			products: doc.cart.products.map((item) => {
-				const matchedProduct = productsInfos.find(
-					(p) => p.id === (typeof item.product === 'object' ? item.product.id : item.product),
-				)
-				const matchedVariant = matchedProduct?.variants.find((v) => v.sku === item.sku)
-				return {
-					id: typeof item.product === 'object' ? item.product.id : item.product,
-					variant: {
-						price: matchedVariant?.price ?? 0,
-						quantity: item.quantity,
-					},
-					categoryIds: matchedProduct?.productCategories?.map((c) =>
-						typeof c === 'object' ? c.id : c,
-					),
-					subCategoryIds: matchedProduct?.productSubCategories?.map((c) =>
-						typeof c === 'object' ? c.id : c,
-					),
-				}
-			}),
-		})
-		text += `\nTổng tạm tính: ${prices.provisional}\n`
-		text += `Phí vận chuyển: ${prices.shipping}\n`
-		text += `Giảm giá: ${prices.discount}\n`
-		text += `Tổng cộng: ${prices.total}\n`
+		text += `\nTổng tạm tính: ${doc.prices.provisional}\n`
+		text += `Phí vận chuyển: ${doc.prices.shipping}\n`
+		text += `Giảm giá: ${doc.prices.discount}\n`
+		text += `Tổng cộng: ${doc.prices.total}\n`
 	}
 
 	const {
