@@ -1,12 +1,8 @@
 {
 	"name": "biolak",
-	"build": {
-		"dockerfile": "Dockerfile"
-	},
-	"features": {
-		"ghcr.io/devcontainers/features/docker-in-docker:2": {}
-	},
-	"runArgs": ["-v", "global-pnpm-store:/home/vscode/.pnpm-store", "-m=6g"],
+	"dockerComposeFile": "docker-compose.yml",
+	"service": "dev",
+	"workspaceFolder": "/biolak",
 	"postCreateCommand": "zsh .devcontainer/postinstall.sh",
 	"customizations": {
 		"vscode": {
