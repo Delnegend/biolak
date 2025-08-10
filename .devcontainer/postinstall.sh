@@ -2,19 +2,22 @@
 
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
 
-ver=1.40.0 && sudo rm -f /usr/local/bin/just
+# just
+ver=1.40.0
 curl -s -L -o /tmp/just.tar.gz https://github.com/casey/just/releases/download/$ver/just-$ver-x86_64-unknown-linux-musl.tar.gz
 checksum=$(openssl dgst -sha3-512 /tmp/just.tar.gz | awk '{print $2}')
 expected="27f317b6ca704395dbad34c078f57d140d6d3e1f147a29b5c7563489885525a203bb289b02ec05e52282d25dfe446a60e11554a58addc682ad17f94b6b100cb9"
 if [ "$checksum" != "$expected" ]; then
   echo "just checksum mismatch, expected $expected, got $checksum"
 else
+  echo 'alias j=just' >> ~/.zshrc
   sudo rm -f /usr/local/bin/just
   sudo tar -xzf /tmp/just.tar.gz -C /usr/local/bin just
   [[ -f "/usr/local/bin/just" ]] && echo "just installed successfully"
 fi
 rm -f /tmp/just.tar.gz
 
+# fzf
 ver="0.61.3"
 curl -s -L -o /tmp/fzf.tar.gz https://github.com/junegunn/fzf/releases/download/v$ver/fzf-$ver-linux_amd64.tar.gz
 checksum=$(openssl dgst -sha3-512 /tmp/fzf.tar.gz | awk '{print $2}')
@@ -28,13 +31,7 @@ else
 fi
 rm -f /tmp/fzf.tar.gz
 
-if ! grep -qF 'alias j=just' ~/.zshrc; then
-  echo 'alias j=just' >> ~/.zshrc
-fi
-if ! grep -qF 'alias podman=docker' ~/.zshrc; then
-  echo 'alias podman=docker' >> ~/.zshrc
-fi
-
+# node
 curl https://get.volta.sh | bash
 export VOLTA_HOME="$HOME/.volta"
 export PATH="$VOLTA_HOME/bin:$PATH"
@@ -44,8 +41,6 @@ fi
 if ! grep -qF 'export PATH="$VOLTA_HOME/bin:$PATH"' ~/.zshrc; then
   echo 'export PATH="$VOLTA_HOME/bin:$PATH"' >> ~/.zshrc
 fi
-volta install node@24 pnpm
+volta install node@lts pnpm
 pnpm config set store-dir ~/.pnpm-store
 pnpm i
-
-echo 0 | sudo update-alternatives --config iptables

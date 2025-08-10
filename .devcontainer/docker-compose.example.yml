@@ -1,0 +1,48 @@
+services:
+   postgres:
+      image: docker.io/library/postgres:17-alpine
+      # ports:
+      #    - 5432:5432
+      hostname: postgres
+      volumes:
+         - ./postgres-dev:/var/lib/postgresql/data
+      environment:
+         POSTGRES_USER: postgres
+         POSTGRES_PASSWORD: postgres
+         POSTGRES_DB: biolak
+
+   dev:
+      build:
+         context: .
+         dockerfile: Dockerfile
+      depends_on:
+         - postgres
+      tty: true
+      user: 1000:1000
+      ports:
+         - 3000:3000
+      volumes:
+         - ../:/biolak
+      deploy:
+         resources:
+            limits:
+               memory: 6g
+      environment:
+         DATABASE_URI: postgresql://postgres:postgres@postgres:5432/biolak
+         # Used to encrypt JWT tokens
+         PAYLOAD_SECRET: YOUR_SECRET_HERE
+         # Used to config CORS, format links & more, no trailing slash
+         NEXT_PUBLIC_SERVER_URL: http://localhost:3000
+         # Used to auth cron jobs
+         CRON_SECRET: YOUR_CRON_SECRET_HERE
+         # Uses to validate preview requests
+         PREVIEW_SECRET: YOUR_SECRET_HERE
+
+         SMTP_FROM:
+         SMTP_HOST:
+         SMTP_PORT:
+         SMTP_USER:
+         SMTP_PASS:
+
+         DEV_EMAIL:
+         DEV_PASSWORD:
