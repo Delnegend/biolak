@@ -70,7 +70,14 @@ db-dev-pg-start:
   docker compose up -d postgres-dev
 
 lint:
-  pnpm next lint --fix && pnpm prettier --write --list-different .
+  pnpm next lint --fix && \
+  pnpm prettier --write --list-different \
+    .devcontainer/devcontainer.json \
+    .vscode \
+    docs \
+    public \
+    src \
+    *.{json,js,mjs,cjs,ts,md}
 
 payload:
   pnpm payload
