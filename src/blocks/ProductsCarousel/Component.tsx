@@ -72,9 +72,8 @@ export async function ProductsCarouselBlock(
 										id,
 									}),
 							})
-							if (!ok) {
-								cnsole.error(`Can't fetching image for product ${product.id}:`, error)
-							}
+							if (!ok) cnsole.error(`Can't fetching image for product ${product.id}:`, error)
+
 							return (
 								<CarouselItem
 									key={product.id}
