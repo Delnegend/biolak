@@ -187,8 +187,8 @@ export default function PageClient({
 				cart: cart
 					.filter((item) => item.checked)
 					.map((item) => ({
-						product: item.product.id,
-						sku: item.variant.sku,
+						productId: item.product.id,
+						productSku: item.variant.sku,
 						quantity: item.quantity,
 					})),
 				details: data,
