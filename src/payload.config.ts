@@ -104,7 +104,6 @@ export default buildConfig({
 	],
 	cors: [getServerSideURL()].filter(Boolean),
 	globals: [
-		CheckoutPageGlobalConf,
 		ContactFormGlobalConf,
 		FloatingGlobalConf,
 		FooterGlobalConf,
@@ -113,6 +112,7 @@ export default buildConfig({
 		PromoGlobalConf,
 		ReviewsGlobalConf,
 		PaymentGlobalConf,
+		CheckoutPageGlobalConf,
 	],
 	plugins: [
 		...plugins,
