@@ -329,7 +329,7 @@ export const ProductsCollection: CollectionConfig<typeof ProductsSlug> = {
 							},
 							type: 'join',
 							collection: OrdersSlug,
-							on: 'cart.products.product',
+							on: 'cart.product',
 							access: {
 								read: allow(Role.Admin, Role.SalesManager),
 							},
