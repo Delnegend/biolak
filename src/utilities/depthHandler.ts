@@ -10,7 +10,7 @@ export async function depthHandler<T extends object>({
 	fetch,
 }: {
 	data?: T | number | null
-	fetch: (id: number) => Promise<T>
+	fetch: (id: number) => Promise<T> | null
 }): ReturnType<typeof tryCatch<T | null>> {
 	if (!data)
 		return {
