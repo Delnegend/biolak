@@ -92,7 +92,7 @@ export async function ProductsCarouselBlock(
 										placeholder={{ width: 720, height: 880 }}
 										className="size-full max-h-[55rem] object-cover"
 									/>
-									<div className="flex flex-col justify-center gap-3 text-balance bg-[#210E0A] px-14 py-12 text-[#F1DAAE] max-md:h-fit max-md:px-4 max-md:py-6">
+									<div className="flex flex-col justify-center gap-3 text-balance bg-primary px-14 py-12 text-[#F1DAAE] max-md:h-fit max-md:px-4 max-md:py-6">
 										<div className="text-xl font-medium max-md:text-base">
 											{props.title ?? defaults.title(props.__locale)}
 										</div>
