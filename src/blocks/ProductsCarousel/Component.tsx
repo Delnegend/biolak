@@ -52,9 +52,7 @@ export async function ProductsCarouselBlock(
 				})
 				.then((res) => res.docs),
 	})
-	if (!productsOk) {
-		cnsole.error("Can't fetching products:", productsError)
-	}
+	if (!productsOk) throw new Error(`ProductsCarouselBlock: Can't fetch products: ${productsError}`)
 
 	return (
 		<div className="relative overflow-hidden">
