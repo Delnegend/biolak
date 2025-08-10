@@ -17,6 +17,7 @@ export function INTERNAL_LanguageSwitcher({
 				document.cookie = `${PreferredLocaleCookieName}=${locale === Lang.English ? Lang.Vietnamese : Lang.English}; path=/`
 				window.location.reload()
 			}}
+			className="whitespace-nowrap"
 		>
 			{label ?? <>{locale === Lang.Vietnamese ? 'English' : 'Tiếng Việt'}</>}
 		</button>

@@ -178,7 +178,7 @@ export function INTERNAL_ProductsDropdownClient({
 
 	return (
 		<div className="relative">
-			<button onClick={() => setOpen(!open)}>
+			<button onClick={() => setOpen(!open)} className="whitespace-nowrap">
 				{label ??
 					matchLang({
 						[Lang.English]: 'Products',

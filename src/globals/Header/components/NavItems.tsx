@@ -49,7 +49,7 @@ export const NavItems: Record<
 		<Dialog>
 			<DialogTrigger asChild>
 				<INTERNAL_CloseSmallNavWrapper asChild>
-					<button>
+					<button className="whitespace-nowrap">
 						{label ??
 							matchLang({
 								[Lang.English]: 'Contacts',

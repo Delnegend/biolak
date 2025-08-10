@@ -18,14 +18,15 @@ export function INTERNAL_LargeNav({
 	className: string
 }): React.JSX.Element {
 	return (
-		<div className={cn('grid w-full grid-cols-[1fr_auto_1fr]', className)}>
-			<nav className="flex items-center gap-9 text-xl">
+		<div className={cn('grid w-full grid-cols-[1fr_auto_1fr] gap-x-6', className)}>
+			<div className="content-center overflow-x-auto">
+				{' '}
 				<INTERNAL_RenderNavItems
 					items={global?.headerItemsLeft ?? []}
 					locale={locale}
 					size="lg"
 				/>
-			</nav>
+			</div>
 
 			<Link href="/home" className="self-center">
 				<Image
@@ -40,13 +41,14 @@ export function INTERNAL_LargeNav({
 				/>
 			</Link>
 
-			<nav className="flex items-center justify-end gap-9 text-xl">
+			<div className="overflow-hidden">
 				<INTERNAL_RenderNavItems
-					items={global?.headerItemsRight ?? []}
+					items={(global?.headerItemsRight ?? []).reverse()}
 					locale={locale}
 					size="lg"
+					className="content-center overflow-x-auto max-md:flex-col-reverse md:flex-row-reverse"
 				/>
-			</nav>
+			</div>
 		</div>
 	)
 }
