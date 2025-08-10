@@ -11,9 +11,7 @@ const cnsole = cnsoleBuilder('Orders/validateQuantity')
 
 export const validateQuantity: NumberFieldSingleValidation = async (value, ctx) => {
 	const locale = ctx.req.locale === Lang.English ? Lang.English : Lang.Vietnamese
-	const siblingData = ctx.siblingData as NonNullable<
-		NonNullable<Partial<Order>['cart']>['products']
-	>[number]
+	const siblingData = ctx.siblingData as NonNullable<NonNullable<Partial<Order>['cart']>>[number]
 
 	if (!siblingData.product)
 		return matchLang({

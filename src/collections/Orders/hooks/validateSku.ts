@@ -12,9 +12,8 @@ const cnsole = cnsoleBuilder('Orders/validateSku')
 export const validateSku: TextFieldSingleValidation = async (value, ctx) => {
 	const locale = ctx.req.locale === Lang.English ? Lang.English : Lang.Vietnamese
 
-	const product_ = (
-		ctx.siblingData as NonNullable<NonNullable<Partial<Order>['cart']>['products']>[number]
-	)?.product
+	const product_ = (ctx.siblingData as NonNullable<NonNullable<Partial<Order>['cart']>>[number])
+		?.product
 
 	if (!product_) {
 		cnsole.error('Product not selected')
