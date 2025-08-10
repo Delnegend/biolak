@@ -207,9 +207,9 @@ update:
   podman compose up -d biolak-payload
 
 # check if the prod would build successfully
-test-build: lint
-  docker compose -f ./devcontainer/docker-compose.test-build.yml up postgres-test-prod server-test-prod
-  docker compose -f ./devcontainer/docker-compose.test-build.yml down postgres-test-prod server-test-prod
+test-build:
+  docker compose -f .devcontainer/docker-compose.test-build.yml up postgres-test-build server-test-build
+  docker compose -f .devcontainer/docker-compose.test-build.yml down postgres-test-build server-test-build
 
 test-google-drive-upload:
   #!/usr/bin/env bash
