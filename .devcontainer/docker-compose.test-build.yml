@@ -3,7 +3,7 @@ services:
       image: postgres:17-alpine
       restart: unless-stopped
       volumes:
-         - postgres-test-build:/var/lib/postgresql/data
+         - biolak-postgres-test-build:/var/lib/postgresql/data
       environment:
          - POSTGRES_USER=postgres
          - POSTGRES_PASSWORD=postgres
@@ -39,7 +39,7 @@ services:
       command: sh -c "npm i -g pnpm && pnpm i --frozen-lockfile && pnpm payload migrate && pnpm next build --turbo"
 
 volumes:
-   postgres-test-prod:
+   biolak-postgres-test-build:
    biolak-nextjs:
    biolak-pnpm-store:
    biolak-node_modules:
