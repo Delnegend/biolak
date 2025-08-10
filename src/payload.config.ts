@@ -26,6 +26,7 @@ import { CheckoutPageGlobalConf } from './globals/CheckoutPage/config'
 import { ContactFormGlobalConf } from './globals/ContactForm/config'
 import { FloatingGlobalConf } from './globals/Floating/config'
 import { FooterGlobalConf } from './globals/Footer/config'
+import { GeneralGlobalConf } from './globals/General/config'
 import { HeaderGlobalConf } from './globals/Header/config'
 import { PaymentGlobalConf } from './globals/Payment/config'
 import { PopupBannerGlobalConf } from './globals/PopupBanner/config'
@@ -104,6 +105,7 @@ export default buildConfig({
 	],
 	cors: [getServerSideURL()].filter(Boolean),
 	globals: [
+		GeneralGlobalConf,
 		ContactFormGlobalConf,
 		FloatingGlobalConf,
 		FooterGlobalConf,
