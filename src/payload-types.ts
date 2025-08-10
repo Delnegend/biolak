@@ -132,7 +132,7 @@ export interface Config {
     defaultIDType: number;
   };
   globals: {
-    checkoutPageGlobal: CheckoutPageGlobal;
+    generalGlobal: GeneralGlobal;
     contactFormGlobal: ContactFormGlobal;
     floatingGlobal: FloatingGlobal;
     footerGlobal: FooterGlobal;
@@ -141,9 +141,10 @@ export interface Config {
     promoGlobal: PromoGlobal;
     reviewsGlobal: ReviewsGlobal;
     paymentGlobal: PaymentGlobal;
+    checkoutPageGlobal: CheckoutPageGlobal;
   };
   globalsSelect: {
-    checkoutPageGlobal: CheckoutPageGlobalSelect<false> | CheckoutPageGlobalSelect<true>;
+    generalGlobal: GeneralGlobalSelect<false> | GeneralGlobalSelect<true>;
     contactFormGlobal: ContactFormGlobalSelect<false> | ContactFormGlobalSelect<true>;
     floatingGlobal: FloatingGlobalSelect<false> | FloatingGlobalSelect<true>;
     footerGlobal: FooterGlobalSelect<false> | FooterGlobalSelect<true>;
@@ -152,6 +153,7 @@ export interface Config {
     promoGlobal: PromoGlobalSelect<false> | PromoGlobalSelect<true>;
     reviewsGlobal: ReviewsGlobalSelect<false> | ReviewsGlobalSelect<true>;
     paymentGlobal: PaymentGlobalSelect<false> | PaymentGlobalSelect<true>;
+    checkoutPageGlobal: CheckoutPageGlobalSelect<false> | CheckoutPageGlobalSelect<true>;
   };
   locale: 'en' | 'vi';
   user: User & {
@@ -212,33 +214,44 @@ export interface Order {
   id: number;
   invoiceId: string;
   customer: number | Customer;
-  /**
-   * This note is for internal use only, it will not be shown to the customer.
-   */
-  note?: string | null;
-  cart?: {
-    products?:
-      | {
-          product: number | Product;
-          sku: string;
-          quantity: number;
-          previewPrice?: number | null;
-          previewTotal?: number | null;
-          id?: string | null;
-        }[]
-      | null;
+  receiverName?: string | null;
+  receiverPhoneNumber?: string | null;
+  receiverAddress?: string | null;
+  receiverNote?: string | null;
+  orderState?: ('pending' | 'processing' | 'completed') | null;
+  message?: {
+    sender?: string | null;
+    receiver?: string | null;
+    content?: string | null;
+  };
+  shippingInfo?: {
+    method?: ('standard' | 'express') | null;
+    /**
+     * Get from the shipping provider
+     */
+    tracking?: string | null;
+  };
+  cart?:
+    | {
+        product?: (number | null) | Product;
+        sku: string;
+        title: string;
+        quantity: number;
+        priceAtBuy: number;
+        previewTotal: number;
+        id?: string | null;
+      }[]
+    | null;
+  prices: {
     discountCode?: (number | null) | DiscountCode;
-    prices?: {
-      provisional?: number | null;
-      shipping?: number | null;
-      discount?: number | null;
-      total?: number | null;
-      paidAmount?: number | null;
-    };
+    provisional: number;
+    shipping: number;
+    discount: number;
+    total: number;
+    paidAmount?: number | null;
   };
   billing?: {
     method?: ('cod' | 'bankTransfer') | null;
-    paidInFull?: boolean | null;
     transactions?:
       | {
           id?: string | null;
@@ -250,19 +263,6 @@ export interface Order {
           description?: string | null;
         }[]
       | null;
-  };
-  shippingInfo?: {
-    address?: string | null;
-    method?: ('standard' | 'express') | null;
-    /**
-     * Get from the shipping provider
-     */
-    tracking?: string | null;
-  };
-  message?: {
-    sender?: string | null;
-    receiver?: string | null;
-    content?: string | null;
   };
   review?: {
     rating?: number | null;
@@ -2728,36 +2728,49 @@ export interface ProductSubCategoriesSelect<T extends boolean = true> {
 export interface OrdersSelect<T extends boolean = true> {
   invoiceId?: T;
   customer?: T;
-  note?: T;
+  receiverName?: T;
+  receiverPhoneNumber?: T;
+  receiverAddress?: T;
+  receiverNote?: T;
+  orderState?: T;
+  message?:
+    | T
+    | {
+        sender?: T;
+        receiver?: T;
+        content?: T;
+      };
+  shippingInfo?:
+    | T
+    | {
+        method?: T;
+        tracking?: T;
+      };
   cart?:
     | T
     | {
-        products?:
-          | T
-          | {
-              product?: T;
-              sku?: T;
-              quantity?: T;
-              previewPrice?: T;
-              previewTotal?: T;
-              id?: T;
-            };
+        product?: T;
+        sku?: T;
+        title?: T;
+        quantity?: T;
+        priceAtBuy?: T;
+        previewTotal?: T;
+        id?: T;
+      };
+  prices?:
+    | T
+    | {
         discountCode?: T;
-        prices?:
-          | T
-          | {
-              provisional?: T;
-              shipping?: T;
-              discount?: T;
-              total?: T;
-              paidAmount?: T;
-            };
+        provisional?: T;
+        shipping?: T;
+        discount?: T;
+        total?: T;
+        paidAmount?: T;
       };
   billing?:
     | T
     | {
         method?: T;
-        paidInFull?: T;
         transactions?:
           | T
           | {
@@ -2769,20 +2782,6 @@ export interface OrdersSelect<T extends boolean = true> {
               referenceCode?: T;
               description?: T;
             };
-      };
-  shippingInfo?:
-    | T
-    | {
-        address?: T;
-        method?: T;
-        tracking?: T;
-      };
-  message?:
-    | T
-    | {
-        sender?: T;
-        receiver?: T;
-        content?: T;
       };
   review?:
     | T
@@ -3075,64 +3074,12 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "checkoutPageGlobal".
+ * via the `definition` "generalGlobal".
  */
-export interface CheckoutPageGlobal {
+export interface GeneralGlobal {
   id: number;
-  contacts?: {
-    title?: string | null;
-    emailInputLabel?: string | null;
-    acceptNewsletter?: string | null;
-  };
-  address?: {
-    title?: string | null;
-    nameInputLabel?: string | null;
-    phoneInputLabel?: string | null;
-    provinceCityInputLabel?: string | null;
-    districtInputLabel?: string | null;
-    wardInputLabel?: string | null;
-    details?: string | null;
-    saveForNextTime?: string | null;
-  };
-  shipping?: {
-    title?: string | null;
-    standardShippingLabel?: string | null;
-    fastShippingLabel?: string | null;
-    standardShippingPrice?: number | null;
-    fastShippingPrice?: number | null;
-  };
-  payment?: {
-    title?: string | null;
-    codLabel?: string | null;
-    bankTransferLabel?: string | null;
-  };
-  gift?: {
-    title?: string | null;
-    senderInputLabel?: string | null;
-    recipientInputLabel?: string | null;
-    messageInputLabel?: string | null;
-  };
-  order?: {
-    title?: string | null;
-  };
-  discount?: {
-    title?: string | null;
-    inputPlaceholder?: string | null;
-    applyButtonLabel?: string | null;
-  };
-  orderSummary?: {
-    provisional?: string | null;
-    discount?: string | null;
-    shipping?: string | null;
-    total?: string | null;
-    acknowledgment?: string | null;
-    orderButtonLabel?: string | null;
-  };
-  popup?: {
-    successTitle?: string | null;
-    successDescription?: string | null;
-    backToHomeButtonLabel?: string | null;
-  };
+  description?: string | null;
+  siteBanner?: (number | null) | Media;
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -3349,81 +3296,74 @@ export interface PaymentGlobal {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "checkoutPageGlobal_select".
+ * via the `definition` "checkoutPageGlobal".
  */
-export interface CheckoutPageGlobalSelect<T extends boolean = true> {
-  contacts?:
-    | T
-    | {
-        title?: T;
-        emailInputLabel?: T;
-        acceptNewsletter?: T;
-      };
-  address?:
-    | T
-    | {
-        title?: T;
-        nameInputLabel?: T;
-        phoneInputLabel?: T;
-        provinceCityInputLabel?: T;
-        districtInputLabel?: T;
-        wardInputLabel?: T;
-        details?: T;
-        saveForNextTime?: T;
-      };
-  shipping?:
-    | T
-    | {
-        title?: T;
-        standardShippingLabel?: T;
-        fastShippingLabel?: T;
-        standardShippingPrice?: T;
-        fastShippingPrice?: T;
-      };
-  payment?:
-    | T
-    | {
-        title?: T;
-        codLabel?: T;
-        bankTransferLabel?: T;
-      };
-  gift?:
-    | T
-    | {
-        title?: T;
-        senderInputLabel?: T;
-        recipientInputLabel?: T;
-        messageInputLabel?: T;
-      };
-  order?:
-    | T
-    | {
-        title?: T;
-      };
-  discount?:
-    | T
-    | {
-        title?: T;
-        inputPlaceholder?: T;
-        applyButtonLabel?: T;
-      };
-  orderSummary?:
-    | T
-    | {
-        provisional?: T;
-        discount?: T;
-        shipping?: T;
-        total?: T;
-        acknowledgment?: T;
-        orderButtonLabel?: T;
-      };
-  popup?:
-    | T
-    | {
-        successTitle?: T;
-        successDescription?: T;
-        backToHomeButtonLabel?: T;
-      };
+export interface CheckoutPageGlobal {
+  id: number;
+  contacts?: {
+    title?: string | null;
+    emailInputLabel?: string | null;
+    acceptNewsletter?: string | null;
+  };
+  address?: {
+    title?: string | null;
+    nameInputLabel?: string | null;
+    phoneInputLabel?: string | null;
+    provinceCityInputLabel?: string | null;
+    districtInputLabel?: string | null;
+    wardInputLabel?: string | null;
+    details?: string | null;
+    saveForNextTime?: string | null;
+  };
+  shipping?: {
+    title?: string | null;
+    standardShippingLabel?: string | null;
+    fastShippingLabel?: string | null;
+    standardShippingPrice?: number | null;
+    fastShippingPrice?: number | null;
+  };
+  payment?: {
+    title?: string | null;
+    codLabel?: string | null;
+    bankTransferLabel?: string | null;
+  };
+  gift?: {
+    title?: string | null;
+    senderInputLabel?: string | null;
+    recipientInputLabel?: string | null;
+    messageInputLabel?: string | null;
+  };
+  order?: {
+    title?: string | null;
+  };
+  discount?: {
+    title?: string | null;
+    inputPlaceholder?: string | null;
+    applyButtonLabel?: string | null;
+  };
+  orderSummary?: {
+    provisional?: string | null;
+    discount?: string | null;
+    shipping?: string | null;
+    total?: string | null;
+    acknowledgment?: string | null;
+    orderButtonLabel?: string | null;
+  };
+  popup?: {
+    successTitle?: string | null;
+    successDescription?: string | null;
+    backToHomeButtonLabel?: string | null;
+  };
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "generalGlobal_select".
+ */
+export interface GeneralGlobalSelect<T extends boolean = true> {
+  description?: T;
+  siteBanner?: T;
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;
@@ -3571,6 +3511,87 @@ export interface PaymentGlobalSelect<T extends boolean = true> {
   sepayApiKey?: T;
   bankName?: T;
   bankAccountNumber?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "checkoutPageGlobal_select".
+ */
+export interface CheckoutPageGlobalSelect<T extends boolean = true> {
+  contacts?:
+    | T
+    | {
+        title?: T;
+        emailInputLabel?: T;
+        acceptNewsletter?: T;
+      };
+  address?:
+    | T
+    | {
+        title?: T;
+        nameInputLabel?: T;
+        phoneInputLabel?: T;
+        provinceCityInputLabel?: T;
+        districtInputLabel?: T;
+        wardInputLabel?: T;
+        details?: T;
+        saveForNextTime?: T;
+      };
+  shipping?:
+    | T
+    | {
+        title?: T;
+        standardShippingLabel?: T;
+        fastShippingLabel?: T;
+        standardShippingPrice?: T;
+        fastShippingPrice?: T;
+      };
+  payment?:
+    | T
+    | {
+        title?: T;
+        codLabel?: T;
+        bankTransferLabel?: T;
+      };
+  gift?:
+    | T
+    | {
+        title?: T;
+        senderInputLabel?: T;
+        recipientInputLabel?: T;
+        messageInputLabel?: T;
+      };
+  order?:
+    | T
+    | {
+        title?: T;
+      };
+  discount?:
+    | T
+    | {
+        title?: T;
+        inputPlaceholder?: T;
+        applyButtonLabel?: T;
+      };
+  orderSummary?:
+    | T
+    | {
+        provisional?: T;
+        discount?: T;
+        shipping?: T;
+        total?: T;
+        acknowledgment?: T;
+        orderButtonLabel?: T;
+      };
+  popup?:
+    | T
+    | {
+        successTitle?: T;
+        successDescription?: T;
+        backToHomeButtonLabel?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;
