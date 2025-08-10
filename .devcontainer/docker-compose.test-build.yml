@@ -15,7 +15,7 @@ services:
          postgres-test-build:
             condition: service_started
       environment:
-         DATABASE_URI: postgres://postgres:postgres@biolak-postgres-test-build:5432/biolak
+         DATABASE_URI: postgres://postgres:postgres@postgres-test-build:5432/biolak
          PAYLOAD_SECRET: YOUR_PAYLOAD_SECRET_HERE
          NEXT_PUBLIC_SERVER_URL: https://example.com
          CRON_SECRET: YOUR_CRON_SECRET_HERE
