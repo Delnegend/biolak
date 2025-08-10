@@ -208,8 +208,8 @@ update:
 
 # check if the prod would build successfully
 test-build: lint
-  docker compose up postgres-test-prod server-test-prod
-  docker compose down postgres-test-prod server-test-prod
+  docker compose -f ./devcontainer/docker-compose.test-build.yml up postgres-test-prod server-test-prod
+  docker compose -f ./devcontainer/docker-compose.test-build.yml down postgres-test-prod server-test-prod
 
 test-google-drive-upload:
   #!/usr/bin/env bash
