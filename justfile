@@ -182,7 +182,7 @@ restore-prod:
   echo "Proceeding with restore..."
 
   # echo "Stopping services..."
-  # podman compose down
+  # docker compose down
 
   echo "Checking out commit $COMMIT_HASH..."
   git checkout "$COMMIT_HASH"
@@ -195,16 +195,16 @@ restore-prod:
   sudo tar -xzvf "$backup_file" ./postgres-data ./public
 
   echo "Restore complete."
-  echo "You may need to restart your services (e.g., 'podman compose up -d')."
+  echo "You may need to restart your services (e.g., 'docker compose up -d')."
   # echo "Starting services..."
-  # podman compose up -d
+  # docker compose up -d
 
 update:
   #!/usr/bin/env bash
-  podman compose down biolak-payload
+  docker compose down biolak-payload
   just backup-prod
   git pull --rebase
-  podman compose up -d biolak-payload
+  docker compose up -d biolak-payload
 
 # check if the prod would build successfully
 test-build:
