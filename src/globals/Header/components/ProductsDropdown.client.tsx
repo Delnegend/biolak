@@ -125,7 +125,7 @@ export function INTERNAL_ProductsDropdownClient({
 	locale: Lang
 	size: 'lg' | 'sm'
 }): React.JSX.Element {
-	const { allTopBarsHeight } = useHeaderContext()
+	const { allTopBarsHeight, setSmallNavOpen } = useHeaderContext()
 
 	const [open, setOpen] = useState(false)
 	const [activeCategory, setActiveCategory] = useState<ProductCategory | null>(null)
@@ -388,6 +388,7 @@ export function INTERNAL_ProductsDropdownClient({
 																			"description image"
 																			"price image"`,
 													}}
+													onClick={() => setSmallNavOpen(false)}
 												>
 													<div
 														className="group-hover:hover-underline-animation group-hover:keep-hover w-fit text-balance text-start text-lg font-medium"
