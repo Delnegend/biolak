@@ -2,8 +2,12 @@
 
 ## Prerequisites
 
+- A Linux server (choose either Debian or Ubuntu LTS if you can't decide).
 - Docker or Podman installed on the host.
 - [`just`](https://github.com/casey/just) command runner installed.
+   ```
+   sudo apt update && sudo apt install -y just
+   ```
 
 ## Overview
 
@@ -11,7 +15,7 @@ This stack consists of:
 
 - **biolak-postgres**: PostgreSQL database
 - **biolak-payload**: Node.js app (Payload CMS + Next.js)
-- **cloudflared**: Cloudflare Tunnel for secure public access
+- **cloudflared**: Cloudflare Tunnel for securely publishing the app to the internet
 
 ## Steps
 
@@ -50,7 +54,7 @@ This stack consists of:
 
 ### cloudflared
 
-- **Purpose**: Exposes the app securely via Cloudflare Tunnel.
+- **Purpose**: Exposes the app to the internet via Cloudflare Tunnel.
 - **Key env vars**:
    - `TUNNEL_TOKEN`:
       1. Go to [Cloudflare Zero Trust dashboard](https://one.dash.cloudflare.com)
