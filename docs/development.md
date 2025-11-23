@@ -13,7 +13,7 @@
 
 4. Optionally, fill in the credentials for SMTP for email.
 
-5. F1 > Dev Containers: Reopen in Container
+5. F1 or Ctrl + Shift + P > Dev Containers: Reopen in Container
 
 ## Workflow
 
@@ -21,7 +21,7 @@
 - Make changes.
 - Test build & migrations: `j test-build`.
 - Commit & push.
-- Always run `j test-build` **outside** of the container to make sure the app is building correctly before committing and updating in production.
+- Always run `j test-build` **outside** of the devcontainer to make sure the app is building correctly before committing and updating in production.
 
 ## Production Update
 
