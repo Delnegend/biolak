@@ -1,69 +1,58 @@
 services:
-   biolak-postgres:
-      container_name: biolak-postgres
-      image: docker.io/library/postgres:17-alpine
-      # ports:
-      #    - '5432:5432'
-      volumes:
-         - ./postgres-data:/var/lib/postgresql/data
-      environment:
-         - POSTGRES_USER=postgres
-         - POSTGRES_PASSWORD=postgres
-         - POSTGRES_DB=biolak
-      networks:
-         - biolak-network
+    biolak-postgres:
+        container_name: biolak-postgres
+        image: docker.io/library/postgres:17-alpine
+        # ports:
+        #    - '5432:5432'
+        volumes:
+            - ./data/pgdata:/var/lib/postgresql/data
+        environment:
+            - POSTGRES_USER=${POSTGRES_USER:-postgres}
+            - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-postgres}
+            - POSTGRES_DB=${POSTGRES_DB:-biolak}
+        networks:
+            - biolak-network
 
-   biolak-payload:
-      container_name: biolak-payload
-      image: docker.io/library/node:24-alpine
-      # ports:
-      #    - '3000:3000'
-      depends_on:
-         biolak-postgres:
-            condition: service_started
-      environment:
-         DATABASE_URI: postgres://postgres:postgres@biolak-postgres:5432/biolak
-         NEXT_PUBLIC_SERVER_URL: https://biolak.vn
+    biolak-payload:
+        container_name: biolak-payload
+        # ports:
+        #    - '3000:3000'
+        image: ghcr.io/delnegend/biolak:latest
+        depends_on:
+            biolak-postgres:
+                condition: service_started
+        volumes:
+            - ./data/media:/home/node/app/public/media
+        environment:
+            DATABASE_URI: postgres://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-postgres}@biolak-postgres:5432/${POSTGRES_DB:-biolak}
+            NEXT_PUBLIC_SERVER_URL: ${NEXT_PUBLIC_SERVER_URL:-https://biolak.vn}
 
-         PAYLOAD_SECRET:
-         CRON_SECRET:
-         PREVIEW_SECRET:
+            PAYLOAD_SECRET: ${PAYLOAD_SECRET:-CHANGEME}
+            CRON_SECRET: ${CRON_SECRET:-CHANGEME}
+            PREVIEW_SECRET: ${PREVIEW_SECRET:-CHANGEME}
 
-         SMTP_HOST:
-         SMTP_PORT:
-         SMTP_USER:
-         SMTP_PASS:
-         SMTP_FROM:
-      networks:
-         - biolak-network
+            SMTP_HOST: ${SMTP_HOST:-}
+            SMTP_PORT: ${SMTP_PORT:-}
+            SMTP_USER: ${SMTP_USER:-}
+            SMTP_PASS: ${SMTP_PASS:-}
+            SMTP_FROM: ${SMTP_FROM:-}
+        networks:
+            - biolak-network
 
-      volumes:
-         - .:/home/node/app
-         - biolak-nextjs:/home/node/app/.next
-         - biolak-pnpm-store:/home/node/.pnpm-store
-         - biolak-node_modules:/home/node/app/node_modules
-      working_dir: /home/node/app/
-      command: sh -c "npm i -g pnpm && pnpm i --frozen-lockfile && pnpm payload migrate && pnpm dev:prod"
-
-   cloudflared:
-      container_name: cloudflared
-      image: docker.io/cloudflare/cloudflared:2025.6.1
-      restart: unless-stopped
-      dns:
-         - 1.1.1.1
-         - 1.0.0.1
-      environment:
-         NO_AUTOUPDATE: 'true'
-         TUNNEL_TOKEN:
-         TUNNEL_TRANSPORT_PROTOCOL: 'quic'
-      command: tunnel run
-      networks:
-         - biolak-network
-
-volumes:
-   biolak-nextjs:
-   biolak-pnpm-store:
-   biolak-node_modules:
+    cloudflared:
+        container_name: cloudflared
+        image: docker.io/cloudflare/cloudflared:2025.6.1
+        restart: unless-stopped
+        dns:
+            - 1.1.1.1
+            - 1.0.0.1
+        environment:
+            NO_AUTOUPDATE: 'true'
+            TUNNEL_TRANSPORT_PROTOCOL: 'quic'
+            TUNNEL_TOKEN: ${CLOUDFLARE_TUNNEL_TOKEN}
+        command: tunnel run
+        networks:
+            - biolak-network
 
 networks:
-   biolak-network:
+    biolak-network:
