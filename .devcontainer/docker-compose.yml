@@ -7,9 +7,11 @@ services:
       volumes:
          - ./postgres-dev:/var/lib/postgresql/data
       environment:
-         POSTGRES_USER: postgres
-         POSTGRES_PASSWORD: postgres
-         POSTGRES_DB: biolak
+         POSTGRES_USER: ${POSTGRES_USER:-postgres}
+         POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+         POSTGRES_DB: ${POSTGRES_DB:-biolak}
+      env_file:
+         - ../.env
 
    dev:
       build:
@@ -28,21 +30,23 @@ services:
             limits:
                memory: 6g
       environment:
-         DATABASE_URI: postgresql://postgres:postgres@postgres:5432/biolak
+         DATABASE_URI: postgresql://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-postgres}@postgres:5432/${POSTGRES_DB:-biolak}
          # Used to encrypt JWT tokens
-         PAYLOAD_SECRET: YOUR_SECRET_HERE
+         PAYLOAD_SECRET: ${PAYLOAD_SECRET:-CHANGEME}
          # Used to config CORS, format links & more, no trailing slash
          NEXT_PUBLIC_SERVER_URL: http://localhost:3000
          # Used to auth cron jobs
-         CRON_SECRET: YOUR_CRON_SECRET_HERE
+         CRON_SECRET: ${CRON_SECRET:-CHANGEME}
          # Uses to validate preview requests
-         PREVIEW_SECRET: YOUR_SECRET_HERE
+         PREVIEW_SECRET: ${PREVIEW_SECRET:-CHANGEME}
 
-         SMTP_FROM:
-         SMTP_HOST:
-         SMTP_PORT:
-         SMTP_USER:
-         SMTP_PASS:
+         SMTP_FROM: ${SMTP_FROM}
+         SMTP_HOST: ${SMTP_HOST}
+         SMTP_PORT: ${SMTP_PORT}
+         SMTP_USER: ${SMTP_USER}
+         SMTP_PASS: ${SMTP_PASS}
 
-         DEV_EMAIL:
-         DEV_PASSWORD:
+         DEV_EMAIL: ${DEV_EMAIL}
+         DEV_PASSWORD: ${DEV_PASSWORD}
+      env_file:
+         - ../.env

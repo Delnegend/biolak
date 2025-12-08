@@ -3,14 +3,17 @@
 	"dockerComposeFile": "docker-compose.yml",
 	"service": "dev",
 	"workspaceFolder": "/biolak",
-	"postCreateCommand": "zsh .devcontainer/postinstall.sh",
+	"postCreateCommand": "bash .devcontainer/postinstall.sh",
 	"customizations": {
 		"vscode": {
 			"extensions": [
 				"esbenp.prettier-vscode",
 				"YoavBls.pretty-ts-errors",
 				"bradlc.vscode-tailwindcss"
-			]
+			],
+			"settings": {
+				"terminal.integrated.defaultProfile.linux": "bash"
+			}
 		}
 	}
 }
