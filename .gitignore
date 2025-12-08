@@ -14,9 +14,11 @@ public/robots.txt
 public/sitemap*.xml
 
 docker-compose.yml
+!/.devcontainer/docker-compose.yml
 postgres-dev-backup/*.gz
 postgres-data/
 backup/
 .devcontainer/postgres-dev
+.devcontainer/test-build/
 
 lazydocker

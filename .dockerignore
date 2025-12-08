@@ -1,0 +1,14 @@
+.devcontainer/
+.next/
+.pnpm-store/
+.vscode/
+docs/
+node_modules/
+postgres-data/
+public/media/
+README.md
+LICENSE
+justfile
+docker-compose.example.yml
+Dockerfile
+.env*
