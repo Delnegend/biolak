@@ -11,6 +11,5 @@
 **/temp
 tsconfig.json
 .next
-pnpm-lock.yaml
 src/migrations/**
 **/importMap.js
