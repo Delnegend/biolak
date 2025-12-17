@@ -1,6 +1,5 @@
 .devcontainer/
 .next/
-.pnpm-store/
 .vscode/
 docs/
 node_modules/
