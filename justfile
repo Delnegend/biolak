@@ -84,13 +84,16 @@ test-build: _prelude
   docker compose -f docker-compose.example.yml up --build biolak-postgres biolak-payload
   docker compose -f docker-compose.example.yml down biolak-postgres biolak-payload
 
-build-latest-image:
+docker-image-build:
   docker buildx build --load \
     -t ghcr.io/delnegend/biolak:$(git rev-parse --short HEAD) \
     -t ghcr.io/delnegend/biolak:latest .
 
-publish-image:
+docker-image-publish:
   docker buildx build \
     -t ghcr.io/delnegend/biolak:latest \
     -t ghcr.io/delnegend/biolak:$(git rev-parse --short HEAD) \
     -o type=image,push=true,compression=zstd .
+
+docker-image-save:
+  docker save ghcr.io/delnegend/biolak:latest | gzip > biolak-latest.tar.gz
