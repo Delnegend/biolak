@@ -57,7 +57,7 @@ gen-db-schema:
   bun x payload generate:db-schema --disable-transpile
 
 db-create-migrate:
-  bun x payload migrate:create
+  bun x payload migrate:create --disable-transpile
   just minify-migrations
 
 lint:
