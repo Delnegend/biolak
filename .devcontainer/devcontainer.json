@@ -1,15 +1,18 @@
 {
 	"name": "biolak",
-	"dockerComposeFile": "docker-compose.yml",
-	"service": "dev",
-	"workspaceFolder": "/biolak",
+	"build": {
+		"dockerfile": "Dockerfile",
+		"context": ".."
+	},
 	"postCreateCommand": "bash .devcontainer/postinstall.sh",
+	"runArgs": ["--env-file", "./.biolak.env", "-v", ".:/biolak"],
 	"customizations": {
 		"vscode": {
 			"extensions": [
 				"esbenp.prettier-vscode",
 				"YoavBls.pretty-ts-errors",
-				"bradlc.vscode-tailwindcss"
+				"bradlc.vscode-tailwindcss",
+				"yy0931.vscode-sqlite3-editor"
 			],
 			"settings": {
 				"terminal.integrated.defaultProfile.linux": "bash"

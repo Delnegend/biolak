@@ -1,7 +1,7 @@
-FROM debian:12-slim
+FROM docker.io/library/debian:12-slim
 
 RUN apt-get update && \
-    apt-get install -y sudo parallel unzip curl git python3 && \
+    apt-get install -y sudo unzip curl git && \
     apt-get clean
 
 RUN groupadd -g 1000 biolak && \
