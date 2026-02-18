@@ -13,9 +13,9 @@ Install the following tools:
 
 1. Copy the environment example file:
 
-   ```
-   cp .env.example .env
-   ```
+    ```
+    cp .env.example .env
+    ```
 
 2. Follow the same environment variable configuration steps as in [Deployment](./deployment.md#method-1-use-prebuilt-image-recommended). You can skip `CLOUDFLARE_TUNNEL_TOKEN` for local development.
 
@@ -36,54 +36,54 @@ Always run `j test-build` **outside** of the dev container to ensure the app bui
 
 1. Stop the running containers:
 
-   ```
-   docker compose down
-   ```
+    ```
+    docker compose down
+    ```
 
 2. Pull the latest image:
 
-   ```
-   docker compose pull ghcr.io/delnegend/biolak:latest
-   ```
+    ```
+    docker compose pull ghcr.io/delnegend/biolak:latest
+    ```
 
 3. Start the stack:
-   ```
-   docker compose up -d
-   ```
+    ```
+    docker compose up -d
+    ```
 
 ### If you're using the prebuilt image with a custom tag:
 
 1. Stop the running containers:
 
-   ```
-   docker compose down
-   ```
+    ```
+    docker compose down
+    ```
 
 2. Change the image tag in `docker-compose.yml` to the desired version.
 
 3. Start the stack:
-   ```
-   docker compose up -d
-   ```
+    ```
+    docker compose up -d
+    ```
 
 ### If you're building from source:
 
 1. Stop the running containers:
 
-   ```
-   docker compose down
-   ```
+    ```
+    docker compose down
+    ```
 
 2. Rebuild the image:
 
-   ```
-   j build-latest-image
-   ```
+    ```
+    j build-latest-image
+    ```
 
 3. Start the stack:
-   ```
-   docker compose up -d
-   ```
+    ```
+    docker compose up -d
+    ```
 
 ## Drizzle Conflict Resolution
 
@@ -97,9 +97,9 @@ If you can't interact with the DB conflicts resolver in the terminal:
 
 - Admin/docs: Payload localization docs — https://payloadcms.com/docs/configuration/localization
 - Frontend:
-   - Use `utilities/lang.ts` for the `Lang` enum.
-   - Use `setLocale()` for client-side locale changes.
-   - Use `getClientLang()` for server-side detection.
+    - Use `utilities/lang.ts` for the `Lang` enum.
+    - Use `setLocale()` for client-side locale changes.
+    - Use `getClientLang()` for server-side detection.
 
 ## Tips
 
