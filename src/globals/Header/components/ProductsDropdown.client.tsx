@@ -214,7 +214,10 @@ export function INTERNAL_ProductsDropdownClient({
 							}}
 							size={size}
 						>
-							<DropdownLabel key="categories" className="flex items-center justify-between">
+							<DropdownLabel
+								key="categories"
+								className="flex items-center justify-between"
+							>
 								<span>
 									{matchLang({
 										[Lang.English]: 'Products',
@@ -247,7 +250,9 @@ export function INTERNAL_ProductsDropdownClient({
 										if (size === 'sm') return
 										handleCategoryLoad(category)
 									}}
-									className={activeCategory?.slug === category.slug ? 'keep-hover' : ''}
+									className={
+										activeCategory?.slug === category.slug ? 'keep-hover' : ''
+									}
 								>
 									{category.title}
 								</DropdownItem>
@@ -258,7 +263,10 @@ export function INTERNAL_ProductsDropdownClient({
 						<AnimatePresence mode="wait">
 							{activeCategory?.productSubCategories?.docs?.length && (
 								<DropdownColumn
-									className={cn('overflow-y-auto', size === 'lg' && 'z-40 border-r')}
+									className={cn(
+										'overflow-y-auto',
+										size === 'lg' && 'z-40 border-r',
+									)}
 									key="subCategoryPanel"
 									style={{
 										height: `calc(100dvh - ${allTopBarsHeight}px)`,
@@ -291,7 +299,10 @@ export function INTERNAL_ProductsDropdownClient({
 											<X size={20} />
 										</button>
 									</DropdownLabel>
-									<DropdownItem key={`allProducts-${activeCategory?.slug}`} tabIndex={-1}>
+									<DropdownItem
+										key={`allProducts-${activeCategory?.slug}`}
+										tabIndex={-1}
+									>
 										<Link
 											href={`/category/${activeCategory?.slug}`}
 											className="group grid gap-x-4"
@@ -320,7 +331,9 @@ export function INTERNAL_ProductsDropdownClient({
 													handleSubcategoryLoad(category)
 												}}
 												className={
-													activeSubCategory?.slug === category.slug ? 'keep-hover' : ''
+													activeSubCategory?.slug === category.slug
+														? 'keep-hover'
+														: ''
 												}
 											>
 												{category.title}
@@ -332,102 +345,108 @@ export function INTERNAL_ProductsDropdownClient({
 
 						{/* products */}
 						<AnimatePresence mode="wait">
-							{activeCategory && activeSubCategory && (products?.docs?.length ?? 0) > 0 && (
-								<DropdownColumn
-									className={cn('overflow-y-auto', size === 'lg' && 'z-30')}
-									key="productsPanel"
-									style={{
-										height: `calc(100dvh - ${allTopBarsHeight}px)`,
-									}}
-									size={size}
-								>
-									<DropdownLabel
-										key={activeSubCategory?.slug}
-										className="flex items-center justify-between"
+							{activeCategory &&
+								activeSubCategory &&
+								(products?.docs?.length ?? 0) > 0 && (
+									<DropdownColumn
+										className={cn('overflow-y-auto', size === 'lg' && 'z-30')}
+										key="productsPanel"
+										style={{
+											height: `calc(100dvh - ${allTopBarsHeight}px)`,
+										}}
+										size={size}
 									>
-										<span>
-											{activeSubCategory?.title ??
-												matchLang({
-													[Lang.English]: 'Product category',
-													[Lang.Vietnamese]: 'Danh mục sản phẩm',
-												})(locale)}
-										</span>
-										<button
-											aria-label={matchLang({
-												[Lang.English]: 'Close products',
-												[Lang.Vietnamese]: 'Đóng sản phẩm',
-											})(locale)}
-											onClick={() => {
-												setOpen(true)
-												setActiveSubCategory(null)
-											}}
-											onMouseEnter={() => setClickAnywhereToClose(false)}
-											onMouseLeave={() => setClickAnywhereToClose(true)}
+										<DropdownLabel
+											key={activeSubCategory?.slug}
+											className="flex items-center justify-between"
 										>
-											<X size={20} />
-										</button>
-									</DropdownLabel>
-									{products?.docs.map((product, index) => {
-										return (
-											<motion.button
-												key={`${activeSubCategory?.slug}-${product.slug}`}
-												custom={index}
-												variants={itemAnimationVariants}
-												initial="initial"
-												animate="animate"
-												exit="exit"
-												onClick={(e) => e.stopPropagation()} // Prevent closing dropdown
-												className="mb-2"
+											<span>
+												{activeSubCategory?.title ??
+													matchLang({
+														[Lang.English]: 'Product category',
+														[Lang.Vietnamese]: 'Danh mục sản phẩm',
+													})(locale)}
+											</span>
+											<button
+												aria-label={matchLang({
+													[Lang.English]: 'Close products',
+													[Lang.Vietnamese]: 'Đóng sản phẩm',
+												})(locale)}
+												onClick={() => {
+													setOpen(true)
+													setActiveSubCategory(null)
+												}}
+												onMouseEnter={() => setClickAnywhereToClose(false)}
+												onMouseLeave={() => setClickAnywhereToClose(true)}
 											>
-												<Link
-													href={`/product/${product.slug}`}
-													tabIndex={-1}
-													className="group grid grid-cols-[1fr_auto] gap-x-4"
-													style={{
-														gridTemplateAreas: `"title image"
+												<X size={20} />
+											</button>
+										</DropdownLabel>
+										{products?.docs.map((product, index) => {
+											return (
+												<motion.button
+													key={`${activeSubCategory?.slug}-${product.slug}`}
+													custom={index}
+													variants={itemAnimationVariants}
+													initial="initial"
+													animate="animate"
+													exit="exit"
+													onClick={(e) => e.stopPropagation()} // Prevent closing dropdown
+													className="mb-2"
+												>
+													<Link
+														href={`/product/${product.slug}`}
+														tabIndex={-1}
+														className="group grid grid-cols-[1fr_auto] gap-x-4"
+														style={{
+															gridTemplateAreas: `"title image"
 																			"description image"
 																			"price image"`,
-													}}
-													onClick={() => setSmallNavOpen(false)}
-												>
-													<div
-														className="group-hover:hover-underline-animation group-hover:keep-hover w-fit text-balance text-start text-lg font-medium"
-														style={{ gridArea: 'title' }}
+														}}
+														onClick={() => setSmallNavOpen(false)}
 													>
-														{product.title}
-													</div>
-													<div
-														className="my-1 text-balance text-start text-base font-medium opacity-70"
-														style={{ gridArea: 'description' }}
-													>
-														{product.shortDescription}
-													</div>
-													<div
-														className="text-start text-base font-medium opacity-70"
-														style={{ gridArea: 'price' }}
-													>
-														{getPriceRange(product) ??
-															matchLang({
-																[Lang.English]: 'Out of stock',
-																[Lang.Vietnamese]: 'Hết hàng',
+														<div
+															className="group-hover:hover-underline-animation group-hover:keep-hover w-fit text-balance text-start text-lg font-medium"
+															style={{ gridArea: 'title' }}
+														>
+															{product.title}
+														</div>
+														<div
+															className="my-1 text-balance text-start text-base font-medium opacity-70"
+															style={{ gridArea: 'description' }}
+														>
+															{product.shortDescription}
+														</div>
+														<div
+															className="text-start text-base font-medium opacity-70"
+															style={{ gridArea: 'price' }}
+														>
+															{getPriceRange(product) ??
+																matchLang({
+																	[Lang.English]: 'Out of stock',
+																	[Lang.Vietnamese]: 'Hết hàng',
+																})(locale)}
+														</div>
+														<HeadlessImage
+															media={product.icon}
+															alt={matchLang({
+																[Lang.English]: 'Product Icon',
+																[Lang.Vietnamese]:
+																	'Biểu tượng sản phẩm',
 															})(locale)}
-													</div>
-													<HeadlessImage
-														media={product.icon}
-														alt={matchLang({
-															[Lang.English]: 'Product Icon',
-															[Lang.Vietnamese]: 'Biểu tượng sản phẩm',
-														})(locale)}
-														placeholder={{ width: 200, height: 200 }}
-														className="size-[5.25rem] object-contain"
-														style={{ gridArea: 'image' }}
-													/>
-												</Link>
-											</motion.button>
-										)
-									})}
-								</DropdownColumn>
-							)}
+															placeholder={{
+																width: 200,
+																height: 200,
+															}}
+															className="size-[5.25rem] object-contain"
+															style={{ gridArea: 'image' }}
+														/>
+													</Link>
+												</motion.button>
+											)
+										})}
+									</DropdownColumn>
+								)}
 						</AnimatePresence>
 					</motion.div>
 				)}

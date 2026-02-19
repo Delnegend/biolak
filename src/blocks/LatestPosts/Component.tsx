@@ -35,9 +35,12 @@ export function LatestPostsBlock(
 				<Carousel opts={{ dragFree: true }}>
 					<CarouselContent className="gap-12">
 						{posts.map((post, index) => {
-							const author = typeof post.authors?.[0] === 'object' ? post.authors[0] : null
+							const author =
+								typeof post.authors?.[0] === 'object' ? post.authors[0] : null
 							const lastModified =
-								typeof post.updatedAt === 'string' ? new Date(post.updatedAt) : new Date()
+								typeof post.updatedAt === 'string'
+									? new Date(post.updatedAt)
+									: new Date()
 							const lastModifiedStr = `${lastModified.getDate().toString().padStart(2, '0')}.${lastModified.getMonth().toString().padStart(2, '0')}.${lastModified.getFullYear().toString().slice(2)}`
 
 							return (
@@ -57,13 +60,17 @@ export function LatestPostsBlock(
 											<div className="text-[0.625rem] font-medium">
 												{author?.name ?? 'BioLAK'}
 												&nbsp;|&nbsp;
-												<span className="text-[#e7b27e]">{lastModifiedStr}</span>
+												<span className="text-[#e7b27e]">
+													{lastModifiedStr}
+												</span>
 											</div>
 											<div className="font-serif text-2xl font-bold">
 												{post.title}&nbsp;→
 											</div>
 											{post.meta?.meta?.description && (
-												<div className="text-xs">{post.meta.meta.description}</div>
+												<div className="text-xs">
+													{post.meta.meta.description}
+												</div>
 											)}
 										</div>
 									</CarouselItem>

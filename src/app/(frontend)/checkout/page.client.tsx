@@ -315,7 +315,8 @@ export default function PageClient({
 							{global.popup?.successTitle ?? defaults.popup.successTitle(locale)}
 						</DialogTitle>
 						<DialogDescription className="text-center">
-							{global.popup?.successDescription ?? defaults.popup.successDescription(locale)}
+							{global.popup?.successDescription ??
+								defaults.popup.successDescription(locale)}
 							{processingState.state === 'success' &&
 								processingState.paymentMethod === 'bankTransfer' &&
 								global.bankName &&
@@ -349,7 +350,9 @@ export default function PageClient({
 				<div className="flex flex-col gap-y-5">
 					{/* personal info */}
 					<INTERNAL_Card>
-						<CartTitle>{global.contacts?.title ?? defaults.contacts.title(locale)}</CartTitle>
+						<CartTitle>
+							{global.contacts?.title ?? defaults.contacts.title(locale)}
+						</CartTitle>
 
 						<div>
 							<FormField
@@ -393,7 +396,9 @@ export default function PageClient({
 							/>
 						</div>
 
-						<CartTitle>{global.address?.title ?? defaults.address.title(locale)}</CartTitle>
+						<CartTitle>
+							{global.address?.title ?? defaults.address.title(locale)}
+						</CartTitle>
 
 						<div className="grid grid-cols-2 gap-x-6 gap-y-9">
 							<FormField
@@ -507,7 +512,8 @@ export default function PageClient({
 													{Object.keys(
 														selectedCity
 															? // @ts-expect-error - idc
-																(CITY_DISTRICT_WARD[selectedCity] ?? {})
+																(CITY_DISTRICT_WARD[selectedCity] ??
+																	{})
 															: {},
 													).map((district) => (
 														<SelectItem key={district} value={district}>
@@ -528,7 +534,9 @@ export default function PageClient({
 								render={({ field }) => {
 									selectedWardOnChangeFn.current = field.onChange
 									const selectedCity = form.getValues('shippingInfo.address.city')
-									const selectedDistrict = form.getValues('shippingInfo.address.district')
+									const selectedDistrict = form.getValues(
+										'shippingInfo.address.district',
+									)
 
 									return (
 										<FormItem>
@@ -552,7 +560,9 @@ export default function PageClient({
 												<SelectContent>
 													{(selectedCity && selectedDistrict
 														? // @ts-expect-error - idc
-															CITY_DISTRICT_WARD[selectedCity][selectedDistrict]
+															CITY_DISTRICT_WARD[selectedCity][
+																selectedDistrict
+															]
 														: []
 													).map((ward: string) => (
 														<SelectItem key={ward} value={ward}>
@@ -576,7 +586,8 @@ export default function PageClient({
 											<TextInput
 												size="sm"
 												label={
-													global.address?.details ?? defaults.address.details(locale)
+													global.address?.details ??
+													defaults.address.details(locale)
 												}
 												{...field}
 											/>
@@ -589,7 +600,8 @@ export default function PageClient({
 						<Checkbox
 							id="saveForNextTime"
 							label={
-								global.address?.saveForNextTime ?? defaults.address.saveForNextTime(locale)
+								global.address?.saveForNextTime ??
+								defaults.address.saveForNextTime(locale)
 							}
 							classNames={{ container: 'col-span-2' }}
 							checked={loadPersonalDetailsOnLoad}
@@ -599,7 +611,9 @@ export default function PageClient({
 
 					{/* shipping method */}
 					<INTERNAL_Card>
-						<CartTitle>{global.shipping?.title ?? defaults.shipping.title(locale)}</CartTitle>
+						<CartTitle>
+							{global.shipping?.title ?? defaults.shipping.title(locale)}
+						</CartTitle>
 						<FormField
 							control={form.control}
 							name="shippingInfo.method"
@@ -636,7 +650,9 @@ export default function PageClient({
 
 					{/* payment method */}
 					<INTERNAL_Card>
-						<CartTitle>{global.payment?.title ?? defaults.payment.title(locale)}</CartTitle>
+						<CartTitle>
+							{global.payment?.title ?? defaults.payment.title(locale)}
+						</CartTitle>
 						<FormField
 							control={form.control}
 							name="paymentMethod"
@@ -644,7 +660,10 @@ export default function PageClient({
 								<FormItem>
 									<Checkbox
 										id="cod"
-										label={global.payment?.codLabel ?? defaults.payment.codLabel(locale)}
+										label={
+											global.payment?.codLabel ??
+											defaults.payment.codLabel(locale)
+										}
 										checked={field.value === 'cod'}
 										onCheckedChange={(value) =>
 											field.onChange(value ? 'cod' : 'bankTransfer')
@@ -679,7 +698,8 @@ export default function PageClient({
 											<TextInput
 												size="sm"
 												label={
-													global.gift?.senderInputLabel ?? defaults.gift.sender(locale)
+													global.gift?.senderInputLabel ??
+													defaults.gift.sender(locale)
 												}
 												{...field}
 											/>
@@ -738,7 +758,9 @@ export default function PageClient({
 					/>
 					<hr />
 
-					<CartTitle>{global.discount?.title ?? defaults.discount.title(locale)}</CartTitle>
+					<CartTitle>
+						{global.discount?.title ?? defaults.discount.title(locale)}
+					</CartTitle>
 					<div className="flex h-[4.5rem] items-center justify-between rounded-[0.5rem] border border-primary p-[0.625rem]">
 						<FormField
 							control={form.control}
@@ -766,7 +788,8 @@ export default function PageClient({
 						<Button
 							hideArrow
 							aria-label={
-								global.discount?.applyButtonLabel ?? defaults.discount.applyButton(locale)
+								global.discount?.applyButtonLabel ??
+								defaults.discount.applyButton(locale)
 							}
 							className="h-[calc(4.5rem-1.25rem)]"
 							size="md"
@@ -774,7 +797,8 @@ export default function PageClient({
 								e.preventDefault()
 							}}
 						>
-							{global.discount?.applyButtonLabel ?? defaults.discount.applyButton(locale)}
+							{global.discount?.applyButtonLabel ??
+								defaults.discount.applyButton(locale)}
 						</Button>
 					</div>
 					<hr className="my-2" />
@@ -787,11 +811,13 @@ export default function PageClient({
 							</div>
 							<div className="place-self-end">{formatPrice(prices.provisional)}</div>
 							<div className="font-bold">
-								{global.orderSummary?.shipping ?? defaults.orderSummary.shipping(locale)}
+								{global.orderSummary?.shipping ??
+									defaults.orderSummary.shipping(locale)}
 							</div>
 							<div className="place-self-end">{formatPrice(prices.shipping)}</div>
 							<div className="font-bold">
-								{global.orderSummary?.discount ?? defaults.orderSummary.discount(locale)}
+								{global.orderSummary?.discount ??
+									defaults.orderSummary.discount(locale)}
 							</div>
 							<div className="place-self-end">{formatPrice(prices.discount)}</div>
 							<div className="font-bold">

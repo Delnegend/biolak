@@ -112,7 +112,9 @@ export async function ReviewsGlobalComponent({
 				<div className="font-serif text-2xl font-medium">
 					{global.title ?? defaults.title(locale)}
 				</div>
-				<div className="font-serif text-9xl font-medium">{Math.round(avgRating * 10) / 10}</div>
+				<div className="font-serif text-9xl font-medium">
+					{Math.round(avgRating * 10) / 10}
+				</div>
 				<div className="flex w-fit flex-row items-center justify-center gap-4">
 					<HeartsRow rating={avgRating} />
 					<span className="ml-2 text-xl">{}</span>
@@ -141,7 +143,10 @@ export async function ReviewsGlobalComponent({
 					<Fragment key={review.id}>
 						<div
 							key={`${review.id}-name`}
-							className={cn('mb-10 min-h-60 text-[1.75rem] font-semibold', phudu.className)}
+							className={cn(
+								'mb-10 min-h-60 text-[1.75rem] font-semibold',
+								phudu.className,
+							)}
 						>
 							{review.customer}
 						</div>
@@ -153,8 +158,14 @@ export async function ReviewsGlobalComponent({
 										return (
 											<Heart
 												key={i}
-												fill={review.rating >= i + 1 ? '#925E12' : 'transparent'}
-												className={cn(review.rating >= i + 1 && 'text-[#925E12]')}
+												fill={
+													review.rating >= i + 1
+														? '#925E12'
+														: 'transparent'
+												}
+												className={cn(
+													review.rating >= i + 1 && 'text-[#925E12]',
+												)}
 											/>
 										)
 									})}

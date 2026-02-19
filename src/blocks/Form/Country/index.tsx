@@ -46,14 +46,18 @@ export async function Country(
 					const controlledValue = countryOptions.find((t) => t.value === value)
 
 					return (
-						<Select onValueChange={(val) => onChange(val)} value={controlledValue?.value}>
+						<Select
+							onValueChange={(val) => onChange(val)}
+							value={controlledValue?.value}
+						>
 							<SelectTrigger
 								className="w-full"
 								id={props.name}
 								label={props.label}
 								aria-label={matchLang({
 									[Lang.English]: 'Select a country dropdown trigger',
-									[Lang.Vietnamese]: 'Kích hoạt hộp thoại thả xuống chọn quốc gia',
+									[Lang.Vietnamese]:
+										'Kích hoạt hộp thoại thả xuống chọn quốc gia',
 								})(locale)}
 							>
 								<SelectValue />

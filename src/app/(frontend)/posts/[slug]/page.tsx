@@ -41,7 +41,8 @@ export async function generateStaticParams() {
 			locale,
 		}),
 	)
-	if (!postCategoriesOk) throw new Error(`Failed to fetch post categories: ${postCategoriesError}`)
+	if (!postCategoriesOk)
+		throw new Error(`Failed to fetch post categories: ${postCategoriesError}`)
 
 	return postCategories.docs.map((c) => c.slug).map((slug) => ({ slug: slug ?? '' }))
 }
@@ -96,7 +97,9 @@ const queryPostCategoryBySlug = cache(
 			}),
 		)
 		if (!resultOk)
-			throw new Error(`Failed to fetch post category by slug "${categorySlug}": ${resultError}`)
+			throw new Error(
+				`Failed to fetch post category by slug "${categorySlug}": ${resultError}`,
+			)
 
 		return result.docs?.[0] ?? null
 	},

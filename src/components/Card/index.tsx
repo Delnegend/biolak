@@ -37,9 +37,10 @@ export function Card(props: {
 		>
 			<div className="relative w-full">
 				{!props.doc?.meta?.meta?.image && <div className="">No image</div>}
-				{props.doc?.meta?.meta?.image && typeof props.doc?.meta?.meta?.image !== 'string' && (
-					<Media resource={props.doc?.meta?.meta?.image} size="33vw" />
-				)}
+				{props.doc?.meta?.meta?.image &&
+					typeof props.doc?.meta?.meta?.image !== 'string' && (
+						<Media resource={props.doc?.meta?.meta?.image} size="33vw" />
+					)}
 			</div>
 			<div className="p-4">
 				{props.showCategories && hasCategories && (
@@ -50,9 +51,11 @@ export function Card(props: {
 									if (typeof category === 'object') {
 										const { title: titleFromCategory } = category
 
-										const categoryTitle = titleFromCategory || 'Untitled category'
+										const categoryTitle =
+											titleFromCategory || 'Untitled category'
 
-										const isLast = index === (props.doc?.postCategories?.length ?? 0) - 1
+										const isLast =
+											index === (props.doc?.postCategories?.length ?? 0) - 1
 
 										return (
 											<Fragment key={index}>

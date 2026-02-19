@@ -40,7 +40,10 @@ export function State(
 					const controlledValue = stateOptions.find((t) => t.value === value)
 
 					return (
-						<Select onValueChange={(val) => onChange(val)} value={controlledValue?.value}>
+						<Select
+							onValueChange={(val) => onChange(val)}
+							value={controlledValue?.value}
+						>
 							<SelectTrigger className="w-full" id={props.name} label={props.label}>
 								<SelectValue placeholder={props.label} />
 							</SelectTrigger>

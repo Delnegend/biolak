@@ -250,7 +250,8 @@ export function useCartManager({
 			if (cart.length >= 1000) {
 				toast.error(
 					matchLang({
-						[Lang.English]: 'Cart is full, please remove some items before adding more.',
+						[Lang.English]:
+							'Cart is full, please remove some items before adding more.',
 						[Lang.Vietnamese]:
 							'Giỏ hàng đã đầy, vui lòng xóa một số mặt hàng trước khi thêm.',
 					})(locale),
@@ -296,7 +297,8 @@ export function useCartManager({
 			setCart((prev) => {
 				const existingProductIndex = prev?.findIndex(
 					(item) =>
-						item.product.id === product.productId && item.variant.sku === product.variantSku,
+						item.product.id === product.productId &&
+						item.variant.sku === product.variantSku,
 				)
 
 				const updatedCart = structuredClone(prev ?? [])
@@ -326,7 +328,8 @@ export function useCartManager({
 			setCart((prev) => {
 				const updatedCart =
 					prev?.filter(
-						(item) => !(item.product.id === productId && item.variant.sku === variantSku),
+						(item) =>
+							!(item.product.id === productId && item.variant.sku === variantSku),
 					) ?? []
 
 				return updatedCart

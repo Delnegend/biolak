@@ -14,7 +14,9 @@ export async function ContactFormGlobalComponent({ inDialog }: { inDialog?: bool
 	if (inDialog) {
 		return (
 			<>
-				<DialogTitle className="sr-only">{global.title ?? defaults.title(locale)}</DialogTitle>
+				<DialogTitle className="sr-only">
+					{global.title ?? defaults.title(locale)}
+				</DialogTitle>
 				<INTERNAL_ContactFormClient global={global} locale={locale} />
 			</>
 		)

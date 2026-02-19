@@ -96,7 +96,9 @@ export const CheckoutPageGlobalConf: GlobalConfig<typeof CheckoutPageGlobalSlug>
 							label: false,
 							localized: true,
 							admin: {
-								placeholder: defaults.address.provinceCityInputLabel(Lang.Vietnamese),
+								placeholder: defaults.address.provinceCityInputLabel(
+									Lang.Vietnamese,
+								),
 							},
 						},
 						{
@@ -162,7 +164,9 @@ export const CheckoutPageGlobalConf: GlobalConfig<typeof CheckoutPageGlobalSlug>
 									label: false,
 									localized: true,
 									admin: {
-										placeholder: defaults.shipping.standardShippingLabel(Lang.Vietnamese),
+										placeholder: defaults.shipping.standardShippingLabel(
+											Lang.Vietnamese,
+										),
 									},
 								},
 								{
@@ -171,7 +175,9 @@ export const CheckoutPageGlobalConf: GlobalConfig<typeof CheckoutPageGlobalSlug>
 									label: false,
 									localized: true,
 									admin: {
-										placeholder: defaults.shipping.fastShippingLabel(Lang.Vietnamese),
+										placeholder: defaults.shipping.fastShippingLabel(
+											Lang.Vietnamese,
+										),
 									},
 								},
 							],
@@ -187,7 +193,8 @@ export const CheckoutPageGlobalConf: GlobalConfig<typeof CheckoutPageGlobalSlug>
 										[Lang.Vietnamese]: 'Giá vận chuyển tiêu chuẩn',
 									},
 									admin: {
-										placeholder: defaults.shipping.standardShippingPrice.toString(),
+										placeholder:
+											defaults.shipping.standardShippingPrice.toString(),
 									},
 								},
 								{
