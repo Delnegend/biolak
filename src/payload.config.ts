@@ -1,4 +1,4 @@
-import { postgresAdapter } from '@payloadcms/db-postgres'
+import { sqliteAdapter } from '@payloadcms/db-sqlite'
 import { nodemailerAdapter } from '@payloadcms/email-nodemailer'
 import { en } from '@payloadcms/translations/languages/en'
 import { vi } from '@payloadcms/translations/languages/vi'
@@ -74,20 +74,26 @@ export default buildConfig({
 				},
 			],
 		},
-		autoLogin:
-			process.env.NODE_ENV === 'development' && process.env.DEV_EMAIL && process.env.DEV_PASSWORD
-				? {
-						email: process.env.DEV_EMAIL,
-						password: process.env.DEV_PASSWORD,
-					}
-				: false,
+		autoLogin: (() => {
+			if (process.env.NODE_ENV !== 'development') return false
+			if (!process.env.DEV_EMAIL || !process.env.DEV_PASSWORD) return false
+			return {
+				email: process.env.DEV_EMAIL,
+				password: process.env.DEV_PASSWORD,
+			}
+		})(),
 	},
 	// This config helps us configure global or default features that the other editors can inherit
 	editor: defaultLexical,
-	db: postgresAdapter({
-		pool: {
-			connectionString: process.env.DATABASE_URI,
+	db: sqliteAdapter({
+		client: {
+			url: (() => {
+				if (!process.env.DATABASE_URI)
+					throw new Error('DATABASE_URI environment variable is not set')
+				return process.env.DATABASE_URI
+			})(),
 		},
+		push: false,
 	}),
 	collections: [
 		CustomersCollection,
