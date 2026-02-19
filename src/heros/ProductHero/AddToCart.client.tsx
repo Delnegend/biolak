@@ -27,7 +27,8 @@ export function INTERNAL_AddToCartButton({
 			hideArrow={true}
 			variant="outline"
 			onClick={() => {
-				if (!selectedProductVariant?.product.id || !selectedProductVariant?.variant.sku) return
+				if (!selectedProductVariant?.product.id || !selectedProductVariant?.variant.sku)
+					return
 				loadProduct({
 					...selectedProductVariant,
 					quantity: 1,

@@ -140,7 +140,12 @@ export default async function Category({
 			</div>
 			<div className="grid grid-cols-3 justify-center gap-6 max-xl:grid-cols-2 max-lg:w-full max-lg:grid-cols-[repeat(auto-fit,minmax(16rem,1fr))]">
 				{products.docs.map((p) => (
-					<ProductCard product={p} key={p.slug} size="sm" className="justify-self-center" />
+					<ProductCard
+						product={p}
+						key={p.slug}
+						size="sm"
+						className="justify-self-center"
+					/>
 				))}
 			</div>
 		</div>

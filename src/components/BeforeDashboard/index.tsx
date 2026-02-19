@@ -24,9 +24,9 @@ export function BeforeDashboard(): React.JSX.Element {
 					{' to see the results.'}
 				</li>
 				<li>
-					If you created this repo using Payload Cloud, head over to GitHub and clone it to
-					your local machine. It will be under the <i>GitHub Scope</i> that you selected when
-					creating this project.
+					If you created this repo using Payload Cloud, head over to GitHub and clone it
+					to your local machine. It will be under the <i>GitHub Scope</i> that you
+					selected when creating this project.
 				</li>
 				<li>
 					{'Modify your '}

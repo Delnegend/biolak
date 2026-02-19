@@ -16,7 +16,9 @@ export function HighImpactHero(props: Page['hero'] & { __locale: Lang }): React.
 			<div className="container relative z-10 mb-8 flex items-center justify-center">
 				<div className="max-w-[36.5rem] md:text-center">
 					{props.title && (
-						<h1 className="mb-4 text-3xl font-bold md:text-5xl lg:text-6xl">{props.title}</h1>
+						<h1 className="mb-4 text-3xl font-bold md:text-5xl lg:text-6xl">
+							{props.title}
+						</h1>
 					)}
 					{props.subtitle && (
 						<h2 className="mb-4 text-2xl font-bold md:text-4xl lg:text-5xl">

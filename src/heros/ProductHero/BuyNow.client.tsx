@@ -27,7 +27,10 @@ export function INTERNAL_BuyNowButton({
 			<a
 				href={`/checkout?product=${selectedProductVariant?.product.id}&variant=${selectedProductVariant?.variant.sku}`}
 				onClick={(e) => {
-					if (!selectedProductVariant?.product.id || !selectedProductVariant?.variant.sku) {
+					if (
+						!selectedProductVariant?.product.id ||
+						!selectedProductVariant?.variant.sku
+					) {
 						e.preventDefault()
 					}
 				}}

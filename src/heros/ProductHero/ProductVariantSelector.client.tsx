@@ -55,7 +55,8 @@ export function INTERNAL_ProductVariantSelector({
 					size="sm"
 					variant="outline"
 					className={cn(
-						selectedProductVariant?.variant.sku === variant.sku && 'border-black text-black',
+						selectedProductVariant?.variant.sku === variant.sku &&
+							'border-black text-black',
 					)}
 					disabled={variant.stock <= 0}
 				>

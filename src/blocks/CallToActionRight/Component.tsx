@@ -42,7 +42,10 @@ export function CallToActionRightBlock(
 				<CarouselContent>
 					{props.gallery?.map((item, idx) => {
 						return (
-							<CarouselItem className="max-w-fit" key={item.id ?? `${idx}-${item.title}`}>
+							<CarouselItem
+								className="max-w-fit"
+								key={item.id ?? `${idx}-${item.title}`}
+							>
 								<HeadlessImage
 									media={item.image}
 									alt={matchLang({
@@ -52,7 +55,12 @@ export function CallToActionRightBlock(
 									placeholder={{ width: 380, height: 460 }}
 									className="mb-4 h-[28.75rem] w-[23.75rem] rounded-[0.5rem] object-cover"
 								/>
-								<div className={cn('text-balance text-center text-2xl', phudu.className)}>
+								<div
+									className={cn(
+										'text-balance text-center text-2xl',
+										phudu.className,
+									)}
+								>
 									{item.title}
 								</div>
 							</CarouselItem>

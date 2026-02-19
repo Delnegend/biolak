@@ -35,7 +35,9 @@ export function INTERNAL_CartSidebar({
 		locale,
 	})
 	const [open, setOpen] = useState(false)
-	const cartProductCount = cart.map((item) => item.quantity).reduce((prev, curr) => prev + curr, 0)
+	const cartProductCount = cart
+		.map((item) => item.quantity)
+		.reduce((prev, curr) => prev + curr, 0)
 
 	return (
 		<Sheet open={open} onOpenChange={setOpen}>
@@ -51,11 +53,15 @@ export function INTERNAL_CartSidebar({
 				>
 					<span className={cn(size === 'sm' && 'hidden')}>
 						{label ??
-							matchLang({ [Lang.English]: 'Cart', [Lang.Vietnamese]: 'Giỏ hàng' })(locale)}
+							matchLang({ [Lang.English]: 'Cart', [Lang.Vietnamese]: 'Giỏ hàng' })(
+								locale,
+							)}
 					</span>
 					<span className={cn(size === 'lg' && 'hidden')}>
 						<span className="sr-only">
-							{matchLang({ [Lang.English]: 'Cart', [Lang.Vietnamese]: 'Giỏ hàng' })(locale)}
+							{matchLang({ [Lang.English]: 'Cart', [Lang.Vietnamese]: 'Giỏ hàng' })(
+								locale,
+							)}
 						</span>
 						<ShoppingCart />
 					</span>
@@ -115,7 +121,10 @@ export function INTERNAL_CartSidebar({
 									})(locale)}
 								</div>
 
-								<div style={{ gridArea: 'price' }} className="text-[1.75rem] font-semibold">
+								<div
+									style={{ gridArea: 'price' }}
+									className="text-[1.75rem] font-semibold"
+								>
 									{formatPrice(
 										cart
 											.filter((item) => item.checked)
@@ -124,7 +133,12 @@ export function INTERNAL_CartSidebar({
 									)}
 								</div>
 
-								<Button style={{ gridArea: 'checkout' }} size="lg" className="px-0" asChild>
+								<Button
+									style={{ gridArea: 'checkout' }}
+									size="lg"
+									className="px-0"
+									asChild
+								>
 									{/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
 									<a href="/checkout">
 										{matchLang({

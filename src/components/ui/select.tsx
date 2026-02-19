@@ -174,6 +174,9 @@ export function SelectSeparator({
 	...props
 }: React.ComponentPropsWithRef<typeof SelectPrimitive.Separator>): React.JSX.Element {
 	return (
-		<SelectPrimitive.Separator className={cn('-mx-1 my-1 h-px bg-muted', className)} {...props} />
+		<SelectPrimitive.Separator
+			className={cn('-mx-1 my-1 h-px bg-muted', className)}
+			{...props}
+		/>
 	)
 }

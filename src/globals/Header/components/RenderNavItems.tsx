@@ -37,7 +37,9 @@ export function INTERNAL_RenderNavItems({
 					}
 					case 'internalUrl': {
 						const doc =
-							typeof item.internalUrl?.value === 'object' ? item.internalUrl?.value : null
+							typeof item.internalUrl?.value === 'object'
+								? item.internalUrl?.value
+								: null
 
 						let url
 						switch (item.internalUrl?.relationTo) {

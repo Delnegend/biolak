@@ -52,7 +52,8 @@ export async function ProductsCarouselBlock(
 				})
 				.then((res) => res.docs),
 	})
-	if (!productsOk) throw new Error(`ProductsCarouselBlock: Can't fetch products: ${productsError}`)
+	if (!productsOk)
+		throw new Error(`ProductsCarouselBlock: Can't fetch products: ${productsError}`)
 
 	return (
 		<div className="relative overflow-hidden">
@@ -72,7 +73,11 @@ export async function ProductsCarouselBlock(
 										id,
 									}),
 							})
-							if (!ok) cnsole.error(`Can't fetching image for product ${product.id}:`, error)
+							if (!ok)
+								cnsole.error(
+									`Can't fetching image for product ${product.id}:`,
+									error,
+								)
 
 							return (
 								<CarouselItem
@@ -127,7 +132,9 @@ export async function ProductsCarouselBlock(
 													xmlns="http://www.w3.org/2000/svg"
 												>
 													<circle
-														opacity={pDot.id === product.id ? '0.8' : '0.4'}
+														opacity={
+															pDot.id === product.id ? '0.8' : '0.4'
+														}
 														cx="5"
 														cy="5.16602"
 														r="5"
@@ -145,7 +152,8 @@ export async function ProductsCarouselBlock(
 											{...props.apb}
 											type={props.apb?.type ?? undefined}
 											label={
-												props.apb.label ?? defaults.allProductsBtnLabel(props.__locale)
+												props.apb.label ??
+												defaults.allProductsBtnLabel(props.__locale)
 											}
 										/>
 									</div>

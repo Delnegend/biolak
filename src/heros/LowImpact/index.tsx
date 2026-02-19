@@ -42,13 +42,21 @@ export function LowImpactHero(
 			)}
 			<div className="max-w-3xl text-center">
 				{props.title && (
-					<h1 className="mb-4 text-3xl font-bold md:text-5xl lg:text-6xl">{props.title}</h1>
+					<h1 className="mb-4 text-3xl font-bold md:text-5xl lg:text-6xl">
+						{props.title}
+					</h1>
 				)}
 				{props.subtitle && (
-					<h2 className="mb-4 text-2xl font-bold md:text-4xl lg:text-5xl">{props.subtitle}</h2>
+					<h2 className="mb-4 text-2xl font-bold md:text-4xl lg:text-5xl">
+						{props.subtitle}
+					</h2>
 				)}
 				{props.description && (
-					<RichText data={props.description} enableGutter={false} locale={props.__locale} />
+					<RichText
+						data={props.description}
+						enableGutter={false}
+						locale={props.__locale}
+					/>
 				)}
 			</div>
 			<ArrowDown color="#485A1E" size={30} />

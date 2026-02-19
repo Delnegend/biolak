@@ -45,7 +45,9 @@ export function INTERNAL_FloatingClient({
 								<Link href={l.link} target="_blank">
 									<Image
 										src={
-											icon?.url ?? toFaviconUrl(l.link) ?? 'https://placehold.co/256x256'
+											icon?.url ??
+											toFaviconUrl(l.link) ??
+											'https://placehold.co/256x256'
 										}
 										alt={
 											icon?.alt ??

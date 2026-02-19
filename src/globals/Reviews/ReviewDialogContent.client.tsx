@@ -133,7 +133,8 @@ export function INTERNAL_ReviewDialogContentClient({
 
 						<div>
 							<div className="mb-6 text-xl text-muted-foreground">
-								{global.heartsSelectionLabel ?? defaults.heartsSelectionLabel(locale)}
+								{global.heartsSelectionLabel ??
+									defaults.heartsSelectionLabel(locale)}
 							</div>
 							<div className="flex flex-row gap-x-[0.875rem]">
 								{Array.from({ length: 5 }).map((_, i) => {
@@ -207,9 +208,12 @@ export function INTERNAL_ReviewDialogContentClient({
 
 												const dataTransfer = new DataTransfer()
 												if (reviewImageUpload.files) {
-													Array.from(reviewImageUpload.files).forEach((file, idx) => {
-														if (idx !== index) dataTransfer.items.add(file)
-													})
+													Array.from(reviewImageUpload.files).forEach(
+														(file, idx) => {
+															if (idx !== index)
+																dataTransfer.items.add(file)
+														},
+													)
 												}
 
 												reviewImageUpload.files = dataTransfer.files

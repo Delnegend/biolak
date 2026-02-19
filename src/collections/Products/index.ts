@@ -214,7 +214,8 @@ export const ProductsCollection: CollectionConfig<typeof ProductsSlug> = {
 							relationTo: MediaSlug,
 							admin: {
 								description: {
-									[Lang.English]: 'This icon will be used in the product dropdown list.',
+									[Lang.English]:
+										'This icon will be used in the product dropdown list.',
 									[Lang.Vietnamese]:
 										'Biểu tượng này sẽ được sử dụng trong danh sách thả xuống của sản phẩm.',
 								},
