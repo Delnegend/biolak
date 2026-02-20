@@ -1,5 +1,4 @@
 import { formBuilderPlugin } from '@payloadcms/plugin-form-builder'
-import { importExportPlugin } from '@payloadcms/plugin-import-export'
 import { nestedDocsPlugin } from '@payloadcms/plugin-nested-docs'
 import { redirectsPlugin } from '@payloadcms/plugin-redirects'
 import { searchPlugin } from '@payloadcms/plugin-search'
@@ -8,17 +7,7 @@ import { GenerateTitle, GenerateURL } from '@payloadcms/plugin-seo/types'
 import { FixedToolbarFeature, HeadingFeature, lexicalEditor } from '@payloadcms/richtext-lexical'
 import { Plugin } from 'payload'
 
-import { ContactFormSubmissionsSlug } from '@/collections/ContactFormSubmissions/slug'
-import { CustomersSlug } from '@/collections/Customers/slug'
-import { DiscountCodesSlug } from '@/collections/DiscountCode/slug'
-import { MediaSlug } from '@/collections/Media/slug'
-import { OrdersSlug } from '@/collections/Orders/slug'
-import { PagesSlug } from '@/collections/Pages/slug'
 import { PostCategoriesSlug } from '@/collections/PostCategories/slug'
-import { PostsSlug } from '@/collections/Posts/slug'
-import { ProductCategoriesSlug } from '@/collections/ProductCategories/slug'
-import { ProductsSlug } from '@/collections/Products/slug'
-import { UsersSlug } from '@/collections/Users/slug'
 import { revalidateRedirects } from '@/hooks/revalidateRedirects'
 import { Page, Post } from '@/payload-types'
 import { beforeSyncWithSearch } from '@/search/beforeSync'
@@ -103,20 +92,5 @@ export const plugins: Plugin[] = [
 				return [...defaultFields, ...searchFields]
 			},
 		},
-	}),
-	importExportPlugin({
-		collections: [
-			UsersSlug,
-			CustomersSlug,
-			ContactFormSubmissionsSlug,
-			DiscountCodesSlug,
-			MediaSlug,
-			OrdersSlug,
-			PagesSlug,
-			PostCategoriesSlug,
-			PostsSlug,
-			ProductCategoriesSlug,
-			ProductsSlug,
-		],
 	}),
 ]
