@@ -2,7 +2,7 @@ services:
     biolak-payload:
         container_name: biolak-payload
         # ports:
-        #    - '3000:3000'
+        #     - '3000:3000'
         image: ghcr.io/delnegend/biolak:latest
         volumes:
             - ./data/media:/home/node/app/public/media
