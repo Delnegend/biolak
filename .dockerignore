@@ -3,11 +3,13 @@
 .vscode/
 docs/
 node_modules/
-postgres-data/
 public/media/
 README.md
 LICENSE
 justfile
 docker-compose.example.yml
+docker-compose.yml
 Dockerfile
-.env*
+.biolak.env
+.biolak.example.env
+.cloudflare.example.env
