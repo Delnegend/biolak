@@ -86,5 +86,8 @@
 			"cva",
 			"cn"
 		]
+	},
+	"patchedDependencies": {
+		"@libsql/hrana-client@0.7.0": "patches/@libsql%2Fhrana-client@0.7.0.patch"
 	}
 }
