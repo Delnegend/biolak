@@ -51,5 +51,4 @@ RUN apk add --no-cache curl
 
 USER node
 EXPOSE 3000
-HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 CMD curl -f http://localhost:3000/ || exit 1
 CMD [ "sh", "-c", "npx payload migrate && npx next start -p ${PORT:-3000}" ]
