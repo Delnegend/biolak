@@ -9,6 +9,12 @@ services:
             - ./data/data.sqlite3:/home/node/app/data.sqlite3
         env_file: .biolak.env
         networks: [biolak-network]
+        healthcheck:
+            test: ["CMD-SHELL","curl -f http://localhost:3000/api/status || exit 1"]
+            interval: 30s
+            timeout: 5s
+            start_period: 10s
+            retries: 3
 
     cloudflared:
         container_name: cloudflared
