@@ -26,3 +26,4 @@ services:
 
 networks:
     biolak-network:
+        name: biolak
