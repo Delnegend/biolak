@@ -4,86 +4,42 @@
 
 Install the following tools:
 
-- Docker Engine (https://docs.docker.com/engine/)
-- VS Code (https://code.visualstudio.com/)
-- VS Code Dev Containers extension (https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers)
-- just (task runner) (https://github.com/casey/just)
+- [Docker Engine](https://docs.docker.com/engine/) or [Podman](https://podman.io/docs/installation).
+- [VS Code](https://code.visualstudio.com/)
+- [VS Code Dev Containers extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers)
+- [just](https://github.com/casey/just) (task runner)
 
 ## Setup
 
-1. Copy the environment example file:
+1.  Copy the environment template:
 
-    ```
-    cp .env.example .env
-    ```
-
-2. Follow the same environment variable configuration steps as in [Deployment](./deployment.md#method-1-use-prebuilt-image-recommended). You can skip `CLOUDFLARE_TUNNEL_TOKEN` for local development.
-
-3. Open the Command Palette (F1 or Ctrl+Shift+P) and select: "Dev Containers: Reopen in Container".
-
-## Workflow
-
-- Start dev server: `j dev`
-- Make changes
-- Test build & migrations: `j test-build`
-- Commit & push
-
-Always run `j test-build` **outside** of the dev container to ensure the app builds correctly before committing and deploying.
-
-## Update
-
-### If you're using the prebuilt image with the latest tag:
-
-1. Stop the running containers:
-
-    ```
-    docker compose down
+    ```bash
+    cp .biolak.example.env .env
     ```
 
-2. Pull the latest image:
+2.  Modify `.env`:
+    - Generate secrets using `openssl rand -base64 32` for `PAYLOAD_SECRET`, `CRON_SECRET`, and `PREVIEW_SECRET`.
+    - Set `DATABASE_URI=file:/workspaces/biolak/data.sqlite3`.
 
-    ```
-    docker compose pull ghcr.io/delnegend/biolak:latest
-    ```
+3.  Open the Command Palette (F1 or Ctrl+Shift+P) and select: "Dev Containers: Reopen in Container".
 
-3. Start the stack:
-    ```
-    docker compose up -d
-    ```
+4.  (Optional) To use production data:
+    - First, complete step 3 to enter the dev container.
+    - To get a clean database file:
+        - Option A: Stop the production instance to flush any pending WAL writes into the database, then copy the `data.sqlite3` file.
+        - Option B (Recommended): Copy the latest backup from the production server (see [Deployment](./deployment.md) for how backups are created).
+    - Place the copied `data.sqlite3` file into `/workspaces/biolak/data.sqlite3` (this can be done from the host or inside the container since the workspace is mounted).
 
-### If you're using the prebuilt image with a custom tag:
+## Useful Commands
 
-1. Stop the running containers:
+These commands are executed using `just` (or its alias `j` inside the dev container):
 
-    ```
-    docker compose down
-    ```
-
-2. Change the image tag in `docker-compose.yml` to the desired version.
-
-3. Start the stack:
-    ```
-    docker compose up -d
-    ```
-
-### If you're building from source:
-
-1. Stop the running containers:
-
-    ```
-    docker compose down
-    ```
-
-2. Rebuild the image:
-
-    ```
-    j build-latest-image
-    ```
-
-3. Start the stack:
-    ```
-    docker compose up -d
-    ```
+- `j dev`: Start the development server with Turbo.
+- `j build`: Test build the application.
+- `j lint`: Run ESLint and Prettier to fix and format the code.
+- `j gen-types`: Generate Payload types based on the schema.
+- `j db-create-migrate`: Create a new database migration and minify it.
+- `just docker-image-build`: Build the Docker image locally (run this outside the dev container).
 
 ## Drizzle Conflict Resolution
 
