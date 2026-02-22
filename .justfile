@@ -134,12 +134,11 @@ docker-image-build:
         -t ghcr.io/delnegend/biolak:$(git rev-parse --short HEAD) \
         -t ghcr.io/delnegend/biolak:latest .
 
-docker-image-publish:
+docker-image-publish: docker-image-build
     #!/usr/bin/env bash
-    docker buildx build \
-        -t ghcr.io/delnegend/biolak:latest \
-        -t ghcr.io/delnegend/biolak:$(git rev-parse --short HEAD) \
-        -o type=image,push=true,compression=zstd,compression-level=9 .
+    TAG=$(git rev-parse --short HEAD)
+    docker push --compression-format zstd --compression-level 9 ghcr.io/delnegend/biolak:latest
+    docker push --compression-format zstd --compression-level 9 ghcr.io/delnegend/biolak:$TAG
 
 docker-image-save:
     #!/usr/bin/env bash
