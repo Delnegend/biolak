@@ -1,6 +1,6 @@
 services:
-    biolak-payload:
-        container_name: biolak-payload
+    biolak:
+        container_name: biolak
         # ports:
         #     - '3000:3000'
         image: ghcr.io/delnegend/biolak:latest
