@@ -93,7 +93,6 @@ export default buildConfig({
 				return process.env.DATABASE_URI
 			})(),
 		},
-		push: false,
 	}),
 	collections: [
 		CustomersCollection,
