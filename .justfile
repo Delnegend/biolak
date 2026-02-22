@@ -93,26 +93,33 @@ _minify-migrations:
     main();
 
 dev:
+    #!/usr/bin/env bash
     bun x next dev --turbo
 
 build:
+    #!/usr/bin/env bash
     bun x next build --turbo --experimental-build-mode compile
 
 gen-importmap:
+    #!/usr/bin/env bash
     bun x payload generate:importmap --disable-transpile
 
 gen-types:
+    #!/usr/bin/env bash
     bun x payload generate:types --disable-transpile
 
 gen-db-schema:
+    #!/usr/bin/env bash
     bun x payload generate:db-schema --disable-transpile
 
 db-create-migrate:
+    #!/usr/bin/env bash
     bun x payload migrate:create --disable-transpile
     just _minify-migrations
 
 lint:
-    bun x next lint --fix && \
+    #!/usr/bin/env bash
+    bun x next lint --fix
     bun x prettier --write --list-different \
         .devcontainer/devcontainer.json \
         .vscode \
@@ -122,15 +129,18 @@ lint:
         *.{json,js,mjs,cjs,ts,md}
 
 docker-image-build:
+    #!/usr/bin/env bash
     docker buildx build --load \
         -t ghcr.io/delnegend/biolak:$(git rev-parse --short HEAD) \
         -t ghcr.io/delnegend/biolak:latest .
 
 docker-image-publish:
+    #!/usr/bin/env bash
     docker buildx build \
         -t ghcr.io/delnegend/biolak:latest \
         -t ghcr.io/delnegend/biolak:$(git rev-parse --short HEAD) \
         -o type=image,push=true,compression=zstd,compression-level=9 .
 
 docker-image-save:
+    #!/usr/bin/env bash
     docker save ghcr.io/delnegend/biolak:latest | zstd -T0 -9 - > biolak-latest.tzst
