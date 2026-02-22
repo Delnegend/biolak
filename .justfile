@@ -4,7 +4,7 @@ export NODE_OPTIONS := "--no-deprecation"
     just --choose
 
 # Minify JSON files in the migrations directory & rm trailing spaces
-minify-migrations:
+_minify-migrations:
     #!/usr/bin/env bun
     import { unlink } from "node:fs/promises";
 
@@ -109,7 +109,7 @@ gen-db-schema:
 
 db-create-migrate:
     bun x payload migrate:create --disable-transpile
-    just minify-migrations
+    just _minify-migrations
 
 lint:
     bun x next lint --fix && \
@@ -130,7 +130,7 @@ docker-image-publish:
     docker buildx build \
         -t ghcr.io/delnegend/biolak:latest \
         -t ghcr.io/delnegend/biolak:$(git rev-parse --short HEAD) \
-        -o type=image,push=true,compression=zstd .
+        -o type=image,push=true,compression=zstd,compression-level=9 .
 
 docker-image-save:
-    docker save ghcr.io/delnegend/biolak:latest | gzip > biolak-latest.tar.gz
+    docker save ghcr.io/delnegend/biolak:latest | zstd -T0 -9 - > biolak-latest.tzst
