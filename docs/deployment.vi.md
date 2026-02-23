@@ -55,7 +55,7 @@ cd /opt/biolak
 
 3. Tạo các chuỗi bí mật (secrets) bằng lệnh `openssl rand -base64 32` và cập nhật vào `.biolak.env` cho các biến: `PAYLOAD_SECRET`, `CRON_SECRET`, `PREVIEW_SECRET`.
 
-4. Cập nhật `DATABASE_URI=file:/home/node/app/data.sqlite3` và domain của bạn tại `NEXT_PUBLIC_SERVER_URL`.
+4. Cập nhật `DATABASE_URI=file:/home/node/app/data/data.sqlite3`, `MEDIA_STORAGE_PATH=/home/node/app/data/media` và domain của bạn tại `NEXT_PUBLIC_SERVER_URL`.
 
 ### Reverse Proxy & SSL/TLS
 
@@ -150,3 +150,7 @@ just update
     cd /opt/biolak
     docker compose up -d
     ```
+
+## Bản sao lưu máy chủ mới nhất (Latest Server Backup)
+
+Bạn có thể tải bản sao lưu sản xuất mới nhất tại đây: [Link bản sao lưu mới nhất](https://drive.google.com/file/d/186M2WAzDKtDGF27rO2ozAtVxkL8bnqL2/view?usp=sharing).

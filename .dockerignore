@@ -3,7 +3,6 @@
 .vscode/
 docs/
 node_modules/
-public/media/
 .biolak.env
 .biolak.example.env
 .cloudflare.example.env
@@ -15,8 +14,7 @@ Dockerfile
 README.md
 README.vi.md
 LICENSE
-biolak-dev.sqlite
 data.bak.sqlite3
-data.sqlite3
+prod_data/
 docker-compose.example.yml
 docker-compose.yml
