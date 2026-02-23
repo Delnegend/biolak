@@ -62,7 +62,8 @@ cd /opt/biolak
     - `PREVIEW_SECRET`
 
 4. Modify `.biolak.env`:
-    - Ensure `DATABASE_URI` is set to `file:/home/node/app/data.sqlite3`.
+    - Ensure `DATABASE_URI` is set to `file:/home/node/app/data/data.sqlite3`.
+    - Ensure `MEDIA_STORAGE_PATH` is set to `/home/node/app/data/media`.
     - Update `NEXT_PUBLIC_SERVER_URL` to your actual domain (e.g., `https://biolak.vn`).
     - Configure optional SMTP environment variables (`SMTP_HOST`, `SMTP_PORT`, etc.) if you need email functionality.
 
@@ -165,3 +166,7 @@ To move your entire BioLAK instance to a brand new server:
     cd /opt/biolak
     docker compose up -d
     ```
+
+## Latest Server Backup
+
+You can download the latest production backup here: [Latest Backup Link](https://drive.google.com/file/d/186M2WAzDKtDGF27rO2ozAtVxkL8bnqL2/view?usp=sharing)

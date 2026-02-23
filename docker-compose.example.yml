@@ -4,9 +4,7 @@ services:
         # ports:
         #     - '3000:3000'
         image: ghcr.io/delnegend/biolak:latest
-        volumes:
-            - ./data/media:/home/node/app/public/media
-            - ./data/data.sqlite3:/home/node/app/data.sqlite3
+        volumes: [./data:/home/node/app/data:Z]
         env_file: .biolak.env
         networks: [biolak-network]
         healthcheck:
