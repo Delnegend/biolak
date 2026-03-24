@@ -20,9 +20,7 @@ Chúng tôi khuyên dùng thư mục `/opt/biolak` để lưu trữ mọi thứ 
 
 ```text
 /opt/biolak/
-├── docker-compose.yml      # Quản lý container
-├── .biolak.env             # Biến môi trường cho dịch vụ biolak trong `docker-compose.yml`
-├── .cloudflare.env         # Biến môi trường cho dịch vụ cloudflare tunnel (tùy chọn) trong `docker-compose.yml`
+├── docker-compose.yml      # Quản lý container (chứa biến môi trường cho các dịch vụ)
 └── data/                   # Dữ liệu lưu trữ lâu dài
     ├── media/              # Ảnh/video được tải lên
     └── data.sqlite3        # Cơ sở dữ liệu SQLite
@@ -42,7 +40,6 @@ cd /opt/biolak
 
     ```bash
     sudo curl -fsSL -o /opt/biolak/docker-compose.yml https://github.com/Delnegend/biolak/raw/refs/heads/main/docker-compose.example.yml
-    sudo curl -fsSL -o /opt/biolak/.biolak.env https://github.com/Delnegend/biolak/raw/refs/heads/main/.biolak.example.env
     sudo curl -fsSL -o /opt/biolak/.justfile https://github.com/Delnegend/biolak/raw/refs/heads/main/.prod.justfile
     ```
 
@@ -50,12 +47,17 @@ cd /opt/biolak
    Đảm bảo người dùng hiện tại sở hữu các tệp cấu hình:
 
     ```bash
-    sudo chown 1000:1000 /opt/biolak/docker-compose.yml /opt/biolak/.biolak.env /opt/biolak/.justfile
+    sudo chown 1000:1000 /opt/biolak/docker-compose.yml /opt/biolak/.justfile
+    sudo chmod 600 /opt/biolak/docker-compose.yml
     ```
 
-3. Tạo các chuỗi bí mật (secrets) bằng lệnh `openssl rand -base64 32` và cập nhật vào `.biolak.env` cho các biến: `PAYLOAD_SECRET`, `CRON_SECRET`, `PREVIEW_SECRET`.
+3. Tạo các chuỗi bí mật (secrets) bằng lệnh `openssl rand -base64 32` và dán chúng vào `docker-compose.yml` cho các biến: `PAYLOAD_SECRET`, `CRON_SECRET`, `PREVIEW_SECRET`.
 
-4. Cập nhật `DATABASE_URI=file:/home/node/app/data/data.sqlite3`, `MEDIA_STORAGE_PATH=/home/node/app/data/media` và domain của bạn tại `NEXT_PUBLIC_SERVER_URL`.
+4. Cập nhật `docker-compose.yml`:
+    - Đảm bảo `DATABASE_URI` là `file:/home/node/app/data/data.sqlite3`.
+    - Đảm bảo `MEDIA_STORAGE_PATH` là `/home/node/app/data/media`.
+    - Cập nhật `NEXT_PUBLIC_SERVER_URL` thành domain của bạn (ví dụ `https://biolak.vn`).
+    - Nếu sử dụng Cloudflare Tunnel, đặt giá trị `TUNNEL_TOKEN` trong phần `environment` của dịch vụ `cloudflared`.
 
 ### Reverse Proxy & SSL/TLS
 

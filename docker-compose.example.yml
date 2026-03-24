@@ -5,7 +5,20 @@ services:
         #     - '3000:3000'
         image: ghcr.io/delnegend/biolak:latest
         volumes: [./data:/home/node/app/data:Z]
-        env_file: .biolak.env
+        environment:
+            DATABASE_URI: "file:/home/node/app/data/data.sqlite3"
+            MEDIA_STORAGE_PATH: "/home/node/app/data/media"
+
+            NEXT_PUBLIC_SERVER_URL: "https://biolak.vn"
+            PAYLOAD_SECRET: "CHANGEME"
+            CRON_SECRET: "CHANGEME"
+            PREVIEW_SECRET: "CHANGEME"
+
+            SMTP_FROM: ""
+            SMTP_HOST: ""
+            SMTP_PORT: ""
+            SMTP_USER: ""
+            SMTP_PASS: ""
         networks: [biolak-network]
         healthcheck:
             test: ["CMD-SHELL","curl -f http://localhost:3000/api/status || exit 1"]
@@ -19,7 +32,10 @@ services:
         image: docker.io/cloudflare/cloudflared:latest
         restart: unless-stopped
         command: tunnel run
-        env_file: .cloudflare.env
+        environment:
+            NO_AUTOUPDATE: "true"
+            TUNNEL_TRANSPORT_PROTOCOL: "quic"
+            TUNNEL_TOKEN: ""
         networks: [biolak-network]
 
 networks:
