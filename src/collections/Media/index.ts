@@ -3,17 +3,12 @@ import {
 	InlineToolbarFeature,
 	lexicalEditor,
 } from '@payloadcms/richtext-lexical'
-import path from 'path'
 import { CollectionConfig } from 'payload'
-import { fileURLToPath } from 'url'
 
 import { allow, Role } from '@/access/allow'
 import { Lang } from '@/utilities/lang'
 
 import { MediaSlug } from './slug'
-
-const filename = fileURLToPath(import.meta.url)
-const dirname = path.dirname(filename)
 
 export const MediaCollection: CollectionConfig<typeof MediaSlug> = {
 	slug: MediaSlug,
