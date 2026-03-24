@@ -20,9 +20,7 @@ We recommend using `/opt/biolak` to store everything related to the application.
 
 ```text
 /opt/biolak/
-├── docker-compose.yml      # Service orchestration
-├── .biolak.env             # Environment variables for the biolak service in `docker-compose.yml`
-├── .cloudflare.env         # Environment variables for the cloudflare tunnel service (optional) in `docker-compose.yml`
+├── docker-compose.yml      # Service orchestration (contains environment vars for services)
 └── data/                   # Persistent data
     ├── media/              # Uploaded media files
     └── data.sqlite3        # SQLite database
@@ -44,28 +42,29 @@ cd /opt/biolak
 
     ```bash
     sudo curl -fsSL -o /opt/biolak/docker-compose.yml https://github.com/Delnegend/biolak/raw/refs/heads/main/docker-compose.example.yml
-    sudo curl -fsSL -o /opt/biolak/.biolak.env https://github.com/Delnegend/biolak/raw/refs/heads/main/.biolak.example.env
     sudo curl -fsSL -o /opt/biolak/.justfile https://github.com/Delnegend/biolak/raw/refs/heads/main/.prod.justfile
     ```
 
 2. Modify the file permissions
-   Ensure the current user owns the configuration files:
+    Ensure the current user owns the configuration files and restrict access to the compose file:
 
-    ```bash
-    sudo chown 1000:1000 /opt/biolak/docker-compose.yml /opt/biolak/.biolak.env /opt/biolak/.justfile
-    ```
+     ```bash
+     sudo chown 1000:1000 /opt/biolak/docker-compose.yml /opt/biolak/.justfile
+     sudo chmod 600 /opt/biolak/docker-compose.yml
+     ```
 
-3. Generate strong secrets for `.biolak.env`:
+3. Generate strong secrets and update `docker-compose.yml`:
    Use `openssl rand -base64 32` to generate unique values for:
     - `PAYLOAD_SECRET`
     - `CRON_SECRET`
     - `PREVIEW_SECRET`
 
-4. Modify `.biolak.env`:
+4. Modify `docker-compose.yml`:
     - Ensure `DATABASE_URI` is set to `file:/home/node/app/data/data.sqlite3`.
     - Ensure `MEDIA_STORAGE_PATH` is set to `/home/node/app/data/media`.
     - Update `NEXT_PUBLIC_SERVER_URL` to your actual domain (e.g., `https://biolak.vn`).
-    - Configure optional SMTP environment variables (`SMTP_HOST`, `SMTP_PORT`, etc.) if you need email functionality.
+    - Paste the generated secrets into the `environment` section for the `biolak` service.
+    - If using Cloudflare Tunnel, set the `TUNNEL_TOKEN` value in the `cloudflared` service's `environment` section.
 
 ## Reverse Proxy & SSL/TLS
 
