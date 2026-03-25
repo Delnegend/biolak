@@ -1,20 +1,43 @@
-build
-dist / media
-node_modules
+# Node and editor
+node_modules/
 .DS_Store
-.env
-.next
-.vercel
+.vscode/
+.idea/
 
-# Payload default media upload directory
+# Environment
+.env
+.biolak.env
+
+# Next.js and deployments
+.next/
+.vercel/
+
+# Build output
+build/
+dist/
+
+# Logs, cache, coverage
+logs/
+coverage/
+*.log
+
+# Payload default media upload directory (keep committed uploads out)
 public/media/
 
+# Keep generated site files out but allow specific files
 public/robots.txt
 public/sitemap*.xml
 
+# Docker / local compose
 docker-compose.yml
 !/.devcontainer/docker-compose.yml
+
+# Databases and local data
 *.sqlite*
 *.db*
-.biolak.env
+data.bak.sqlite3
 prod_data/
+
+# Misc
+patches/
+.git/
