@@ -46,12 +46,12 @@ cd /opt/biolak
     ```
 
 2. Modify the file permissions
-    Ensure the current user owns the configuration files and restrict access to the compose file:
+   Ensure the current user owns the configuration files and restrict access to the compose file:
 
-     ```bash
-     sudo chown 1000:1000 /opt/biolak/docker-compose.yml /opt/biolak/.justfile
-     sudo chmod 600 /opt/biolak/docker-compose.yml
-     ```
+    ```bash
+    sudo chown 1000:1000 /opt/biolak/docker-compose.yml /opt/biolak/.justfile
+    sudo chmod 600 /opt/biolak/docker-compose.yml
+    ```
 
 3. Generate strong secrets and update `docker-compose.yml`:
    Use `openssl rand -base64 32` to generate unique values for:
