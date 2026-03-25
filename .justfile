@@ -119,6 +119,8 @@ db-create-migrate:
 
 lint:
     #!/usr/bin/env bash
+    start_time=$(date +%s%N)
+
     bun x next lint --fix
     bun x prettier --write --list-different \
         .devcontainer/devcontainer.json \
@@ -127,6 +129,10 @@ lint:
         public \
         src \
         *.{json,js,mjs,cjs,ts,md}
+
+    end_time=$(date +%s%N)
+    duration=$(( (end_time - start_time) / 1000000 ))
+    echo "Linting and formatting completed in ${duration} ms."
 
 docker-image-build:
     #!/usr/bin/env bash
