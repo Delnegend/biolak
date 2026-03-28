@@ -29,7 +29,7 @@ services:
             NO_AUTOUPDATE: "true"
             TUNNEL_TRANSPORT_PROTOCOL: "quic"
             TUNNEL_TOKEN: ""
-        networks: [biolak-network]
+        networks: [ biolak-network ]
 
 networks:
     biolak-network:
