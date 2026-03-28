@@ -32,6 +32,7 @@ import { PaymentGlobalConf } from './globals/Payment/config'
 import { PopupBannerGlobalConf } from './globals/PopupBanner/config'
 import { PromoGlobalConf } from './globals/Promo/config'
 import { ReviewsGlobalConf } from './globals/Reviews/config'
+import { migrations } from './migrations'
 import { plugins } from './plugins'
 import { getServerSideURL } from './utilities/getURL'
 import { defaultLocale, Lang } from './utilities/lang'
@@ -93,6 +94,7 @@ export default buildConfig({
 				return process.env.DATABASE_URI
 			})(),
 		},
+		prodMigrations: migrations,
 	}),
 	collections: [
 		CustomersCollection,
