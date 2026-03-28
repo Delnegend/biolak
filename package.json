@@ -5,7 +5,8 @@
 	"license": "MIT",
 	"type": "module",
 	"scripts": {
-		"postbuild": "next-sitemap --config next-sitemap.config.cjs"
+		"postbuild": "next-sitemap --config next-sitemap.config.cjs",
+		"build": "next build --turbo --experimental-build-mode compile"
 	},
 	"dependencies": {
 		"@hookform/resolvers": "^5.2.2",
