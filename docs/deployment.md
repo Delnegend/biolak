@@ -60,8 +60,7 @@ cd /opt/biolak
     - `PREVIEW_SECRET`
 
 4. Modify `docker-compose.yml`:
-    - Ensure `DATABASE_URI` is set to `file:/home/node/app/data/data.sqlite3`.
-    - Ensure `MEDIA_STORAGE_PATH` is set to `/home/node/app/data/media`.
+    - Ensure `DATABASE_URI` is set to `file:/app/data.sqlite3`.
     - Update `NEXT_PUBLIC_SERVER_URL` to your actual domain (e.g., `https://biolak.vn`).
     - Paste the generated secrets into the `environment` section for the `biolak` service.
     - If using Cloudflare Tunnel, set the `TUNNEL_TOKEN` value in the `cloudflared` service's `environment` section.
