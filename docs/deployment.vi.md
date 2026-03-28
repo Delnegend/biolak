@@ -54,8 +54,7 @@ cd /opt/biolak
 3. Tạo các chuỗi bí mật (secrets) bằng lệnh `openssl rand -base64 32` và dán chúng vào `docker-compose.yml` cho các biến: `PAYLOAD_SECRET`, `CRON_SECRET`, `PREVIEW_SECRET`.
 
 4. Cập nhật `docker-compose.yml`:
-    - Đảm bảo `DATABASE_URI` là `file:/home/node/app/data/data.sqlite3`.
-    - Đảm bảo `MEDIA_STORAGE_PATH` là `/home/node/app/data/media`.
+    - Đảm bảo `DATABASE_URI` là `file:/app/data.sqlite3`.
     - Cập nhật `NEXT_PUBLIC_SERVER_URL` thành domain của bạn (ví dụ `https://biolak.vn`).
     - Nếu sử dụng Cloudflare Tunnel, đặt giá trị `TUNNEL_TOKEN` trong phần `environment` của dịch vụ `cloudflared`.
 

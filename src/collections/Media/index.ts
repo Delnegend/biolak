@@ -53,11 +53,7 @@ export const MediaCollection: CollectionConfig<typeof MediaSlug> = {
 	],
 	upload: {
 		// Upload to the public/media directory in Next.js making them publicly accessible even outside of Payload
-		staticDir: (() => {
-			if (!process.env.MEDIA_STORAGE_PATH)
-				throw new Error('MEDIA_STORAGE_PATH environment variable is not set')
-			return process.env.MEDIA_STORAGE_PATH
-		})(),
+		staticDir: 'public/media',
 		adminThumbnail: 'thumbnail',
 		focalPoint: true,
 		imageSizes: [

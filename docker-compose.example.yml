@@ -6,8 +6,7 @@ services:
         image: ghcr.io/delnegend/biolak:latest
         volumes: [./data:/home/node/app/data:Z]
         environment:
-            DATABASE_URI: "file:/home/node/app/data/data.sqlite3"
-            MEDIA_STORAGE_PATH: "/home/node/app/data/media"
+            DATABASE_URI: "file:/app/data.sqlite3"
 
             NEXT_PUBLIC_SERVER_URL: "https://biolak.vn"
             PAYLOAD_SECRET: "CHANGEME"
