@@ -1,54 +1,85 @@
-FROM oven/bun:1-alpine AS builder-build
+# ============================================
+# Stage 1: Dependencies Installation Stage
+# ============================================
+
+FROM oven/bun:1-alpine AS dependencies
+
+# Set working directory
+WORKDIR /app
+
+# Copy package-related files first to leverage Docker's caching mechanism
+COPY package.json bun.lock* ./
+COPY patches/ ./patches/
+
+# Install project dependencies with frozen lockfile for reproducible builds
+RUN --mount=type=cache,target=/root/.bun/install/cache \
+    bun install --no-save --frozen-lockfile
+
+# ============================================
+# Stage 2: Build Next.js application in standalone mode
+# ============================================
+
+FROM oven/bun:1-alpine AS builder
+
+# Set working directory
+WORKDIR /app
+
+# Copy project dependencies from dependencies stage
+COPY --from=dependencies /app/node_modules ./node_modules
+
+# Copy application source code
+COPY . .
+
 ENV NODE_ENV=production
 
+# Next.js collects completely anonymous telemetry data about general usage.
+# Learn more here: https://nextjs.org/telemetry
+# Uncomment the following line in case you want to disable telemetry during the build.
+# ENV NEXT_TELEMETRY_DISABLED=1
+
+# Build Next.js application
+RUN bun run build
+
+# ============================================
+# Stage 3: Run Next.js application
+# ============================================
+
+FROM oven/bun:1-alpine AS runner
+
+# Set working directory
 WORKDIR /app
-COPY . .
-RUN mkdir -p /app/.next && \
-    mkdir -p /app/node_modules && \
-    mkdir -p /app/public/media && \
-    chown -R bun:bun /app
+
+# Set production environment variables
+ENV NODE_ENV=production
+ENV PORT=3000
+ENV HOSTNAME="0.0.0.0"
+
+# Next.js collects completely anonymous telemetry data about general usage.
+# Learn more here: https://nextjs.org/telemetry
+# Uncomment the following line in case you want to disable telemetry during the run time.
+# ENV NEXT_TELEMETRY_DISABLED=1
+
+# Copy production assets
+COPY --from=builder --chown=bun:bun /app/public ./public
+
+# Set the correct permission for prerender cache
+RUN mkdir .next
+RUN chown bun:bun .next
+
+# Automatically leverage output traces to reduce image size
+# https://nextjs.org/docs/advanced-features/output-file-tracing
+COPY --from=builder --chown=bun:bun /app/.next/standalone ./
+COPY --from=builder --chown=bun:bun /app/.next/static ./.next/static
+
+# If you want to persist the fetch cache generated during the build so that
+# cached responses are available immediately on startup, uncomment this line:
+# COPY --from=builder --chown=bun:bun /app/.next/cache ./.next/cache
+
+# Switch to non-root user for security best practices
 USER bun
 
-RUN bun i
-# Build Next (non-standalone)
-RUN bun x next build --turbo --experimental-build-mode compile
-RUN rm -rf node_modules
-
-FROM oven/bun:1-alpine AS builder-install-prod
-WORKDIR /app
-# copy only build outputs and lockfiles necessary to install production deps
-COPY --from=builder-build /app/package.json ./
-COPY --from=builder-build /app/bun.lock ./
-COPY --from=builder-build /app/next.config.js ./
-COPY --from=builder-build /app/redirects.js ./redirects.js
-# copy Next build output and static assets
-COPY --from=builder-build /app/.next ./.next
-COPY --from=builder-build /app/public ./public
-# migrations must be available at runtime
-COPY --from=builder-build /app/src/migrations ./src/migrations
-COPY --from=builder-build /app/patches ./patches
-# include TypeScript config and source so payload can locate config files at runtime
-COPY --from=builder-build /app/tsconfig.json ./tsconfig.json
-COPY --from=builder-build /app/src ./src
-RUN bun i --production
-
-FROM node:25-alpine
-ENV NODE_ENV=production
-WORKDIR /home/node/app
-# copy Next build output and runtime deps
-COPY --from=builder-install-prod --chown=node:node /app/.next ./.next
-COPY --from=builder-install-prod --chown=node:node /app/public ./public
-COPY --from=builder-install-prod --chown=node:node /app/node_modules ./node_modules
-COPY --from=builder-install-prod --chown=node:node /app/package.json ./package.json
-COPY --from=builder-install-prod --chown=node:node /app/next.config.js ./next.config.js
-COPY --from=builder-install-prod --chown=node:node /app/src/migrations ./src/migrations
-COPY --from=builder-install-prod --chown=node:node /app/tsconfig.json ./tsconfig.json
-COPY --from=builder-install-prod --chown=node:node /app/src ./src
-COPY --from=builder-install-prod --chown=node:node /app/redirects.js ./redirects.js
-
-# install curl for healthcheck
-RUN apk add --no-cache curl
-
-USER node
+# Expose port 3000 to allow HTTP traffic
 EXPOSE 3000
-CMD [ "sh", "-c", "npx payload migrate && npx next start -p ${PORT:-3000}" ]
+
+# Start Next.js standalone server with Bun
+CMD ["bun", "server.js"]
