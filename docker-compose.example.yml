@@ -4,7 +4,7 @@ services:
         # ports:
         #     - '3000:3000'
         image: ghcr.io/delnegend/biolak:latest
-        volumes: [./data:/home/node/app/data:Z]
+        volumes: [ ./data:/app/data:Z ]
         environment:
             DATABASE_URI: "file:/app/data.sqlite3"
 
