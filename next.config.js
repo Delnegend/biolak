@@ -33,6 +33,7 @@ const nextConfig = {
 	images: {
 		formats: ['image/avif', 'image/webp'],
 	},
+	output: 'standalone',
 }
 
 export default withPayload(nextConfig, { devBundleServerPackages: false })
