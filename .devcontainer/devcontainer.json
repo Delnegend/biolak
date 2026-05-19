@@ -1,21 +1,35 @@
 {
+	"$schema": "https://raw.githubusercontent.com/devcontainers/spec/refs/heads/main/schemas/devContainer.schema.json",
 	"name": "biolak",
 	"build": {
 		"dockerfile": "Dockerfile",
 		"context": ".."
 	},
 	"postCreateCommand": "bash .devcontainer/postinstall.sh",
-	"runArgs": ["--env-file", "./.biolak.env", "-v", ".:/biolak"],
+	"runArgs": ["-v", ".:/biolak", "--hostname", "biolak-devcontainer"],
 	"customizations": {
 		"vscode": {
 			"extensions": [
 				"esbenp.prettier-vscode",
 				"YoavBls.pretty-ts-errors",
 				"bradlc.vscode-tailwindcss",
-				"yy0931.vscode-sqlite3-editor"
+				"yy0931.vscode-sqlite3-editor",
+				"redhat.vscode-yaml"
 			],
 			"settings": {
-				"terminal.integrated.defaultProfile.linux": "bash"
+				"terminal.integrated.defaultProfile.linux": "bash",
+				"editor.formatOnSaveMode": "file",
+				"js/ts.tsdk.path": "node_modules/typescript/lib",
+				"tailwindCSS.experimental.classRegex": [
+					["cn\\(([^)]*)\\)", "(?:'|\"|`)([^']*)(?:'|\"|`)"],
+					["cva\\(([^)]*)\\)", "(?:'|\"|`)([^']*)(?:'|\"|`)"],
+					["Tw \\=([^;]*);", "(\"([^\"]*)\")|(\\'([^\\']*)\\')|(\\`([^\\`]*)\\`)"],
+					[
+						"lassNames=\\{([^}]*)\\}",
+						"(\"([^\"]*)\")|(\\'([^\\']*)\\')|(\\`([^\\`]*)\\`)"
+					]
+				],
+				"editor.tabSize": 2
 			}
 		}
 	}
