@@ -1,7 +1,10 @@
-FROM docker.io/library/debian:12-slim
+FROM docker.io/library/debian:13-slim
+
+ENV LANG=C.UTF-8
+ENV LC_ALL=C.UTF-8
 
 RUN apt-get update && \
-    apt-get install -y sudo unzip curl git zstd && \
+    apt-get install -y sudo unzip curl git zstd libatomic1 && \
     apt-get clean
 
 RUN groupadd -g 1000 biolak && \
