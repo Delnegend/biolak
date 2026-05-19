@@ -61,4 +61,4 @@ Nếu bạn không thể tương tác với trình giải quyết xung đột DB
 
 - Sau khi tạo tài khoản admin đầu tiên, hãy đặt `DEV_EMAIL` và `DEV_PASSWORD` trong `.env` để tự động đăng nhập.
 - Các thành phần (components) bắt đầu bằng `INTERNAL_` là các component client chỉ sử dụng một lần.
-- Sử dụng `cnsole` (một công cụ hỗ trợ dự án có chủ ý) thay vì `console` — tìm kiếm `cnsole` trong toàn bộ mã nguồn để xem các ví dụ.
+- Sử dụng `logger` (một công cụ hỗ trợ dự án có chủ ý) thay vì `console` — tìm kiếm `logger` trong toàn bộ mã nguồn để xem các ví dụ.
