@@ -1,13 +1,14 @@
 import { FlatCompat } from '@eslint/eslintrc'
 import simpleImportSort from 'eslint-plugin-simple-import-sort'
-import { dirname } from 'path'
+import path from 'path'
 import { fileURLToPath } from 'url'
 
 const __filename = fileURLToPath(import.meta.url)
-const __dirname = dirname(__filename)
+const __dirname = path.dirname(__filename)
 
 const compat = new FlatCompat({
 	baseDirectory: __dirname,
+	resolvePluginsRelativeTo: __dirname,
 })
 
 export default [
@@ -22,13 +23,6 @@ export default [
 		},
 	},
 	{
-		// files: ['**/*.ts', '**/*.tsx', '**/*.cts', '**/*.mts'], // Specify that this config applies to TS/TSX files
-		// languageOptions: {
-		// 	parserOptions: {
-		// 		project: true, // Enable type-aware linting
-		// 		tsconfigRootDir: __dirname, // Root directory for tsconfig.json
-		// 	},
-		// },
 		rules: {
 			// '@typescript-eslint/no-unnecessary-condition': 'error',
 			'@typescript-eslint/ban-ts-comment': 'warn',
