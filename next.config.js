@@ -1,17 +1,14 @@
 import { withPayload } from '@payloadcms/next/withPayload'
+
 import redirects from './redirects.js'
 
-const NEXT_PUBLIC_SERVER_URL = (() => {
-	if (process.env.VERCEL_PROJECT_PRODUCTION_URL)
-		return `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
-
-	if (process.env.NEXT_PUBLIC_SERVER_URL) return process.env.NEXT_PUBLIC_SERVER_URL
-
-	return 'http://localhost:3000'
-})()
+const NEXT_PUBLIC_SERVER_URL = process.env.VERCEL_PROJECT_PRODUCTION_URL
+	? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
+	: process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3000'
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+	allowedDevOrigins: ['127.0.0.1'],
 	images: {
 		remotePatterns: [
 			(() => {
@@ -24,12 +21,10 @@ const nextConfig = {
 			})(),
 			new URL('https://placehold.co/**'),
 		],
+		qualities: [75, 85, 90, 95, 100],
 	},
 	reactStrictMode: true,
 	redirects,
-	experimental: {
-		reactCompiler: true,
-	},
 	images: {
 		formats: ['image/avif', 'image/webp'],
 	},
