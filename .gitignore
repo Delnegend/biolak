@@ -41,3 +41,5 @@ prod_data/
 # Misc
 patches/
 .git/
+.agents/
+.vscode/
