@@ -2,24 +2,24 @@
 # Stage 1: Dependencies Installation Stage
 # ============================================
 
-FROM oven/bun:1-alpine AS dependencies
+FROM node:24-alpine AS dependencies
 
 # Set working directory
 WORKDIR /app
 
 # Copy package-related files first to leverage Docker's caching mechanism
-COPY package.json bun.lock* ./
+COPY package.json node.lock* ./
 COPY patches/ ./patches/
 
 # Install project dependencies with frozen lockfile for reproducible builds
-RUN --mount=type=cache,target=/root/.bun/install/cache \
-    bun install --no-save --frozen-lockfile
+RUN --mount=type=cache,target=/root/.node/install/cache \
+    npm install --no-save
 
 # ============================================
 # Stage 2: Build Next.js application in standalone mode
 # ============================================
 
-FROM oven/bun:1-alpine AS builder
+FROM node:24-alpine AS builder
 
 # Set working directory
 WORKDIR /app
@@ -38,13 +38,13 @@ ENV NODE_ENV=production
 # ENV NEXT_TELEMETRY_DISABLED=1
 
 # Build Next.js application
-RUN bun run build
+RUN npm run build
 
 # ============================================
 # Stage 3: Run Next.js application
 # ============================================
 
-FROM oven/bun:1-alpine AS runner
+FROM node:24-alpine AS runner
 
 # Set working directory
 WORKDIR /app
@@ -60,26 +60,26 @@ ENV HOSTNAME="0.0.0.0"
 # ENV NEXT_TELEMETRY_DISABLED=1
 
 # Copy production assets
-COPY --from=builder --chown=bun:bun /app/public ./public
+COPY --from=builder --chown=node:node /app/public ./public
 
 # Set the correct permission for prerender cache
 RUN mkdir .next
-RUN chown bun:bun .next
+RUN chown node:node .next
 
 # Automatically leverage output traces to reduce image size
 # https://nextjs.org/docs/advanced-features/output-file-tracing
-COPY --from=builder --chown=bun:bun /app/.next/standalone ./
-COPY --from=builder --chown=bun:bun /app/.next/static ./.next/static
+COPY --from=builder --chown=node:node /app/.next/standalone ./
+COPY --from=builder --chown=node:node /app/.next/static ./.next/static
 
 # If you want to persist the fetch cache generated during the build so that
 # cached responses are available immediately on startup, uncomment this line:
-# COPY --from=builder --chown=bun:bun /app/.next/cache ./.next/cache
+# COPY --from=builder --chown=node:node /app/.next/cache ./.next/cache
 
 # Switch to non-root user for security best practices
-USER bun
+USER node
 
 # Expose port 3000 to allow HTTP traffic
 EXPOSE 3000
 
-# Start Next.js standalone server with Bun
-CMD ["bun", "server.js"]
+# Start Next.js standalone server with node
+CMD ["node", "server.js"]
