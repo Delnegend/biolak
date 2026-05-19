@@ -4,27 +4,18 @@ export NODE_OPTIONS := "--no-deprecation"
     just --choose
 
 dev:
-    #!/usr/bin/env bash
     pnpm next dev
 
 build:
-    #!/usr/bin/env bash
     pnpm next build --experimental-build-mode compile
 
-gen-importmap:
-    #!/usr/bin/env bash
-    pnpm payload generate:importmap
-
-gen-types:
+gen-stuffs:
     #!/usr/bin/env bash
     pnpm payload generate:types
-
-gen-db-schema:
-    #!/usr/bin/env bash
     pnpm payload generate:db-schema
+    pnpm payload generate:importmap
 
 db-create-migrate:
-    #!/usr/bin/env bash
     pnpm run payload migrate:create
 
 check:
@@ -45,7 +36,6 @@ check:
     echo "Linting and formatting completed in ${duration} ms."
 
 docker-image-build:
-    #!/usr/bin/env bash
     docker buildx build --load \
         -t ghcr.io/delnegend/biolak:$(git rev-parse --short HEAD) \
         -t ghcr.io/delnegend/biolak:latest .
@@ -57,5 +47,4 @@ docker-image-publish:
     docker push --compression-format zstd --compression-level 9 ghcr.io/delnegend/biolak:$TAG
 
 docker-image-save:
-    #!/usr/bin/env bash
     docker save ghcr.io/delnegend/biolak:latest | zstd -T0 -9 - > biolak-latest.tzst
