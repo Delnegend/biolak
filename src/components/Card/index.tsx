@@ -17,7 +17,9 @@ export function Card(props: {
 	showCategories?: boolean
 	title?: string
 }): React.JSX.Element {
-	const { card, link } = useClickableCard({})
+	const cardRef = React.useRef<HTMLElement | null>(null)
+	const linkRef = React.useRef<HTMLAnchorElement | null>(null)
+	useClickableCard({ cardRef, linkRef })
 
 	const hasCategories =
 		props.doc?.postCategories &&
@@ -33,7 +35,7 @@ export function Card(props: {
 				'overflow-hidden rounded-lg border border-border bg-card hover:cursor-pointer',
 				props.className,
 			)}
-			ref={card.ref}
+			ref={cardRef}
 		>
 			<div className="relative w-full">
 				{!props.doc?.meta?.meta?.image && <div className="">No image</div>}
@@ -74,7 +76,7 @@ export function Card(props: {
 				{titleToUse && (
 					<div className="prose">
 						<h3>
-							<Link className="not-prose" href={href} ref={link.ref}>
+							<Link className="not-prose" href={href} ref={linkRef}>
 								{titleToUse}
 							</Link>
 						</h3>
