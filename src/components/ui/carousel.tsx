@@ -102,7 +102,8 @@ function Carousel({
 			return
 		}
 
-		onSelect(api)
+		// Defer initial selection handling to avoid synchronous setState in effect
+		queueMicrotask(() => onSelect(api))
 		api.on('reInit', onSelect)
 		api.on('select', onSelect)
 
