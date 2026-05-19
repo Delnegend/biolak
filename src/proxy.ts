@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 
 import { HeaderName } from './utilities/headerName'
 
-export function middleware(request: NextRequest) {
+export function proxy(request: NextRequest) {
 	switch (request.nextUrl.pathname) {
 		case '/':
 			return Response.redirect(new URL('/home', request.url), 307)
