@@ -61,4 +61,4 @@ If you can't interact with the DB conflicts resolver in the terminal:
 
 - After creating the first admin, set `DEV_EMAIL` and `DEV_PASSWORD` in `.env` for auto-login.
 - Components prefixed with `INTERNAL_` are single-use client components.
-- Use `cnsole` (intentional project helper) instead of `console` — search for `cnsole` throughout the codebase to see examples.
+- Use `logger` (intentional project helper) instead of `console` — search for `logger` throughout the codebase to see examples.
