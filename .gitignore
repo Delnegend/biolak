@@ -20,6 +20,7 @@ dist/
 logs/
 coverage/
 *.log
+*.tsbuildinfo
 
 # Payload default media upload directory (keep committed uploads out)
 public/media/
