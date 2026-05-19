@@ -1,10 +1,12 @@
 #!/bin/bash
 
-# bun
-curl -fsSL https://bun.sh/install | bash
-echo 'export BUN_INSTALL="$HOME/.bun"' >> ~/.bashrc
-echo 'export PATH="$BUN_INSTALL/bin:$PATH"' >> ~/.bashrc
-/home/biolak/.bun/bin/bun i
+# node
+curl -fsSL https://get.pnpm.io/install.sh | ENV="$HOME/.bashrc" SHELL="$(which bash)" bash -
+export PNPM_HOME="$HOME/.local/share/pnpm"
+export PATH="$PNPM_HOME:$PATH"
+pnpm config set store-dir ~/.pnpm-store
+pnpm runtime set node 24 -g
+pnpm i
 
 # just
 ver="1.43.1"
