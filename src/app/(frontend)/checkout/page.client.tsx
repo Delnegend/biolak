@@ -216,6 +216,16 @@ export default function PageClient({
 		},
 	]
 
+	const [loadPersonalDetailsOnLoad, setLoadPersonalDetailsOnLoad_] = useState<boolean>(() => {
+		if (typeof window === 'undefined') return false
+		return localStorage.getItem('save-details') === 'true'
+	})
+	function setLoadPersonalDetailsOnLoad(value: boolean) {
+		setLoadPersonalDetailsOnLoad_(value)
+		if (typeof window !== 'undefined')
+			localStorage.setItem('save-details', value ? 'true' : 'false')
+	}
+
 	useEffect(() => {
 		if (overrideProduct)
 			loadProduct({
@@ -226,7 +236,6 @@ export default function PageClient({
 
 		// Load personal details from localStorage if "save-details" is true
 		if (typeof window !== 'undefined' && localStorage.getItem('save-details') === 'true') {
-			setLoadPersonalDetailsOnLoad(true)
 			const checkoutDetails = localStorage.getItem('checkout-details')
 			if (checkoutDetails)
 				try {
@@ -269,13 +278,6 @@ export default function PageClient({
 
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [])
-
-	const [loadPersonalDetailsOnLoad, setLoadPersonalDetailsOnLoad_] = useState(false)
-	function setLoadPersonalDetailsOnLoad(value: boolean) {
-		setLoadPersonalDetailsOnLoad_(value)
-		if (typeof window !== 'undefined')
-			localStorage.setItem('save-details', value ? 'true' : 'false')
-	}
 
 	if (cart.length === 0)
 		return (
