@@ -34,14 +34,12 @@ export const customers = sqliteTable(
 			.notNull()
 			.default(sql`(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))`),
 	},
-	(columns) => ({
-		customers_email_idx: uniqueIndex('customers_email_idx').on(columns.email),
-		customers_phone_number_idx: uniqueIndex('customers_phone_number_idx').on(
-			columns.phoneNumber,
-		),
-		customers_updated_at_idx: index('customers_updated_at_idx').on(columns.updatedAt),
-		customers_created_at_idx: index('customers_created_at_idx').on(columns.createdAt),
-	}),
+	(columns) => [
+		uniqueIndex('customers_email_idx').on(columns.email),
+		uniqueIndex('customers_phone_number_idx').on(columns.phoneNumber),
+		index('customers_updated_at_idx').on(columns.updatedAt),
+		index('customers_created_at_idx').on(columns.createdAt),
+	],
 )
 
 export const contact_form = sqliteTable(
@@ -59,10 +57,10 @@ export const contact_form = sqliteTable(
 			.notNull()
 			.default(sql`(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))`),
 	},
-	(columns) => ({
-		contact_form_updated_at_idx: index('contact_form_updated_at_idx').on(columns.updatedAt),
-		contact_form_created_at_idx: index('contact_form_created_at_idx').on(columns.createdAt),
-	}),
+	(columns) => [
+		index('contact_form_updated_at_idx').on(columns.updatedAt),
+		index('contact_form_created_at_idx').on(columns.createdAt),
+	],
 )
 
 export const discount_codes = sqliteTable(
@@ -70,13 +68,13 @@ export const discount_codes = sqliteTable(
 	{
 		id: integer('id').primaryKey(),
 		code: text('code').notNull(),
-		amount: numeric('amount'),
+		amount: numeric('amount', { mode: 'number' }),
 		isActive: integer('is_active', { mode: 'boolean' }).default(true),
 		discountType: text('discount_type', { enum: ['percentage', 'fixed'] })
 			.notNull()
 			.default('percentage'),
-		value: numeric('value').notNull().default('0'),
-		maxDiscount: numeric('max_discount'),
+		value: numeric('value', { mode: 'number' }).notNull().default(0),
+		maxDiscount: numeric('max_discount', { mode: 'number' }),
 		expirationDate: text('expiration_date').default(
 			sql`(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))`,
 		),
@@ -88,11 +86,11 @@ export const discount_codes = sqliteTable(
 			.notNull()
 			.default(sql`(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))`),
 	},
-	(columns) => ({
-		discount_codes_code_idx: uniqueIndex('discount_codes_code_idx').on(columns.code),
-		discount_codes_updated_at_idx: index('discount_codes_updated_at_idx').on(columns.updatedAt),
-		discount_codes_created_at_idx: index('discount_codes_created_at_idx').on(columns.createdAt),
-	}),
+	(columns) => [
+		uniqueIndex('discount_codes_code_idx').on(columns.code),
+		index('discount_codes_updated_at_idx').on(columns.updatedAt),
+		index('discount_codes_created_at_idx').on(columns.createdAt),
+	],
 )
 
 export const discount_codes_rels = sqliteTable(
@@ -106,40 +104,36 @@ export const discount_codes_rels = sqliteTable(
 		productCategoriesID: integer('product_categories_id'),
 		productSubCategoriesID: integer('product_sub_categories_id'),
 	},
-	(columns) => ({
-		order: index('discount_codes_rels_order_idx').on(columns.order),
-		parentIdx: index('discount_codes_rels_parent_idx').on(columns.parent),
-		pathIdx: index('discount_codes_rels_path_idx').on(columns.path),
-		discount_codes_rels_products_id_idx: index('discount_codes_rels_products_id_idx').on(
-			columns.productsID,
+	(columns) => [
+		index('discount_codes_rels_order_idx').on(columns.order),
+		index('discount_codes_rels_parent_idx').on(columns.parent),
+		index('discount_codes_rels_path_idx').on(columns.path),
+		index('discount_codes_rels_products_id_idx').on(columns.productsID),
+		index('discount_codes_rels_product_categories_id_idx').on(columns.productCategoriesID),
+		index('discount_codes_rels_product_sub_categories_id_idx').on(
+			columns.productSubCategoriesID,
 		),
-		discount_codes_rels_product_categories_id_idx: index(
-			'discount_codes_rels_product_categories_id_idx',
-		).on(columns.productCategoriesID),
-		discount_codes_rels_product_sub_categories_id_idx: index(
-			'discount_codes_rels_product_sub_categories_id_idx',
-		).on(columns.productSubCategoriesID),
-		parentFk: foreignKey({
+		foreignKey({
 			columns: [columns['parent']],
 			foreignColumns: [discount_codes.id],
 			name: 'discount_codes_rels_parent_fk',
 		}).onDelete('cascade'),
-		productsIdFk: foreignKey({
+		foreignKey({
 			columns: [columns['productsID']],
 			foreignColumns: [products.id],
 			name: 'discount_codes_rels_products_fk',
 		}).onDelete('cascade'),
-		productCategoriesIdFk: foreignKey({
+		foreignKey({
 			columns: [columns['productCategoriesID']],
 			foreignColumns: [product_categories.id],
 			name: 'discount_codes_rels_product_categories_fk',
 		}).onDelete('cascade'),
-		productSubCategoriesIdFk: foreignKey({
+		foreignKey({
 			columns: [columns['productSubCategoriesID']],
 			foreignColumns: [product_sub_categories.id],
 			name: 'discount_codes_rels_product_sub_categories_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const media = sqliteTable(
@@ -158,80 +152,68 @@ export const media = sqliteTable(
 		thumbnailURL: text('thumbnail_u_r_l'),
 		filename: text('filename'),
 		mimeType: text('mime_type'),
-		filesize: numeric('filesize'),
-		width: numeric('width'),
-		height: numeric('height'),
-		focalX: numeric('focal_x'),
-		focalY: numeric('focal_y'),
+		filesize: numeric('filesize', { mode: 'number' }),
+		width: numeric('width', { mode: 'number' }),
+		height: numeric('height', { mode: 'number' }),
+		focalX: numeric('focal_x', { mode: 'number' }),
+		focalY: numeric('focal_y', { mode: 'number' }),
 		sizes_thumbnail_url: text('sizes_thumbnail_url'),
-		sizes_thumbnail_width: numeric('sizes_thumbnail_width'),
-		sizes_thumbnail_height: numeric('sizes_thumbnail_height'),
+		sizes_thumbnail_width: numeric('sizes_thumbnail_width', { mode: 'number' }),
+		sizes_thumbnail_height: numeric('sizes_thumbnail_height', { mode: 'number' }),
 		sizes_thumbnail_mimeType: text('sizes_thumbnail_mime_type'),
-		sizes_thumbnail_filesize: numeric('sizes_thumbnail_filesize'),
+		sizes_thumbnail_filesize: numeric('sizes_thumbnail_filesize', { mode: 'number' }),
 		sizes_thumbnail_filename: text('sizes_thumbnail_filename'),
 		sizes_square_url: text('sizes_square_url'),
-		sizes_square_width: numeric('sizes_square_width'),
-		sizes_square_height: numeric('sizes_square_height'),
+		sizes_square_width: numeric('sizes_square_width', { mode: 'number' }),
+		sizes_square_height: numeric('sizes_square_height', { mode: 'number' }),
 		sizes_square_mimeType: text('sizes_square_mime_type'),
-		sizes_square_filesize: numeric('sizes_square_filesize'),
+		sizes_square_filesize: numeric('sizes_square_filesize', { mode: 'number' }),
 		sizes_square_filename: text('sizes_square_filename'),
 		sizes_small_url: text('sizes_small_url'),
-		sizes_small_width: numeric('sizes_small_width'),
-		sizes_small_height: numeric('sizes_small_height'),
+		sizes_small_width: numeric('sizes_small_width', { mode: 'number' }),
+		sizes_small_height: numeric('sizes_small_height', { mode: 'number' }),
 		sizes_small_mimeType: text('sizes_small_mime_type'),
-		sizes_small_filesize: numeric('sizes_small_filesize'),
+		sizes_small_filesize: numeric('sizes_small_filesize', { mode: 'number' }),
 		sizes_small_filename: text('sizes_small_filename'),
 		sizes_medium_url: text('sizes_medium_url'),
-		sizes_medium_width: numeric('sizes_medium_width'),
-		sizes_medium_height: numeric('sizes_medium_height'),
+		sizes_medium_width: numeric('sizes_medium_width', { mode: 'number' }),
+		sizes_medium_height: numeric('sizes_medium_height', { mode: 'number' }),
 		sizes_medium_mimeType: text('sizes_medium_mime_type'),
-		sizes_medium_filesize: numeric('sizes_medium_filesize'),
+		sizes_medium_filesize: numeric('sizes_medium_filesize', { mode: 'number' }),
 		sizes_medium_filename: text('sizes_medium_filename'),
 		sizes_large_url: text('sizes_large_url'),
-		sizes_large_width: numeric('sizes_large_width'),
-		sizes_large_height: numeric('sizes_large_height'),
+		sizes_large_width: numeric('sizes_large_width', { mode: 'number' }),
+		sizes_large_height: numeric('sizes_large_height', { mode: 'number' }),
 		sizes_large_mimeType: text('sizes_large_mime_type'),
-		sizes_large_filesize: numeric('sizes_large_filesize'),
+		sizes_large_filesize: numeric('sizes_large_filesize', { mode: 'number' }),
 		sizes_large_filename: text('sizes_large_filename'),
 		sizes_xlarge_url: text('sizes_xlarge_url'),
-		sizes_xlarge_width: numeric('sizes_xlarge_width'),
-		sizes_xlarge_height: numeric('sizes_xlarge_height'),
+		sizes_xlarge_width: numeric('sizes_xlarge_width', { mode: 'number' }),
+		sizes_xlarge_height: numeric('sizes_xlarge_height', { mode: 'number' }),
 		sizes_xlarge_mimeType: text('sizes_xlarge_mime_type'),
-		sizes_xlarge_filesize: numeric('sizes_xlarge_filesize'),
+		sizes_xlarge_filesize: numeric('sizes_xlarge_filesize', { mode: 'number' }),
 		sizes_xlarge_filename: text('sizes_xlarge_filename'),
 		sizes_og_url: text('sizes_og_url'),
-		sizes_og_width: numeric('sizes_og_width'),
-		sizes_og_height: numeric('sizes_og_height'),
+		sizes_og_width: numeric('sizes_og_width', { mode: 'number' }),
+		sizes_og_height: numeric('sizes_og_height', { mode: 'number' }),
 		sizes_og_mimeType: text('sizes_og_mime_type'),
-		sizes_og_filesize: numeric('sizes_og_filesize'),
+		sizes_og_filesize: numeric('sizes_og_filesize', { mode: 'number' }),
 		sizes_og_filename: text('sizes_og_filename'),
 	},
-	(columns) => ({
-		media_updated_at_idx: index('media_updated_at_idx').on(columns.updatedAt),
-		media_created_at_idx: index('media_created_at_idx').on(columns.createdAt),
-		media_filename_idx: uniqueIndex('media_filename_idx').on(columns.filename),
-		media_sizes_thumbnail_sizes_thumbnail_filename_idx: index(
-			'media_sizes_thumbnail_sizes_thumbnail_filename_idx',
-		).on(columns.sizes_thumbnail_filename),
-		media_sizes_square_sizes_square_filename_idx: index(
-			'media_sizes_square_sizes_square_filename_idx',
-		).on(columns.sizes_square_filename),
-		media_sizes_small_sizes_small_filename_idx: index(
-			'media_sizes_small_sizes_small_filename_idx',
-		).on(columns.sizes_small_filename),
-		media_sizes_medium_sizes_medium_filename_idx: index(
-			'media_sizes_medium_sizes_medium_filename_idx',
-		).on(columns.sizes_medium_filename),
-		media_sizes_large_sizes_large_filename_idx: index(
-			'media_sizes_large_sizes_large_filename_idx',
-		).on(columns.sizes_large_filename),
-		media_sizes_xlarge_sizes_xlarge_filename_idx: index(
-			'media_sizes_xlarge_sizes_xlarge_filename_idx',
-		).on(columns.sizes_xlarge_filename),
-		media_sizes_og_sizes_og_filename_idx: index('media_sizes_og_sizes_og_filename_idx').on(
-			columns.sizes_og_filename,
+	(columns) => [
+		index('media_updated_at_idx').on(columns.updatedAt),
+		index('media_created_at_idx').on(columns.createdAt),
+		uniqueIndex('media_filename_idx').on(columns.filename),
+		index('media_sizes_thumbnail_sizes_thumbnail_filename_idx').on(
+			columns.sizes_thumbnail_filename,
 		),
-	}),
+		index('media_sizes_square_sizes_square_filename_idx').on(columns.sizes_square_filename),
+		index('media_sizes_small_sizes_small_filename_idx').on(columns.sizes_small_filename),
+		index('media_sizes_medium_sizes_medium_filename_idx').on(columns.sizes_medium_filename),
+		index('media_sizes_large_sizes_large_filename_idx').on(columns.sizes_large_filename),
+		index('media_sizes_xlarge_sizes_xlarge_filename_idx').on(columns.sizes_xlarge_filename),
+		index('media_sizes_og_sizes_og_filename_idx').on(columns.sizes_og_filename),
+	],
 )
 
 export const pages_hero_links = sqliteTable(
@@ -244,15 +226,15 @@ export const pages_hero_links = sqliteTable(
 		link_newTab: integer('link_new_tab', { mode: 'boolean' }),
 		link_url: text('link_url'),
 	},
-	(columns) => ({
-		_orderIdx: index('pages_hero_links_order_idx').on(columns._order),
-		_parentIDIdx: index('pages_hero_links_parent_id_idx').on(columns._parentID),
-		_parentIDFk: foreignKey({
+	(columns) => [
+		index('pages_hero_links_order_idx').on(columns._order),
+		index('pages_hero_links_parent_id_idx').on(columns._parentID),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [pages.id],
 			name: 'pages_hero_links_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const pages_hero_links_locales = sqliteTable(
@@ -263,17 +245,17 @@ export const pages_hero_links_locales = sqliteTable(
 		_locale: text('_locale', { enum: ['en', 'vi'] }).notNull(),
 		_parentID: text('_parent_id').notNull(),
 	},
-	(columns) => ({
-		_localeParent: uniqueIndex('pages_hero_links_locales_locale_parent_id_unique').on(
+	(columns) => [
+		uniqueIndex('pages_hero_links_locales_locale_parent_id_unique').on(
 			columns._locale,
 			columns._parentID,
 		),
-		_parentIdFk: foreignKey({
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [pages_hero_links.id],
 			name: 'pages_hero_links_locales_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const pages_blocks_archive = sqliteTable(
@@ -288,19 +270,19 @@ export const pages_blocks_archive = sqliteTable(
 			'collection',
 		),
 		relationTo: text('relation_to', { enum: ['posts'] }).default('posts'),
-		limit: numeric('limit').default('10'),
+		limit: numeric('limit', { mode: 'number' }).default(10),
 		blockName: text('block_name'),
 	},
-	(columns) => ({
-		_orderIdx: index('pages_blocks_archive_order_idx').on(columns._order),
-		_parentIDIdx: index('pages_blocks_archive_parent_id_idx').on(columns._parentID),
-		_pathIdx: index('pages_blocks_archive_path_idx').on(columns._path),
-		_parentIdFk: foreignKey({
+	(columns) => [
+		index('pages_blocks_archive_order_idx').on(columns._order),
+		index('pages_blocks_archive_parent_id_idx').on(columns._parentID),
+		index('pages_blocks_archive_path_idx').on(columns._path),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [pages.id],
 			name: 'pages_blocks_archive_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const pages_blocks_banner = sqliteTable(
@@ -314,16 +296,16 @@ export const pages_blocks_banner = sqliteTable(
 		content: text('content', { mode: 'json' }),
 		blockName: text('block_name'),
 	},
-	(columns) => ({
-		_orderIdx: index('pages_blocks_banner_order_idx').on(columns._order),
-		_parentIDIdx: index('pages_blocks_banner_parent_id_idx').on(columns._parentID),
-		_pathIdx: index('pages_blocks_banner_path_idx').on(columns._path),
-		_parentIdFk: foreignKey({
+	(columns) => [
+		index('pages_blocks_banner_order_idx').on(columns._order),
+		index('pages_blocks_banner_parent_id_idx').on(columns._parentID),
+		index('pages_blocks_banner_path_idx').on(columns._path),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [pages.id],
 			name: 'pages_blocks_banner_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const pages_blocks_best_seller = sqliteTable(
@@ -338,16 +320,16 @@ export const pages_blocks_best_seller = sqliteTable(
 		link_url: text('link_url'),
 		blockName: text('block_name'),
 	},
-	(columns) => ({
-		_orderIdx: index('pages_blocks_best_seller_order_idx').on(columns._order),
-		_parentIDIdx: index('pages_blocks_best_seller_parent_id_idx').on(columns._parentID),
-		_pathIdx: index('pages_blocks_best_seller_path_idx').on(columns._path),
-		_parentIdFk: foreignKey({
+	(columns) => [
+		index('pages_blocks_best_seller_order_idx').on(columns._order),
+		index('pages_blocks_best_seller_parent_id_idx').on(columns._parentID),
+		index('pages_blocks_best_seller_path_idx').on(columns._path),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [pages.id],
 			name: 'pages_blocks_best_seller_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const pages_blocks_best_seller_locales = sqliteTable(
@@ -360,17 +342,17 @@ export const pages_blocks_best_seller_locales = sqliteTable(
 		_locale: text('_locale', { enum: ['en', 'vi'] }).notNull(),
 		_parentID: text('_parent_id').notNull(),
 	},
-	(columns) => ({
-		_localeParent: uniqueIndex('pages_blocks_best_seller_locales_locale_parent_id_unique').on(
+	(columns) => [
+		uniqueIndex('pages_blocks_best_seller_locales_locale_parent_id_unique').on(
 			columns._locale,
 			columns._parentID,
 		),
-		_parentIdFk: foreignKey({
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [pages_blocks_best_seller.id],
 			name: 'pages_blocks_best_seller_locales_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const pages_blocks_buy_now = sqliteTable(
@@ -385,19 +367,17 @@ export const pages_blocks_buy_now = sqliteTable(
 		}),
 		blockName: text('block_name'),
 	},
-	(columns) => ({
-		_orderIdx: index('pages_blocks_buy_now_order_idx').on(columns._order),
-		_parentIDIdx: index('pages_blocks_buy_now_parent_id_idx').on(columns._parentID),
-		_pathIdx: index('pages_blocks_buy_now_path_idx').on(columns._path),
-		pages_blocks_buy_now_products_idx: index('pages_blocks_buy_now_products_idx').on(
-			columns.products,
-		),
-		_parentIdFk: foreignKey({
+	(columns) => [
+		index('pages_blocks_buy_now_order_idx').on(columns._order),
+		index('pages_blocks_buy_now_parent_id_idx').on(columns._parentID),
+		index('pages_blocks_buy_now_path_idx').on(columns._path),
+		index('pages_blocks_buy_now_products_idx').on(columns.products),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [pages.id],
 			name: 'pages_blocks_buy_now_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const pages_blocks_buy_now_locales = sqliteTable(
@@ -408,17 +388,17 @@ export const pages_blocks_buy_now_locales = sqliteTable(
 		_locale: text('_locale', { enum: ['en', 'vi'] }).notNull(),
 		_parentID: text('_parent_id').notNull(),
 	},
-	(columns) => ({
-		_localeParent: uniqueIndex('pages_blocks_buy_now_locales_locale_parent_id_unique').on(
+	(columns) => [
+		uniqueIndex('pages_blocks_buy_now_locales_locale_parent_id_unique').on(
 			columns._locale,
 			columns._parentID,
 		),
-		_parentIdFk: foreignKey({
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [pages_blocks_buy_now.id],
 			name: 'pages_blocks_buy_now_locales_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const pages_blocks_cta_center = sqliteTable(
@@ -433,19 +413,17 @@ export const pages_blocks_cta_center = sqliteTable(
 		}),
 		blockName: text('block_name'),
 	},
-	(columns) => ({
-		_orderIdx: index('pages_blocks_cta_center_order_idx').on(columns._order),
-		_parentIDIdx: index('pages_blocks_cta_center_parent_id_idx').on(columns._parentID),
-		_pathIdx: index('pages_blocks_cta_center_path_idx').on(columns._path),
-		pages_blocks_cta_center_background_idx: index('pages_blocks_cta_center_background_idx').on(
-			columns.background,
-		),
-		_parentIdFk: foreignKey({
+	(columns) => [
+		index('pages_blocks_cta_center_order_idx').on(columns._order),
+		index('pages_blocks_cta_center_parent_id_idx').on(columns._parentID),
+		index('pages_blocks_cta_center_path_idx').on(columns._path),
+		index('pages_blocks_cta_center_background_idx').on(columns.background),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [pages.id],
 			name: 'pages_blocks_cta_center_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const pages_blocks_cta_center_locales = sqliteTable(
@@ -462,17 +440,17 @@ export const pages_blocks_cta_center_locales = sqliteTable(
 		_locale: text('_locale', { enum: ['en', 'vi'] }).notNull(),
 		_parentID: text('_parent_id').notNull(),
 	},
-	(columns) => ({
-		_localeParent: uniqueIndex('pages_blocks_cta_center_locales_locale_parent_id_unique').on(
+	(columns) => [
+		uniqueIndex('pages_blocks_cta_center_locales_locale_parent_id_unique').on(
 			columns._locale,
 			columns._parentID,
 		),
-		_parentIdFk: foreignKey({
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [pages_blocks_cta_center.id],
 			name: 'pages_blocks_cta_center_locales_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const pages_blocks_cta_left = sqliteTable(
@@ -487,19 +465,17 @@ export const pages_blocks_cta_left = sqliteTable(
 		}),
 		blockName: text('block_name'),
 	},
-	(columns) => ({
-		_orderIdx: index('pages_blocks_cta_left_order_idx').on(columns._order),
-		_parentIDIdx: index('pages_blocks_cta_left_parent_id_idx').on(columns._parentID),
-		_pathIdx: index('pages_blocks_cta_left_path_idx').on(columns._path),
-		pages_blocks_cta_left_background_idx: index('pages_blocks_cta_left_background_idx').on(
-			columns.background,
-		),
-		_parentIdFk: foreignKey({
+	(columns) => [
+		index('pages_blocks_cta_left_order_idx').on(columns._order),
+		index('pages_blocks_cta_left_parent_id_idx').on(columns._parentID),
+		index('pages_blocks_cta_left_path_idx').on(columns._path),
+		index('pages_blocks_cta_left_background_idx').on(columns.background),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [pages.id],
 			name: 'pages_blocks_cta_left_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const pages_blocks_cta_left_locales = sqliteTable(
@@ -515,17 +491,17 @@ export const pages_blocks_cta_left_locales = sqliteTable(
 		_locale: text('_locale', { enum: ['en', 'vi'] }).notNull(),
 		_parentID: text('_parent_id').notNull(),
 	},
-	(columns) => ({
-		_localeParent: uniqueIndex('pages_blocks_cta_left_locales_locale_parent_id_unique').on(
+	(columns) => [
+		uniqueIndex('pages_blocks_cta_left_locales_locale_parent_id_unique').on(
 			columns._locale,
 			columns._parentID,
 		),
-		_parentIdFk: foreignKey({
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [pages_blocks_cta_left.id],
 			name: 'pages_blocks_cta_left_locales_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const pages_blocks_call_to_action_post = sqliteTable(
@@ -540,19 +516,17 @@ export const pages_blocks_call_to_action_post = sqliteTable(
 		}),
 		blockName: text('block_name'),
 	},
-	(columns) => ({
-		_orderIdx: index('pages_blocks_call_to_action_post_order_idx').on(columns._order),
-		_parentIDIdx: index('pages_blocks_call_to_action_post_parent_id_idx').on(columns._parentID),
-		_pathIdx: index('pages_blocks_call_to_action_post_path_idx').on(columns._path),
-		pages_blocks_call_to_action_post_post_idx: index(
-			'pages_blocks_call_to_action_post_post_idx',
-		).on(columns.post),
-		_parentIdFk: foreignKey({
+	(columns) => [
+		index('pages_blocks_call_to_action_post_order_idx').on(columns._order),
+		index('pages_blocks_call_to_action_post_parent_id_idx').on(columns._parentID),
+		index('pages_blocks_call_to_action_post_path_idx').on(columns._path),
+		index('pages_blocks_call_to_action_post_post_idx').on(columns.post),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [pages.id],
 			name: 'pages_blocks_call_to_action_post_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const pages_blocks_call_to_action_post_locales = sqliteTable(
@@ -568,16 +542,17 @@ export const pages_blocks_call_to_action_post_locales = sqliteTable(
 		_locale: text('_locale', { enum: ['en', 'vi'] }).notNull(),
 		_parentID: text('_parent_id').notNull(),
 	},
-	(columns) => ({
-		_localeParent: uniqueIndex(
-			'pages_blocks_call_to_action_post_locales_locale_parent_id_unique',
-		).on(columns._locale, columns._parentID),
-		_parentIdFk: foreignKey({
+	(columns) => [
+		uniqueIndex('pages_blocks_call_to_action_post_locales_locale_parent_id_un').on(
+			columns._locale,
+			columns._parentID,
+		),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [pages_blocks_call_to_action_post.id],
 			name: 'pages_blocks_call_to_action_post_locales_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const pages_blocks_cta_right_gallery = sqliteTable(
@@ -590,18 +565,16 @@ export const pages_blocks_cta_right_gallery = sqliteTable(
 			onDelete: 'set null',
 		}),
 	},
-	(columns) => ({
-		_orderIdx: index('pages_blocks_cta_right_gallery_order_idx').on(columns._order),
-		_parentIDIdx: index('pages_blocks_cta_right_gallery_parent_id_idx').on(columns._parentID),
-		pages_blocks_cta_right_gallery_image_idx: index(
-			'pages_blocks_cta_right_gallery_image_idx',
-		).on(columns.image),
-		_parentIDFk: foreignKey({
+	(columns) => [
+		index('pages_blocks_cta_right_gallery_order_idx').on(columns._order),
+		index('pages_blocks_cta_right_gallery_parent_id_idx').on(columns._parentID),
+		index('pages_blocks_cta_right_gallery_image_idx').on(columns.image),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [pages_blocks_cta_right.id],
 			name: 'pages_blocks_cta_right_gallery_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const pages_blocks_cta_right_gallery_locales = sqliteTable(
@@ -612,16 +585,17 @@ export const pages_blocks_cta_right_gallery_locales = sqliteTable(
 		_locale: text('_locale', { enum: ['en', 'vi'] }).notNull(),
 		_parentID: text('_parent_id').notNull(),
 	},
-	(columns) => ({
-		_localeParent: uniqueIndex(
-			'pages_blocks_cta_right_gallery_locales_locale_parent_id_unique',
-		).on(columns._locale, columns._parentID),
-		_parentIdFk: foreignKey({
+	(columns) => [
+		uniqueIndex('pages_blocks_cta_right_gallery_locales_locale_parent_id_uniq').on(
+			columns._locale,
+			columns._parentID,
+		),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [pages_blocks_cta_right_gallery.id],
 			name: 'pages_blocks_cta_right_gallery_locales_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const pages_blocks_cta_right = sqliteTable(
@@ -633,16 +607,16 @@ export const pages_blocks_cta_right = sqliteTable(
 		id: text('id').primaryKey(),
 		blockName: text('block_name'),
 	},
-	(columns) => ({
-		_orderIdx: index('pages_blocks_cta_right_order_idx').on(columns._order),
-		_parentIDIdx: index('pages_blocks_cta_right_parent_id_idx').on(columns._parentID),
-		_pathIdx: index('pages_blocks_cta_right_path_idx').on(columns._path),
-		_parentIdFk: foreignKey({
+	(columns) => [
+		index('pages_blocks_cta_right_order_idx').on(columns._order),
+		index('pages_blocks_cta_right_parent_id_idx').on(columns._parentID),
+		index('pages_blocks_cta_right_path_idx').on(columns._path),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [pages.id],
 			name: 'pages_blocks_cta_right_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const pages_blocks_cta_right_locales = sqliteTable(
@@ -659,17 +633,17 @@ export const pages_blocks_cta_right_locales = sqliteTable(
 		_locale: text('_locale', { enum: ['en', 'vi'] }).notNull(),
 		_parentID: text('_parent_id').notNull(),
 	},
-	(columns) => ({
-		_localeParent: uniqueIndex('pages_blocks_cta_right_locales_locale_parent_id_unique').on(
+	(columns) => [
+		uniqueIndex('pages_blocks_cta_right_locales_locale_parent_id_unique').on(
 			columns._locale,
 			columns._parentID,
 		),
-		_parentIdFk: foreignKey({
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [pages_blocks_cta_right.id],
 			name: 'pages_blocks_cta_right_locales_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const pages_blocks_call_to_add_to_cart = sqliteTable(
@@ -687,22 +661,18 @@ export const pages_blocks_call_to_add_to_cart = sqliteTable(
 		}),
 		blockName: text('block_name'),
 	},
-	(columns) => ({
-		_orderIdx: index('pages_blocks_call_to_add_to_cart_order_idx').on(columns._order),
-		_parentIDIdx: index('pages_blocks_call_to_add_to_cart_parent_id_idx').on(columns._parentID),
-		_pathIdx: index('pages_blocks_call_to_add_to_cart_path_idx').on(columns._path),
-		pages_blocks_call_to_add_to_cart_image_idx: index(
-			'pages_blocks_call_to_add_to_cart_image_idx',
-		).on(columns.image),
-		pages_blocks_call_to_add_to_cart_products_idx: index(
-			'pages_blocks_call_to_add_to_cart_products_idx',
-		).on(columns.products),
-		_parentIdFk: foreignKey({
+	(columns) => [
+		index('pages_blocks_call_to_add_to_cart_order_idx').on(columns._order),
+		index('pages_blocks_call_to_add_to_cart_parent_id_idx').on(columns._parentID),
+		index('pages_blocks_call_to_add_to_cart_path_idx').on(columns._path),
+		index('pages_blocks_call_to_add_to_cart_image_idx').on(columns.image),
+		index('pages_blocks_call_to_add_to_cart_products_idx').on(columns.products),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [pages.id],
 			name: 'pages_blocks_call_to_add_to_cart_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const pages_blocks_call_to_add_to_cart_locales = sqliteTable(
@@ -714,16 +684,17 @@ export const pages_blocks_call_to_add_to_cart_locales = sqliteTable(
 		_locale: text('_locale', { enum: ['en', 'vi'] }).notNull(),
 		_parentID: text('_parent_id').notNull(),
 	},
-	(columns) => ({
-		_localeParent: uniqueIndex(
-			'pages_blocks_call_to_add_to_cart_locales_locale_parent_id_unique',
-		).on(columns._locale, columns._parentID),
-		_parentIdFk: foreignKey({
+	(columns) => [
+		uniqueIndex('pages_blocks_call_to_add_to_cart_locales_locale_parent_id_un').on(
+			columns._locale,
+			columns._parentID,
+		),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [pages_blocks_call_to_add_to_cart.id],
 			name: 'pages_blocks_call_to_add_to_cart_locales_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const pages_blocks_certificates_organizations = sqliteTable(
@@ -736,20 +707,16 @@ export const pages_blocks_certificates_organizations = sqliteTable(
 			onDelete: 'set null',
 		}),
 	},
-	(columns) => ({
-		_orderIdx: index('pages_blocks_certificates_organizations_order_idx').on(columns._order),
-		_parentIDIdx: index('pages_blocks_certificates_organizations_parent_id_idx').on(
-			columns._parentID,
-		),
-		pages_blocks_certificates_organizations_logo_idx: index(
-			'pages_blocks_certificates_organizations_logo_idx',
-		).on(columns.logo),
-		_parentIDFk: foreignKey({
+	(columns) => [
+		index('pages_blocks_certificates_organizations_order_idx').on(columns._order),
+		index('pages_blocks_certificates_organizations_parent_id_idx').on(columns._parentID),
+		index('pages_blocks_certificates_organizations_logo_idx').on(columns.logo),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [pages_blocks_certificates.id],
 			name: 'pages_blocks_certificates_organizations_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const pages_blocks_certificates_organizations_locales = sqliteTable(
@@ -761,16 +728,17 @@ export const pages_blocks_certificates_organizations_locales = sqliteTable(
 		_locale: text('_locale', { enum: ['en', 'vi'] }).notNull(),
 		_parentID: text('_parent_id').notNull(),
 	},
-	(columns) => ({
-		_localeParent: uniqueIndex(
-			'pages_blocks_certificates_organizations_locales_locale_parent_id_unique',
-		).on(columns._locale, columns._parentID),
-		_parentIdFk: foreignKey({
+	(columns) => [
+		uniqueIndex('pages_blocks_certificates_organizations_locales_locale_paren').on(
+			columns._locale,
+			columns._parentID,
+		),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [pages_blocks_certificates_organizations.id],
 			name: 'pages_blocks_certificates_organizations_locales_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const pages_blocks_certificates = sqliteTable(
@@ -782,16 +750,16 @@ export const pages_blocks_certificates = sqliteTable(
 		id: text('id').primaryKey(),
 		blockName: text('block_name'),
 	},
-	(columns) => ({
-		_orderIdx: index('pages_blocks_certificates_order_idx').on(columns._order),
-		_parentIDIdx: index('pages_blocks_certificates_parent_id_idx').on(columns._parentID),
-		_pathIdx: index('pages_blocks_certificates_path_idx').on(columns._path),
-		_parentIdFk: foreignKey({
+	(columns) => [
+		index('pages_blocks_certificates_order_idx').on(columns._order),
+		index('pages_blocks_certificates_parent_id_idx').on(columns._parentID),
+		index('pages_blocks_certificates_path_idx').on(columns._path),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [pages.id],
 			name: 'pages_blocks_certificates_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const pages_blocks_certificates_locales = sqliteTable(
@@ -802,17 +770,17 @@ export const pages_blocks_certificates_locales = sqliteTable(
 		_locale: text('_locale', { enum: ['en', 'vi'] }).notNull(),
 		_parentID: text('_parent_id').notNull(),
 	},
-	(columns) => ({
-		_localeParent: uniqueIndex('pages_blocks_certificates_locales_locale_parent_id_unique').on(
+	(columns) => [
+		uniqueIndex('pages_blocks_certificates_locales_locale_parent_id_unique').on(
 			columns._locale,
 			columns._parentID,
 		),
-		_parentIdFk: foreignKey({
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [pages_blocks_certificates.id],
 			name: 'pages_blocks_certificates_locales_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const pages_blocks_content_columns = sqliteTable(
@@ -834,16 +802,16 @@ export const pages_blocks_content_columns = sqliteTable(
 		link_url: text('link_url'),
 		link_label: text('link_label'),
 	},
-	(columns) => ({
-		_orderIdx: index('pages_blocks_content_columns_order_idx').on(columns._order),
-		_parentIDIdx: index('pages_blocks_content_columns_parent_id_idx').on(columns._parentID),
-		_localeIdx: index('pages_blocks_content_columns_locale_idx').on(columns._locale),
-		_parentIDFk: foreignKey({
+	(columns) => [
+		index('pages_blocks_content_columns_order_idx').on(columns._order),
+		index('pages_blocks_content_columns_parent_id_idx').on(columns._parentID),
+		index('pages_blocks_content_columns_locale_idx').on(columns._locale),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [pages_blocks_content.id],
 			name: 'pages_blocks_content_columns_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const pages_blocks_content = sqliteTable(
@@ -855,16 +823,16 @@ export const pages_blocks_content = sqliteTable(
 		id: text('id').primaryKey(),
 		blockName: text('block_name'),
 	},
-	(columns) => ({
-		_orderIdx: index('pages_blocks_content_order_idx').on(columns._order),
-		_parentIDIdx: index('pages_blocks_content_parent_id_idx').on(columns._parentID),
-		_pathIdx: index('pages_blocks_content_path_idx').on(columns._path),
-		_parentIdFk: foreignKey({
+	(columns) => [
+		index('pages_blocks_content_order_idx').on(columns._order),
+		index('pages_blocks_content_parent_id_idx').on(columns._parentID),
+		index('pages_blocks_content_path_idx').on(columns._path),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [pages.id],
 			name: 'pages_blocks_content_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const pages_blocks_form_block = sqliteTable(
@@ -881,19 +849,17 @@ export const pages_blocks_form_block = sqliteTable(
 		introContent: text('intro_content', { mode: 'json' }),
 		blockName: text('block_name'),
 	},
-	(columns) => ({
-		_orderIdx: index('pages_blocks_form_block_order_idx').on(columns._order),
-		_parentIDIdx: index('pages_blocks_form_block_parent_id_idx').on(columns._parentID),
-		_pathIdx: index('pages_blocks_form_block_path_idx').on(columns._path),
-		pages_blocks_form_block_form_idx: index('pages_blocks_form_block_form_idx').on(
-			columns.form,
-		),
-		_parentIdFk: foreignKey({
+	(columns) => [
+		index('pages_blocks_form_block_order_idx').on(columns._order),
+		index('pages_blocks_form_block_parent_id_idx').on(columns._parentID),
+		index('pages_blocks_form_block_path_idx').on(columns._path),
+		index('pages_blocks_form_block_form_idx').on(columns.form),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [pages.id],
 			name: 'pages_blocks_form_block_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const pages_blocks_highlight_right = sqliteTable(
@@ -903,25 +869,23 @@ export const pages_blocks_highlight_right = sqliteTable(
 		_parentID: integer('_parent_id').notNull(),
 		_path: text('_path').notNull(),
 		id: text('id').primaryKey(),
-		order: numeric('order'),
+		order: numeric('order', { mode: 'number' }),
 		image: integer('image_id').references(() => media.id, {
 			onDelete: 'set null',
 		}),
 		blockName: text('block_name'),
 	},
-	(columns) => ({
-		_orderIdx: index('pages_blocks_highlight_right_order_idx').on(columns._order),
-		_parentIDIdx: index('pages_blocks_highlight_right_parent_id_idx').on(columns._parentID),
-		_pathIdx: index('pages_blocks_highlight_right_path_idx').on(columns._path),
-		pages_blocks_highlight_right_image_idx: index('pages_blocks_highlight_right_image_idx').on(
-			columns.image,
-		),
-		_parentIdFk: foreignKey({
+	(columns) => [
+		index('pages_blocks_highlight_right_order_idx').on(columns._order),
+		index('pages_blocks_highlight_right_parent_id_idx').on(columns._parentID),
+		index('pages_blocks_highlight_right_path_idx').on(columns._path),
+		index('pages_blocks_highlight_right_image_idx').on(columns.image),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [pages.id],
 			name: 'pages_blocks_highlight_right_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const pages_blocks_highlight_right_locales = sqliteTable(
@@ -933,16 +897,17 @@ export const pages_blocks_highlight_right_locales = sqliteTable(
 		_locale: text('_locale', { enum: ['en', 'vi'] }).notNull(),
 		_parentID: text('_parent_id').notNull(),
 	},
-	(columns) => ({
-		_localeParent: uniqueIndex(
-			'pages_blocks_highlight_right_locales_locale_parent_id_unique',
-		).on(columns._locale, columns._parentID),
-		_parentIdFk: foreignKey({
+	(columns) => [
+		uniqueIndex('pages_blocks_highlight_right_locales_locale_parent_id_unique').on(
+			columns._locale,
+			columns._parentID,
+		),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [pages_blocks_highlight_right.id],
 			name: 'pages_blocks_highlight_right_locales_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const pages_blocks_highlight_center = sqliteTable(
@@ -952,25 +917,23 @@ export const pages_blocks_highlight_center = sqliteTable(
 		_parentID: integer('_parent_id').notNull(),
 		_path: text('_path').notNull(),
 		id: text('id').primaryKey(),
-		order: numeric('order'),
+		order: numeric('order', { mode: 'number' }),
 		image: integer('image_id').references(() => media.id, {
 			onDelete: 'set null',
 		}),
 		blockName: text('block_name'),
 	},
-	(columns) => ({
-		_orderIdx: index('pages_blocks_highlight_center_order_idx').on(columns._order),
-		_parentIDIdx: index('pages_blocks_highlight_center_parent_id_idx').on(columns._parentID),
-		_pathIdx: index('pages_blocks_highlight_center_path_idx').on(columns._path),
-		pages_blocks_highlight_center_image_idx: index(
-			'pages_blocks_highlight_center_image_idx',
-		).on(columns.image),
-		_parentIdFk: foreignKey({
+	(columns) => [
+		index('pages_blocks_highlight_center_order_idx').on(columns._order),
+		index('pages_blocks_highlight_center_parent_id_idx').on(columns._parentID),
+		index('pages_blocks_highlight_center_path_idx').on(columns._path),
+		index('pages_blocks_highlight_center_image_idx').on(columns.image),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [pages.id],
 			name: 'pages_blocks_highlight_center_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const pages_blocks_highlight_center_locales = sqliteTable(
@@ -982,16 +945,17 @@ export const pages_blocks_highlight_center_locales = sqliteTable(
 		_locale: text('_locale', { enum: ['en', 'vi'] }).notNull(),
 		_parentID: text('_parent_id').notNull(),
 	},
-	(columns) => ({
-		_localeParent: uniqueIndex(
-			'pages_blocks_highlight_center_locales_locale_parent_id_unique',
-		).on(columns._locale, columns._parentID),
-		_parentIdFk: foreignKey({
+	(columns) => [
+		uniqueIndex('pages_blocks_highlight_center_locales_locale_parent_id_uniqu').on(
+			columns._locale,
+			columns._parentID,
+		),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [pages_blocks_highlight_center.id],
 			name: 'pages_blocks_highlight_center_locales_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const pages_blocks_highlight_left = sqliteTable(
@@ -1001,25 +965,23 @@ export const pages_blocks_highlight_left = sqliteTable(
 		_parentID: integer('_parent_id').notNull(),
 		_path: text('_path').notNull(),
 		id: text('id').primaryKey(),
-		order: numeric('order'),
+		order: numeric('order', { mode: 'number' }),
 		image: integer('image_id').references(() => media.id, {
 			onDelete: 'set null',
 		}),
 		blockName: text('block_name'),
 	},
-	(columns) => ({
-		_orderIdx: index('pages_blocks_highlight_left_order_idx').on(columns._order),
-		_parentIDIdx: index('pages_blocks_highlight_left_parent_id_idx').on(columns._parentID),
-		_pathIdx: index('pages_blocks_highlight_left_path_idx').on(columns._path),
-		pages_blocks_highlight_left_image_idx: index('pages_blocks_highlight_left_image_idx').on(
-			columns.image,
-		),
-		_parentIdFk: foreignKey({
+	(columns) => [
+		index('pages_blocks_highlight_left_order_idx').on(columns._order),
+		index('pages_blocks_highlight_left_parent_id_idx').on(columns._parentID),
+		index('pages_blocks_highlight_left_path_idx').on(columns._path),
+		index('pages_blocks_highlight_left_image_idx').on(columns.image),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [pages.id],
 			name: 'pages_blocks_highlight_left_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const pages_blocks_highlight_left_locales = sqliteTable(
@@ -1031,16 +993,17 @@ export const pages_blocks_highlight_left_locales = sqliteTable(
 		_locale: text('_locale', { enum: ['en', 'vi'] }).notNull(),
 		_parentID: text('_parent_id').notNull(),
 	},
-	(columns) => ({
-		_localeParent: uniqueIndex(
-			'pages_blocks_highlight_left_locales_locale_parent_id_unique',
-		).on(columns._locale, columns._parentID),
-		_parentIdFk: foreignKey({
+	(columns) => [
+		uniqueIndex('pages_blocks_highlight_left_locales_locale_parent_id_unique').on(
+			columns._locale,
+			columns._parentID,
+		),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [pages_blocks_highlight_left.id],
 			name: 'pages_blocks_highlight_left_locales_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const pages_blocks_infinite_scroll = sqliteTable(
@@ -1052,16 +1015,16 @@ export const pages_blocks_infinite_scroll = sqliteTable(
 		id: text('id').primaryKey(),
 		blockName: text('block_name'),
 	},
-	(columns) => ({
-		_orderIdx: index('pages_blocks_infinite_scroll_order_idx').on(columns._order),
-		_parentIDIdx: index('pages_blocks_infinite_scroll_parent_id_idx').on(columns._parentID),
-		_pathIdx: index('pages_blocks_infinite_scroll_path_idx').on(columns._path),
-		_parentIdFk: foreignKey({
+	(columns) => [
+		index('pages_blocks_infinite_scroll_order_idx').on(columns._order),
+		index('pages_blocks_infinite_scroll_parent_id_idx').on(columns._parentID),
+		index('pages_blocks_infinite_scroll_path_idx').on(columns._path),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [pages.id],
 			name: 'pages_blocks_infinite_scroll_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const pages_blocks_infinite_scroll_locales = sqliteTable(
@@ -1070,24 +1033,23 @@ export const pages_blocks_infinite_scroll_locales = sqliteTable(
 		graphic: integer('graphic_id').references(() => media.id, {
 			onDelete: 'set null',
 		}),
-		animationDuration: numeric('animation_duration').default('10'),
+		animationDuration: numeric('animation_duration', { mode: 'number' }).default(10),
 		id: integer('id').primaryKey(),
 		_locale: text('_locale', { enum: ['en', 'vi'] }).notNull(),
 		_parentID: text('_parent_id').notNull(),
 	},
-	(columns) => ({
-		pages_blocks_infinite_scroll_graphic_idx: index(
-			'pages_blocks_infinite_scroll_graphic_idx',
-		).on(columns.graphic, columns._locale),
-		_localeParent: uniqueIndex(
-			'pages_blocks_infinite_scroll_locales_locale_parent_id_unique',
-		).on(columns._locale, columns._parentID),
-		_parentIdFk: foreignKey({
+	(columns) => [
+		index('pages_blocks_infinite_scroll_graphic_idx').on(columns.graphic, columns._locale),
+		uniqueIndex('pages_blocks_infinite_scroll_locales_locale_parent_id_unique').on(
+			columns._locale,
+			columns._parentID,
+		),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [pages_blocks_infinite_scroll.id],
 			name: 'pages_blocks_infinite_scroll_locales_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const pages_blocks_latest_posts = sqliteTable(
@@ -1099,16 +1061,16 @@ export const pages_blocks_latest_posts = sqliteTable(
 		id: text('id').primaryKey(),
 		blockName: text('block_name'),
 	},
-	(columns) => ({
-		_orderIdx: index('pages_blocks_latest_posts_order_idx').on(columns._order),
-		_parentIDIdx: index('pages_blocks_latest_posts_parent_id_idx').on(columns._parentID),
-		_pathIdx: index('pages_blocks_latest_posts_path_idx').on(columns._path),
-		_parentIdFk: foreignKey({
+	(columns) => [
+		index('pages_blocks_latest_posts_order_idx').on(columns._order),
+		index('pages_blocks_latest_posts_parent_id_idx').on(columns._parentID),
+		index('pages_blocks_latest_posts_path_idx').on(columns._path),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [pages.id],
 			name: 'pages_blocks_latest_posts_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const pages_blocks_latest_posts_locales = sqliteTable(
@@ -1120,17 +1082,17 @@ export const pages_blocks_latest_posts_locales = sqliteTable(
 		_locale: text('_locale', { enum: ['en', 'vi'] }).notNull(),
 		_parentID: text('_parent_id').notNull(),
 	},
-	(columns) => ({
-		_localeParent: uniqueIndex('pages_blocks_latest_posts_locales_locale_parent_id_unique').on(
+	(columns) => [
+		uniqueIndex('pages_blocks_latest_posts_locales_locale_parent_id_unique').on(
 			columns._locale,
 			columns._parentID,
 		),
-		_parentIdFk: foreignKey({
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [pages_blocks_latest_posts.id],
 			name: 'pages_blocks_latest_posts_locales_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const pages_blocks_media = sqliteTable(
@@ -1145,17 +1107,17 @@ export const pages_blocks_media = sqliteTable(
 		}),
 		blockName: text('block_name'),
 	},
-	(columns) => ({
-		_orderIdx: index('pages_blocks_media_order_idx').on(columns._order),
-		_parentIDIdx: index('pages_blocks_media_parent_id_idx').on(columns._parentID),
-		_pathIdx: index('pages_blocks_media_path_idx').on(columns._path),
-		pages_blocks_media_media_idx: index('pages_blocks_media_media_idx').on(columns.media),
-		_parentIdFk: foreignKey({
+	(columns) => [
+		index('pages_blocks_media_order_idx').on(columns._order),
+		index('pages_blocks_media_parent_id_idx').on(columns._parentID),
+		index('pages_blocks_media_path_idx').on(columns._path),
+		index('pages_blocks_media_media_idx').on(columns.media),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [pages.id],
 			name: 'pages_blocks_media_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const pages_blocks_posts_grid = sqliteTable(
@@ -1171,19 +1133,17 @@ export const pages_blocks_posts_grid = sqliteTable(
 		}),
 		blockName: text('block_name'),
 	},
-	(columns) => ({
-		_orderIdx: index('pages_blocks_posts_grid_order_idx').on(columns._order),
-		_parentIDIdx: index('pages_blocks_posts_grid_parent_id_idx').on(columns._parentID),
-		_pathIdx: index('pages_blocks_posts_grid_path_idx').on(columns._path),
-		pages_blocks_posts_grid_post_categories_idx: index(
-			'pages_blocks_posts_grid_post_categories_idx',
-		).on(columns.postCategories),
-		_parentIdFk: foreignKey({
+	(columns) => [
+		index('pages_blocks_posts_grid_order_idx').on(columns._order),
+		index('pages_blocks_posts_grid_parent_id_idx').on(columns._parentID),
+		index('pages_blocks_posts_grid_path_idx').on(columns._path),
+		index('pages_blocks_posts_grid_post_categories_idx').on(columns.postCategories),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [pages.id],
 			name: 'pages_blocks_posts_grid_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const pages_blocks_products_carousel = sqliteTable(
@@ -1195,16 +1155,16 @@ export const pages_blocks_products_carousel = sqliteTable(
 		id: text('id').primaryKey(),
 		blockName: text('block_name'),
 	},
-	(columns) => ({
-		_orderIdx: index('pages_blocks_products_carousel_order_idx').on(columns._order),
-		_parentIDIdx: index('pages_blocks_products_carousel_parent_id_idx').on(columns._parentID),
-		_pathIdx: index('pages_blocks_products_carousel_path_idx').on(columns._path),
-		_parentIdFk: foreignKey({
+	(columns) => [
+		index('pages_blocks_products_carousel_order_idx').on(columns._order),
+		index('pages_blocks_products_carousel_parent_id_idx').on(columns._parentID),
+		index('pages_blocks_products_carousel_path_idx').on(columns._path),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [pages.id],
 			name: 'pages_blocks_products_carousel_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const pages_blocks_products_carousel_locales = sqliteTable(
@@ -1220,16 +1180,17 @@ export const pages_blocks_products_carousel_locales = sqliteTable(
 		_locale: text('_locale', { enum: ['en', 'vi'] }).notNull(),
 		_parentID: text('_parent_id').notNull(),
 	},
-	(columns) => ({
-		_localeParent: uniqueIndex(
-			'pages_blocks_products_carousel_locales_locale_parent_id_unique',
-		).on(columns._locale, columns._parentID),
-		_parentIdFk: foreignKey({
+	(columns) => [
+		uniqueIndex('pages_blocks_products_carousel_locales_locale_parent_id_uniq').on(
+			columns._locale,
+			columns._parentID,
+		),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [pages_blocks_products_carousel.id],
 			name: 'pages_blocks_products_carousel_locales_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const pages_blocks_products_category = sqliteTable(
@@ -1241,16 +1202,16 @@ export const pages_blocks_products_category = sqliteTable(
 		id: text('id').primaryKey(),
 		blockName: text('block_name'),
 	},
-	(columns) => ({
-		_orderIdx: index('pages_blocks_products_category_order_idx').on(columns._order),
-		_parentIDIdx: index('pages_blocks_products_category_parent_id_idx').on(columns._parentID),
-		_pathIdx: index('pages_blocks_products_category_path_idx').on(columns._path),
-		_parentIdFk: foreignKey({
+	(columns) => [
+		index('pages_blocks_products_category_order_idx').on(columns._order),
+		index('pages_blocks_products_category_parent_id_idx').on(columns._parentID),
+		index('pages_blocks_products_category_path_idx').on(columns._path),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [pages.id],
 			name: 'pages_blocks_products_category_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const pages_blocks_products_category_locales = sqliteTable(
@@ -1261,16 +1222,17 @@ export const pages_blocks_products_category_locales = sqliteTable(
 		_locale: text('_locale', { enum: ['en', 'vi'] }).notNull(),
 		_parentID: text('_parent_id').notNull(),
 	},
-	(columns) => ({
-		_localeParent: uniqueIndex(
-			'pages_blocks_products_category_locales_locale_parent_id_unique',
-		).on(columns._locale, columns._parentID),
-		_parentIdFk: foreignKey({
+	(columns) => [
+		uniqueIndex('pages_blocks_products_category_locales_locale_parent_id_uniq').on(
+			columns._locale,
+			columns._parentID,
+		),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [pages_blocks_products_category.id],
 			name: 'pages_blocks_products_category_locales_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const pages_blocks_three_photo = sqliteTable(
@@ -1291,25 +1253,19 @@ export const pages_blocks_three_photo = sqliteTable(
 		}),
 		blockName: text('block_name'),
 	},
-	(columns) => ({
-		_orderIdx: index('pages_blocks_three_photo_order_idx').on(columns._order),
-		_parentIDIdx: index('pages_blocks_three_photo_parent_id_idx').on(columns._parentID),
-		_pathIdx: index('pages_blocks_three_photo_path_idx').on(columns._path),
-		pages_blocks_three_photo_photo_left_idx: index(
-			'pages_blocks_three_photo_photo_left_idx',
-		).on(columns.photoLeft),
-		pages_blocks_three_photo_photo_center_idx: index(
-			'pages_blocks_three_photo_photo_center_idx',
-		).on(columns.photoCenter),
-		pages_blocks_three_photo_photo_right_idx: index(
-			'pages_blocks_three_photo_photo_right_idx',
-		).on(columns.photoRight),
-		_parentIdFk: foreignKey({
+	(columns) => [
+		index('pages_blocks_three_photo_order_idx').on(columns._order),
+		index('pages_blocks_three_photo_parent_id_idx').on(columns._parentID),
+		index('pages_blocks_three_photo_path_idx').on(columns._path),
+		index('pages_blocks_three_photo_photo_left_idx').on(columns.photoLeft),
+		index('pages_blocks_three_photo_photo_center_idx').on(columns.photoCenter),
+		index('pages_blocks_three_photo_photo_right_idx').on(columns.photoRight),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [pages.id],
 			name: 'pages_blocks_three_photo_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const pages_blocks_video_embed = sqliteTable(
@@ -1322,16 +1278,16 @@ export const pages_blocks_video_embed = sqliteTable(
 		videoUrl: text('video_url'),
 		blockName: text('block_name'),
 	},
-	(columns) => ({
-		_orderIdx: index('pages_blocks_video_embed_order_idx').on(columns._order),
-		_parentIDIdx: index('pages_blocks_video_embed_parent_id_idx').on(columns._parentID),
-		_pathIdx: index('pages_blocks_video_embed_path_idx').on(columns._path),
-		_parentIdFk: foreignKey({
+	(columns) => [
+		index('pages_blocks_video_embed_order_idx').on(columns._order),
+		index('pages_blocks_video_embed_parent_id_idx').on(columns._parentID),
+		index('pages_blocks_video_embed_path_idx').on(columns._path),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [pages.id],
 			name: 'pages_blocks_video_embed_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const pages = sqliteTable(
@@ -1360,13 +1316,13 @@ export const pages = sqliteTable(
 			.default(sql`(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))`),
 		_status: text('_status', { enum: ['draft', 'published'] }).default('draft'),
 	},
-	(columns) => ({
-		pages_hero_hero_media_idx: index('pages_hero_hero_media_idx').on(columns.hero_media),
-		pages_slug_idx: index('pages_slug_idx').on(columns.slug),
-		pages_updated_at_idx: index('pages_updated_at_idx').on(columns.updatedAt),
-		pages_created_at_idx: index('pages_created_at_idx').on(columns.createdAt),
-		pages__status_idx: index('pages__status_idx').on(columns._status),
-	}),
+	(columns) => [
+		index('pages_hero_hero_media_idx').on(columns.hero_media),
+		index('pages_slug_idx').on(columns.slug),
+		index('pages_updated_at_idx').on(columns.updatedAt),
+		index('pages_created_at_idx').on(columns.createdAt),
+		index('pages__status_idx').on(columns._status),
+	],
 )
 
 export const pages_locales = sqliteTable(
@@ -1381,21 +1337,15 @@ export const pages_locales = sqliteTable(
 		_locale: text('_locale', { enum: ['en', 'vi'] }).notNull(),
 		_parentID: integer('_parent_id').notNull(),
 	},
-	(columns) => ({
-		pages_meta_meta_meta_meta_image_idx: index('pages_meta_meta_meta_meta_image_idx').on(
-			columns.meta_meta_image,
-			columns._locale,
-		),
-		_localeParent: uniqueIndex('pages_locales_locale_parent_id_unique').on(
-			columns._locale,
-			columns._parentID,
-		),
-		_parentIdFk: foreignKey({
+	(columns) => [
+		index('pages_meta_meta_meta_meta_image_idx').on(columns.meta_meta_image, columns._locale),
+		uniqueIndex('pages_locales_locale_parent_id_unique').on(columns._locale, columns._parentID),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [pages.id],
 			name: 'pages_locales_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const pages_rels = sqliteTable(
@@ -1413,70 +1363,59 @@ export const pages_rels = sqliteTable(
 		productsID: integer('products_id'),
 		productSubCategoriesID: integer('product_sub_categories_id'),
 	},
-	(columns) => ({
-		order: index('pages_rels_order_idx').on(columns.order),
-		parentIdx: index('pages_rels_parent_idx').on(columns.parent),
-		pathIdx: index('pages_rels_path_idx').on(columns.path),
-		localeIdx: index('pages_rels_locale_idx').on(columns.locale),
-		pages_rels_pages_id_idx: index('pages_rels_pages_id_idx').on(
-			columns.pagesID,
-			columns.locale,
-		),
-		pages_rels_post_categories_id_idx: index('pages_rels_post_categories_id_idx').on(
-			columns.postCategoriesID,
-			columns.locale,
-		),
-		pages_rels_posts_id_idx: index('pages_rels_posts_id_idx').on(
-			columns.postsID,
-			columns.locale,
-		),
-		pages_rels_product_categories_id_idx: index('pages_rels_product_categories_id_idx').on(
+	(columns) => [
+		index('pages_rels_order_idx').on(columns.order),
+		index('pages_rels_parent_idx').on(columns.parent),
+		index('pages_rels_path_idx').on(columns.path),
+		index('pages_rels_locale_idx').on(columns.locale),
+		index('pages_rels_pages_id_idx').on(columns.pagesID, columns.locale),
+		index('pages_rels_post_categories_id_idx').on(columns.postCategoriesID, columns.locale),
+		index('pages_rels_posts_id_idx').on(columns.postsID, columns.locale),
+		index('pages_rels_product_categories_id_idx').on(
 			columns.productCategoriesID,
 			columns.locale,
 		),
-		pages_rels_products_id_idx: index('pages_rels_products_id_idx').on(
-			columns.productsID,
+		index('pages_rels_products_id_idx').on(columns.productsID, columns.locale),
+		index('pages_rels_product_sub_categories_id_idx').on(
+			columns.productSubCategoriesID,
 			columns.locale,
 		),
-		pages_rels_product_sub_categories_id_idx: index(
-			'pages_rels_product_sub_categories_id_idx',
-		).on(columns.productSubCategoriesID, columns.locale),
-		parentFk: foreignKey({
+		foreignKey({
 			columns: [columns['parent']],
 			foreignColumns: [pages.id],
 			name: 'pages_rels_parent_fk',
 		}).onDelete('cascade'),
-		pagesIdFk: foreignKey({
+		foreignKey({
 			columns: [columns['pagesID']],
 			foreignColumns: [pages.id],
 			name: 'pages_rels_pages_fk',
 		}).onDelete('cascade'),
-		postCategoriesIdFk: foreignKey({
+		foreignKey({
 			columns: [columns['postCategoriesID']],
 			foreignColumns: [post_categories.id],
 			name: 'pages_rels_post_categories_fk',
 		}).onDelete('cascade'),
-		postsIdFk: foreignKey({
+		foreignKey({
 			columns: [columns['postsID']],
 			foreignColumns: [posts.id],
 			name: 'pages_rels_posts_fk',
 		}).onDelete('cascade'),
-		productCategoriesIdFk: foreignKey({
+		foreignKey({
 			columns: [columns['productCategoriesID']],
 			foreignColumns: [product_categories.id],
 			name: 'pages_rels_product_categories_fk',
 		}).onDelete('cascade'),
-		productsIdFk: foreignKey({
+		foreignKey({
 			columns: [columns['productsID']],
 			foreignColumns: [products.id],
 			name: 'pages_rels_products_fk',
 		}).onDelete('cascade'),
-		productSubCategoriesIdFk: foreignKey({
+		foreignKey({
 			columns: [columns['productSubCategoriesID']],
 			foreignColumns: [product_sub_categories.id],
 			name: 'pages_rels_product_sub_categories_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const _pages_v_version_hero_links = sqliteTable(
@@ -1490,15 +1429,15 @@ export const _pages_v_version_hero_links = sqliteTable(
 		link_url: text('link_url'),
 		_uuid: text('_uuid'),
 	},
-	(columns) => ({
-		_orderIdx: index('_pages_v_version_hero_links_order_idx').on(columns._order),
-		_parentIDIdx: index('_pages_v_version_hero_links_parent_id_idx').on(columns._parentID),
-		_parentIDFk: foreignKey({
+	(columns) => [
+		index('_pages_v_version_hero_links_order_idx').on(columns._order),
+		index('_pages_v_version_hero_links_parent_id_idx').on(columns._parentID),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [_pages_v.id],
 			name: '_pages_v_version_hero_links_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const _pages_v_version_hero_links_locales = sqliteTable(
@@ -1509,16 +1448,17 @@ export const _pages_v_version_hero_links_locales = sqliteTable(
 		_locale: text('_locale', { enum: ['en', 'vi'] }).notNull(),
 		_parentID: integer('_parent_id').notNull(),
 	},
-	(columns) => ({
-		_localeParent: uniqueIndex(
-			'_pages_v_version_hero_links_locales_locale_parent_id_unique',
-		).on(columns._locale, columns._parentID),
-		_parentIdFk: foreignKey({
+	(columns) => [
+		uniqueIndex('_pages_v_version_hero_links_locales_locale_parent_id_unique').on(
+			columns._locale,
+			columns._parentID,
+		),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [_pages_v_version_hero_links.id],
 			name: '_pages_v_version_hero_links_locales_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const _pages_v_blocks_archive = sqliteTable(
@@ -1533,20 +1473,20 @@ export const _pages_v_blocks_archive = sqliteTable(
 			'collection',
 		),
 		relationTo: text('relation_to', { enum: ['posts'] }).default('posts'),
-		limit: numeric('limit').default('10'),
+		limit: numeric('limit', { mode: 'number' }).default(10),
 		_uuid: text('_uuid'),
 		blockName: text('block_name'),
 	},
-	(columns) => ({
-		_orderIdx: index('_pages_v_blocks_archive_order_idx').on(columns._order),
-		_parentIDIdx: index('_pages_v_blocks_archive_parent_id_idx').on(columns._parentID),
-		_pathIdx: index('_pages_v_blocks_archive_path_idx').on(columns._path),
-		_parentIdFk: foreignKey({
+	(columns) => [
+		index('_pages_v_blocks_archive_order_idx').on(columns._order),
+		index('_pages_v_blocks_archive_parent_id_idx').on(columns._parentID),
+		index('_pages_v_blocks_archive_path_idx').on(columns._path),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [_pages_v.id],
 			name: '_pages_v_blocks_archive_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const _pages_v_blocks_banner = sqliteTable(
@@ -1561,16 +1501,16 @@ export const _pages_v_blocks_banner = sqliteTable(
 		_uuid: text('_uuid'),
 		blockName: text('block_name'),
 	},
-	(columns) => ({
-		_orderIdx: index('_pages_v_blocks_banner_order_idx').on(columns._order),
-		_parentIDIdx: index('_pages_v_blocks_banner_parent_id_idx').on(columns._parentID),
-		_pathIdx: index('_pages_v_blocks_banner_path_idx').on(columns._path),
-		_parentIdFk: foreignKey({
+	(columns) => [
+		index('_pages_v_blocks_banner_order_idx').on(columns._order),
+		index('_pages_v_blocks_banner_parent_id_idx').on(columns._parentID),
+		index('_pages_v_blocks_banner_path_idx').on(columns._path),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [_pages_v.id],
 			name: '_pages_v_blocks_banner_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const _pages_v_blocks_best_seller = sqliteTable(
@@ -1586,16 +1526,16 @@ export const _pages_v_blocks_best_seller = sqliteTable(
 		_uuid: text('_uuid'),
 		blockName: text('block_name'),
 	},
-	(columns) => ({
-		_orderIdx: index('_pages_v_blocks_best_seller_order_idx').on(columns._order),
-		_parentIDIdx: index('_pages_v_blocks_best_seller_parent_id_idx').on(columns._parentID),
-		_pathIdx: index('_pages_v_blocks_best_seller_path_idx').on(columns._path),
-		_parentIdFk: foreignKey({
+	(columns) => [
+		index('_pages_v_blocks_best_seller_order_idx').on(columns._order),
+		index('_pages_v_blocks_best_seller_parent_id_idx').on(columns._parentID),
+		index('_pages_v_blocks_best_seller_path_idx').on(columns._path),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [_pages_v.id],
 			name: '_pages_v_blocks_best_seller_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const _pages_v_blocks_best_seller_locales = sqliteTable(
@@ -1608,16 +1548,17 @@ export const _pages_v_blocks_best_seller_locales = sqliteTable(
 		_locale: text('_locale', { enum: ['en', 'vi'] }).notNull(),
 		_parentID: integer('_parent_id').notNull(),
 	},
-	(columns) => ({
-		_localeParent: uniqueIndex(
-			'_pages_v_blocks_best_seller_locales_locale_parent_id_unique',
-		).on(columns._locale, columns._parentID),
-		_parentIdFk: foreignKey({
+	(columns) => [
+		uniqueIndex('_pages_v_blocks_best_seller_locales_locale_parent_id_unique').on(
+			columns._locale,
+			columns._parentID,
+		),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [_pages_v_blocks_best_seller.id],
 			name: '_pages_v_blocks_best_seller_locales_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const _pages_v_blocks_buy_now = sqliteTable(
@@ -1633,19 +1574,17 @@ export const _pages_v_blocks_buy_now = sqliteTable(
 		_uuid: text('_uuid'),
 		blockName: text('block_name'),
 	},
-	(columns) => ({
-		_orderIdx: index('_pages_v_blocks_buy_now_order_idx').on(columns._order),
-		_parentIDIdx: index('_pages_v_blocks_buy_now_parent_id_idx').on(columns._parentID),
-		_pathIdx: index('_pages_v_blocks_buy_now_path_idx').on(columns._path),
-		_pages_v_blocks_buy_now_products_idx: index('_pages_v_blocks_buy_now_products_idx').on(
-			columns.products,
-		),
-		_parentIdFk: foreignKey({
+	(columns) => [
+		index('_pages_v_blocks_buy_now_order_idx').on(columns._order),
+		index('_pages_v_blocks_buy_now_parent_id_idx').on(columns._parentID),
+		index('_pages_v_blocks_buy_now_path_idx').on(columns._path),
+		index('_pages_v_blocks_buy_now_products_idx').on(columns.products),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [_pages_v.id],
 			name: '_pages_v_blocks_buy_now_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const _pages_v_blocks_buy_now_locales = sqliteTable(
@@ -1656,17 +1595,17 @@ export const _pages_v_blocks_buy_now_locales = sqliteTable(
 		_locale: text('_locale', { enum: ['en', 'vi'] }).notNull(),
 		_parentID: integer('_parent_id').notNull(),
 	},
-	(columns) => ({
-		_localeParent: uniqueIndex('_pages_v_blocks_buy_now_locales_locale_parent_id_unique').on(
+	(columns) => [
+		uniqueIndex('_pages_v_blocks_buy_now_locales_locale_parent_id_unique').on(
 			columns._locale,
 			columns._parentID,
 		),
-		_parentIdFk: foreignKey({
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [_pages_v_blocks_buy_now.id],
 			name: '_pages_v_blocks_buy_now_locales_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const _pages_v_blocks_cta_center = sqliteTable(
@@ -1682,19 +1621,17 @@ export const _pages_v_blocks_cta_center = sqliteTable(
 		_uuid: text('_uuid'),
 		blockName: text('block_name'),
 	},
-	(columns) => ({
-		_orderIdx: index('_pages_v_blocks_cta_center_order_idx').on(columns._order),
-		_parentIDIdx: index('_pages_v_blocks_cta_center_parent_id_idx').on(columns._parentID),
-		_pathIdx: index('_pages_v_blocks_cta_center_path_idx').on(columns._path),
-		_pages_v_blocks_cta_center_background_idx: index(
-			'_pages_v_blocks_cta_center_background_idx',
-		).on(columns.background),
-		_parentIdFk: foreignKey({
+	(columns) => [
+		index('_pages_v_blocks_cta_center_order_idx').on(columns._order),
+		index('_pages_v_blocks_cta_center_parent_id_idx').on(columns._parentID),
+		index('_pages_v_blocks_cta_center_path_idx').on(columns._path),
+		index('_pages_v_blocks_cta_center_background_idx').on(columns.background),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [_pages_v.id],
 			name: '_pages_v_blocks_cta_center_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const _pages_v_blocks_cta_center_locales = sqliteTable(
@@ -1711,17 +1648,17 @@ export const _pages_v_blocks_cta_center_locales = sqliteTable(
 		_locale: text('_locale', { enum: ['en', 'vi'] }).notNull(),
 		_parentID: integer('_parent_id').notNull(),
 	},
-	(columns) => ({
-		_localeParent: uniqueIndex('_pages_v_blocks_cta_center_locales_locale_parent_id_unique').on(
+	(columns) => [
+		uniqueIndex('_pages_v_blocks_cta_center_locales_locale_parent_id_unique').on(
 			columns._locale,
 			columns._parentID,
 		),
-		_parentIdFk: foreignKey({
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [_pages_v_blocks_cta_center.id],
 			name: '_pages_v_blocks_cta_center_locales_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const _pages_v_blocks_cta_left = sqliteTable(
@@ -1737,19 +1674,17 @@ export const _pages_v_blocks_cta_left = sqliteTable(
 		_uuid: text('_uuid'),
 		blockName: text('block_name'),
 	},
-	(columns) => ({
-		_orderIdx: index('_pages_v_blocks_cta_left_order_idx').on(columns._order),
-		_parentIDIdx: index('_pages_v_blocks_cta_left_parent_id_idx').on(columns._parentID),
-		_pathIdx: index('_pages_v_blocks_cta_left_path_idx').on(columns._path),
-		_pages_v_blocks_cta_left_background_idx: index(
-			'_pages_v_blocks_cta_left_background_idx',
-		).on(columns.background),
-		_parentIdFk: foreignKey({
+	(columns) => [
+		index('_pages_v_blocks_cta_left_order_idx').on(columns._order),
+		index('_pages_v_blocks_cta_left_parent_id_idx').on(columns._parentID),
+		index('_pages_v_blocks_cta_left_path_idx').on(columns._path),
+		index('_pages_v_blocks_cta_left_background_idx').on(columns.background),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [_pages_v.id],
 			name: '_pages_v_blocks_cta_left_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const _pages_v_blocks_cta_left_locales = sqliteTable(
@@ -1765,17 +1700,17 @@ export const _pages_v_blocks_cta_left_locales = sqliteTable(
 		_locale: text('_locale', { enum: ['en', 'vi'] }).notNull(),
 		_parentID: integer('_parent_id').notNull(),
 	},
-	(columns) => ({
-		_localeParent: uniqueIndex('_pages_v_blocks_cta_left_locales_locale_parent_id_unique').on(
+	(columns) => [
+		uniqueIndex('_pages_v_blocks_cta_left_locales_locale_parent_id_unique').on(
 			columns._locale,
 			columns._parentID,
 		),
-		_parentIdFk: foreignKey({
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [_pages_v_blocks_cta_left.id],
 			name: '_pages_v_blocks_cta_left_locales_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const _pages_v_blocks_call_to_action_post = sqliteTable(
@@ -1791,21 +1726,17 @@ export const _pages_v_blocks_call_to_action_post = sqliteTable(
 		_uuid: text('_uuid'),
 		blockName: text('block_name'),
 	},
-	(columns) => ({
-		_orderIdx: index('_pages_v_blocks_call_to_action_post_order_idx').on(columns._order),
-		_parentIDIdx: index('_pages_v_blocks_call_to_action_post_parent_id_idx').on(
-			columns._parentID,
-		),
-		_pathIdx: index('_pages_v_blocks_call_to_action_post_path_idx').on(columns._path),
-		_pages_v_blocks_call_to_action_post_post_idx: index(
-			'_pages_v_blocks_call_to_action_post_post_idx',
-		).on(columns.post),
-		_parentIdFk: foreignKey({
+	(columns) => [
+		index('_pages_v_blocks_call_to_action_post_order_idx').on(columns._order),
+		index('_pages_v_blocks_call_to_action_post_parent_id_idx').on(columns._parentID),
+		index('_pages_v_blocks_call_to_action_post_path_idx').on(columns._path),
+		index('_pages_v_blocks_call_to_action_post_post_idx').on(columns.post),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [_pages_v.id],
 			name: '_pages_v_blocks_call_to_action_post_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const _pages_v_blocks_call_to_action_post_locales = sqliteTable(
@@ -1821,16 +1752,17 @@ export const _pages_v_blocks_call_to_action_post_locales = sqliteTable(
 		_locale: text('_locale', { enum: ['en', 'vi'] }).notNull(),
 		_parentID: integer('_parent_id').notNull(),
 	},
-	(columns) => ({
-		_localeParent: uniqueIndex(
-			'_pages_v_blocks_call_to_action_post_locales_locale_parent_id_unique',
-		).on(columns._locale, columns._parentID),
-		_parentIdFk: foreignKey({
+	(columns) => [
+		uniqueIndex('_pages_v_blocks_call_to_action_post_locales_locale_parent_id').on(
+			columns._locale,
+			columns._parentID,
+		),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [_pages_v_blocks_call_to_action_post.id],
 			name: '_pages_v_blocks_call_to_action_post_locales_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const _pages_v_blocks_cta_right_gallery = sqliteTable(
@@ -1844,20 +1776,16 @@ export const _pages_v_blocks_cta_right_gallery = sqliteTable(
 		}),
 		_uuid: text('_uuid'),
 	},
-	(columns) => ({
-		_orderIdx: index('_pages_v_blocks_cta_right_gallery_order_idx').on(columns._order),
-		_parentIDIdx: index('_pages_v_blocks_cta_right_gallery_parent_id_idx').on(
-			columns._parentID,
-		),
-		_pages_v_blocks_cta_right_gallery_image_idx: index(
-			'_pages_v_blocks_cta_right_gallery_image_idx',
-		).on(columns.image),
-		_parentIDFk: foreignKey({
+	(columns) => [
+		index('_pages_v_blocks_cta_right_gallery_order_idx').on(columns._order),
+		index('_pages_v_blocks_cta_right_gallery_parent_id_idx').on(columns._parentID),
+		index('_pages_v_blocks_cta_right_gallery_image_idx').on(columns.image),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [_pages_v_blocks_cta_right.id],
 			name: '_pages_v_blocks_cta_right_gallery_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const _pages_v_blocks_cta_right_gallery_locales = sqliteTable(
@@ -1868,16 +1796,17 @@ export const _pages_v_blocks_cta_right_gallery_locales = sqliteTable(
 		_locale: text('_locale', { enum: ['en', 'vi'] }).notNull(),
 		_parentID: integer('_parent_id').notNull(),
 	},
-	(columns) => ({
-		_localeParent: uniqueIndex(
-			'_pages_v_blocks_cta_right_gallery_locales_locale_parent_id_unique',
-		).on(columns._locale, columns._parentID),
-		_parentIdFk: foreignKey({
+	(columns) => [
+		uniqueIndex('_pages_v_blocks_cta_right_gallery_locales_locale_parent_id_u').on(
+			columns._locale,
+			columns._parentID,
+		),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [_pages_v_blocks_cta_right_gallery.id],
 			name: '_pages_v_blocks_cta_right_gallery_locales_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const _pages_v_blocks_cta_right = sqliteTable(
@@ -1890,16 +1819,16 @@ export const _pages_v_blocks_cta_right = sqliteTable(
 		_uuid: text('_uuid'),
 		blockName: text('block_name'),
 	},
-	(columns) => ({
-		_orderIdx: index('_pages_v_blocks_cta_right_order_idx').on(columns._order),
-		_parentIDIdx: index('_pages_v_blocks_cta_right_parent_id_idx').on(columns._parentID),
-		_pathIdx: index('_pages_v_blocks_cta_right_path_idx').on(columns._path),
-		_parentIdFk: foreignKey({
+	(columns) => [
+		index('_pages_v_blocks_cta_right_order_idx').on(columns._order),
+		index('_pages_v_blocks_cta_right_parent_id_idx').on(columns._parentID),
+		index('_pages_v_blocks_cta_right_path_idx').on(columns._path),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [_pages_v.id],
 			name: '_pages_v_blocks_cta_right_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const _pages_v_blocks_cta_right_locales = sqliteTable(
@@ -1916,17 +1845,17 @@ export const _pages_v_blocks_cta_right_locales = sqliteTable(
 		_locale: text('_locale', { enum: ['en', 'vi'] }).notNull(),
 		_parentID: integer('_parent_id').notNull(),
 	},
-	(columns) => ({
-		_localeParent: uniqueIndex('_pages_v_blocks_cta_right_locales_locale_parent_id_unique').on(
+	(columns) => [
+		uniqueIndex('_pages_v_blocks_cta_right_locales_locale_parent_id_unique').on(
 			columns._locale,
 			columns._parentID,
 		),
-		_parentIdFk: foreignKey({
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [_pages_v_blocks_cta_right.id],
 			name: '_pages_v_blocks_cta_right_locales_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const _pages_v_blocks_call_to_add_to_cart = sqliteTable(
@@ -1945,24 +1874,18 @@ export const _pages_v_blocks_call_to_add_to_cart = sqliteTable(
 		_uuid: text('_uuid'),
 		blockName: text('block_name'),
 	},
-	(columns) => ({
-		_orderIdx: index('_pages_v_blocks_call_to_add_to_cart_order_idx').on(columns._order),
-		_parentIDIdx: index('_pages_v_blocks_call_to_add_to_cart_parent_id_idx').on(
-			columns._parentID,
-		),
-		_pathIdx: index('_pages_v_blocks_call_to_add_to_cart_path_idx').on(columns._path),
-		_pages_v_blocks_call_to_add_to_cart_image_idx: index(
-			'_pages_v_blocks_call_to_add_to_cart_image_idx',
-		).on(columns.image),
-		_pages_v_blocks_call_to_add_to_cart_products_idx: index(
-			'_pages_v_blocks_call_to_add_to_cart_products_idx',
-		).on(columns.products),
-		_parentIdFk: foreignKey({
+	(columns) => [
+		index('_pages_v_blocks_call_to_add_to_cart_order_idx').on(columns._order),
+		index('_pages_v_blocks_call_to_add_to_cart_parent_id_idx').on(columns._parentID),
+		index('_pages_v_blocks_call_to_add_to_cart_path_idx').on(columns._path),
+		index('_pages_v_blocks_call_to_add_to_cart_image_idx').on(columns.image),
+		index('_pages_v_blocks_call_to_add_to_cart_products_idx').on(columns.products),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [_pages_v.id],
 			name: '_pages_v_blocks_call_to_add_to_cart_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const _pages_v_blocks_call_to_add_to_cart_locales = sqliteTable(
@@ -1974,16 +1897,17 @@ export const _pages_v_blocks_call_to_add_to_cart_locales = sqliteTable(
 		_locale: text('_locale', { enum: ['en', 'vi'] }).notNull(),
 		_parentID: integer('_parent_id').notNull(),
 	},
-	(columns) => ({
-		_localeParent: uniqueIndex(
-			'_pages_v_blocks_call_to_add_to_cart_locales_locale_parent_id_unique',
-		).on(columns._locale, columns._parentID),
-		_parentIdFk: foreignKey({
+	(columns) => [
+		uniqueIndex('_pages_v_blocks_call_to_add_to_cart_locales_locale_parent_id').on(
+			columns._locale,
+			columns._parentID,
+		),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [_pages_v_blocks_call_to_add_to_cart.id],
 			name: '_pages_v_blocks_call_to_add_to_cart_locales_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const _pages_v_blocks_certificates_organizations = sqliteTable(
@@ -1997,20 +1921,16 @@ export const _pages_v_blocks_certificates_organizations = sqliteTable(
 		}),
 		_uuid: text('_uuid'),
 	},
-	(columns) => ({
-		_orderIdx: index('_pages_v_blocks_certificates_organizations_order_idx').on(columns._order),
-		_parentIDIdx: index('_pages_v_blocks_certificates_organizations_parent_id_idx').on(
-			columns._parentID,
-		),
-		_pages_v_blocks_certificates_organizations_logo_idx: index(
-			'_pages_v_blocks_certificates_organizations_logo_idx',
-		).on(columns.logo),
-		_parentIDFk: foreignKey({
+	(columns) => [
+		index('_pages_v_blocks_certificates_organizations_order_idx').on(columns._order),
+		index('_pages_v_blocks_certificates_organizations_parent_id_idx').on(columns._parentID),
+		index('_pages_v_blocks_certificates_organizations_logo_idx').on(columns.logo),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [_pages_v_blocks_certificates.id],
 			name: '_pages_v_blocks_certificates_organizations_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const _pages_v_blocks_certificates_organizations_locales = sqliteTable(
@@ -2022,16 +1942,17 @@ export const _pages_v_blocks_certificates_organizations_locales = sqliteTable(
 		_locale: text('_locale', { enum: ['en', 'vi'] }).notNull(),
 		_parentID: integer('_parent_id').notNull(),
 	},
-	(columns) => ({
-		_localeParent: uniqueIndex(
-			'_pages_v_blocks_certificates_organizations_locales_locale_parent_id_unique',
-		).on(columns._locale, columns._parentID),
-		_parentIdFk: foreignKey({
+	(columns) => [
+		uniqueIndex('_pages_v_blocks_certificates_organizations_locales_locale_pa').on(
+			columns._locale,
+			columns._parentID,
+		),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [_pages_v_blocks_certificates_organizations.id],
-			name: '_pages_v_blocks_certificates_organizations_locales_parent_id_fk',
+			name: '_pages_v_blocks_certificates_organizations_locales_parent_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const _pages_v_blocks_certificates = sqliteTable(
@@ -2044,16 +1965,16 @@ export const _pages_v_blocks_certificates = sqliteTable(
 		_uuid: text('_uuid'),
 		blockName: text('block_name'),
 	},
-	(columns) => ({
-		_orderIdx: index('_pages_v_blocks_certificates_order_idx').on(columns._order),
-		_parentIDIdx: index('_pages_v_blocks_certificates_parent_id_idx').on(columns._parentID),
-		_pathIdx: index('_pages_v_blocks_certificates_path_idx').on(columns._path),
-		_parentIdFk: foreignKey({
+	(columns) => [
+		index('_pages_v_blocks_certificates_order_idx').on(columns._order),
+		index('_pages_v_blocks_certificates_parent_id_idx').on(columns._parentID),
+		index('_pages_v_blocks_certificates_path_idx').on(columns._path),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [_pages_v.id],
 			name: '_pages_v_blocks_certificates_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const _pages_v_blocks_certificates_locales = sqliteTable(
@@ -2064,16 +1985,17 @@ export const _pages_v_blocks_certificates_locales = sqliteTable(
 		_locale: text('_locale', { enum: ['en', 'vi'] }).notNull(),
 		_parentID: integer('_parent_id').notNull(),
 	},
-	(columns) => ({
-		_localeParent: uniqueIndex(
-			'_pages_v_blocks_certificates_locales_locale_parent_id_unique',
-		).on(columns._locale, columns._parentID),
-		_parentIdFk: foreignKey({
+	(columns) => [
+		uniqueIndex('_pages_v_blocks_certificates_locales_locale_parent_id_unique').on(
+			columns._locale,
+			columns._parentID,
+		),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [_pages_v_blocks_certificates.id],
 			name: '_pages_v_blocks_certificates_locales_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const _pages_v_blocks_content_columns = sqliteTable(
@@ -2096,16 +2018,16 @@ export const _pages_v_blocks_content_columns = sqliteTable(
 		link_label: text('link_label'),
 		_uuid: text('_uuid'),
 	},
-	(columns) => ({
-		_orderIdx: index('_pages_v_blocks_content_columns_order_idx').on(columns._order),
-		_parentIDIdx: index('_pages_v_blocks_content_columns_parent_id_idx').on(columns._parentID),
-		_localeIdx: index('_pages_v_blocks_content_columns_locale_idx').on(columns._locale),
-		_parentIDFk: foreignKey({
+	(columns) => [
+		index('_pages_v_blocks_content_columns_order_idx').on(columns._order),
+		index('_pages_v_blocks_content_columns_parent_id_idx').on(columns._parentID),
+		index('_pages_v_blocks_content_columns_locale_idx').on(columns._locale),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [_pages_v_blocks_content.id],
 			name: '_pages_v_blocks_content_columns_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const _pages_v_blocks_content = sqliteTable(
@@ -2118,16 +2040,16 @@ export const _pages_v_blocks_content = sqliteTable(
 		_uuid: text('_uuid'),
 		blockName: text('block_name'),
 	},
-	(columns) => ({
-		_orderIdx: index('_pages_v_blocks_content_order_idx').on(columns._order),
-		_parentIDIdx: index('_pages_v_blocks_content_parent_id_idx').on(columns._parentID),
-		_pathIdx: index('_pages_v_blocks_content_path_idx').on(columns._path),
-		_parentIdFk: foreignKey({
+	(columns) => [
+		index('_pages_v_blocks_content_order_idx').on(columns._order),
+		index('_pages_v_blocks_content_parent_id_idx').on(columns._parentID),
+		index('_pages_v_blocks_content_path_idx').on(columns._path),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [_pages_v.id],
 			name: '_pages_v_blocks_content_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const _pages_v_blocks_form_block = sqliteTable(
@@ -2145,19 +2067,17 @@ export const _pages_v_blocks_form_block = sqliteTable(
 		_uuid: text('_uuid'),
 		blockName: text('block_name'),
 	},
-	(columns) => ({
-		_orderIdx: index('_pages_v_blocks_form_block_order_idx').on(columns._order),
-		_parentIDIdx: index('_pages_v_blocks_form_block_parent_id_idx').on(columns._parentID),
-		_pathIdx: index('_pages_v_blocks_form_block_path_idx').on(columns._path),
-		_pages_v_blocks_form_block_form_idx: index('_pages_v_blocks_form_block_form_idx').on(
-			columns.form,
-		),
-		_parentIdFk: foreignKey({
+	(columns) => [
+		index('_pages_v_blocks_form_block_order_idx').on(columns._order),
+		index('_pages_v_blocks_form_block_parent_id_idx').on(columns._parentID),
+		index('_pages_v_blocks_form_block_path_idx').on(columns._path),
+		index('_pages_v_blocks_form_block_form_idx').on(columns.form),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [_pages_v.id],
 			name: '_pages_v_blocks_form_block_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const _pages_v_blocks_highlight_right = sqliteTable(
@@ -2167,26 +2087,24 @@ export const _pages_v_blocks_highlight_right = sqliteTable(
 		_parentID: integer('_parent_id').notNull(),
 		_path: text('_path').notNull(),
 		id: integer('id').primaryKey(),
-		order: numeric('order'),
+		order: numeric('order', { mode: 'number' }),
 		image: integer('image_id').references(() => media.id, {
 			onDelete: 'set null',
 		}),
 		_uuid: text('_uuid'),
 		blockName: text('block_name'),
 	},
-	(columns) => ({
-		_orderIdx: index('_pages_v_blocks_highlight_right_order_idx').on(columns._order),
-		_parentIDIdx: index('_pages_v_blocks_highlight_right_parent_id_idx').on(columns._parentID),
-		_pathIdx: index('_pages_v_blocks_highlight_right_path_idx').on(columns._path),
-		_pages_v_blocks_highlight_right_image_idx: index(
-			'_pages_v_blocks_highlight_right_image_idx',
-		).on(columns.image),
-		_parentIdFk: foreignKey({
+	(columns) => [
+		index('_pages_v_blocks_highlight_right_order_idx').on(columns._order),
+		index('_pages_v_blocks_highlight_right_parent_id_idx').on(columns._parentID),
+		index('_pages_v_blocks_highlight_right_path_idx').on(columns._path),
+		index('_pages_v_blocks_highlight_right_image_idx').on(columns.image),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [_pages_v.id],
 			name: '_pages_v_blocks_highlight_right_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const _pages_v_blocks_highlight_right_locales = sqliteTable(
@@ -2198,16 +2116,17 @@ export const _pages_v_blocks_highlight_right_locales = sqliteTable(
 		_locale: text('_locale', { enum: ['en', 'vi'] }).notNull(),
 		_parentID: integer('_parent_id').notNull(),
 	},
-	(columns) => ({
-		_localeParent: uniqueIndex(
-			'_pages_v_blocks_highlight_right_locales_locale_parent_id_unique',
-		).on(columns._locale, columns._parentID),
-		_parentIdFk: foreignKey({
+	(columns) => [
+		uniqueIndex('_pages_v_blocks_highlight_right_locales_locale_parent_id_uni').on(
+			columns._locale,
+			columns._parentID,
+		),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [_pages_v_blocks_highlight_right.id],
 			name: '_pages_v_blocks_highlight_right_locales_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const _pages_v_blocks_highlight_center = sqliteTable(
@@ -2217,26 +2136,24 @@ export const _pages_v_blocks_highlight_center = sqliteTable(
 		_parentID: integer('_parent_id').notNull(),
 		_path: text('_path').notNull(),
 		id: integer('id').primaryKey(),
-		order: numeric('order'),
+		order: numeric('order', { mode: 'number' }),
 		image: integer('image_id').references(() => media.id, {
 			onDelete: 'set null',
 		}),
 		_uuid: text('_uuid'),
 		blockName: text('block_name'),
 	},
-	(columns) => ({
-		_orderIdx: index('_pages_v_blocks_highlight_center_order_idx').on(columns._order),
-		_parentIDIdx: index('_pages_v_blocks_highlight_center_parent_id_idx').on(columns._parentID),
-		_pathIdx: index('_pages_v_blocks_highlight_center_path_idx').on(columns._path),
-		_pages_v_blocks_highlight_center_image_idx: index(
-			'_pages_v_blocks_highlight_center_image_idx',
-		).on(columns.image),
-		_parentIdFk: foreignKey({
+	(columns) => [
+		index('_pages_v_blocks_highlight_center_order_idx').on(columns._order),
+		index('_pages_v_blocks_highlight_center_parent_id_idx').on(columns._parentID),
+		index('_pages_v_blocks_highlight_center_path_idx').on(columns._path),
+		index('_pages_v_blocks_highlight_center_image_idx').on(columns.image),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [_pages_v.id],
 			name: '_pages_v_blocks_highlight_center_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const _pages_v_blocks_highlight_center_locales = sqliteTable(
@@ -2248,16 +2165,17 @@ export const _pages_v_blocks_highlight_center_locales = sqliteTable(
 		_locale: text('_locale', { enum: ['en', 'vi'] }).notNull(),
 		_parentID: integer('_parent_id').notNull(),
 	},
-	(columns) => ({
-		_localeParent: uniqueIndex(
-			'_pages_v_blocks_highlight_center_locales_locale_parent_id_unique',
-		).on(columns._locale, columns._parentID),
-		_parentIdFk: foreignKey({
+	(columns) => [
+		uniqueIndex('_pages_v_blocks_highlight_center_locales_locale_parent_id_un').on(
+			columns._locale,
+			columns._parentID,
+		),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [_pages_v_blocks_highlight_center.id],
 			name: '_pages_v_blocks_highlight_center_locales_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const _pages_v_blocks_highlight_left = sqliteTable(
@@ -2267,26 +2185,24 @@ export const _pages_v_blocks_highlight_left = sqliteTable(
 		_parentID: integer('_parent_id').notNull(),
 		_path: text('_path').notNull(),
 		id: integer('id').primaryKey(),
-		order: numeric('order'),
+		order: numeric('order', { mode: 'number' }),
 		image: integer('image_id').references(() => media.id, {
 			onDelete: 'set null',
 		}),
 		_uuid: text('_uuid'),
 		blockName: text('block_name'),
 	},
-	(columns) => ({
-		_orderIdx: index('_pages_v_blocks_highlight_left_order_idx').on(columns._order),
-		_parentIDIdx: index('_pages_v_blocks_highlight_left_parent_id_idx').on(columns._parentID),
-		_pathIdx: index('_pages_v_blocks_highlight_left_path_idx').on(columns._path),
-		_pages_v_blocks_highlight_left_image_idx: index(
-			'_pages_v_blocks_highlight_left_image_idx',
-		).on(columns.image),
-		_parentIdFk: foreignKey({
+	(columns) => [
+		index('_pages_v_blocks_highlight_left_order_idx').on(columns._order),
+		index('_pages_v_blocks_highlight_left_parent_id_idx').on(columns._parentID),
+		index('_pages_v_blocks_highlight_left_path_idx').on(columns._path),
+		index('_pages_v_blocks_highlight_left_image_idx').on(columns.image),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [_pages_v.id],
 			name: '_pages_v_blocks_highlight_left_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const _pages_v_blocks_highlight_left_locales = sqliteTable(
@@ -2298,16 +2214,17 @@ export const _pages_v_blocks_highlight_left_locales = sqliteTable(
 		_locale: text('_locale', { enum: ['en', 'vi'] }).notNull(),
 		_parentID: integer('_parent_id').notNull(),
 	},
-	(columns) => ({
-		_localeParent: uniqueIndex(
-			'_pages_v_blocks_highlight_left_locales_locale_parent_id_unique',
-		).on(columns._locale, columns._parentID),
-		_parentIdFk: foreignKey({
+	(columns) => [
+		uniqueIndex('_pages_v_blocks_highlight_left_locales_locale_parent_id_uniq').on(
+			columns._locale,
+			columns._parentID,
+		),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [_pages_v_blocks_highlight_left.id],
 			name: '_pages_v_blocks_highlight_left_locales_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const _pages_v_blocks_infinite_scroll = sqliteTable(
@@ -2320,16 +2237,16 @@ export const _pages_v_blocks_infinite_scroll = sqliteTable(
 		_uuid: text('_uuid'),
 		blockName: text('block_name'),
 	},
-	(columns) => ({
-		_orderIdx: index('_pages_v_blocks_infinite_scroll_order_idx').on(columns._order),
-		_parentIDIdx: index('_pages_v_blocks_infinite_scroll_parent_id_idx').on(columns._parentID),
-		_pathIdx: index('_pages_v_blocks_infinite_scroll_path_idx').on(columns._path),
-		_parentIdFk: foreignKey({
+	(columns) => [
+		index('_pages_v_blocks_infinite_scroll_order_idx').on(columns._order),
+		index('_pages_v_blocks_infinite_scroll_parent_id_idx').on(columns._parentID),
+		index('_pages_v_blocks_infinite_scroll_path_idx').on(columns._path),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [_pages_v.id],
 			name: '_pages_v_blocks_infinite_scroll_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const _pages_v_blocks_infinite_scroll_locales = sqliteTable(
@@ -2338,24 +2255,23 @@ export const _pages_v_blocks_infinite_scroll_locales = sqliteTable(
 		graphic: integer('graphic_id').references(() => media.id, {
 			onDelete: 'set null',
 		}),
-		animationDuration: numeric('animation_duration').default('10'),
+		animationDuration: numeric('animation_duration', { mode: 'number' }).default(10),
 		id: integer('id').primaryKey(),
 		_locale: text('_locale', { enum: ['en', 'vi'] }).notNull(),
 		_parentID: integer('_parent_id').notNull(),
 	},
-	(columns) => ({
-		_pages_v_blocks_infinite_scroll_graphic_idx: index(
-			'_pages_v_blocks_infinite_scroll_graphic_idx',
-		).on(columns.graphic, columns._locale),
-		_localeParent: uniqueIndex(
-			'_pages_v_blocks_infinite_scroll_locales_locale_parent_id_unique',
-		).on(columns._locale, columns._parentID),
-		_parentIdFk: foreignKey({
+	(columns) => [
+		index('_pages_v_blocks_infinite_scroll_graphic_idx').on(columns.graphic, columns._locale),
+		uniqueIndex('_pages_v_blocks_infinite_scroll_locales_locale_parent_id_uni').on(
+			columns._locale,
+			columns._parentID,
+		),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [_pages_v_blocks_infinite_scroll.id],
 			name: '_pages_v_blocks_infinite_scroll_locales_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const _pages_v_blocks_latest_posts = sqliteTable(
@@ -2368,16 +2284,16 @@ export const _pages_v_blocks_latest_posts = sqliteTable(
 		_uuid: text('_uuid'),
 		blockName: text('block_name'),
 	},
-	(columns) => ({
-		_orderIdx: index('_pages_v_blocks_latest_posts_order_idx').on(columns._order),
-		_parentIDIdx: index('_pages_v_blocks_latest_posts_parent_id_idx').on(columns._parentID),
-		_pathIdx: index('_pages_v_blocks_latest_posts_path_idx').on(columns._path),
-		_parentIdFk: foreignKey({
+	(columns) => [
+		index('_pages_v_blocks_latest_posts_order_idx').on(columns._order),
+		index('_pages_v_blocks_latest_posts_parent_id_idx').on(columns._parentID),
+		index('_pages_v_blocks_latest_posts_path_idx').on(columns._path),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [_pages_v.id],
 			name: '_pages_v_blocks_latest_posts_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const _pages_v_blocks_latest_posts_locales = sqliteTable(
@@ -2389,16 +2305,17 @@ export const _pages_v_blocks_latest_posts_locales = sqliteTable(
 		_locale: text('_locale', { enum: ['en', 'vi'] }).notNull(),
 		_parentID: integer('_parent_id').notNull(),
 	},
-	(columns) => ({
-		_localeParent: uniqueIndex(
-			'_pages_v_blocks_latest_posts_locales_locale_parent_id_unique',
-		).on(columns._locale, columns._parentID),
-		_parentIdFk: foreignKey({
+	(columns) => [
+		uniqueIndex('_pages_v_blocks_latest_posts_locales_locale_parent_id_unique').on(
+			columns._locale,
+			columns._parentID,
+		),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [_pages_v_blocks_latest_posts.id],
 			name: '_pages_v_blocks_latest_posts_locales_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const _pages_v_blocks_media = sqliteTable(
@@ -2414,17 +2331,17 @@ export const _pages_v_blocks_media = sqliteTable(
 		_uuid: text('_uuid'),
 		blockName: text('block_name'),
 	},
-	(columns) => ({
-		_orderIdx: index('_pages_v_blocks_media_order_idx').on(columns._order),
-		_parentIDIdx: index('_pages_v_blocks_media_parent_id_idx').on(columns._parentID),
-		_pathIdx: index('_pages_v_blocks_media_path_idx').on(columns._path),
-		_pages_v_blocks_media_media_idx: index('_pages_v_blocks_media_media_idx').on(columns.media),
-		_parentIdFk: foreignKey({
+	(columns) => [
+		index('_pages_v_blocks_media_order_idx').on(columns._order),
+		index('_pages_v_blocks_media_parent_id_idx').on(columns._parentID),
+		index('_pages_v_blocks_media_path_idx').on(columns._path),
+		index('_pages_v_blocks_media_media_idx').on(columns.media),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [_pages_v.id],
 			name: '_pages_v_blocks_media_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const _pages_v_blocks_posts_grid = sqliteTable(
@@ -2441,19 +2358,17 @@ export const _pages_v_blocks_posts_grid = sqliteTable(
 		_uuid: text('_uuid'),
 		blockName: text('block_name'),
 	},
-	(columns) => ({
-		_orderIdx: index('_pages_v_blocks_posts_grid_order_idx').on(columns._order),
-		_parentIDIdx: index('_pages_v_blocks_posts_grid_parent_id_idx').on(columns._parentID),
-		_pathIdx: index('_pages_v_blocks_posts_grid_path_idx').on(columns._path),
-		_pages_v_blocks_posts_grid_post_categories_idx: index(
-			'_pages_v_blocks_posts_grid_post_categories_idx',
-		).on(columns.postCategories),
-		_parentIdFk: foreignKey({
+	(columns) => [
+		index('_pages_v_blocks_posts_grid_order_idx').on(columns._order),
+		index('_pages_v_blocks_posts_grid_parent_id_idx').on(columns._parentID),
+		index('_pages_v_blocks_posts_grid_path_idx').on(columns._path),
+		index('_pages_v_blocks_posts_grid_post_categories_idx').on(columns.postCategories),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [_pages_v.id],
 			name: '_pages_v_blocks_posts_grid_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const _pages_v_blocks_products_carousel = sqliteTable(
@@ -2466,18 +2381,16 @@ export const _pages_v_blocks_products_carousel = sqliteTable(
 		_uuid: text('_uuid'),
 		blockName: text('block_name'),
 	},
-	(columns) => ({
-		_orderIdx: index('_pages_v_blocks_products_carousel_order_idx').on(columns._order),
-		_parentIDIdx: index('_pages_v_blocks_products_carousel_parent_id_idx').on(
-			columns._parentID,
-		),
-		_pathIdx: index('_pages_v_blocks_products_carousel_path_idx').on(columns._path),
-		_parentIdFk: foreignKey({
+	(columns) => [
+		index('_pages_v_blocks_products_carousel_order_idx').on(columns._order),
+		index('_pages_v_blocks_products_carousel_parent_id_idx').on(columns._parentID),
+		index('_pages_v_blocks_products_carousel_path_idx').on(columns._path),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [_pages_v.id],
 			name: '_pages_v_blocks_products_carousel_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const _pages_v_blocks_products_carousel_locales = sqliteTable(
@@ -2493,16 +2406,17 @@ export const _pages_v_blocks_products_carousel_locales = sqliteTable(
 		_locale: text('_locale', { enum: ['en', 'vi'] }).notNull(),
 		_parentID: integer('_parent_id').notNull(),
 	},
-	(columns) => ({
-		_localeParent: uniqueIndex(
-			'_pages_v_blocks_products_carousel_locales_locale_parent_id_unique',
-		).on(columns._locale, columns._parentID),
-		_parentIdFk: foreignKey({
+	(columns) => [
+		uniqueIndex('_pages_v_blocks_products_carousel_locales_locale_parent_id_u').on(
+			columns._locale,
+			columns._parentID,
+		),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [_pages_v_blocks_products_carousel.id],
 			name: '_pages_v_blocks_products_carousel_locales_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const _pages_v_blocks_products_category = sqliteTable(
@@ -2515,18 +2429,16 @@ export const _pages_v_blocks_products_category = sqliteTable(
 		_uuid: text('_uuid'),
 		blockName: text('block_name'),
 	},
-	(columns) => ({
-		_orderIdx: index('_pages_v_blocks_products_category_order_idx').on(columns._order),
-		_parentIDIdx: index('_pages_v_blocks_products_category_parent_id_idx').on(
-			columns._parentID,
-		),
-		_pathIdx: index('_pages_v_blocks_products_category_path_idx').on(columns._path),
-		_parentIdFk: foreignKey({
+	(columns) => [
+		index('_pages_v_blocks_products_category_order_idx').on(columns._order),
+		index('_pages_v_blocks_products_category_parent_id_idx').on(columns._parentID),
+		index('_pages_v_blocks_products_category_path_idx').on(columns._path),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [_pages_v.id],
 			name: '_pages_v_blocks_products_category_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const _pages_v_blocks_products_category_locales = sqliteTable(
@@ -2537,16 +2449,17 @@ export const _pages_v_blocks_products_category_locales = sqliteTable(
 		_locale: text('_locale', { enum: ['en', 'vi'] }).notNull(),
 		_parentID: integer('_parent_id').notNull(),
 	},
-	(columns) => ({
-		_localeParent: uniqueIndex(
-			'_pages_v_blocks_products_category_locales_locale_parent_id_unique',
-		).on(columns._locale, columns._parentID),
-		_parentIdFk: foreignKey({
+	(columns) => [
+		uniqueIndex('_pages_v_blocks_products_category_locales_locale_parent_id_u').on(
+			columns._locale,
+			columns._parentID,
+		),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [_pages_v_blocks_products_category.id],
 			name: '_pages_v_blocks_products_category_locales_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const _pages_v_blocks_three_photo = sqliteTable(
@@ -2568,25 +2481,19 @@ export const _pages_v_blocks_three_photo = sqliteTable(
 		_uuid: text('_uuid'),
 		blockName: text('block_name'),
 	},
-	(columns) => ({
-		_orderIdx: index('_pages_v_blocks_three_photo_order_idx').on(columns._order),
-		_parentIDIdx: index('_pages_v_blocks_three_photo_parent_id_idx').on(columns._parentID),
-		_pathIdx: index('_pages_v_blocks_three_photo_path_idx').on(columns._path),
-		_pages_v_blocks_three_photo_photo_left_idx: index(
-			'_pages_v_blocks_three_photo_photo_left_idx',
-		).on(columns.photoLeft),
-		_pages_v_blocks_three_photo_photo_center_idx: index(
-			'_pages_v_blocks_three_photo_photo_center_idx',
-		).on(columns.photoCenter),
-		_pages_v_blocks_three_photo_photo_right_idx: index(
-			'_pages_v_blocks_three_photo_photo_right_idx',
-		).on(columns.photoRight),
-		_parentIdFk: foreignKey({
+	(columns) => [
+		index('_pages_v_blocks_three_photo_order_idx').on(columns._order),
+		index('_pages_v_blocks_three_photo_parent_id_idx').on(columns._parentID),
+		index('_pages_v_blocks_three_photo_path_idx').on(columns._path),
+		index('_pages_v_blocks_three_photo_photo_left_idx').on(columns.photoLeft),
+		index('_pages_v_blocks_three_photo_photo_center_idx').on(columns.photoCenter),
+		index('_pages_v_blocks_three_photo_photo_right_idx').on(columns.photoRight),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [_pages_v.id],
 			name: '_pages_v_blocks_three_photo_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const _pages_v_blocks_video_embed = sqliteTable(
@@ -2600,16 +2507,16 @@ export const _pages_v_blocks_video_embed = sqliteTable(
 		_uuid: text('_uuid'),
 		blockName: text('block_name'),
 	},
-	(columns) => ({
-		_orderIdx: index('_pages_v_blocks_video_embed_order_idx').on(columns._order),
-		_parentIDIdx: index('_pages_v_blocks_video_embed_parent_id_idx').on(columns._parentID),
-		_pathIdx: index('_pages_v_blocks_video_embed_path_idx').on(columns._path),
-		_parentIdFk: foreignKey({
+	(columns) => [
+		index('_pages_v_blocks_video_embed_order_idx').on(columns._order),
+		index('_pages_v_blocks_video_embed_parent_id_idx').on(columns._parentID),
+		index('_pages_v_blocks_video_embed_path_idx').on(columns._path),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [_pages_v.id],
 			name: '_pages_v_blocks_video_embed_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const _pages_v = sqliteTable(
@@ -2655,32 +2562,20 @@ export const _pages_v = sqliteTable(
 		latest: integer('latest', { mode: 'boolean' }),
 		autosave: integer('autosave', { mode: 'boolean' }),
 	},
-	(columns) => ({
-		_pages_v_parent_idx: index('_pages_v_parent_idx').on(columns.parent),
-		_pages_v_version_hero_version_hero_media_idx: index(
-			'_pages_v_version_hero_version_hero_media_idx',
-		).on(columns.version_hero_media),
-		_pages_v_version_version_slug_idx: index('_pages_v_version_version_slug_idx').on(
-			columns.version_slug,
-		),
-		_pages_v_version_version_updated_at_idx: index(
-			'_pages_v_version_version_updated_at_idx',
-		).on(columns.version_updatedAt),
-		_pages_v_version_version_created_at_idx: index(
-			'_pages_v_version_version_created_at_idx',
-		).on(columns.version_createdAt),
-		_pages_v_version_version__status_idx: index('_pages_v_version_version__status_idx').on(
-			columns.version__status,
-		),
-		_pages_v_created_at_idx: index('_pages_v_created_at_idx').on(columns.createdAt),
-		_pages_v_updated_at_idx: index('_pages_v_updated_at_idx').on(columns.updatedAt),
-		_pages_v_snapshot_idx: index('_pages_v_snapshot_idx').on(columns.snapshot),
-		_pages_v_published_locale_idx: index('_pages_v_published_locale_idx').on(
-			columns.publishedLocale,
-		),
-		_pages_v_latest_idx: index('_pages_v_latest_idx').on(columns.latest),
-		_pages_v_autosave_idx: index('_pages_v_autosave_idx').on(columns.autosave),
-	}),
+	(columns) => [
+		index('_pages_v_parent_idx').on(columns.parent),
+		index('_pages_v_version_hero_version_hero_media_idx').on(columns.version_hero_media),
+		index('_pages_v_version_version_slug_idx').on(columns.version_slug),
+		index('_pages_v_version_version_updated_at_idx').on(columns.version_updatedAt),
+		index('_pages_v_version_version_created_at_idx').on(columns.version_createdAt),
+		index('_pages_v_version_version__status_idx').on(columns.version__status),
+		index('_pages_v_created_at_idx').on(columns.createdAt),
+		index('_pages_v_updated_at_idx').on(columns.updatedAt),
+		index('_pages_v_snapshot_idx').on(columns.snapshot),
+		index('_pages_v_published_locale_idx').on(columns.publishedLocale),
+		index('_pages_v_latest_idx').on(columns.latest),
+		index('_pages_v_autosave_idx').on(columns.autosave),
+	],
 )
 
 export const _pages_v_locales = sqliteTable(
@@ -2695,20 +2590,21 @@ export const _pages_v_locales = sqliteTable(
 		_locale: text('_locale', { enum: ['en', 'vi'] }).notNull(),
 		_parentID: integer('_parent_id').notNull(),
 	},
-	(columns) => ({
-		_pages_v_version_meta_meta_version_meta_meta_image_idx: index(
-			'_pages_v_version_meta_meta_version_meta_meta_image_idx',
-		).on(columns.version_meta_meta_image, columns._locale),
-		_localeParent: uniqueIndex('_pages_v_locales_locale_parent_id_unique').on(
+	(columns) => [
+		index('_pages_v_version_meta_meta_version_meta_meta_image_idx').on(
+			columns.version_meta_meta_image,
+			columns._locale,
+		),
+		uniqueIndex('_pages_v_locales_locale_parent_id_unique').on(
 			columns._locale,
 			columns._parentID,
 		),
-		_parentIdFk: foreignKey({
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [_pages_v.id],
 			name: '_pages_v_locales_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const _pages_v_rels = sqliteTable(
@@ -2726,69 +2622,59 @@ export const _pages_v_rels = sqliteTable(
 		productsID: integer('products_id'),
 		productSubCategoriesID: integer('product_sub_categories_id'),
 	},
-	(columns) => ({
-		order: index('_pages_v_rels_order_idx').on(columns.order),
-		parentIdx: index('_pages_v_rels_parent_idx').on(columns.parent),
-		pathIdx: index('_pages_v_rels_path_idx').on(columns.path),
-		localeIdx: index('_pages_v_rels_locale_idx').on(columns.locale),
-		_pages_v_rels_pages_id_idx: index('_pages_v_rels_pages_id_idx').on(
-			columns.pagesID,
+	(columns) => [
+		index('_pages_v_rels_order_idx').on(columns.order),
+		index('_pages_v_rels_parent_idx').on(columns.parent),
+		index('_pages_v_rels_path_idx').on(columns.path),
+		index('_pages_v_rels_locale_idx').on(columns.locale),
+		index('_pages_v_rels_pages_id_idx').on(columns.pagesID, columns.locale),
+		index('_pages_v_rels_post_categories_id_idx').on(columns.postCategoriesID, columns.locale),
+		index('_pages_v_rels_posts_id_idx').on(columns.postsID, columns.locale),
+		index('_pages_v_rels_product_categories_id_idx').on(
+			columns.productCategoriesID,
 			columns.locale,
 		),
-		_pages_v_rels_post_categories_id_idx: index('_pages_v_rels_post_categories_id_idx').on(
-			columns.postCategoriesID,
+		index('_pages_v_rels_products_id_idx').on(columns.productsID, columns.locale),
+		index('_pages_v_rels_product_sub_categories_id_idx').on(
+			columns.productSubCategoriesID,
 			columns.locale,
 		),
-		_pages_v_rels_posts_id_idx: index('_pages_v_rels_posts_id_idx').on(
-			columns.postsID,
-			columns.locale,
-		),
-		_pages_v_rels_product_categories_id_idx: index(
-			'_pages_v_rels_product_categories_id_idx',
-		).on(columns.productCategoriesID, columns.locale),
-		_pages_v_rels_products_id_idx: index('_pages_v_rels_products_id_idx').on(
-			columns.productsID,
-			columns.locale,
-		),
-		_pages_v_rels_product_sub_categories_id_idx: index(
-			'_pages_v_rels_product_sub_categories_id_idx',
-		).on(columns.productSubCategoriesID, columns.locale),
-		parentFk: foreignKey({
+		foreignKey({
 			columns: [columns['parent']],
 			foreignColumns: [_pages_v.id],
 			name: '_pages_v_rels_parent_fk',
 		}).onDelete('cascade'),
-		pagesIdFk: foreignKey({
+		foreignKey({
 			columns: [columns['pagesID']],
 			foreignColumns: [pages.id],
 			name: '_pages_v_rels_pages_fk',
 		}).onDelete('cascade'),
-		postCategoriesIdFk: foreignKey({
+		foreignKey({
 			columns: [columns['postCategoriesID']],
 			foreignColumns: [post_categories.id],
 			name: '_pages_v_rels_post_categories_fk',
 		}).onDelete('cascade'),
-		postsIdFk: foreignKey({
+		foreignKey({
 			columns: [columns['postsID']],
 			foreignColumns: [posts.id],
 			name: '_pages_v_rels_posts_fk',
 		}).onDelete('cascade'),
-		productCategoriesIdFk: foreignKey({
+		foreignKey({
 			columns: [columns['productCategoriesID']],
 			foreignColumns: [product_categories.id],
 			name: '_pages_v_rels_product_categories_fk',
 		}).onDelete('cascade'),
-		productsIdFk: foreignKey({
+		foreignKey({
 			columns: [columns['productsID']],
 			foreignColumns: [products.id],
 			name: '_pages_v_rels_products_fk',
 		}).onDelete('cascade'),
-		productSubCategoriesIdFk: foreignKey({
+		foreignKey({
 			columns: [columns['productSubCategoriesID']],
 			foreignColumns: [product_sub_categories.id],
 			name: '_pages_v_rels_product_sub_categories_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const post_categories_blocks_call_to_action_post = sqliteTable(
@@ -2805,21 +2691,17 @@ export const post_categories_blocks_call_to_action_post = sqliteTable(
 			}),
 		blockName: text('block_name'),
 	},
-	(columns) => ({
-		_orderIdx: index('post_categories_blocks_call_to_action_post_order_idx').on(columns._order),
-		_parentIDIdx: index('post_categories_blocks_call_to_action_post_parent_id_idx').on(
-			columns._parentID,
-		),
-		_pathIdx: index('post_categories_blocks_call_to_action_post_path_idx').on(columns._path),
-		post_categories_blocks_call_to_action_post_post_idx: index(
-			'post_categories_blocks_call_to_action_post_post_idx',
-		).on(columns.post),
-		_parentIdFk: foreignKey({
+	(columns) => [
+		index('post_categories_blocks_call_to_action_post_order_idx').on(columns._order),
+		index('post_categories_blocks_call_to_action_post_parent_id_idx').on(columns._parentID),
+		index('post_categories_blocks_call_to_action_post_path_idx').on(columns._path),
+		index('post_categories_blocks_call_to_action_post_post_idx').on(columns.post),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [post_categories.id],
 			name: 'post_categories_blocks_call_to_action_post_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const post_categories_blocks_call_to_action_post_locales = sqliteTable(
@@ -2835,16 +2717,17 @@ export const post_categories_blocks_call_to_action_post_locales = sqliteTable(
 		_locale: text('_locale', { enum: ['en', 'vi'] }).notNull(),
 		_parentID: text('_parent_id').notNull(),
 	},
-	(columns) => ({
-		_localeParent: uniqueIndex(
-			'post_categories_blocks_call_to_action_post_locales_locale_parent_id_unique',
-		).on(columns._locale, columns._parentID),
-		_parentIdFk: foreignKey({
+	(columns) => [
+		uniqueIndex('post_categories_blocks_call_to_action_post_locales_locale_pa').on(
+			columns._locale,
+			columns._parentID,
+		),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [post_categories_blocks_call_to_action_post.id],
-			name: 'post_categories_blocks_call_to_action_post_locales_parent_id_fk',
+			name: 'post_categories_blocks_call_to_action_post_locales_parent_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const post_categories_blocks_posts_grid = sqliteTable(
@@ -2860,21 +2743,17 @@ export const post_categories_blocks_posts_grid = sqliteTable(
 		}),
 		blockName: text('block_name'),
 	},
-	(columns) => ({
-		_orderIdx: index('post_categories_blocks_posts_grid_order_idx').on(columns._order),
-		_parentIDIdx: index('post_categories_blocks_posts_grid_parent_id_idx').on(
-			columns._parentID,
-		),
-		_pathIdx: index('post_categories_blocks_posts_grid_path_idx').on(columns._path),
-		post_categories_blocks_posts_grid_post_categories_idx: index(
-			'post_categories_blocks_posts_grid_post_categories_idx',
-		).on(columns.postCategories),
-		_parentIdFk: foreignKey({
+	(columns) => [
+		index('post_categories_blocks_posts_grid_order_idx').on(columns._order),
+		index('post_categories_blocks_posts_grid_parent_id_idx').on(columns._parentID),
+		index('post_categories_blocks_posts_grid_path_idx').on(columns._path),
+		index('post_categories_blocks_posts_grid_post_categories_idx').on(columns.postCategories),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [post_categories.id],
 			name: 'post_categories_blocks_posts_grid_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const post_categories_breadcrumbs = sqliteTable(
@@ -2890,19 +2769,17 @@ export const post_categories_breadcrumbs = sqliteTable(
 		url: text('url'),
 		label: text('label'),
 	},
-	(columns) => ({
-		_orderIdx: index('post_categories_breadcrumbs_order_idx').on(columns._order),
-		_parentIDIdx: index('post_categories_breadcrumbs_parent_id_idx').on(columns._parentID),
-		_localeIdx: index('post_categories_breadcrumbs_locale_idx').on(columns._locale),
-		post_categories_breadcrumbs_doc_idx: index('post_categories_breadcrumbs_doc_idx').on(
-			columns.doc,
-		),
-		_parentIDFk: foreignKey({
+	(columns) => [
+		index('post_categories_breadcrumbs_order_idx').on(columns._order),
+		index('post_categories_breadcrumbs_parent_id_idx').on(columns._parentID),
+		index('post_categories_breadcrumbs_locale_idx').on(columns._locale),
+		index('post_categories_breadcrumbs_doc_idx').on(columns.doc),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [post_categories.id],
 			name: 'post_categories_breadcrumbs_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const post_categories = sqliteTable(
@@ -2922,16 +2799,12 @@ export const post_categories = sqliteTable(
 			.notNull()
 			.default(sql`(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))`),
 	},
-	(columns) => ({
-		post_categories_slug_idx: index('post_categories_slug_idx').on(columns.slug),
-		post_categories_parent_idx: index('post_categories_parent_idx').on(columns.parent),
-		post_categories_updated_at_idx: index('post_categories_updated_at_idx').on(
-			columns.updatedAt,
-		),
-		post_categories_created_at_idx: index('post_categories_created_at_idx').on(
-			columns.createdAt,
-		),
-	}),
+	(columns) => [
+		index('post_categories_slug_idx').on(columns.slug),
+		index('post_categories_parent_idx').on(columns.parent),
+		index('post_categories_updated_at_idx').on(columns.updatedAt),
+		index('post_categories_created_at_idx').on(columns.createdAt),
+	],
 )
 
 export const post_categories_locales = sqliteTable(
@@ -2942,17 +2815,17 @@ export const post_categories_locales = sqliteTable(
 		_locale: text('_locale', { enum: ['en', 'vi'] }).notNull(),
 		_parentID: integer('_parent_id').notNull(),
 	},
-	(columns) => ({
-		_localeParent: uniqueIndex('post_categories_locales_locale_parent_id_unique').on(
+	(columns) => [
+		uniqueIndex('post_categories_locales_locale_parent_id_unique').on(
 			columns._locale,
 			columns._parentID,
 		),
-		_parentIdFk: foreignKey({
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [post_categories.id],
 			name: 'post_categories_locales_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const post_categories_rels = sqliteTable(
@@ -2970,68 +2843,62 @@ export const post_categories_rels = sqliteTable(
 		productsID: integer('products_id'),
 		productSubCategoriesID: integer('product_sub_categories_id'),
 	},
-	(columns) => ({
-		order: index('post_categories_rels_order_idx').on(columns.order),
-		parentIdx: index('post_categories_rels_parent_idx').on(columns.parent),
-		pathIdx: index('post_categories_rels_path_idx').on(columns.path),
-		localeIdx: index('post_categories_rels_locale_idx').on(columns.locale),
-		post_categories_rels_pages_id_idx: index('post_categories_rels_pages_id_idx').on(
-			columns.pagesID,
+	(columns) => [
+		index('post_categories_rels_order_idx').on(columns.order),
+		index('post_categories_rels_parent_idx').on(columns.parent),
+		index('post_categories_rels_path_idx').on(columns.path),
+		index('post_categories_rels_locale_idx').on(columns.locale),
+		index('post_categories_rels_pages_id_idx').on(columns.pagesID, columns.locale),
+		index('post_categories_rels_post_categories_id_idx').on(
+			columns.postCategoriesID,
 			columns.locale,
 		),
-		post_categories_rels_post_categories_id_idx: index(
-			'post_categories_rels_post_categories_id_idx',
-		).on(columns.postCategoriesID, columns.locale),
-		post_categories_rels_posts_id_idx: index('post_categories_rels_posts_id_idx').on(
-			columns.postsID,
+		index('post_categories_rels_posts_id_idx').on(columns.postsID, columns.locale),
+		index('post_categories_rels_product_categories_id_idx').on(
+			columns.productCategoriesID,
 			columns.locale,
 		),
-		post_categories_rels_product_categories_id_idx: index(
-			'post_categories_rels_product_categories_id_idx',
-		).on(columns.productCategoriesID, columns.locale),
-		post_categories_rels_products_id_idx: index('post_categories_rels_products_id_idx').on(
-			columns.productsID,
+		index('post_categories_rels_products_id_idx').on(columns.productsID, columns.locale),
+		index('post_categories_rels_product_sub_categories_id_idx').on(
+			columns.productSubCategoriesID,
 			columns.locale,
 		),
-		post_categories_rels_product_sub_categories_id_idx: index(
-			'post_categories_rels_product_sub_categories_id_idx',
-		).on(columns.productSubCategoriesID, columns.locale),
-		parentFk: foreignKey({
+		foreignKey({
 			columns: [columns['parent']],
 			foreignColumns: [post_categories.id],
 			name: 'post_categories_rels_parent_fk',
 		}).onDelete('cascade'),
-		pagesIdFk: foreignKey({
+		foreignKey({
 			columns: [columns['pagesID']],
 			foreignColumns: [pages.id],
 			name: 'post_categories_rels_pages_fk',
 		}).onDelete('cascade'),
-		postCategoriesIdFk: foreignKey({
+		foreignKey({
 			columns: [columns['postCategoriesID']],
 			foreignColumns: [post_categories.id],
 			name: 'post_categories_rels_post_categories_fk',
 		}).onDelete('cascade'),
-		postsIdFk: foreignKey({
+		foreignKey({
 			columns: [columns['postsID']],
 			foreignColumns: [posts.id],
 			name: 'post_categories_rels_posts_fk',
 		}).onDelete('cascade'),
-		productCategoriesIdFk: foreignKey({
+		foreignKey({
 			columns: [columns['productCategoriesID']],
 			foreignColumns: [product_categories.id],
 			name: 'post_categories_rels_product_categories_fk',
 		}).onDelete('cascade'),
-		productsIdFk: foreignKey({
+		foreignKey({
 			columns: [columns['productsID']],
 			foreignColumns: [products.id],
 			name: 'post_categories_rels_products_fk',
 		}).onDelete('cascade'),
-		productSubCategoriesIdFk: foreignKey({
+		foreignKey({
 			columns: [columns['productSubCategoriesID']],
 			foreignColumns: [product_sub_categories.id],
 			name: 'post_categories_rels_product_sub_categories_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const posts_blocks_archive = sqliteTable(
@@ -3046,19 +2913,19 @@ export const posts_blocks_archive = sqliteTable(
 			'collection',
 		),
 		relationTo: text('relation_to', { enum: ['posts'] }).default('posts'),
-		limit: numeric('limit').default('10'),
+		limit: numeric('limit', { mode: 'number' }).default(10),
 		blockName: text('block_name'),
 	},
-	(columns) => ({
-		_orderIdx: index('posts_blocks_archive_order_idx').on(columns._order),
-		_parentIDIdx: index('posts_blocks_archive_parent_id_idx').on(columns._parentID),
-		_pathIdx: index('posts_blocks_archive_path_idx').on(columns._path),
-		_parentIdFk: foreignKey({
+	(columns) => [
+		index('posts_blocks_archive_order_idx').on(columns._order),
+		index('posts_blocks_archive_parent_id_idx').on(columns._parentID),
+		index('posts_blocks_archive_path_idx').on(columns._path),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [posts.id],
 			name: 'posts_blocks_archive_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const posts_blocks_buy_now = sqliteTable(
@@ -3073,19 +2940,17 @@ export const posts_blocks_buy_now = sqliteTable(
 		}),
 		blockName: text('block_name'),
 	},
-	(columns) => ({
-		_orderIdx: index('posts_blocks_buy_now_order_idx').on(columns._order),
-		_parentIDIdx: index('posts_blocks_buy_now_parent_id_idx').on(columns._parentID),
-		_pathIdx: index('posts_blocks_buy_now_path_idx').on(columns._path),
-		posts_blocks_buy_now_products_idx: index('posts_blocks_buy_now_products_idx').on(
-			columns.products,
-		),
-		_parentIdFk: foreignKey({
+	(columns) => [
+		index('posts_blocks_buy_now_order_idx').on(columns._order),
+		index('posts_blocks_buy_now_parent_id_idx').on(columns._parentID),
+		index('posts_blocks_buy_now_path_idx').on(columns._path),
+		index('posts_blocks_buy_now_products_idx').on(columns.products),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [posts.id],
 			name: 'posts_blocks_buy_now_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const posts_blocks_buy_now_locales = sqliteTable(
@@ -3096,17 +2961,17 @@ export const posts_blocks_buy_now_locales = sqliteTable(
 		_locale: text('_locale', { enum: ['en', 'vi'] }).notNull(),
 		_parentID: text('_parent_id').notNull(),
 	},
-	(columns) => ({
-		_localeParent: uniqueIndex('posts_blocks_buy_now_locales_locale_parent_id_unique').on(
+	(columns) => [
+		uniqueIndex('posts_blocks_buy_now_locales_locale_parent_id_unique').on(
 			columns._locale,
 			columns._parentID,
 		),
-		_parentIdFk: foreignKey({
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [posts_blocks_buy_now.id],
 			name: 'posts_blocks_buy_now_locales_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const posts_blocks_cta_center = sqliteTable(
@@ -3121,19 +2986,17 @@ export const posts_blocks_cta_center = sqliteTable(
 		}),
 		blockName: text('block_name'),
 	},
-	(columns) => ({
-		_orderIdx: index('posts_blocks_cta_center_order_idx').on(columns._order),
-		_parentIDIdx: index('posts_blocks_cta_center_parent_id_idx').on(columns._parentID),
-		_pathIdx: index('posts_blocks_cta_center_path_idx').on(columns._path),
-		posts_blocks_cta_center_background_idx: index('posts_blocks_cta_center_background_idx').on(
-			columns.background,
-		),
-		_parentIdFk: foreignKey({
+	(columns) => [
+		index('posts_blocks_cta_center_order_idx').on(columns._order),
+		index('posts_blocks_cta_center_parent_id_idx').on(columns._parentID),
+		index('posts_blocks_cta_center_path_idx').on(columns._path),
+		index('posts_blocks_cta_center_background_idx').on(columns.background),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [posts.id],
 			name: 'posts_blocks_cta_center_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const posts_blocks_cta_center_locales = sqliteTable(
@@ -3150,17 +3013,17 @@ export const posts_blocks_cta_center_locales = sqliteTable(
 		_locale: text('_locale', { enum: ['en', 'vi'] }).notNull(),
 		_parentID: text('_parent_id').notNull(),
 	},
-	(columns) => ({
-		_localeParent: uniqueIndex('posts_blocks_cta_center_locales_locale_parent_id_unique').on(
+	(columns) => [
+		uniqueIndex('posts_blocks_cta_center_locales_locale_parent_id_unique').on(
 			columns._locale,
 			columns._parentID,
 		),
-		_parentIdFk: foreignKey({
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [posts_blocks_cta_center.id],
 			name: 'posts_blocks_cta_center_locales_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const posts_blocks_cta_left = sqliteTable(
@@ -3175,19 +3038,17 @@ export const posts_blocks_cta_left = sqliteTable(
 		}),
 		blockName: text('block_name'),
 	},
-	(columns) => ({
-		_orderIdx: index('posts_blocks_cta_left_order_idx').on(columns._order),
-		_parentIDIdx: index('posts_blocks_cta_left_parent_id_idx').on(columns._parentID),
-		_pathIdx: index('posts_blocks_cta_left_path_idx').on(columns._path),
-		posts_blocks_cta_left_background_idx: index('posts_blocks_cta_left_background_idx').on(
-			columns.background,
-		),
-		_parentIdFk: foreignKey({
+	(columns) => [
+		index('posts_blocks_cta_left_order_idx').on(columns._order),
+		index('posts_blocks_cta_left_parent_id_idx').on(columns._parentID),
+		index('posts_blocks_cta_left_path_idx').on(columns._path),
+		index('posts_blocks_cta_left_background_idx').on(columns.background),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [posts.id],
 			name: 'posts_blocks_cta_left_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const posts_blocks_cta_left_locales = sqliteTable(
@@ -3203,17 +3064,17 @@ export const posts_blocks_cta_left_locales = sqliteTable(
 		_locale: text('_locale', { enum: ['en', 'vi'] }).notNull(),
 		_parentID: text('_parent_id').notNull(),
 	},
-	(columns) => ({
-		_localeParent: uniqueIndex('posts_blocks_cta_left_locales_locale_parent_id_unique').on(
+	(columns) => [
+		uniqueIndex('posts_blocks_cta_left_locales_locale_parent_id_unique').on(
 			columns._locale,
 			columns._parentID,
 		),
-		_parentIdFk: foreignKey({
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [posts_blocks_cta_left.id],
 			name: 'posts_blocks_cta_left_locales_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const posts_blocks_cta_right_gallery = sqliteTable(
@@ -3226,18 +3087,16 @@ export const posts_blocks_cta_right_gallery = sqliteTable(
 			onDelete: 'set null',
 		}),
 	},
-	(columns) => ({
-		_orderIdx: index('posts_blocks_cta_right_gallery_order_idx').on(columns._order),
-		_parentIDIdx: index('posts_blocks_cta_right_gallery_parent_id_idx').on(columns._parentID),
-		posts_blocks_cta_right_gallery_image_idx: index(
-			'posts_blocks_cta_right_gallery_image_idx',
-		).on(columns.image),
-		_parentIDFk: foreignKey({
+	(columns) => [
+		index('posts_blocks_cta_right_gallery_order_idx').on(columns._order),
+		index('posts_blocks_cta_right_gallery_parent_id_idx').on(columns._parentID),
+		index('posts_blocks_cta_right_gallery_image_idx').on(columns.image),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [posts_blocks_cta_right.id],
 			name: 'posts_blocks_cta_right_gallery_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const posts_blocks_cta_right_gallery_locales = sqliteTable(
@@ -3248,16 +3107,17 @@ export const posts_blocks_cta_right_gallery_locales = sqliteTable(
 		_locale: text('_locale', { enum: ['en', 'vi'] }).notNull(),
 		_parentID: text('_parent_id').notNull(),
 	},
-	(columns) => ({
-		_localeParent: uniqueIndex(
-			'posts_blocks_cta_right_gallery_locales_locale_parent_id_unique',
-		).on(columns._locale, columns._parentID),
-		_parentIdFk: foreignKey({
+	(columns) => [
+		uniqueIndex('posts_blocks_cta_right_gallery_locales_locale_parent_id_uniq').on(
+			columns._locale,
+			columns._parentID,
+		),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [posts_blocks_cta_right_gallery.id],
 			name: 'posts_blocks_cta_right_gallery_locales_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const posts_blocks_cta_right = sqliteTable(
@@ -3269,16 +3129,16 @@ export const posts_blocks_cta_right = sqliteTable(
 		id: text('id').primaryKey(),
 		blockName: text('block_name'),
 	},
-	(columns) => ({
-		_orderIdx: index('posts_blocks_cta_right_order_idx').on(columns._order),
-		_parentIDIdx: index('posts_blocks_cta_right_parent_id_idx').on(columns._parentID),
-		_pathIdx: index('posts_blocks_cta_right_path_idx').on(columns._path),
-		_parentIdFk: foreignKey({
+	(columns) => [
+		index('posts_blocks_cta_right_order_idx').on(columns._order),
+		index('posts_blocks_cta_right_parent_id_idx').on(columns._parentID),
+		index('posts_blocks_cta_right_path_idx').on(columns._path),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [posts.id],
 			name: 'posts_blocks_cta_right_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const posts_blocks_cta_right_locales = sqliteTable(
@@ -3295,17 +3155,17 @@ export const posts_blocks_cta_right_locales = sqliteTable(
 		_locale: text('_locale', { enum: ['en', 'vi'] }).notNull(),
 		_parentID: text('_parent_id').notNull(),
 	},
-	(columns) => ({
-		_localeParent: uniqueIndex('posts_blocks_cta_right_locales_locale_parent_id_unique').on(
+	(columns) => [
+		uniqueIndex('posts_blocks_cta_right_locales_locale_parent_id_unique').on(
 			columns._locale,
 			columns._parentID,
 		),
-		_parentIdFk: foreignKey({
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [posts_blocks_cta_right.id],
 			name: 'posts_blocks_cta_right_locales_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const posts_blocks_call_to_add_to_cart = sqliteTable(
@@ -3323,22 +3183,18 @@ export const posts_blocks_call_to_add_to_cart = sqliteTable(
 		}),
 		blockName: text('block_name'),
 	},
-	(columns) => ({
-		_orderIdx: index('posts_blocks_call_to_add_to_cart_order_idx').on(columns._order),
-		_parentIDIdx: index('posts_blocks_call_to_add_to_cart_parent_id_idx').on(columns._parentID),
-		_pathIdx: index('posts_blocks_call_to_add_to_cart_path_idx').on(columns._path),
-		posts_blocks_call_to_add_to_cart_image_idx: index(
-			'posts_blocks_call_to_add_to_cart_image_idx',
-		).on(columns.image),
-		posts_blocks_call_to_add_to_cart_products_idx: index(
-			'posts_blocks_call_to_add_to_cart_products_idx',
-		).on(columns.products),
-		_parentIdFk: foreignKey({
+	(columns) => [
+		index('posts_blocks_call_to_add_to_cart_order_idx').on(columns._order),
+		index('posts_blocks_call_to_add_to_cart_parent_id_idx').on(columns._parentID),
+		index('posts_blocks_call_to_add_to_cart_path_idx').on(columns._path),
+		index('posts_blocks_call_to_add_to_cart_image_idx').on(columns.image),
+		index('posts_blocks_call_to_add_to_cart_products_idx').on(columns.products),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [posts.id],
 			name: 'posts_blocks_call_to_add_to_cart_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const posts_blocks_call_to_add_to_cart_locales = sqliteTable(
@@ -3350,16 +3206,17 @@ export const posts_blocks_call_to_add_to_cart_locales = sqliteTable(
 		_locale: text('_locale', { enum: ['en', 'vi'] }).notNull(),
 		_parentID: text('_parent_id').notNull(),
 	},
-	(columns) => ({
-		_localeParent: uniqueIndex(
-			'posts_blocks_call_to_add_to_cart_locales_locale_parent_id_unique',
-		).on(columns._locale, columns._parentID),
-		_parentIdFk: foreignKey({
+	(columns) => [
+		uniqueIndex('posts_blocks_call_to_add_to_cart_locales_locale_parent_id_un').on(
+			columns._locale,
+			columns._parentID,
+		),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [posts_blocks_call_to_add_to_cart.id],
 			name: 'posts_blocks_call_to_add_to_cart_locales_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const posts_blocks_certificates_organizations = sqliteTable(
@@ -3372,20 +3229,16 @@ export const posts_blocks_certificates_organizations = sqliteTable(
 			onDelete: 'set null',
 		}),
 	},
-	(columns) => ({
-		_orderIdx: index('posts_blocks_certificates_organizations_order_idx').on(columns._order),
-		_parentIDIdx: index('posts_blocks_certificates_organizations_parent_id_idx').on(
-			columns._parentID,
-		),
-		posts_blocks_certificates_organizations_logo_idx: index(
-			'posts_blocks_certificates_organizations_logo_idx',
-		).on(columns.logo),
-		_parentIDFk: foreignKey({
+	(columns) => [
+		index('posts_blocks_certificates_organizations_order_idx').on(columns._order),
+		index('posts_blocks_certificates_organizations_parent_id_idx').on(columns._parentID),
+		index('posts_blocks_certificates_organizations_logo_idx').on(columns.logo),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [posts_blocks_certificates.id],
 			name: 'posts_blocks_certificates_organizations_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const posts_blocks_certificates_organizations_locales = sqliteTable(
@@ -3397,16 +3250,17 @@ export const posts_blocks_certificates_organizations_locales = sqliteTable(
 		_locale: text('_locale', { enum: ['en', 'vi'] }).notNull(),
 		_parentID: text('_parent_id').notNull(),
 	},
-	(columns) => ({
-		_localeParent: uniqueIndex(
-			'posts_blocks_certificates_organizations_locales_locale_parent_id_unique',
-		).on(columns._locale, columns._parentID),
-		_parentIdFk: foreignKey({
+	(columns) => [
+		uniqueIndex('posts_blocks_certificates_organizations_locales_locale_paren').on(
+			columns._locale,
+			columns._parentID,
+		),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [posts_blocks_certificates_organizations.id],
 			name: 'posts_blocks_certificates_organizations_locales_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const posts_blocks_certificates = sqliteTable(
@@ -3418,16 +3272,16 @@ export const posts_blocks_certificates = sqliteTable(
 		id: text('id').primaryKey(),
 		blockName: text('block_name'),
 	},
-	(columns) => ({
-		_orderIdx: index('posts_blocks_certificates_order_idx').on(columns._order),
-		_parentIDIdx: index('posts_blocks_certificates_parent_id_idx').on(columns._parentID),
-		_pathIdx: index('posts_blocks_certificates_path_idx').on(columns._path),
-		_parentIdFk: foreignKey({
+	(columns) => [
+		index('posts_blocks_certificates_order_idx').on(columns._order),
+		index('posts_blocks_certificates_parent_id_idx').on(columns._parentID),
+		index('posts_blocks_certificates_path_idx').on(columns._path),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [posts.id],
 			name: 'posts_blocks_certificates_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const posts_blocks_certificates_locales = sqliteTable(
@@ -3438,17 +3292,17 @@ export const posts_blocks_certificates_locales = sqliteTable(
 		_locale: text('_locale', { enum: ['en', 'vi'] }).notNull(),
 		_parentID: text('_parent_id').notNull(),
 	},
-	(columns) => ({
-		_localeParent: uniqueIndex('posts_blocks_certificates_locales_locale_parent_id_unique').on(
+	(columns) => [
+		uniqueIndex('posts_blocks_certificates_locales_locale_parent_id_unique').on(
 			columns._locale,
 			columns._parentID,
 		),
-		_parentIdFk: foreignKey({
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [posts_blocks_certificates.id],
 			name: 'posts_blocks_certificates_locales_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const posts_blocks_content_columns = sqliteTable(
@@ -3470,16 +3324,16 @@ export const posts_blocks_content_columns = sqliteTable(
 		link_url: text('link_url'),
 		link_label: text('link_label'),
 	},
-	(columns) => ({
-		_orderIdx: index('posts_blocks_content_columns_order_idx').on(columns._order),
-		_parentIDIdx: index('posts_blocks_content_columns_parent_id_idx').on(columns._parentID),
-		_localeIdx: index('posts_blocks_content_columns_locale_idx').on(columns._locale),
-		_parentIDFk: foreignKey({
+	(columns) => [
+		index('posts_blocks_content_columns_order_idx').on(columns._order),
+		index('posts_blocks_content_columns_parent_id_idx').on(columns._parentID),
+		index('posts_blocks_content_columns_locale_idx').on(columns._locale),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [posts_blocks_content.id],
 			name: 'posts_blocks_content_columns_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const posts_blocks_content = sqliteTable(
@@ -3491,16 +3345,16 @@ export const posts_blocks_content = sqliteTable(
 		id: text('id').primaryKey(),
 		blockName: text('block_name'),
 	},
-	(columns) => ({
-		_orderIdx: index('posts_blocks_content_order_idx').on(columns._order),
-		_parentIDIdx: index('posts_blocks_content_parent_id_idx').on(columns._parentID),
-		_pathIdx: index('posts_blocks_content_path_idx').on(columns._path),
-		_parentIdFk: foreignKey({
+	(columns) => [
+		index('posts_blocks_content_order_idx').on(columns._order),
+		index('posts_blocks_content_parent_id_idx').on(columns._parentID),
+		index('posts_blocks_content_path_idx').on(columns._path),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [posts.id],
 			name: 'posts_blocks_content_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const posts_blocks_focus_left_small_image = sqliteTable(
@@ -3515,21 +3369,17 @@ export const posts_blocks_focus_left_small_image = sqliteTable(
 		}),
 		blockName: text('block_name'),
 	},
-	(columns) => ({
-		_orderIdx: index('posts_blocks_focus_left_small_image_order_idx').on(columns._order),
-		_parentIDIdx: index('posts_blocks_focus_left_small_image_parent_id_idx').on(
-			columns._parentID,
-		),
-		_pathIdx: index('posts_blocks_focus_left_small_image_path_idx').on(columns._path),
-		posts_blocks_focus_left_small_image_image_idx: index(
-			'posts_blocks_focus_left_small_image_image_idx',
-		).on(columns.image),
-		_parentIdFk: foreignKey({
+	(columns) => [
+		index('posts_blocks_focus_left_small_image_order_idx').on(columns._order),
+		index('posts_blocks_focus_left_small_image_parent_id_idx').on(columns._parentID),
+		index('posts_blocks_focus_left_small_image_path_idx').on(columns._path),
+		index('posts_blocks_focus_left_small_image_image_idx').on(columns.image),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [posts.id],
 			name: 'posts_blocks_focus_left_small_image_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const posts_blocks_focus_left_small_image_locales = sqliteTable(
@@ -3540,16 +3390,17 @@ export const posts_blocks_focus_left_small_image_locales = sqliteTable(
 		_locale: text('_locale', { enum: ['en', 'vi'] }).notNull(),
 		_parentID: text('_parent_id').notNull(),
 	},
-	(columns) => ({
-		_localeParent: uniqueIndex(
-			'posts_blocks_focus_left_small_image_locales_locale_parent_id_unique',
-		).on(columns._locale, columns._parentID),
-		_parentIdFk: foreignKey({
+	(columns) => [
+		uniqueIndex('posts_blocks_focus_left_small_image_locales_locale_parent_id').on(
+			columns._locale,
+			columns._parentID,
+		),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [posts_blocks_focus_left_small_image.id],
 			name: 'posts_blocks_focus_left_small_image_locales_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const posts_blocks_focus_right_large_image = sqliteTable(
@@ -3564,21 +3415,17 @@ export const posts_blocks_focus_right_large_image = sqliteTable(
 		}),
 		blockName: text('block_name'),
 	},
-	(columns) => ({
-		_orderIdx: index('posts_blocks_focus_right_large_image_order_idx').on(columns._order),
-		_parentIDIdx: index('posts_blocks_focus_right_large_image_parent_id_idx').on(
-			columns._parentID,
-		),
-		_pathIdx: index('posts_blocks_focus_right_large_image_path_idx').on(columns._path),
-		posts_blocks_focus_right_large_image_image_idx: index(
-			'posts_blocks_focus_right_large_image_image_idx',
-		).on(columns.image),
-		_parentIdFk: foreignKey({
+	(columns) => [
+		index('posts_blocks_focus_right_large_image_order_idx').on(columns._order),
+		index('posts_blocks_focus_right_large_image_parent_id_idx').on(columns._parentID),
+		index('posts_blocks_focus_right_large_image_path_idx').on(columns._path),
+		index('posts_blocks_focus_right_large_image_image_idx').on(columns.image),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [posts.id],
 			name: 'posts_blocks_focus_right_large_image_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const posts_blocks_focus_right_large_image_locales = sqliteTable(
@@ -3589,16 +3436,17 @@ export const posts_blocks_focus_right_large_image_locales = sqliteTable(
 		_locale: text('_locale', { enum: ['en', 'vi'] }).notNull(),
 		_parentID: text('_parent_id').notNull(),
 	},
-	(columns) => ({
-		_localeParent: uniqueIndex(
-			'posts_blocks_focus_right_large_image_locales_locale_parent_id_unique',
-		).on(columns._locale, columns._parentID),
-		_parentIdFk: foreignKey({
+	(columns) => [
+		uniqueIndex('posts_blocks_focus_right_large_image_locales_locale_parent_i').on(
+			columns._locale,
+			columns._parentID,
+		),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [posts_blocks_focus_right_large_image.id],
 			name: 'posts_blocks_focus_right_large_image_locales_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const posts_blocks_focus_right_small_image = sqliteTable(
@@ -3613,21 +3461,17 @@ export const posts_blocks_focus_right_small_image = sqliteTable(
 		}),
 		blockName: text('block_name'),
 	},
-	(columns) => ({
-		_orderIdx: index('posts_blocks_focus_right_small_image_order_idx').on(columns._order),
-		_parentIDIdx: index('posts_blocks_focus_right_small_image_parent_id_idx').on(
-			columns._parentID,
-		),
-		_pathIdx: index('posts_blocks_focus_right_small_image_path_idx').on(columns._path),
-		posts_blocks_focus_right_small_image_image_idx: index(
-			'posts_blocks_focus_right_small_image_image_idx',
-		).on(columns.image),
-		_parentIdFk: foreignKey({
+	(columns) => [
+		index('posts_blocks_focus_right_small_image_order_idx').on(columns._order),
+		index('posts_blocks_focus_right_small_image_parent_id_idx').on(columns._parentID),
+		index('posts_blocks_focus_right_small_image_path_idx').on(columns._path),
+		index('posts_blocks_focus_right_small_image_image_idx').on(columns.image),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [posts.id],
 			name: 'posts_blocks_focus_right_small_image_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const posts_blocks_focus_right_small_image_locales = sqliteTable(
@@ -3638,16 +3482,17 @@ export const posts_blocks_focus_right_small_image_locales = sqliteTable(
 		_locale: text('_locale', { enum: ['en', 'vi'] }).notNull(),
 		_parentID: text('_parent_id').notNull(),
 	},
-	(columns) => ({
-		_localeParent: uniqueIndex(
-			'posts_blocks_focus_right_small_image_locales_locale_parent_id_unique',
-		).on(columns._locale, columns._parentID),
-		_parentIdFk: foreignKey({
+	(columns) => [
+		uniqueIndex('posts_blocks_focus_right_small_image_locales_locale_parent_i').on(
+			columns._locale,
+			columns._parentID,
+		),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [posts_blocks_focus_right_small_image.id],
 			name: 'posts_blocks_focus_right_small_image_locales_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const posts_blocks_form_block = sqliteTable(
@@ -3664,19 +3509,17 @@ export const posts_blocks_form_block = sqliteTable(
 		introContent: text('intro_content', { mode: 'json' }),
 		blockName: text('block_name'),
 	},
-	(columns) => ({
-		_orderIdx: index('posts_blocks_form_block_order_idx').on(columns._order),
-		_parentIDIdx: index('posts_blocks_form_block_parent_id_idx').on(columns._parentID),
-		_pathIdx: index('posts_blocks_form_block_path_idx').on(columns._path),
-		posts_blocks_form_block_form_idx: index('posts_blocks_form_block_form_idx').on(
-			columns.form,
-		),
-		_parentIdFk: foreignKey({
+	(columns) => [
+		index('posts_blocks_form_block_order_idx').on(columns._order),
+		index('posts_blocks_form_block_parent_id_idx').on(columns._parentID),
+		index('posts_blocks_form_block_path_idx').on(columns._path),
+		index('posts_blocks_form_block_form_idx').on(columns.form),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [posts.id],
 			name: 'posts_blocks_form_block_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const posts_blocks_highlight_right = sqliteTable(
@@ -3686,25 +3529,23 @@ export const posts_blocks_highlight_right = sqliteTable(
 		_parentID: integer('_parent_id').notNull(),
 		_path: text('_path').notNull(),
 		id: text('id').primaryKey(),
-		order: numeric('order'),
+		order: numeric('order', { mode: 'number' }),
 		image: integer('image_id').references(() => media.id, {
 			onDelete: 'set null',
 		}),
 		blockName: text('block_name'),
 	},
-	(columns) => ({
-		_orderIdx: index('posts_blocks_highlight_right_order_idx').on(columns._order),
-		_parentIDIdx: index('posts_blocks_highlight_right_parent_id_idx').on(columns._parentID),
-		_pathIdx: index('posts_blocks_highlight_right_path_idx').on(columns._path),
-		posts_blocks_highlight_right_image_idx: index('posts_blocks_highlight_right_image_idx').on(
-			columns.image,
-		),
-		_parentIdFk: foreignKey({
+	(columns) => [
+		index('posts_blocks_highlight_right_order_idx').on(columns._order),
+		index('posts_blocks_highlight_right_parent_id_idx').on(columns._parentID),
+		index('posts_blocks_highlight_right_path_idx').on(columns._path),
+		index('posts_blocks_highlight_right_image_idx').on(columns.image),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [posts.id],
 			name: 'posts_blocks_highlight_right_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const posts_blocks_highlight_right_locales = sqliteTable(
@@ -3716,16 +3557,17 @@ export const posts_blocks_highlight_right_locales = sqliteTable(
 		_locale: text('_locale', { enum: ['en', 'vi'] }).notNull(),
 		_parentID: text('_parent_id').notNull(),
 	},
-	(columns) => ({
-		_localeParent: uniqueIndex(
-			'posts_blocks_highlight_right_locales_locale_parent_id_unique',
-		).on(columns._locale, columns._parentID),
-		_parentIdFk: foreignKey({
+	(columns) => [
+		uniqueIndex('posts_blocks_highlight_right_locales_locale_parent_id_unique').on(
+			columns._locale,
+			columns._parentID,
+		),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [posts_blocks_highlight_right.id],
 			name: 'posts_blocks_highlight_right_locales_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const posts_blocks_highlight_center = sqliteTable(
@@ -3735,25 +3577,23 @@ export const posts_blocks_highlight_center = sqliteTable(
 		_parentID: integer('_parent_id').notNull(),
 		_path: text('_path').notNull(),
 		id: text('id').primaryKey(),
-		order: numeric('order'),
+		order: numeric('order', { mode: 'number' }),
 		image: integer('image_id').references(() => media.id, {
 			onDelete: 'set null',
 		}),
 		blockName: text('block_name'),
 	},
-	(columns) => ({
-		_orderIdx: index('posts_blocks_highlight_center_order_idx').on(columns._order),
-		_parentIDIdx: index('posts_blocks_highlight_center_parent_id_idx').on(columns._parentID),
-		_pathIdx: index('posts_blocks_highlight_center_path_idx').on(columns._path),
-		posts_blocks_highlight_center_image_idx: index(
-			'posts_blocks_highlight_center_image_idx',
-		).on(columns.image),
-		_parentIdFk: foreignKey({
+	(columns) => [
+		index('posts_blocks_highlight_center_order_idx').on(columns._order),
+		index('posts_blocks_highlight_center_parent_id_idx').on(columns._parentID),
+		index('posts_blocks_highlight_center_path_idx').on(columns._path),
+		index('posts_blocks_highlight_center_image_idx').on(columns.image),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [posts.id],
 			name: 'posts_blocks_highlight_center_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const posts_blocks_highlight_center_locales = sqliteTable(
@@ -3765,16 +3605,17 @@ export const posts_blocks_highlight_center_locales = sqliteTable(
 		_locale: text('_locale', { enum: ['en', 'vi'] }).notNull(),
 		_parentID: text('_parent_id').notNull(),
 	},
-	(columns) => ({
-		_localeParent: uniqueIndex(
-			'posts_blocks_highlight_center_locales_locale_parent_id_unique',
-		).on(columns._locale, columns._parentID),
-		_parentIdFk: foreignKey({
+	(columns) => [
+		uniqueIndex('posts_blocks_highlight_center_locales_locale_parent_id_uniqu').on(
+			columns._locale,
+			columns._parentID,
+		),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [posts_blocks_highlight_center.id],
 			name: 'posts_blocks_highlight_center_locales_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const posts_blocks_highlight_left = sqliteTable(
@@ -3784,25 +3625,23 @@ export const posts_blocks_highlight_left = sqliteTable(
 		_parentID: integer('_parent_id').notNull(),
 		_path: text('_path').notNull(),
 		id: text('id').primaryKey(),
-		order: numeric('order'),
+		order: numeric('order', { mode: 'number' }),
 		image: integer('image_id').references(() => media.id, {
 			onDelete: 'set null',
 		}),
 		blockName: text('block_name'),
 	},
-	(columns) => ({
-		_orderIdx: index('posts_blocks_highlight_left_order_idx').on(columns._order),
-		_parentIDIdx: index('posts_blocks_highlight_left_parent_id_idx').on(columns._parentID),
-		_pathIdx: index('posts_blocks_highlight_left_path_idx').on(columns._path),
-		posts_blocks_highlight_left_image_idx: index('posts_blocks_highlight_left_image_idx').on(
-			columns.image,
-		),
-		_parentIdFk: foreignKey({
+	(columns) => [
+		index('posts_blocks_highlight_left_order_idx').on(columns._order),
+		index('posts_blocks_highlight_left_parent_id_idx').on(columns._parentID),
+		index('posts_blocks_highlight_left_path_idx').on(columns._path),
+		index('posts_blocks_highlight_left_image_idx').on(columns.image),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [posts.id],
 			name: 'posts_blocks_highlight_left_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const posts_blocks_highlight_left_locales = sqliteTable(
@@ -3814,16 +3653,17 @@ export const posts_blocks_highlight_left_locales = sqliteTable(
 		_locale: text('_locale', { enum: ['en', 'vi'] }).notNull(),
 		_parentID: text('_parent_id').notNull(),
 	},
-	(columns) => ({
-		_localeParent: uniqueIndex(
-			'posts_blocks_highlight_left_locales_locale_parent_id_unique',
-		).on(columns._locale, columns._parentID),
-		_parentIdFk: foreignKey({
+	(columns) => [
+		uniqueIndex('posts_blocks_highlight_left_locales_locale_parent_id_unique').on(
+			columns._locale,
+			columns._parentID,
+		),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [posts_blocks_highlight_left.id],
 			name: 'posts_blocks_highlight_left_locales_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const posts_blocks_infinite_scroll = sqliteTable(
@@ -3835,16 +3675,16 @@ export const posts_blocks_infinite_scroll = sqliteTable(
 		id: text('id').primaryKey(),
 		blockName: text('block_name'),
 	},
-	(columns) => ({
-		_orderIdx: index('posts_blocks_infinite_scroll_order_idx').on(columns._order),
-		_parentIDIdx: index('posts_blocks_infinite_scroll_parent_id_idx').on(columns._parentID),
-		_pathIdx: index('posts_blocks_infinite_scroll_path_idx').on(columns._path),
-		_parentIdFk: foreignKey({
+	(columns) => [
+		index('posts_blocks_infinite_scroll_order_idx').on(columns._order),
+		index('posts_blocks_infinite_scroll_parent_id_idx').on(columns._parentID),
+		index('posts_blocks_infinite_scroll_path_idx').on(columns._path),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [posts.id],
 			name: 'posts_blocks_infinite_scroll_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const posts_blocks_infinite_scroll_locales = sqliteTable(
@@ -3853,24 +3693,23 @@ export const posts_blocks_infinite_scroll_locales = sqliteTable(
 		graphic: integer('graphic_id').references(() => media.id, {
 			onDelete: 'set null',
 		}),
-		animationDuration: numeric('animation_duration').default('10'),
+		animationDuration: numeric('animation_duration', { mode: 'number' }).default(10),
 		id: integer('id').primaryKey(),
 		_locale: text('_locale', { enum: ['en', 'vi'] }).notNull(),
 		_parentID: text('_parent_id').notNull(),
 	},
-	(columns) => ({
-		posts_blocks_infinite_scroll_graphic_idx: index(
-			'posts_blocks_infinite_scroll_graphic_idx',
-		).on(columns.graphic, columns._locale),
-		_localeParent: uniqueIndex(
-			'posts_blocks_infinite_scroll_locales_locale_parent_id_unique',
-		).on(columns._locale, columns._parentID),
-		_parentIdFk: foreignKey({
+	(columns) => [
+		index('posts_blocks_infinite_scroll_graphic_idx').on(columns.graphic, columns._locale),
+		uniqueIndex('posts_blocks_infinite_scroll_locales_locale_parent_id_unique').on(
+			columns._locale,
+			columns._parentID,
+		),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [posts_blocks_infinite_scroll.id],
 			name: 'posts_blocks_infinite_scroll_locales_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const posts_blocks_media = sqliteTable(
@@ -3885,17 +3724,17 @@ export const posts_blocks_media = sqliteTable(
 		}),
 		blockName: text('block_name'),
 	},
-	(columns) => ({
-		_orderIdx: index('posts_blocks_media_order_idx').on(columns._order),
-		_parentIDIdx: index('posts_blocks_media_parent_id_idx').on(columns._parentID),
-		_pathIdx: index('posts_blocks_media_path_idx').on(columns._path),
-		posts_blocks_media_media_idx: index('posts_blocks_media_media_idx').on(columns.media),
-		_parentIdFk: foreignKey({
+	(columns) => [
+		index('posts_blocks_media_order_idx').on(columns._order),
+		index('posts_blocks_media_parent_id_idx').on(columns._parentID),
+		index('posts_blocks_media_path_idx').on(columns._path),
+		index('posts_blocks_media_media_idx').on(columns.media),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [posts.id],
 			name: 'posts_blocks_media_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const posts_blocks_products_carousel = sqliteTable(
@@ -3907,16 +3746,16 @@ export const posts_blocks_products_carousel = sqliteTable(
 		id: text('id').primaryKey(),
 		blockName: text('block_name'),
 	},
-	(columns) => ({
-		_orderIdx: index('posts_blocks_products_carousel_order_idx').on(columns._order),
-		_parentIDIdx: index('posts_blocks_products_carousel_parent_id_idx').on(columns._parentID),
-		_pathIdx: index('posts_blocks_products_carousel_path_idx').on(columns._path),
-		_parentIdFk: foreignKey({
+	(columns) => [
+		index('posts_blocks_products_carousel_order_idx').on(columns._order),
+		index('posts_blocks_products_carousel_parent_id_idx').on(columns._parentID),
+		index('posts_blocks_products_carousel_path_idx').on(columns._path),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [posts.id],
 			name: 'posts_blocks_products_carousel_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const posts_blocks_products_carousel_locales = sqliteTable(
@@ -3932,16 +3771,17 @@ export const posts_blocks_products_carousel_locales = sqliteTable(
 		_locale: text('_locale', { enum: ['en', 'vi'] }).notNull(),
 		_parentID: text('_parent_id').notNull(),
 	},
-	(columns) => ({
-		_localeParent: uniqueIndex(
-			'posts_blocks_products_carousel_locales_locale_parent_id_unique',
-		).on(columns._locale, columns._parentID),
-		_parentIdFk: foreignKey({
+	(columns) => [
+		uniqueIndex('posts_blocks_products_carousel_locales_locale_parent_id_uniq').on(
+			columns._locale,
+			columns._parentID,
+		),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [posts_blocks_products_carousel.id],
 			name: 'posts_blocks_products_carousel_locales_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const posts_blocks_products_category = sqliteTable(
@@ -3953,16 +3793,16 @@ export const posts_blocks_products_category = sqliteTable(
 		id: text('id').primaryKey(),
 		blockName: text('block_name'),
 	},
-	(columns) => ({
-		_orderIdx: index('posts_blocks_products_category_order_idx').on(columns._order),
-		_parentIDIdx: index('posts_blocks_products_category_parent_id_idx').on(columns._parentID),
-		_pathIdx: index('posts_blocks_products_category_path_idx').on(columns._path),
-		_parentIdFk: foreignKey({
+	(columns) => [
+		index('posts_blocks_products_category_order_idx').on(columns._order),
+		index('posts_blocks_products_category_parent_id_idx').on(columns._parentID),
+		index('posts_blocks_products_category_path_idx').on(columns._path),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [posts.id],
 			name: 'posts_blocks_products_category_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const posts_blocks_products_category_locales = sqliteTable(
@@ -3973,16 +3813,17 @@ export const posts_blocks_products_category_locales = sqliteTable(
 		_locale: text('_locale', { enum: ['en', 'vi'] }).notNull(),
 		_parentID: text('_parent_id').notNull(),
 	},
-	(columns) => ({
-		_localeParent: uniqueIndex(
-			'posts_blocks_products_category_locales_locale_parent_id_unique',
-		).on(columns._locale, columns._parentID),
-		_parentIdFk: foreignKey({
+	(columns) => [
+		uniqueIndex('posts_blocks_products_category_locales_locale_parent_id_uniq').on(
+			columns._locale,
+			columns._parentID,
+		),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [posts_blocks_products_category.id],
 			name: 'posts_blocks_products_category_locales_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const posts_blocks_three_photo = sqliteTable(
@@ -4003,25 +3844,19 @@ export const posts_blocks_three_photo = sqliteTable(
 		}),
 		blockName: text('block_name'),
 	},
-	(columns) => ({
-		_orderIdx: index('posts_blocks_three_photo_order_idx').on(columns._order),
-		_parentIDIdx: index('posts_blocks_three_photo_parent_id_idx').on(columns._parentID),
-		_pathIdx: index('posts_blocks_three_photo_path_idx').on(columns._path),
-		posts_blocks_three_photo_photo_left_idx: index(
-			'posts_blocks_three_photo_photo_left_idx',
-		).on(columns.photoLeft),
-		posts_blocks_three_photo_photo_center_idx: index(
-			'posts_blocks_three_photo_photo_center_idx',
-		).on(columns.photoCenter),
-		posts_blocks_three_photo_photo_right_idx: index(
-			'posts_blocks_three_photo_photo_right_idx',
-		).on(columns.photoRight),
-		_parentIdFk: foreignKey({
+	(columns) => [
+		index('posts_blocks_three_photo_order_idx').on(columns._order),
+		index('posts_blocks_three_photo_parent_id_idx').on(columns._parentID),
+		index('posts_blocks_three_photo_path_idx').on(columns._path),
+		index('posts_blocks_three_photo_photo_left_idx').on(columns.photoLeft),
+		index('posts_blocks_three_photo_photo_center_idx').on(columns.photoCenter),
+		index('posts_blocks_three_photo_photo_right_idx').on(columns.photoRight),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [posts.id],
 			name: 'posts_blocks_three_photo_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const posts_blocks_video_embed = sqliteTable(
@@ -4034,16 +3869,16 @@ export const posts_blocks_video_embed = sqliteTable(
 		videoUrl: text('video_url'),
 		blockName: text('block_name'),
 	},
-	(columns) => ({
-		_orderIdx: index('posts_blocks_video_embed_order_idx').on(columns._order),
-		_parentIDIdx: index('posts_blocks_video_embed_parent_id_idx').on(columns._parentID),
-		_pathIdx: index('posts_blocks_video_embed_path_idx').on(columns._path),
-		_parentIdFk: foreignKey({
+	(columns) => [
+		index('posts_blocks_video_embed_order_idx').on(columns._order),
+		index('posts_blocks_video_embed_parent_id_idx').on(columns._parentID),
+		index('posts_blocks_video_embed_path_idx').on(columns._path),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [posts.id],
 			name: 'posts_blocks_video_embed_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const posts_populated_authors = sqliteTable(
@@ -4054,15 +3889,15 @@ export const posts_populated_authors = sqliteTable(
 		id: text('id').primaryKey(),
 		name: text('name'),
 	},
-	(columns) => ({
-		_orderIdx: index('posts_populated_authors_order_idx').on(columns._order),
-		_parentIDIdx: index('posts_populated_authors_parent_id_idx').on(columns._parentID),
-		_parentIDFk: foreignKey({
+	(columns) => [
+		index('posts_populated_authors_order_idx').on(columns._order),
+		index('posts_populated_authors_parent_id_idx').on(columns._parentID),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [posts.id],
 			name: 'posts_populated_authors_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const posts = sqliteTable(
@@ -4081,12 +3916,12 @@ export const posts = sqliteTable(
 			.default(sql`(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))`),
 		_status: text('_status', { enum: ['draft', 'published'] }).default('draft'),
 	},
-	(columns) => ({
-		posts_slug_idx: index('posts_slug_idx').on(columns.slug),
-		posts_updated_at_idx: index('posts_updated_at_idx').on(columns.updatedAt),
-		posts_created_at_idx: index('posts_created_at_idx').on(columns.createdAt),
-		posts__status_idx: index('posts__status_idx').on(columns._status),
-	}),
+	(columns) => [
+		index('posts_slug_idx').on(columns.slug),
+		index('posts_updated_at_idx').on(columns.updatedAt),
+		index('posts_created_at_idx').on(columns.createdAt),
+		index('posts__status_idx').on(columns._status),
+	],
 )
 
 export const posts_locales = sqliteTable(
@@ -4102,21 +3937,15 @@ export const posts_locales = sqliteTable(
 		_locale: text('_locale', { enum: ['en', 'vi'] }).notNull(),
 		_parentID: integer('_parent_id').notNull(),
 	},
-	(columns) => ({
-		posts_meta_meta_meta_meta_image_idx: index('posts_meta_meta_meta_meta_image_idx').on(
-			columns.meta_meta_image,
-			columns._locale,
-		),
-		_localeParent: uniqueIndex('posts_locales_locale_parent_id_unique').on(
-			columns._locale,
-			columns._parentID,
-		),
-		_parentIdFk: foreignKey({
+	(columns) => [
+		index('posts_meta_meta_meta_meta_image_idx').on(columns.meta_meta_image, columns._locale),
+		uniqueIndex('posts_locales_locale_parent_id_unique').on(columns._locale, columns._parentID),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [posts.id],
 			name: 'posts_locales_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const posts_rels = sqliteTable(
@@ -4135,79 +3964,65 @@ export const posts_rels = sqliteTable(
 		productSubCategoriesID: integer('product_sub_categories_id'),
 		usersID: integer('users_id'),
 	},
-	(columns) => ({
-		order: index('posts_rels_order_idx').on(columns.order),
-		parentIdx: index('posts_rels_parent_idx').on(columns.parent),
-		pathIdx: index('posts_rels_path_idx').on(columns.path),
-		localeIdx: index('posts_rels_locale_idx').on(columns.locale),
-		posts_rels_post_categories_id_idx: index('posts_rels_post_categories_id_idx').on(
-			columns.postCategoriesID,
-			columns.locale,
-		),
-		posts_rels_posts_id_idx: index('posts_rels_posts_id_idx').on(
-			columns.postsID,
-			columns.locale,
-		),
-		posts_rels_pages_id_idx: index('posts_rels_pages_id_idx').on(
-			columns.pagesID,
-			columns.locale,
-		),
-		posts_rels_product_categories_id_idx: index('posts_rels_product_categories_id_idx').on(
+	(columns) => [
+		index('posts_rels_order_idx').on(columns.order),
+		index('posts_rels_parent_idx').on(columns.parent),
+		index('posts_rels_path_idx').on(columns.path),
+		index('posts_rels_locale_idx').on(columns.locale),
+		index('posts_rels_post_categories_id_idx').on(columns.postCategoriesID, columns.locale),
+		index('posts_rels_posts_id_idx').on(columns.postsID, columns.locale),
+		index('posts_rels_pages_id_idx').on(columns.pagesID, columns.locale),
+		index('posts_rels_product_categories_id_idx').on(
 			columns.productCategoriesID,
 			columns.locale,
 		),
-		posts_rels_products_id_idx: index('posts_rels_products_id_idx').on(
-			columns.productsID,
+		index('posts_rels_products_id_idx').on(columns.productsID, columns.locale),
+		index('posts_rels_product_sub_categories_id_idx').on(
+			columns.productSubCategoriesID,
 			columns.locale,
 		),
-		posts_rels_product_sub_categories_id_idx: index(
-			'posts_rels_product_sub_categories_id_idx',
-		).on(columns.productSubCategoriesID, columns.locale),
-		posts_rels_users_id_idx: index('posts_rels_users_id_idx').on(
-			columns.usersID,
-			columns.locale,
-		),
-		parentFk: foreignKey({
+		index('posts_rels_users_id_idx').on(columns.usersID, columns.locale),
+		foreignKey({
 			columns: [columns['parent']],
 			foreignColumns: [posts.id],
 			name: 'posts_rels_parent_fk',
 		}).onDelete('cascade'),
-		postCategoriesIdFk: foreignKey({
+		foreignKey({
 			columns: [columns['postCategoriesID']],
 			foreignColumns: [post_categories.id],
 			name: 'posts_rels_post_categories_fk',
 		}).onDelete('cascade'),
-		postsIdFk: foreignKey({
+		foreignKey({
 			columns: [columns['postsID']],
 			foreignColumns: [posts.id],
 			name: 'posts_rels_posts_fk',
 		}).onDelete('cascade'),
-		pagesIdFk: foreignKey({
+		foreignKey({
 			columns: [columns['pagesID']],
 			foreignColumns: [pages.id],
 			name: 'posts_rels_pages_fk',
 		}).onDelete('cascade'),
-		productCategoriesIdFk: foreignKey({
+		foreignKey({
 			columns: [columns['productCategoriesID']],
 			foreignColumns: [product_categories.id],
 			name: 'posts_rels_product_categories_fk',
 		}).onDelete('cascade'),
-		productsIdFk: foreignKey({
+		foreignKey({
 			columns: [columns['productsID']],
 			foreignColumns: [products.id],
 			name: 'posts_rels_products_fk',
 		}).onDelete('cascade'),
-		productSubCategoriesIdFk: foreignKey({
+		foreignKey({
 			columns: [columns['productSubCategoriesID']],
 			foreignColumns: [product_sub_categories.id],
 			name: 'posts_rels_product_sub_categories_fk',
 		}).onDelete('cascade'),
-		usersIdFk: foreignKey({
+		foreignKey({
 			columns: [columns['usersID']],
 			foreignColumns: [users.id],
 			name: 'posts_rels_users_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const _posts_v_blocks_archive = sqliteTable(
@@ -4222,20 +4037,20 @@ export const _posts_v_blocks_archive = sqliteTable(
 			'collection',
 		),
 		relationTo: text('relation_to', { enum: ['posts'] }).default('posts'),
-		limit: numeric('limit').default('10'),
+		limit: numeric('limit', { mode: 'number' }).default(10),
 		_uuid: text('_uuid'),
 		blockName: text('block_name'),
 	},
-	(columns) => ({
-		_orderIdx: index('_posts_v_blocks_archive_order_idx').on(columns._order),
-		_parentIDIdx: index('_posts_v_blocks_archive_parent_id_idx').on(columns._parentID),
-		_pathIdx: index('_posts_v_blocks_archive_path_idx').on(columns._path),
-		_parentIdFk: foreignKey({
+	(columns) => [
+		index('_posts_v_blocks_archive_order_idx').on(columns._order),
+		index('_posts_v_blocks_archive_parent_id_idx').on(columns._parentID),
+		index('_posts_v_blocks_archive_path_idx').on(columns._path),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [_posts_v.id],
 			name: '_posts_v_blocks_archive_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const _posts_v_blocks_buy_now = sqliteTable(
@@ -4251,19 +4066,17 @@ export const _posts_v_blocks_buy_now = sqliteTable(
 		_uuid: text('_uuid'),
 		blockName: text('block_name'),
 	},
-	(columns) => ({
-		_orderIdx: index('_posts_v_blocks_buy_now_order_idx').on(columns._order),
-		_parentIDIdx: index('_posts_v_blocks_buy_now_parent_id_idx').on(columns._parentID),
-		_pathIdx: index('_posts_v_blocks_buy_now_path_idx').on(columns._path),
-		_posts_v_blocks_buy_now_products_idx: index('_posts_v_blocks_buy_now_products_idx').on(
-			columns.products,
-		),
-		_parentIdFk: foreignKey({
+	(columns) => [
+		index('_posts_v_blocks_buy_now_order_idx').on(columns._order),
+		index('_posts_v_blocks_buy_now_parent_id_idx').on(columns._parentID),
+		index('_posts_v_blocks_buy_now_path_idx').on(columns._path),
+		index('_posts_v_blocks_buy_now_products_idx').on(columns.products),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [_posts_v.id],
 			name: '_posts_v_blocks_buy_now_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const _posts_v_blocks_buy_now_locales = sqliteTable(
@@ -4274,17 +4087,17 @@ export const _posts_v_blocks_buy_now_locales = sqliteTable(
 		_locale: text('_locale', { enum: ['en', 'vi'] }).notNull(),
 		_parentID: integer('_parent_id').notNull(),
 	},
-	(columns) => ({
-		_localeParent: uniqueIndex('_posts_v_blocks_buy_now_locales_locale_parent_id_unique').on(
+	(columns) => [
+		uniqueIndex('_posts_v_blocks_buy_now_locales_locale_parent_id_unique').on(
 			columns._locale,
 			columns._parentID,
 		),
-		_parentIdFk: foreignKey({
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [_posts_v_blocks_buy_now.id],
 			name: '_posts_v_blocks_buy_now_locales_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const _posts_v_blocks_cta_center = sqliteTable(
@@ -4300,19 +4113,17 @@ export const _posts_v_blocks_cta_center = sqliteTable(
 		_uuid: text('_uuid'),
 		blockName: text('block_name'),
 	},
-	(columns) => ({
-		_orderIdx: index('_posts_v_blocks_cta_center_order_idx').on(columns._order),
-		_parentIDIdx: index('_posts_v_blocks_cta_center_parent_id_idx').on(columns._parentID),
-		_pathIdx: index('_posts_v_blocks_cta_center_path_idx').on(columns._path),
-		_posts_v_blocks_cta_center_background_idx: index(
-			'_posts_v_blocks_cta_center_background_idx',
-		).on(columns.background),
-		_parentIdFk: foreignKey({
+	(columns) => [
+		index('_posts_v_blocks_cta_center_order_idx').on(columns._order),
+		index('_posts_v_blocks_cta_center_parent_id_idx').on(columns._parentID),
+		index('_posts_v_blocks_cta_center_path_idx').on(columns._path),
+		index('_posts_v_blocks_cta_center_background_idx').on(columns.background),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [_posts_v.id],
 			name: '_posts_v_blocks_cta_center_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const _posts_v_blocks_cta_center_locales = sqliteTable(
@@ -4329,17 +4140,17 @@ export const _posts_v_blocks_cta_center_locales = sqliteTable(
 		_locale: text('_locale', { enum: ['en', 'vi'] }).notNull(),
 		_parentID: integer('_parent_id').notNull(),
 	},
-	(columns) => ({
-		_localeParent: uniqueIndex('_posts_v_blocks_cta_center_locales_locale_parent_id_unique').on(
+	(columns) => [
+		uniqueIndex('_posts_v_blocks_cta_center_locales_locale_parent_id_unique').on(
 			columns._locale,
 			columns._parentID,
 		),
-		_parentIdFk: foreignKey({
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [_posts_v_blocks_cta_center.id],
 			name: '_posts_v_blocks_cta_center_locales_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const _posts_v_blocks_cta_left = sqliteTable(
@@ -4355,19 +4166,17 @@ export const _posts_v_blocks_cta_left = sqliteTable(
 		_uuid: text('_uuid'),
 		blockName: text('block_name'),
 	},
-	(columns) => ({
-		_orderIdx: index('_posts_v_blocks_cta_left_order_idx').on(columns._order),
-		_parentIDIdx: index('_posts_v_blocks_cta_left_parent_id_idx').on(columns._parentID),
-		_pathIdx: index('_posts_v_blocks_cta_left_path_idx').on(columns._path),
-		_posts_v_blocks_cta_left_background_idx: index(
-			'_posts_v_blocks_cta_left_background_idx',
-		).on(columns.background),
-		_parentIdFk: foreignKey({
+	(columns) => [
+		index('_posts_v_blocks_cta_left_order_idx').on(columns._order),
+		index('_posts_v_blocks_cta_left_parent_id_idx').on(columns._parentID),
+		index('_posts_v_blocks_cta_left_path_idx').on(columns._path),
+		index('_posts_v_blocks_cta_left_background_idx').on(columns.background),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [_posts_v.id],
 			name: '_posts_v_blocks_cta_left_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const _posts_v_blocks_cta_left_locales = sqliteTable(
@@ -4383,17 +4192,17 @@ export const _posts_v_blocks_cta_left_locales = sqliteTable(
 		_locale: text('_locale', { enum: ['en', 'vi'] }).notNull(),
 		_parentID: integer('_parent_id').notNull(),
 	},
-	(columns) => ({
-		_localeParent: uniqueIndex('_posts_v_blocks_cta_left_locales_locale_parent_id_unique').on(
+	(columns) => [
+		uniqueIndex('_posts_v_blocks_cta_left_locales_locale_parent_id_unique').on(
 			columns._locale,
 			columns._parentID,
 		),
-		_parentIdFk: foreignKey({
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [_posts_v_blocks_cta_left.id],
 			name: '_posts_v_blocks_cta_left_locales_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const _posts_v_blocks_cta_right_gallery = sqliteTable(
@@ -4407,20 +4216,16 @@ export const _posts_v_blocks_cta_right_gallery = sqliteTable(
 		}),
 		_uuid: text('_uuid'),
 	},
-	(columns) => ({
-		_orderIdx: index('_posts_v_blocks_cta_right_gallery_order_idx').on(columns._order),
-		_parentIDIdx: index('_posts_v_blocks_cta_right_gallery_parent_id_idx').on(
-			columns._parentID,
-		),
-		_posts_v_blocks_cta_right_gallery_image_idx: index(
-			'_posts_v_blocks_cta_right_gallery_image_idx',
-		).on(columns.image),
-		_parentIDFk: foreignKey({
+	(columns) => [
+		index('_posts_v_blocks_cta_right_gallery_order_idx').on(columns._order),
+		index('_posts_v_blocks_cta_right_gallery_parent_id_idx').on(columns._parentID),
+		index('_posts_v_blocks_cta_right_gallery_image_idx').on(columns.image),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [_posts_v_blocks_cta_right.id],
 			name: '_posts_v_blocks_cta_right_gallery_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const _posts_v_blocks_cta_right_gallery_locales = sqliteTable(
@@ -4431,16 +4236,17 @@ export const _posts_v_blocks_cta_right_gallery_locales = sqliteTable(
 		_locale: text('_locale', { enum: ['en', 'vi'] }).notNull(),
 		_parentID: integer('_parent_id').notNull(),
 	},
-	(columns) => ({
-		_localeParent: uniqueIndex(
-			'_posts_v_blocks_cta_right_gallery_locales_locale_parent_id_unique',
-		).on(columns._locale, columns._parentID),
-		_parentIdFk: foreignKey({
+	(columns) => [
+		uniqueIndex('_posts_v_blocks_cta_right_gallery_locales_locale_parent_id_u').on(
+			columns._locale,
+			columns._parentID,
+		),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [_posts_v_blocks_cta_right_gallery.id],
 			name: '_posts_v_blocks_cta_right_gallery_locales_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const _posts_v_blocks_cta_right = sqliteTable(
@@ -4453,16 +4259,16 @@ export const _posts_v_blocks_cta_right = sqliteTable(
 		_uuid: text('_uuid'),
 		blockName: text('block_name'),
 	},
-	(columns) => ({
-		_orderIdx: index('_posts_v_blocks_cta_right_order_idx').on(columns._order),
-		_parentIDIdx: index('_posts_v_blocks_cta_right_parent_id_idx').on(columns._parentID),
-		_pathIdx: index('_posts_v_blocks_cta_right_path_idx').on(columns._path),
-		_parentIdFk: foreignKey({
+	(columns) => [
+		index('_posts_v_blocks_cta_right_order_idx').on(columns._order),
+		index('_posts_v_blocks_cta_right_parent_id_idx').on(columns._parentID),
+		index('_posts_v_blocks_cta_right_path_idx').on(columns._path),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [_posts_v.id],
 			name: '_posts_v_blocks_cta_right_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const _posts_v_blocks_cta_right_locales = sqliteTable(
@@ -4479,17 +4285,17 @@ export const _posts_v_blocks_cta_right_locales = sqliteTable(
 		_locale: text('_locale', { enum: ['en', 'vi'] }).notNull(),
 		_parentID: integer('_parent_id').notNull(),
 	},
-	(columns) => ({
-		_localeParent: uniqueIndex('_posts_v_blocks_cta_right_locales_locale_parent_id_unique').on(
+	(columns) => [
+		uniqueIndex('_posts_v_blocks_cta_right_locales_locale_parent_id_unique').on(
 			columns._locale,
 			columns._parentID,
 		),
-		_parentIdFk: foreignKey({
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [_posts_v_blocks_cta_right.id],
 			name: '_posts_v_blocks_cta_right_locales_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const _posts_v_blocks_call_to_add_to_cart = sqliteTable(
@@ -4508,24 +4314,18 @@ export const _posts_v_blocks_call_to_add_to_cart = sqliteTable(
 		_uuid: text('_uuid'),
 		blockName: text('block_name'),
 	},
-	(columns) => ({
-		_orderIdx: index('_posts_v_blocks_call_to_add_to_cart_order_idx').on(columns._order),
-		_parentIDIdx: index('_posts_v_blocks_call_to_add_to_cart_parent_id_idx').on(
-			columns._parentID,
-		),
-		_pathIdx: index('_posts_v_blocks_call_to_add_to_cart_path_idx').on(columns._path),
-		_posts_v_blocks_call_to_add_to_cart_image_idx: index(
-			'_posts_v_blocks_call_to_add_to_cart_image_idx',
-		).on(columns.image),
-		_posts_v_blocks_call_to_add_to_cart_products_idx: index(
-			'_posts_v_blocks_call_to_add_to_cart_products_idx',
-		).on(columns.products),
-		_parentIdFk: foreignKey({
+	(columns) => [
+		index('_posts_v_blocks_call_to_add_to_cart_order_idx').on(columns._order),
+		index('_posts_v_blocks_call_to_add_to_cart_parent_id_idx').on(columns._parentID),
+		index('_posts_v_blocks_call_to_add_to_cart_path_idx').on(columns._path),
+		index('_posts_v_blocks_call_to_add_to_cart_image_idx').on(columns.image),
+		index('_posts_v_blocks_call_to_add_to_cart_products_idx').on(columns.products),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [_posts_v.id],
 			name: '_posts_v_blocks_call_to_add_to_cart_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const _posts_v_blocks_call_to_add_to_cart_locales = sqliteTable(
@@ -4537,16 +4337,17 @@ export const _posts_v_blocks_call_to_add_to_cart_locales = sqliteTable(
 		_locale: text('_locale', { enum: ['en', 'vi'] }).notNull(),
 		_parentID: integer('_parent_id').notNull(),
 	},
-	(columns) => ({
-		_localeParent: uniqueIndex(
-			'_posts_v_blocks_call_to_add_to_cart_locales_locale_parent_id_unique',
-		).on(columns._locale, columns._parentID),
-		_parentIdFk: foreignKey({
+	(columns) => [
+		uniqueIndex('_posts_v_blocks_call_to_add_to_cart_locales_locale_parent_id').on(
+			columns._locale,
+			columns._parentID,
+		),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [_posts_v_blocks_call_to_add_to_cart.id],
 			name: '_posts_v_blocks_call_to_add_to_cart_locales_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const _posts_v_blocks_certificates_organizations = sqliteTable(
@@ -4560,20 +4361,16 @@ export const _posts_v_blocks_certificates_organizations = sqliteTable(
 		}),
 		_uuid: text('_uuid'),
 	},
-	(columns) => ({
-		_orderIdx: index('_posts_v_blocks_certificates_organizations_order_idx').on(columns._order),
-		_parentIDIdx: index('_posts_v_blocks_certificates_organizations_parent_id_idx').on(
-			columns._parentID,
-		),
-		_posts_v_blocks_certificates_organizations_logo_idx: index(
-			'_posts_v_blocks_certificates_organizations_logo_idx',
-		).on(columns.logo),
-		_parentIDFk: foreignKey({
+	(columns) => [
+		index('_posts_v_blocks_certificates_organizations_order_idx').on(columns._order),
+		index('_posts_v_blocks_certificates_organizations_parent_id_idx').on(columns._parentID),
+		index('_posts_v_blocks_certificates_organizations_logo_idx').on(columns.logo),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [_posts_v_blocks_certificates.id],
 			name: '_posts_v_blocks_certificates_organizations_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const _posts_v_blocks_certificates_organizations_locales = sqliteTable(
@@ -4585,16 +4382,17 @@ export const _posts_v_blocks_certificates_organizations_locales = sqliteTable(
 		_locale: text('_locale', { enum: ['en', 'vi'] }).notNull(),
 		_parentID: integer('_parent_id').notNull(),
 	},
-	(columns) => ({
-		_localeParent: uniqueIndex(
-			'_posts_v_blocks_certificates_organizations_locales_locale_parent_id_unique',
-		).on(columns._locale, columns._parentID),
-		_parentIdFk: foreignKey({
+	(columns) => [
+		uniqueIndex('_posts_v_blocks_certificates_organizations_locales_locale_pa').on(
+			columns._locale,
+			columns._parentID,
+		),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [_posts_v_blocks_certificates_organizations.id],
-			name: '_posts_v_blocks_certificates_organizations_locales_parent_id_fk',
+			name: '_posts_v_blocks_certificates_organizations_locales_parent_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const _posts_v_blocks_certificates = sqliteTable(
@@ -4607,16 +4405,16 @@ export const _posts_v_blocks_certificates = sqliteTable(
 		_uuid: text('_uuid'),
 		blockName: text('block_name'),
 	},
-	(columns) => ({
-		_orderIdx: index('_posts_v_blocks_certificates_order_idx').on(columns._order),
-		_parentIDIdx: index('_posts_v_blocks_certificates_parent_id_idx').on(columns._parentID),
-		_pathIdx: index('_posts_v_blocks_certificates_path_idx').on(columns._path),
-		_parentIdFk: foreignKey({
+	(columns) => [
+		index('_posts_v_blocks_certificates_order_idx').on(columns._order),
+		index('_posts_v_blocks_certificates_parent_id_idx').on(columns._parentID),
+		index('_posts_v_blocks_certificates_path_idx').on(columns._path),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [_posts_v.id],
 			name: '_posts_v_blocks_certificates_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const _posts_v_blocks_certificates_locales = sqliteTable(
@@ -4627,16 +4425,17 @@ export const _posts_v_blocks_certificates_locales = sqliteTable(
 		_locale: text('_locale', { enum: ['en', 'vi'] }).notNull(),
 		_parentID: integer('_parent_id').notNull(),
 	},
-	(columns) => ({
-		_localeParent: uniqueIndex(
-			'_posts_v_blocks_certificates_locales_locale_parent_id_unique',
-		).on(columns._locale, columns._parentID),
-		_parentIdFk: foreignKey({
+	(columns) => [
+		uniqueIndex('_posts_v_blocks_certificates_locales_locale_parent_id_unique').on(
+			columns._locale,
+			columns._parentID,
+		),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [_posts_v_blocks_certificates.id],
 			name: '_posts_v_blocks_certificates_locales_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const _posts_v_blocks_content_columns = sqliteTable(
@@ -4659,16 +4458,16 @@ export const _posts_v_blocks_content_columns = sqliteTable(
 		link_label: text('link_label'),
 		_uuid: text('_uuid'),
 	},
-	(columns) => ({
-		_orderIdx: index('_posts_v_blocks_content_columns_order_idx').on(columns._order),
-		_parentIDIdx: index('_posts_v_blocks_content_columns_parent_id_idx').on(columns._parentID),
-		_localeIdx: index('_posts_v_blocks_content_columns_locale_idx').on(columns._locale),
-		_parentIDFk: foreignKey({
+	(columns) => [
+		index('_posts_v_blocks_content_columns_order_idx').on(columns._order),
+		index('_posts_v_blocks_content_columns_parent_id_idx').on(columns._parentID),
+		index('_posts_v_blocks_content_columns_locale_idx').on(columns._locale),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [_posts_v_blocks_content.id],
 			name: '_posts_v_blocks_content_columns_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const _posts_v_blocks_content = sqliteTable(
@@ -4681,16 +4480,16 @@ export const _posts_v_blocks_content = sqliteTable(
 		_uuid: text('_uuid'),
 		blockName: text('block_name'),
 	},
-	(columns) => ({
-		_orderIdx: index('_posts_v_blocks_content_order_idx').on(columns._order),
-		_parentIDIdx: index('_posts_v_blocks_content_parent_id_idx').on(columns._parentID),
-		_pathIdx: index('_posts_v_blocks_content_path_idx').on(columns._path),
-		_parentIdFk: foreignKey({
+	(columns) => [
+		index('_posts_v_blocks_content_order_idx').on(columns._order),
+		index('_posts_v_blocks_content_parent_id_idx').on(columns._parentID),
+		index('_posts_v_blocks_content_path_idx').on(columns._path),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [_posts_v.id],
 			name: '_posts_v_blocks_content_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const _posts_v_blocks_focus_left_small_image = sqliteTable(
@@ -4706,21 +4505,17 @@ export const _posts_v_blocks_focus_left_small_image = sqliteTable(
 		_uuid: text('_uuid'),
 		blockName: text('block_name'),
 	},
-	(columns) => ({
-		_orderIdx: index('_posts_v_blocks_focus_left_small_image_order_idx').on(columns._order),
-		_parentIDIdx: index('_posts_v_blocks_focus_left_small_image_parent_id_idx').on(
-			columns._parentID,
-		),
-		_pathIdx: index('_posts_v_blocks_focus_left_small_image_path_idx').on(columns._path),
-		_posts_v_blocks_focus_left_small_image_image_idx: index(
-			'_posts_v_blocks_focus_left_small_image_image_idx',
-		).on(columns.image),
-		_parentIdFk: foreignKey({
+	(columns) => [
+		index('_posts_v_blocks_focus_left_small_image_order_idx').on(columns._order),
+		index('_posts_v_blocks_focus_left_small_image_parent_id_idx').on(columns._parentID),
+		index('_posts_v_blocks_focus_left_small_image_path_idx').on(columns._path),
+		index('_posts_v_blocks_focus_left_small_image_image_idx').on(columns.image),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [_posts_v.id],
 			name: '_posts_v_blocks_focus_left_small_image_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const _posts_v_blocks_focus_left_small_image_locales = sqliteTable(
@@ -4731,16 +4526,17 @@ export const _posts_v_blocks_focus_left_small_image_locales = sqliteTable(
 		_locale: text('_locale', { enum: ['en', 'vi'] }).notNull(),
 		_parentID: integer('_parent_id').notNull(),
 	},
-	(columns) => ({
-		_localeParent: uniqueIndex(
-			'_posts_v_blocks_focus_left_small_image_locales_locale_parent_id_unique',
-		).on(columns._locale, columns._parentID),
-		_parentIdFk: foreignKey({
+	(columns) => [
+		uniqueIndex('_posts_v_blocks_focus_left_small_image_locales_locale_parent').on(
+			columns._locale,
+			columns._parentID,
+		),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [_posts_v_blocks_focus_left_small_image.id],
 			name: '_posts_v_blocks_focus_left_small_image_locales_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const _posts_v_blocks_focus_right_large_image = sqliteTable(
@@ -4756,21 +4552,17 @@ export const _posts_v_blocks_focus_right_large_image = sqliteTable(
 		_uuid: text('_uuid'),
 		blockName: text('block_name'),
 	},
-	(columns) => ({
-		_orderIdx: index('_posts_v_blocks_focus_right_large_image_order_idx').on(columns._order),
-		_parentIDIdx: index('_posts_v_blocks_focus_right_large_image_parent_id_idx').on(
-			columns._parentID,
-		),
-		_pathIdx: index('_posts_v_blocks_focus_right_large_image_path_idx').on(columns._path),
-		_posts_v_blocks_focus_right_large_image_image_idx: index(
-			'_posts_v_blocks_focus_right_large_image_image_idx',
-		).on(columns.image),
-		_parentIdFk: foreignKey({
+	(columns) => [
+		index('_posts_v_blocks_focus_right_large_image_order_idx').on(columns._order),
+		index('_posts_v_blocks_focus_right_large_image_parent_id_idx').on(columns._parentID),
+		index('_posts_v_blocks_focus_right_large_image_path_idx').on(columns._path),
+		index('_posts_v_blocks_focus_right_large_image_image_idx').on(columns.image),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [_posts_v.id],
 			name: '_posts_v_blocks_focus_right_large_image_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const _posts_v_blocks_focus_right_large_image_locales = sqliteTable(
@@ -4781,16 +4573,17 @@ export const _posts_v_blocks_focus_right_large_image_locales = sqliteTable(
 		_locale: text('_locale', { enum: ['en', 'vi'] }).notNull(),
 		_parentID: integer('_parent_id').notNull(),
 	},
-	(columns) => ({
-		_localeParent: uniqueIndex(
-			'_posts_v_blocks_focus_right_large_image_locales_locale_parent_id_unique',
-		).on(columns._locale, columns._parentID),
-		_parentIdFk: foreignKey({
+	(columns) => [
+		uniqueIndex('_posts_v_blocks_focus_right_large_image_locales_locale_paren').on(
+			columns._locale,
+			columns._parentID,
+		),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [_posts_v_blocks_focus_right_large_image.id],
 			name: '_posts_v_blocks_focus_right_large_image_locales_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const _posts_v_blocks_focus_right_small_image = sqliteTable(
@@ -4806,21 +4599,17 @@ export const _posts_v_blocks_focus_right_small_image = sqliteTable(
 		_uuid: text('_uuid'),
 		blockName: text('block_name'),
 	},
-	(columns) => ({
-		_orderIdx: index('_posts_v_blocks_focus_right_small_image_order_idx').on(columns._order),
-		_parentIDIdx: index('_posts_v_blocks_focus_right_small_image_parent_id_idx').on(
-			columns._parentID,
-		),
-		_pathIdx: index('_posts_v_blocks_focus_right_small_image_path_idx').on(columns._path),
-		_posts_v_blocks_focus_right_small_image_image_idx: index(
-			'_posts_v_blocks_focus_right_small_image_image_idx',
-		).on(columns.image),
-		_parentIdFk: foreignKey({
+	(columns) => [
+		index('_posts_v_blocks_focus_right_small_image_order_idx').on(columns._order),
+		index('_posts_v_blocks_focus_right_small_image_parent_id_idx').on(columns._parentID),
+		index('_posts_v_blocks_focus_right_small_image_path_idx').on(columns._path),
+		index('_posts_v_blocks_focus_right_small_image_image_idx').on(columns.image),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [_posts_v.id],
 			name: '_posts_v_blocks_focus_right_small_image_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const _posts_v_blocks_focus_right_small_image_locales = sqliteTable(
@@ -4831,16 +4620,17 @@ export const _posts_v_blocks_focus_right_small_image_locales = sqliteTable(
 		_locale: text('_locale', { enum: ['en', 'vi'] }).notNull(),
 		_parentID: integer('_parent_id').notNull(),
 	},
-	(columns) => ({
-		_localeParent: uniqueIndex(
-			'_posts_v_blocks_focus_right_small_image_locales_locale_parent_id_unique',
-		).on(columns._locale, columns._parentID),
-		_parentIdFk: foreignKey({
+	(columns) => [
+		uniqueIndex('_posts_v_blocks_focus_right_small_image_locales_locale_paren').on(
+			columns._locale,
+			columns._parentID,
+		),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [_posts_v_blocks_focus_right_small_image.id],
 			name: '_posts_v_blocks_focus_right_small_image_locales_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const _posts_v_blocks_form_block = sqliteTable(
@@ -4858,19 +4648,17 @@ export const _posts_v_blocks_form_block = sqliteTable(
 		_uuid: text('_uuid'),
 		blockName: text('block_name'),
 	},
-	(columns) => ({
-		_orderIdx: index('_posts_v_blocks_form_block_order_idx').on(columns._order),
-		_parentIDIdx: index('_posts_v_blocks_form_block_parent_id_idx').on(columns._parentID),
-		_pathIdx: index('_posts_v_blocks_form_block_path_idx').on(columns._path),
-		_posts_v_blocks_form_block_form_idx: index('_posts_v_blocks_form_block_form_idx').on(
-			columns.form,
-		),
-		_parentIdFk: foreignKey({
+	(columns) => [
+		index('_posts_v_blocks_form_block_order_idx').on(columns._order),
+		index('_posts_v_blocks_form_block_parent_id_idx').on(columns._parentID),
+		index('_posts_v_blocks_form_block_path_idx').on(columns._path),
+		index('_posts_v_blocks_form_block_form_idx').on(columns.form),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [_posts_v.id],
 			name: '_posts_v_blocks_form_block_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const _posts_v_blocks_highlight_right = sqliteTable(
@@ -4880,26 +4668,24 @@ export const _posts_v_blocks_highlight_right = sqliteTable(
 		_parentID: integer('_parent_id').notNull(),
 		_path: text('_path').notNull(),
 		id: integer('id').primaryKey(),
-		order: numeric('order'),
+		order: numeric('order', { mode: 'number' }),
 		image: integer('image_id').references(() => media.id, {
 			onDelete: 'set null',
 		}),
 		_uuid: text('_uuid'),
 		blockName: text('block_name'),
 	},
-	(columns) => ({
-		_orderIdx: index('_posts_v_blocks_highlight_right_order_idx').on(columns._order),
-		_parentIDIdx: index('_posts_v_blocks_highlight_right_parent_id_idx').on(columns._parentID),
-		_pathIdx: index('_posts_v_blocks_highlight_right_path_idx').on(columns._path),
-		_posts_v_blocks_highlight_right_image_idx: index(
-			'_posts_v_blocks_highlight_right_image_idx',
-		).on(columns.image),
-		_parentIdFk: foreignKey({
+	(columns) => [
+		index('_posts_v_blocks_highlight_right_order_idx').on(columns._order),
+		index('_posts_v_blocks_highlight_right_parent_id_idx').on(columns._parentID),
+		index('_posts_v_blocks_highlight_right_path_idx').on(columns._path),
+		index('_posts_v_blocks_highlight_right_image_idx').on(columns.image),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [_posts_v.id],
 			name: '_posts_v_blocks_highlight_right_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const _posts_v_blocks_highlight_right_locales = sqliteTable(
@@ -4911,16 +4697,17 @@ export const _posts_v_blocks_highlight_right_locales = sqliteTable(
 		_locale: text('_locale', { enum: ['en', 'vi'] }).notNull(),
 		_parentID: integer('_parent_id').notNull(),
 	},
-	(columns) => ({
-		_localeParent: uniqueIndex(
-			'_posts_v_blocks_highlight_right_locales_locale_parent_id_unique',
-		).on(columns._locale, columns._parentID),
-		_parentIdFk: foreignKey({
+	(columns) => [
+		uniqueIndex('_posts_v_blocks_highlight_right_locales_locale_parent_id_uni').on(
+			columns._locale,
+			columns._parentID,
+		),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [_posts_v_blocks_highlight_right.id],
 			name: '_posts_v_blocks_highlight_right_locales_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const _posts_v_blocks_highlight_center = sqliteTable(
@@ -4930,26 +4717,24 @@ export const _posts_v_blocks_highlight_center = sqliteTable(
 		_parentID: integer('_parent_id').notNull(),
 		_path: text('_path').notNull(),
 		id: integer('id').primaryKey(),
-		order: numeric('order'),
+		order: numeric('order', { mode: 'number' }),
 		image: integer('image_id').references(() => media.id, {
 			onDelete: 'set null',
 		}),
 		_uuid: text('_uuid'),
 		blockName: text('block_name'),
 	},
-	(columns) => ({
-		_orderIdx: index('_posts_v_blocks_highlight_center_order_idx').on(columns._order),
-		_parentIDIdx: index('_posts_v_blocks_highlight_center_parent_id_idx').on(columns._parentID),
-		_pathIdx: index('_posts_v_blocks_highlight_center_path_idx').on(columns._path),
-		_posts_v_blocks_highlight_center_image_idx: index(
-			'_posts_v_blocks_highlight_center_image_idx',
-		).on(columns.image),
-		_parentIdFk: foreignKey({
+	(columns) => [
+		index('_posts_v_blocks_highlight_center_order_idx').on(columns._order),
+		index('_posts_v_blocks_highlight_center_parent_id_idx').on(columns._parentID),
+		index('_posts_v_blocks_highlight_center_path_idx').on(columns._path),
+		index('_posts_v_blocks_highlight_center_image_idx').on(columns.image),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [_posts_v.id],
 			name: '_posts_v_blocks_highlight_center_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const _posts_v_blocks_highlight_center_locales = sqliteTable(
@@ -4961,16 +4746,17 @@ export const _posts_v_blocks_highlight_center_locales = sqliteTable(
 		_locale: text('_locale', { enum: ['en', 'vi'] }).notNull(),
 		_parentID: integer('_parent_id').notNull(),
 	},
-	(columns) => ({
-		_localeParent: uniqueIndex(
-			'_posts_v_blocks_highlight_center_locales_locale_parent_id_unique',
-		).on(columns._locale, columns._parentID),
-		_parentIdFk: foreignKey({
+	(columns) => [
+		uniqueIndex('_posts_v_blocks_highlight_center_locales_locale_parent_id_un').on(
+			columns._locale,
+			columns._parentID,
+		),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [_posts_v_blocks_highlight_center.id],
 			name: '_posts_v_blocks_highlight_center_locales_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const _posts_v_blocks_highlight_left = sqliteTable(
@@ -4980,26 +4766,24 @@ export const _posts_v_blocks_highlight_left = sqliteTable(
 		_parentID: integer('_parent_id').notNull(),
 		_path: text('_path').notNull(),
 		id: integer('id').primaryKey(),
-		order: numeric('order'),
+		order: numeric('order', { mode: 'number' }),
 		image: integer('image_id').references(() => media.id, {
 			onDelete: 'set null',
 		}),
 		_uuid: text('_uuid'),
 		blockName: text('block_name'),
 	},
-	(columns) => ({
-		_orderIdx: index('_posts_v_blocks_highlight_left_order_idx').on(columns._order),
-		_parentIDIdx: index('_posts_v_blocks_highlight_left_parent_id_idx').on(columns._parentID),
-		_pathIdx: index('_posts_v_blocks_highlight_left_path_idx').on(columns._path),
-		_posts_v_blocks_highlight_left_image_idx: index(
-			'_posts_v_blocks_highlight_left_image_idx',
-		).on(columns.image),
-		_parentIdFk: foreignKey({
+	(columns) => [
+		index('_posts_v_blocks_highlight_left_order_idx').on(columns._order),
+		index('_posts_v_blocks_highlight_left_parent_id_idx').on(columns._parentID),
+		index('_posts_v_blocks_highlight_left_path_idx').on(columns._path),
+		index('_posts_v_blocks_highlight_left_image_idx').on(columns.image),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [_posts_v.id],
 			name: '_posts_v_blocks_highlight_left_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const _posts_v_blocks_highlight_left_locales = sqliteTable(
@@ -5011,16 +4795,17 @@ export const _posts_v_blocks_highlight_left_locales = sqliteTable(
 		_locale: text('_locale', { enum: ['en', 'vi'] }).notNull(),
 		_parentID: integer('_parent_id').notNull(),
 	},
-	(columns) => ({
-		_localeParent: uniqueIndex(
-			'_posts_v_blocks_highlight_left_locales_locale_parent_id_unique',
-		).on(columns._locale, columns._parentID),
-		_parentIdFk: foreignKey({
+	(columns) => [
+		uniqueIndex('_posts_v_blocks_highlight_left_locales_locale_parent_id_uniq').on(
+			columns._locale,
+			columns._parentID,
+		),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [_posts_v_blocks_highlight_left.id],
 			name: '_posts_v_blocks_highlight_left_locales_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const _posts_v_blocks_infinite_scroll = sqliteTable(
@@ -5033,16 +4818,16 @@ export const _posts_v_blocks_infinite_scroll = sqliteTable(
 		_uuid: text('_uuid'),
 		blockName: text('block_name'),
 	},
-	(columns) => ({
-		_orderIdx: index('_posts_v_blocks_infinite_scroll_order_idx').on(columns._order),
-		_parentIDIdx: index('_posts_v_blocks_infinite_scroll_parent_id_idx').on(columns._parentID),
-		_pathIdx: index('_posts_v_blocks_infinite_scroll_path_idx').on(columns._path),
-		_parentIdFk: foreignKey({
+	(columns) => [
+		index('_posts_v_blocks_infinite_scroll_order_idx').on(columns._order),
+		index('_posts_v_blocks_infinite_scroll_parent_id_idx').on(columns._parentID),
+		index('_posts_v_blocks_infinite_scroll_path_idx').on(columns._path),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [_posts_v.id],
 			name: '_posts_v_blocks_infinite_scroll_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const _posts_v_blocks_infinite_scroll_locales = sqliteTable(
@@ -5051,24 +4836,23 @@ export const _posts_v_blocks_infinite_scroll_locales = sqliteTable(
 		graphic: integer('graphic_id').references(() => media.id, {
 			onDelete: 'set null',
 		}),
-		animationDuration: numeric('animation_duration').default('10'),
+		animationDuration: numeric('animation_duration', { mode: 'number' }).default(10),
 		id: integer('id').primaryKey(),
 		_locale: text('_locale', { enum: ['en', 'vi'] }).notNull(),
 		_parentID: integer('_parent_id').notNull(),
 	},
-	(columns) => ({
-		_posts_v_blocks_infinite_scroll_graphic_idx: index(
-			'_posts_v_blocks_infinite_scroll_graphic_idx',
-		).on(columns.graphic, columns._locale),
-		_localeParent: uniqueIndex(
-			'_posts_v_blocks_infinite_scroll_locales_locale_parent_id_unique',
-		).on(columns._locale, columns._parentID),
-		_parentIdFk: foreignKey({
+	(columns) => [
+		index('_posts_v_blocks_infinite_scroll_graphic_idx').on(columns.graphic, columns._locale),
+		uniqueIndex('_posts_v_blocks_infinite_scroll_locales_locale_parent_id_uni').on(
+			columns._locale,
+			columns._parentID,
+		),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [_posts_v_blocks_infinite_scroll.id],
 			name: '_posts_v_blocks_infinite_scroll_locales_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const _posts_v_blocks_media = sqliteTable(
@@ -5084,17 +4868,17 @@ export const _posts_v_blocks_media = sqliteTable(
 		_uuid: text('_uuid'),
 		blockName: text('block_name'),
 	},
-	(columns) => ({
-		_orderIdx: index('_posts_v_blocks_media_order_idx').on(columns._order),
-		_parentIDIdx: index('_posts_v_blocks_media_parent_id_idx').on(columns._parentID),
-		_pathIdx: index('_posts_v_blocks_media_path_idx').on(columns._path),
-		_posts_v_blocks_media_media_idx: index('_posts_v_blocks_media_media_idx').on(columns.media),
-		_parentIdFk: foreignKey({
+	(columns) => [
+		index('_posts_v_blocks_media_order_idx').on(columns._order),
+		index('_posts_v_blocks_media_parent_id_idx').on(columns._parentID),
+		index('_posts_v_blocks_media_path_idx').on(columns._path),
+		index('_posts_v_blocks_media_media_idx').on(columns.media),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [_posts_v.id],
 			name: '_posts_v_blocks_media_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const _posts_v_blocks_products_carousel = sqliteTable(
@@ -5107,18 +4891,16 @@ export const _posts_v_blocks_products_carousel = sqliteTable(
 		_uuid: text('_uuid'),
 		blockName: text('block_name'),
 	},
-	(columns) => ({
-		_orderIdx: index('_posts_v_blocks_products_carousel_order_idx').on(columns._order),
-		_parentIDIdx: index('_posts_v_blocks_products_carousel_parent_id_idx').on(
-			columns._parentID,
-		),
-		_pathIdx: index('_posts_v_blocks_products_carousel_path_idx').on(columns._path),
-		_parentIdFk: foreignKey({
+	(columns) => [
+		index('_posts_v_blocks_products_carousel_order_idx').on(columns._order),
+		index('_posts_v_blocks_products_carousel_parent_id_idx').on(columns._parentID),
+		index('_posts_v_blocks_products_carousel_path_idx').on(columns._path),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [_posts_v.id],
 			name: '_posts_v_blocks_products_carousel_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const _posts_v_blocks_products_carousel_locales = sqliteTable(
@@ -5134,16 +4916,17 @@ export const _posts_v_blocks_products_carousel_locales = sqliteTable(
 		_locale: text('_locale', { enum: ['en', 'vi'] }).notNull(),
 		_parentID: integer('_parent_id').notNull(),
 	},
-	(columns) => ({
-		_localeParent: uniqueIndex(
-			'_posts_v_blocks_products_carousel_locales_locale_parent_id_unique',
-		).on(columns._locale, columns._parentID),
-		_parentIdFk: foreignKey({
+	(columns) => [
+		uniqueIndex('_posts_v_blocks_products_carousel_locales_locale_parent_id_u').on(
+			columns._locale,
+			columns._parentID,
+		),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [_posts_v_blocks_products_carousel.id],
 			name: '_posts_v_blocks_products_carousel_locales_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const _posts_v_blocks_products_category = sqliteTable(
@@ -5156,18 +4939,16 @@ export const _posts_v_blocks_products_category = sqliteTable(
 		_uuid: text('_uuid'),
 		blockName: text('block_name'),
 	},
-	(columns) => ({
-		_orderIdx: index('_posts_v_blocks_products_category_order_idx').on(columns._order),
-		_parentIDIdx: index('_posts_v_blocks_products_category_parent_id_idx').on(
-			columns._parentID,
-		),
-		_pathIdx: index('_posts_v_blocks_products_category_path_idx').on(columns._path),
-		_parentIdFk: foreignKey({
+	(columns) => [
+		index('_posts_v_blocks_products_category_order_idx').on(columns._order),
+		index('_posts_v_blocks_products_category_parent_id_idx').on(columns._parentID),
+		index('_posts_v_blocks_products_category_path_idx').on(columns._path),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [_posts_v.id],
 			name: '_posts_v_blocks_products_category_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const _posts_v_blocks_products_category_locales = sqliteTable(
@@ -5178,16 +4959,17 @@ export const _posts_v_blocks_products_category_locales = sqliteTable(
 		_locale: text('_locale', { enum: ['en', 'vi'] }).notNull(),
 		_parentID: integer('_parent_id').notNull(),
 	},
-	(columns) => ({
-		_localeParent: uniqueIndex(
-			'_posts_v_blocks_products_category_locales_locale_parent_id_unique',
-		).on(columns._locale, columns._parentID),
-		_parentIdFk: foreignKey({
+	(columns) => [
+		uniqueIndex('_posts_v_blocks_products_category_locales_locale_parent_id_u').on(
+			columns._locale,
+			columns._parentID,
+		),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [_posts_v_blocks_products_category.id],
 			name: '_posts_v_blocks_products_category_locales_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const _posts_v_blocks_three_photo = sqliteTable(
@@ -5209,25 +4991,19 @@ export const _posts_v_blocks_three_photo = sqliteTable(
 		_uuid: text('_uuid'),
 		blockName: text('block_name'),
 	},
-	(columns) => ({
-		_orderIdx: index('_posts_v_blocks_three_photo_order_idx').on(columns._order),
-		_parentIDIdx: index('_posts_v_blocks_three_photo_parent_id_idx').on(columns._parentID),
-		_pathIdx: index('_posts_v_blocks_three_photo_path_idx').on(columns._path),
-		_posts_v_blocks_three_photo_photo_left_idx: index(
-			'_posts_v_blocks_three_photo_photo_left_idx',
-		).on(columns.photoLeft),
-		_posts_v_blocks_three_photo_photo_center_idx: index(
-			'_posts_v_blocks_three_photo_photo_center_idx',
-		).on(columns.photoCenter),
-		_posts_v_blocks_three_photo_photo_right_idx: index(
-			'_posts_v_blocks_three_photo_photo_right_idx',
-		).on(columns.photoRight),
-		_parentIdFk: foreignKey({
+	(columns) => [
+		index('_posts_v_blocks_three_photo_order_idx').on(columns._order),
+		index('_posts_v_blocks_three_photo_parent_id_idx').on(columns._parentID),
+		index('_posts_v_blocks_three_photo_path_idx').on(columns._path),
+		index('_posts_v_blocks_three_photo_photo_left_idx').on(columns.photoLeft),
+		index('_posts_v_blocks_three_photo_photo_center_idx').on(columns.photoCenter),
+		index('_posts_v_blocks_three_photo_photo_right_idx').on(columns.photoRight),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [_posts_v.id],
 			name: '_posts_v_blocks_three_photo_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const _posts_v_blocks_video_embed = sqliteTable(
@@ -5241,16 +5017,16 @@ export const _posts_v_blocks_video_embed = sqliteTable(
 		_uuid: text('_uuid'),
 		blockName: text('block_name'),
 	},
-	(columns) => ({
-		_orderIdx: index('_posts_v_blocks_video_embed_order_idx').on(columns._order),
-		_parentIDIdx: index('_posts_v_blocks_video_embed_parent_id_idx').on(columns._parentID),
-		_pathIdx: index('_posts_v_blocks_video_embed_path_idx').on(columns._path),
-		_parentIdFk: foreignKey({
+	(columns) => [
+		index('_posts_v_blocks_video_embed_order_idx').on(columns._order),
+		index('_posts_v_blocks_video_embed_parent_id_idx').on(columns._parentID),
+		index('_posts_v_blocks_video_embed_path_idx').on(columns._path),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [_posts_v.id],
 			name: '_posts_v_blocks_video_embed_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const _posts_v_version_populated_authors = sqliteTable(
@@ -5262,17 +5038,15 @@ export const _posts_v_version_populated_authors = sqliteTable(
 		_uuid: text('_uuid'),
 		name: text('name'),
 	},
-	(columns) => ({
-		_orderIdx: index('_posts_v_version_populated_authors_order_idx').on(columns._order),
-		_parentIDIdx: index('_posts_v_version_populated_authors_parent_id_idx').on(
-			columns._parentID,
-		),
-		_parentIDFk: foreignKey({
+	(columns) => [
+		index('_posts_v_version_populated_authors_order_idx').on(columns._order),
+		index('_posts_v_version_populated_authors_parent_id_idx').on(columns._parentID),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [_posts_v.id],
 			name: '_posts_v_version_populated_authors_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const _posts_v = sqliteTable(
@@ -5308,29 +5082,19 @@ export const _posts_v = sqliteTable(
 		latest: integer('latest', { mode: 'boolean' }),
 		autosave: integer('autosave', { mode: 'boolean' }),
 	},
-	(columns) => ({
-		_posts_v_parent_idx: index('_posts_v_parent_idx').on(columns.parent),
-		_posts_v_version_version_slug_idx: index('_posts_v_version_version_slug_idx').on(
-			columns.version_slug,
-		),
-		_posts_v_version_version_updated_at_idx: index(
-			'_posts_v_version_version_updated_at_idx',
-		).on(columns.version_updatedAt),
-		_posts_v_version_version_created_at_idx: index(
-			'_posts_v_version_version_created_at_idx',
-		).on(columns.version_createdAt),
-		_posts_v_version_version__status_idx: index('_posts_v_version_version__status_idx').on(
-			columns.version__status,
-		),
-		_posts_v_created_at_idx: index('_posts_v_created_at_idx').on(columns.createdAt),
-		_posts_v_updated_at_idx: index('_posts_v_updated_at_idx').on(columns.updatedAt),
-		_posts_v_snapshot_idx: index('_posts_v_snapshot_idx').on(columns.snapshot),
-		_posts_v_published_locale_idx: index('_posts_v_published_locale_idx').on(
-			columns.publishedLocale,
-		),
-		_posts_v_latest_idx: index('_posts_v_latest_idx').on(columns.latest),
-		_posts_v_autosave_idx: index('_posts_v_autosave_idx').on(columns.autosave),
-	}),
+	(columns) => [
+		index('_posts_v_parent_idx').on(columns.parent),
+		index('_posts_v_version_version_slug_idx').on(columns.version_slug),
+		index('_posts_v_version_version_updated_at_idx').on(columns.version_updatedAt),
+		index('_posts_v_version_version_created_at_idx').on(columns.version_createdAt),
+		index('_posts_v_version_version__status_idx').on(columns.version__status),
+		index('_posts_v_created_at_idx').on(columns.createdAt),
+		index('_posts_v_updated_at_idx').on(columns.updatedAt),
+		index('_posts_v_snapshot_idx').on(columns.snapshot),
+		index('_posts_v_published_locale_idx').on(columns.publishedLocale),
+		index('_posts_v_latest_idx').on(columns.latest),
+		index('_posts_v_autosave_idx').on(columns.autosave),
+	],
 )
 
 export const _posts_v_locales = sqliteTable(
@@ -5346,20 +5110,21 @@ export const _posts_v_locales = sqliteTable(
 		_locale: text('_locale', { enum: ['en', 'vi'] }).notNull(),
 		_parentID: integer('_parent_id').notNull(),
 	},
-	(columns) => ({
-		_posts_v_version_meta_meta_version_meta_meta_image_idx: index(
-			'_posts_v_version_meta_meta_version_meta_meta_image_idx',
-		).on(columns.version_meta_meta_image, columns._locale),
-		_localeParent: uniqueIndex('_posts_v_locales_locale_parent_id_unique').on(
+	(columns) => [
+		index('_posts_v_version_meta_meta_version_meta_meta_image_idx').on(
+			columns.version_meta_meta_image,
+			columns._locale,
+		),
+		uniqueIndex('_posts_v_locales_locale_parent_id_unique').on(
 			columns._locale,
 			columns._parentID,
 		),
-		_parentIdFk: foreignKey({
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [_posts_v.id],
 			name: '_posts_v_locales_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const _posts_v_rels = sqliteTable(
@@ -5378,78 +5143,65 @@ export const _posts_v_rels = sqliteTable(
 		productSubCategoriesID: integer('product_sub_categories_id'),
 		usersID: integer('users_id'),
 	},
-	(columns) => ({
-		order: index('_posts_v_rels_order_idx').on(columns.order),
-		parentIdx: index('_posts_v_rels_parent_idx').on(columns.parent),
-		pathIdx: index('_posts_v_rels_path_idx').on(columns.path),
-		localeIdx: index('_posts_v_rels_locale_idx').on(columns.locale),
-		_posts_v_rels_post_categories_id_idx: index('_posts_v_rels_post_categories_id_idx').on(
-			columns.postCategoriesID,
+	(columns) => [
+		index('_posts_v_rels_order_idx').on(columns.order),
+		index('_posts_v_rels_parent_idx').on(columns.parent),
+		index('_posts_v_rels_path_idx').on(columns.path),
+		index('_posts_v_rels_locale_idx').on(columns.locale),
+		index('_posts_v_rels_post_categories_id_idx').on(columns.postCategoriesID, columns.locale),
+		index('_posts_v_rels_posts_id_idx').on(columns.postsID, columns.locale),
+		index('_posts_v_rels_pages_id_idx').on(columns.pagesID, columns.locale),
+		index('_posts_v_rels_product_categories_id_idx').on(
+			columns.productCategoriesID,
 			columns.locale,
 		),
-		_posts_v_rels_posts_id_idx: index('_posts_v_rels_posts_id_idx').on(
-			columns.postsID,
+		index('_posts_v_rels_products_id_idx').on(columns.productsID, columns.locale),
+		index('_posts_v_rels_product_sub_categories_id_idx').on(
+			columns.productSubCategoriesID,
 			columns.locale,
 		),
-		_posts_v_rels_pages_id_idx: index('_posts_v_rels_pages_id_idx').on(
-			columns.pagesID,
-			columns.locale,
-		),
-		_posts_v_rels_product_categories_id_idx: index(
-			'_posts_v_rels_product_categories_id_idx',
-		).on(columns.productCategoriesID, columns.locale),
-		_posts_v_rels_products_id_idx: index('_posts_v_rels_products_id_idx').on(
-			columns.productsID,
-			columns.locale,
-		),
-		_posts_v_rels_product_sub_categories_id_idx: index(
-			'_posts_v_rels_product_sub_categories_id_idx',
-		).on(columns.productSubCategoriesID, columns.locale),
-		_posts_v_rels_users_id_idx: index('_posts_v_rels_users_id_idx').on(
-			columns.usersID,
-			columns.locale,
-		),
-		parentFk: foreignKey({
+		index('_posts_v_rels_users_id_idx').on(columns.usersID, columns.locale),
+		foreignKey({
 			columns: [columns['parent']],
 			foreignColumns: [_posts_v.id],
 			name: '_posts_v_rels_parent_fk',
 		}).onDelete('cascade'),
-		postCategoriesIdFk: foreignKey({
+		foreignKey({
 			columns: [columns['postCategoriesID']],
 			foreignColumns: [post_categories.id],
 			name: '_posts_v_rels_post_categories_fk',
 		}).onDelete('cascade'),
-		postsIdFk: foreignKey({
+		foreignKey({
 			columns: [columns['postsID']],
 			foreignColumns: [posts.id],
 			name: '_posts_v_rels_posts_fk',
 		}).onDelete('cascade'),
-		pagesIdFk: foreignKey({
+		foreignKey({
 			columns: [columns['pagesID']],
 			foreignColumns: [pages.id],
 			name: '_posts_v_rels_pages_fk',
 		}).onDelete('cascade'),
-		productCategoriesIdFk: foreignKey({
+		foreignKey({
 			columns: [columns['productCategoriesID']],
 			foreignColumns: [product_categories.id],
 			name: '_posts_v_rels_product_categories_fk',
 		}).onDelete('cascade'),
-		productsIdFk: foreignKey({
+		foreignKey({
 			columns: [columns['productsID']],
 			foreignColumns: [products.id],
 			name: '_posts_v_rels_products_fk',
 		}).onDelete('cascade'),
-		productSubCategoriesIdFk: foreignKey({
+		foreignKey({
 			columns: [columns['productSubCategoriesID']],
 			foreignColumns: [product_sub_categories.id],
 			name: '_posts_v_rels_product_sub_categories_fk',
 		}).onDelete('cascade'),
-		usersIdFk: foreignKey({
+		foreignKey({
 			columns: [columns['usersID']],
 			foreignColumns: [users.id],
 			name: '_posts_v_rels_users_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const product_categories = sqliteTable(
@@ -5466,15 +5218,11 @@ export const product_categories = sqliteTable(
 			.notNull()
 			.default(sql`(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))`),
 	},
-	(columns) => ({
-		product_categories_slug_idx: index('product_categories_slug_idx').on(columns.slug),
-		product_categories_updated_at_idx: index('product_categories_updated_at_idx').on(
-			columns.updatedAt,
-		),
-		product_categories_created_at_idx: index('product_categories_created_at_idx').on(
-			columns.createdAt,
-		),
-	}),
+	(columns) => [
+		index('product_categories_slug_idx').on(columns.slug),
+		index('product_categories_updated_at_idx').on(columns.updatedAt),
+		index('product_categories_created_at_idx').on(columns.createdAt),
+	],
 )
 
 export const product_categories_locales = sqliteTable(
@@ -5485,17 +5233,17 @@ export const product_categories_locales = sqliteTable(
 		_locale: text('_locale', { enum: ['en', 'vi'] }).notNull(),
 		_parentID: integer('_parent_id').notNull(),
 	},
-	(columns) => ({
-		_localeParent: uniqueIndex('product_categories_locales_locale_parent_id_unique').on(
+	(columns) => [
+		uniqueIndex('product_categories_locales_locale_parent_id_unique').on(
 			columns._locale,
 			columns._parentID,
 		),
-		_parentIdFk: foreignKey({
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [product_categories.id],
 			name: 'product_categories_locales_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const products_variants = sqliteTable(
@@ -5505,23 +5253,23 @@ export const products_variants = sqliteTable(
 		_parentID: integer('_parent_id').notNull(),
 		id: text('id').primaryKey(),
 		sku: text('sku').notNull(),
-		stock: numeric('stock').notNull(),
-		price: numeric('price').notNull(),
+		stock: numeric('stock', { mode: 'number' }).notNull(),
+		price: numeric('price', { mode: 'number' }).notNull(),
 		defaultVariant: integer('default_variant', { mode: 'boolean' }),
 		image: integer('image_id').references(() => media.id, {
 			onDelete: 'set null',
 		}),
 	},
-	(columns) => ({
-		_orderIdx: index('products_variants_order_idx').on(columns._order),
-		_parentIDIdx: index('products_variants_parent_id_idx').on(columns._parentID),
-		products_variants_image_idx: index('products_variants_image_idx').on(columns.image),
-		_parentIDFk: foreignKey({
+	(columns) => [
+		index('products_variants_order_idx').on(columns._order),
+		index('products_variants_parent_id_idx').on(columns._parentID),
+		index('products_variants_image_idx').on(columns.image),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [products.id],
 			name: 'products_variants_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const products_variants_locales = sqliteTable(
@@ -5532,17 +5280,17 @@ export const products_variants_locales = sqliteTable(
 		_locale: text('_locale', { enum: ['en', 'vi'] }).notNull(),
 		_parentID: text('_parent_id').notNull(),
 	},
-	(columns) => ({
-		_localeParent: uniqueIndex('products_variants_locales_locale_parent_id_unique').on(
+	(columns) => [
+		uniqueIndex('products_variants_locales_locale_parent_id_unique').on(
 			columns._locale,
 			columns._parentID,
 		),
-		_parentIdFk: foreignKey({
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [products_variants.id],
 			name: 'products_variants_locales_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const products_blocks_archive = sqliteTable(
@@ -5557,19 +5305,19 @@ export const products_blocks_archive = sqliteTable(
 			'collection',
 		),
 		relationTo: text('relation_to', { enum: ['posts'] }).default('posts'),
-		limit: numeric('limit').default('10'),
+		limit: numeric('limit', { mode: 'number' }).default(10),
 		blockName: text('block_name'),
 	},
-	(columns) => ({
-		_orderIdx: index('products_blocks_archive_order_idx').on(columns._order),
-		_parentIDIdx: index('products_blocks_archive_parent_id_idx').on(columns._parentID),
-		_pathIdx: index('products_blocks_archive_path_idx').on(columns._path),
-		_parentIdFk: foreignKey({
+	(columns) => [
+		index('products_blocks_archive_order_idx').on(columns._order),
+		index('products_blocks_archive_parent_id_idx').on(columns._parentID),
+		index('products_blocks_archive_path_idx').on(columns._path),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [products.id],
 			name: 'products_blocks_archive_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const products_blocks_buy_now = sqliteTable(
@@ -5584,19 +5332,17 @@ export const products_blocks_buy_now = sqliteTable(
 		}),
 		blockName: text('block_name'),
 	},
-	(columns) => ({
-		_orderIdx: index('products_blocks_buy_now_order_idx').on(columns._order),
-		_parentIDIdx: index('products_blocks_buy_now_parent_id_idx').on(columns._parentID),
-		_pathIdx: index('products_blocks_buy_now_path_idx').on(columns._path),
-		products_blocks_buy_now_products_idx: index('products_blocks_buy_now_products_idx').on(
-			columns.products,
-		),
-		_parentIdFk: foreignKey({
+	(columns) => [
+		index('products_blocks_buy_now_order_idx').on(columns._order),
+		index('products_blocks_buy_now_parent_id_idx').on(columns._parentID),
+		index('products_blocks_buy_now_path_idx').on(columns._path),
+		index('products_blocks_buy_now_products_idx').on(columns.products),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [products.id],
 			name: 'products_blocks_buy_now_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const products_blocks_buy_now_locales = sqliteTable(
@@ -5607,17 +5353,17 @@ export const products_blocks_buy_now_locales = sqliteTable(
 		_locale: text('_locale', { enum: ['en', 'vi'] }).notNull(),
 		_parentID: text('_parent_id').notNull(),
 	},
-	(columns) => ({
-		_localeParent: uniqueIndex('products_blocks_buy_now_locales_locale_parent_id_unique').on(
+	(columns) => [
+		uniqueIndex('products_blocks_buy_now_locales_locale_parent_id_unique').on(
 			columns._locale,
 			columns._parentID,
 		),
-		_parentIdFk: foreignKey({
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [products_blocks_buy_now.id],
 			name: 'products_blocks_buy_now_locales_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const products_blocks_cta_center = sqliteTable(
@@ -5632,19 +5378,17 @@ export const products_blocks_cta_center = sqliteTable(
 		}),
 		blockName: text('block_name'),
 	},
-	(columns) => ({
-		_orderIdx: index('products_blocks_cta_center_order_idx').on(columns._order),
-		_parentIDIdx: index('products_blocks_cta_center_parent_id_idx').on(columns._parentID),
-		_pathIdx: index('products_blocks_cta_center_path_idx').on(columns._path),
-		products_blocks_cta_center_background_idx: index(
-			'products_blocks_cta_center_background_idx',
-		).on(columns.background),
-		_parentIdFk: foreignKey({
+	(columns) => [
+		index('products_blocks_cta_center_order_idx').on(columns._order),
+		index('products_blocks_cta_center_parent_id_idx').on(columns._parentID),
+		index('products_blocks_cta_center_path_idx').on(columns._path),
+		index('products_blocks_cta_center_background_idx').on(columns.background),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [products.id],
 			name: 'products_blocks_cta_center_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const products_blocks_cta_center_locales = sqliteTable(
@@ -5661,17 +5405,17 @@ export const products_blocks_cta_center_locales = sqliteTable(
 		_locale: text('_locale', { enum: ['en', 'vi'] }).notNull(),
 		_parentID: text('_parent_id').notNull(),
 	},
-	(columns) => ({
-		_localeParent: uniqueIndex('products_blocks_cta_center_locales_locale_parent_id_unique').on(
+	(columns) => [
+		uniqueIndex('products_blocks_cta_center_locales_locale_parent_id_unique').on(
 			columns._locale,
 			columns._parentID,
 		),
-		_parentIdFk: foreignKey({
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [products_blocks_cta_center.id],
 			name: 'products_blocks_cta_center_locales_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const products_blocks_cta_left = sqliteTable(
@@ -5686,19 +5430,17 @@ export const products_blocks_cta_left = sqliteTable(
 		}),
 		blockName: text('block_name'),
 	},
-	(columns) => ({
-		_orderIdx: index('products_blocks_cta_left_order_idx').on(columns._order),
-		_parentIDIdx: index('products_blocks_cta_left_parent_id_idx').on(columns._parentID),
-		_pathIdx: index('products_blocks_cta_left_path_idx').on(columns._path),
-		products_blocks_cta_left_background_idx: index(
-			'products_blocks_cta_left_background_idx',
-		).on(columns.background),
-		_parentIdFk: foreignKey({
+	(columns) => [
+		index('products_blocks_cta_left_order_idx').on(columns._order),
+		index('products_blocks_cta_left_parent_id_idx').on(columns._parentID),
+		index('products_blocks_cta_left_path_idx').on(columns._path),
+		index('products_blocks_cta_left_background_idx').on(columns.background),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [products.id],
 			name: 'products_blocks_cta_left_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const products_blocks_cta_left_locales = sqliteTable(
@@ -5714,17 +5456,17 @@ export const products_blocks_cta_left_locales = sqliteTable(
 		_locale: text('_locale', { enum: ['en', 'vi'] }).notNull(),
 		_parentID: text('_parent_id').notNull(),
 	},
-	(columns) => ({
-		_localeParent: uniqueIndex('products_blocks_cta_left_locales_locale_parent_id_unique').on(
+	(columns) => [
+		uniqueIndex('products_blocks_cta_left_locales_locale_parent_id_unique').on(
 			columns._locale,
 			columns._parentID,
 		),
-		_parentIdFk: foreignKey({
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [products_blocks_cta_left.id],
 			name: 'products_blocks_cta_left_locales_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const products_blocks_cta_right_gallery = sqliteTable(
@@ -5737,20 +5479,16 @@ export const products_blocks_cta_right_gallery = sqliteTable(
 			onDelete: 'set null',
 		}),
 	},
-	(columns) => ({
-		_orderIdx: index('products_blocks_cta_right_gallery_order_idx').on(columns._order),
-		_parentIDIdx: index('products_blocks_cta_right_gallery_parent_id_idx').on(
-			columns._parentID,
-		),
-		products_blocks_cta_right_gallery_image_idx: index(
-			'products_blocks_cta_right_gallery_image_idx',
-		).on(columns.image),
-		_parentIDFk: foreignKey({
+	(columns) => [
+		index('products_blocks_cta_right_gallery_order_idx').on(columns._order),
+		index('products_blocks_cta_right_gallery_parent_id_idx').on(columns._parentID),
+		index('products_blocks_cta_right_gallery_image_idx').on(columns.image),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [products_blocks_cta_right.id],
 			name: 'products_blocks_cta_right_gallery_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const products_blocks_cta_right_gallery_locales = sqliteTable(
@@ -5761,16 +5499,17 @@ export const products_blocks_cta_right_gallery_locales = sqliteTable(
 		_locale: text('_locale', { enum: ['en', 'vi'] }).notNull(),
 		_parentID: text('_parent_id').notNull(),
 	},
-	(columns) => ({
-		_localeParent: uniqueIndex(
-			'products_blocks_cta_right_gallery_locales_locale_parent_id_unique',
-		).on(columns._locale, columns._parentID),
-		_parentIdFk: foreignKey({
+	(columns) => [
+		uniqueIndex('products_blocks_cta_right_gallery_locales_locale_parent_id_u').on(
+			columns._locale,
+			columns._parentID,
+		),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [products_blocks_cta_right_gallery.id],
 			name: 'products_blocks_cta_right_gallery_locales_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const products_blocks_cta_right = sqliteTable(
@@ -5782,16 +5521,16 @@ export const products_blocks_cta_right = sqliteTable(
 		id: text('id').primaryKey(),
 		blockName: text('block_name'),
 	},
-	(columns) => ({
-		_orderIdx: index('products_blocks_cta_right_order_idx').on(columns._order),
-		_parentIDIdx: index('products_blocks_cta_right_parent_id_idx').on(columns._parentID),
-		_pathIdx: index('products_blocks_cta_right_path_idx').on(columns._path),
-		_parentIdFk: foreignKey({
+	(columns) => [
+		index('products_blocks_cta_right_order_idx').on(columns._order),
+		index('products_blocks_cta_right_parent_id_idx').on(columns._parentID),
+		index('products_blocks_cta_right_path_idx').on(columns._path),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [products.id],
 			name: 'products_blocks_cta_right_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const products_blocks_cta_right_locales = sqliteTable(
@@ -5808,17 +5547,17 @@ export const products_blocks_cta_right_locales = sqliteTable(
 		_locale: text('_locale', { enum: ['en', 'vi'] }).notNull(),
 		_parentID: text('_parent_id').notNull(),
 	},
-	(columns) => ({
-		_localeParent: uniqueIndex('products_blocks_cta_right_locales_locale_parent_id_unique').on(
+	(columns) => [
+		uniqueIndex('products_blocks_cta_right_locales_locale_parent_id_unique').on(
 			columns._locale,
 			columns._parentID,
 		),
-		_parentIdFk: foreignKey({
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [products_blocks_cta_right.id],
 			name: 'products_blocks_cta_right_locales_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const products_blocks_call_to_add_to_cart = sqliteTable(
@@ -5836,24 +5575,18 @@ export const products_blocks_call_to_add_to_cart = sqliteTable(
 		}),
 		blockName: text('block_name'),
 	},
-	(columns) => ({
-		_orderIdx: index('products_blocks_call_to_add_to_cart_order_idx').on(columns._order),
-		_parentIDIdx: index('products_blocks_call_to_add_to_cart_parent_id_idx').on(
-			columns._parentID,
-		),
-		_pathIdx: index('products_blocks_call_to_add_to_cart_path_idx').on(columns._path),
-		products_blocks_call_to_add_to_cart_image_idx: index(
-			'products_blocks_call_to_add_to_cart_image_idx',
-		).on(columns.image),
-		products_blocks_call_to_add_to_cart_products_idx: index(
-			'products_blocks_call_to_add_to_cart_products_idx',
-		).on(columns.products),
-		_parentIdFk: foreignKey({
+	(columns) => [
+		index('products_blocks_call_to_add_to_cart_order_idx').on(columns._order),
+		index('products_blocks_call_to_add_to_cart_parent_id_idx').on(columns._parentID),
+		index('products_blocks_call_to_add_to_cart_path_idx').on(columns._path),
+		index('products_blocks_call_to_add_to_cart_image_idx').on(columns.image),
+		index('products_blocks_call_to_add_to_cart_products_idx').on(columns.products),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [products.id],
 			name: 'products_blocks_call_to_add_to_cart_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const products_blocks_call_to_add_to_cart_locales = sqliteTable(
@@ -5865,16 +5598,17 @@ export const products_blocks_call_to_add_to_cart_locales = sqliteTable(
 		_locale: text('_locale', { enum: ['en', 'vi'] }).notNull(),
 		_parentID: text('_parent_id').notNull(),
 	},
-	(columns) => ({
-		_localeParent: uniqueIndex(
-			'products_blocks_call_to_add_to_cart_locales_locale_parent_id_unique',
-		).on(columns._locale, columns._parentID),
-		_parentIdFk: foreignKey({
+	(columns) => [
+		uniqueIndex('products_blocks_call_to_add_to_cart_locales_locale_parent_id').on(
+			columns._locale,
+			columns._parentID,
+		),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [products_blocks_call_to_add_to_cart.id],
 			name: 'products_blocks_call_to_add_to_cart_locales_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const products_blocks_certificates_organizations = sqliteTable(
@@ -5887,20 +5621,16 @@ export const products_blocks_certificates_organizations = sqliteTable(
 			onDelete: 'set null',
 		}),
 	},
-	(columns) => ({
-		_orderIdx: index('products_blocks_certificates_organizations_order_idx').on(columns._order),
-		_parentIDIdx: index('products_blocks_certificates_organizations_parent_id_idx').on(
-			columns._parentID,
-		),
-		products_blocks_certificates_organizations_logo_idx: index(
-			'products_blocks_certificates_organizations_logo_idx',
-		).on(columns.logo),
-		_parentIDFk: foreignKey({
+	(columns) => [
+		index('products_blocks_certificates_organizations_order_idx').on(columns._order),
+		index('products_blocks_certificates_organizations_parent_id_idx').on(columns._parentID),
+		index('products_blocks_certificates_organizations_logo_idx').on(columns.logo),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [products_blocks_certificates.id],
 			name: 'products_blocks_certificates_organizations_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const products_blocks_certificates_organizations_locales = sqliteTable(
@@ -5912,16 +5642,17 @@ export const products_blocks_certificates_organizations_locales = sqliteTable(
 		_locale: text('_locale', { enum: ['en', 'vi'] }).notNull(),
 		_parentID: text('_parent_id').notNull(),
 	},
-	(columns) => ({
-		_localeParent: uniqueIndex(
-			'products_blocks_certificates_organizations_locales_locale_parent_id_unique',
-		).on(columns._locale, columns._parentID),
-		_parentIdFk: foreignKey({
+	(columns) => [
+		uniqueIndex('products_blocks_certificates_organizations_locales_locale_pa').on(
+			columns._locale,
+			columns._parentID,
+		),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [products_blocks_certificates_organizations.id],
-			name: 'products_blocks_certificates_organizations_locales_parent_id_fk',
+			name: 'products_blocks_certificates_organizations_locales_parent_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const products_blocks_certificates = sqliteTable(
@@ -5933,16 +5664,16 @@ export const products_blocks_certificates = sqliteTable(
 		id: text('id').primaryKey(),
 		blockName: text('block_name'),
 	},
-	(columns) => ({
-		_orderIdx: index('products_blocks_certificates_order_idx').on(columns._order),
-		_parentIDIdx: index('products_blocks_certificates_parent_id_idx').on(columns._parentID),
-		_pathIdx: index('products_blocks_certificates_path_idx').on(columns._path),
-		_parentIdFk: foreignKey({
+	(columns) => [
+		index('products_blocks_certificates_order_idx').on(columns._order),
+		index('products_blocks_certificates_parent_id_idx').on(columns._parentID),
+		index('products_blocks_certificates_path_idx').on(columns._path),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [products.id],
 			name: 'products_blocks_certificates_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const products_blocks_certificates_locales = sqliteTable(
@@ -5953,16 +5684,17 @@ export const products_blocks_certificates_locales = sqliteTable(
 		_locale: text('_locale', { enum: ['en', 'vi'] }).notNull(),
 		_parentID: text('_parent_id').notNull(),
 	},
-	(columns) => ({
-		_localeParent: uniqueIndex(
-			'products_blocks_certificates_locales_locale_parent_id_unique',
-		).on(columns._locale, columns._parentID),
-		_parentIdFk: foreignKey({
+	(columns) => [
+		uniqueIndex('products_blocks_certificates_locales_locale_parent_id_unique').on(
+			columns._locale,
+			columns._parentID,
+		),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [products_blocks_certificates.id],
 			name: 'products_blocks_certificates_locales_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const products_blocks_content_columns = sqliteTable(
@@ -5984,16 +5716,16 @@ export const products_blocks_content_columns = sqliteTable(
 		link_url: text('link_url'),
 		link_label: text('link_label'),
 	},
-	(columns) => ({
-		_orderIdx: index('products_blocks_content_columns_order_idx').on(columns._order),
-		_parentIDIdx: index('products_blocks_content_columns_parent_id_idx').on(columns._parentID),
-		_localeIdx: index('products_blocks_content_columns_locale_idx').on(columns._locale),
-		_parentIDFk: foreignKey({
+	(columns) => [
+		index('products_blocks_content_columns_order_idx').on(columns._order),
+		index('products_blocks_content_columns_parent_id_idx').on(columns._parentID),
+		index('products_blocks_content_columns_locale_idx').on(columns._locale),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [products_blocks_content.id],
 			name: 'products_blocks_content_columns_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const products_blocks_content = sqliteTable(
@@ -6005,16 +5737,16 @@ export const products_blocks_content = sqliteTable(
 		id: text('id').primaryKey(),
 		blockName: text('block_name'),
 	},
-	(columns) => ({
-		_orderIdx: index('products_blocks_content_order_idx').on(columns._order),
-		_parentIDIdx: index('products_blocks_content_parent_id_idx').on(columns._parentID),
-		_pathIdx: index('products_blocks_content_path_idx').on(columns._path),
-		_parentIdFk: foreignKey({
+	(columns) => [
+		index('products_blocks_content_order_idx').on(columns._order),
+		index('products_blocks_content_parent_id_idx').on(columns._parentID),
+		index('products_blocks_content_path_idx').on(columns._path),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [products.id],
 			name: 'products_blocks_content_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const products_blocks_form_block = sqliteTable(
@@ -6033,19 +5765,17 @@ export const products_blocks_form_block = sqliteTable(
 		introContent: text('intro_content', { mode: 'json' }),
 		blockName: text('block_name'),
 	},
-	(columns) => ({
-		_orderIdx: index('products_blocks_form_block_order_idx').on(columns._order),
-		_parentIDIdx: index('products_blocks_form_block_parent_id_idx').on(columns._parentID),
-		_pathIdx: index('products_blocks_form_block_path_idx').on(columns._path),
-		products_blocks_form_block_form_idx: index('products_blocks_form_block_form_idx').on(
-			columns.form,
-		),
-		_parentIdFk: foreignKey({
+	(columns) => [
+		index('products_blocks_form_block_order_idx').on(columns._order),
+		index('products_blocks_form_block_parent_id_idx').on(columns._parentID),
+		index('products_blocks_form_block_path_idx').on(columns._path),
+		index('products_blocks_form_block_form_idx').on(columns.form),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [products.id],
 			name: 'products_blocks_form_block_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const products_blocks_highlight_right = sqliteTable(
@@ -6055,25 +5785,23 @@ export const products_blocks_highlight_right = sqliteTable(
 		_parentID: integer('_parent_id').notNull(),
 		_path: text('_path').notNull(),
 		id: text('id').primaryKey(),
-		order: numeric('order').notNull(),
+		order: numeric('order', { mode: 'number' }).notNull(),
 		image: integer('image_id').references(() => media.id, {
 			onDelete: 'set null',
 		}),
 		blockName: text('block_name'),
 	},
-	(columns) => ({
-		_orderIdx: index('products_blocks_highlight_right_order_idx').on(columns._order),
-		_parentIDIdx: index('products_blocks_highlight_right_parent_id_idx').on(columns._parentID),
-		_pathIdx: index('products_blocks_highlight_right_path_idx').on(columns._path),
-		products_blocks_highlight_right_image_idx: index(
-			'products_blocks_highlight_right_image_idx',
-		).on(columns.image),
-		_parentIdFk: foreignKey({
+	(columns) => [
+		index('products_blocks_highlight_right_order_idx').on(columns._order),
+		index('products_blocks_highlight_right_parent_id_idx').on(columns._parentID),
+		index('products_blocks_highlight_right_path_idx').on(columns._path),
+		index('products_blocks_highlight_right_image_idx').on(columns.image),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [products.id],
 			name: 'products_blocks_highlight_right_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const products_blocks_highlight_right_locales = sqliteTable(
@@ -6085,16 +5813,17 @@ export const products_blocks_highlight_right_locales = sqliteTable(
 		_locale: text('_locale', { enum: ['en', 'vi'] }).notNull(),
 		_parentID: text('_parent_id').notNull(),
 	},
-	(columns) => ({
-		_localeParent: uniqueIndex(
-			'products_blocks_highlight_right_locales_locale_parent_id_unique',
-		).on(columns._locale, columns._parentID),
-		_parentIdFk: foreignKey({
+	(columns) => [
+		uniqueIndex('products_blocks_highlight_right_locales_locale_parent_id_uni').on(
+			columns._locale,
+			columns._parentID,
+		),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [products_blocks_highlight_right.id],
 			name: 'products_blocks_highlight_right_locales_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const products_blocks_highlight_center = sqliteTable(
@@ -6104,25 +5833,23 @@ export const products_blocks_highlight_center = sqliteTable(
 		_parentID: integer('_parent_id').notNull(),
 		_path: text('_path').notNull(),
 		id: text('id').primaryKey(),
-		order: numeric('order').notNull(),
+		order: numeric('order', { mode: 'number' }).notNull(),
 		image: integer('image_id').references(() => media.id, {
 			onDelete: 'set null',
 		}),
 		blockName: text('block_name'),
 	},
-	(columns) => ({
-		_orderIdx: index('products_blocks_highlight_center_order_idx').on(columns._order),
-		_parentIDIdx: index('products_blocks_highlight_center_parent_id_idx').on(columns._parentID),
-		_pathIdx: index('products_blocks_highlight_center_path_idx').on(columns._path),
-		products_blocks_highlight_center_image_idx: index(
-			'products_blocks_highlight_center_image_idx',
-		).on(columns.image),
-		_parentIdFk: foreignKey({
+	(columns) => [
+		index('products_blocks_highlight_center_order_idx').on(columns._order),
+		index('products_blocks_highlight_center_parent_id_idx').on(columns._parentID),
+		index('products_blocks_highlight_center_path_idx').on(columns._path),
+		index('products_blocks_highlight_center_image_idx').on(columns.image),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [products.id],
 			name: 'products_blocks_highlight_center_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const products_blocks_highlight_center_locales = sqliteTable(
@@ -6134,16 +5861,17 @@ export const products_blocks_highlight_center_locales = sqliteTable(
 		_locale: text('_locale', { enum: ['en', 'vi'] }).notNull(),
 		_parentID: text('_parent_id').notNull(),
 	},
-	(columns) => ({
-		_localeParent: uniqueIndex(
-			'products_blocks_highlight_center_locales_locale_parent_id_unique',
-		).on(columns._locale, columns._parentID),
-		_parentIdFk: foreignKey({
+	(columns) => [
+		uniqueIndex('products_blocks_highlight_center_locales_locale_parent_id_un').on(
+			columns._locale,
+			columns._parentID,
+		),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [products_blocks_highlight_center.id],
 			name: 'products_blocks_highlight_center_locales_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const products_blocks_highlight_left = sqliteTable(
@@ -6153,25 +5881,23 @@ export const products_blocks_highlight_left = sqliteTable(
 		_parentID: integer('_parent_id').notNull(),
 		_path: text('_path').notNull(),
 		id: text('id').primaryKey(),
-		order: numeric('order').notNull(),
+		order: numeric('order', { mode: 'number' }).notNull(),
 		image: integer('image_id').references(() => media.id, {
 			onDelete: 'set null',
 		}),
 		blockName: text('block_name'),
 	},
-	(columns) => ({
-		_orderIdx: index('products_blocks_highlight_left_order_idx').on(columns._order),
-		_parentIDIdx: index('products_blocks_highlight_left_parent_id_idx').on(columns._parentID),
-		_pathIdx: index('products_blocks_highlight_left_path_idx').on(columns._path),
-		products_blocks_highlight_left_image_idx: index(
-			'products_blocks_highlight_left_image_idx',
-		).on(columns.image),
-		_parentIdFk: foreignKey({
+	(columns) => [
+		index('products_blocks_highlight_left_order_idx').on(columns._order),
+		index('products_blocks_highlight_left_parent_id_idx').on(columns._parentID),
+		index('products_blocks_highlight_left_path_idx').on(columns._path),
+		index('products_blocks_highlight_left_image_idx').on(columns.image),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [products.id],
 			name: 'products_blocks_highlight_left_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const products_blocks_highlight_left_locales = sqliteTable(
@@ -6183,16 +5909,17 @@ export const products_blocks_highlight_left_locales = sqliteTable(
 		_locale: text('_locale', { enum: ['en', 'vi'] }).notNull(),
 		_parentID: text('_parent_id').notNull(),
 	},
-	(columns) => ({
-		_localeParent: uniqueIndex(
-			'products_blocks_highlight_left_locales_locale_parent_id_unique',
-		).on(columns._locale, columns._parentID),
-		_parentIdFk: foreignKey({
+	(columns) => [
+		uniqueIndex('products_blocks_highlight_left_locales_locale_parent_id_uniq').on(
+			columns._locale,
+			columns._parentID,
+		),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [products_blocks_highlight_left.id],
 			name: 'products_blocks_highlight_left_locales_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const products_blocks_how_to_use_product = sqliteTable(
@@ -6210,24 +5937,18 @@ export const products_blocks_how_to_use_product = sqliteTable(
 		}),
 		blockName: text('block_name'),
 	},
-	(columns) => ({
-		_orderIdx: index('products_blocks_how_to_use_product_order_idx').on(columns._order),
-		_parentIDIdx: index('products_blocks_how_to_use_product_parent_id_idx').on(
-			columns._parentID,
-		),
-		_pathIdx: index('products_blocks_how_to_use_product_path_idx').on(columns._path),
-		products_blocks_how_to_use_product_image_idx: index(
-			'products_blocks_how_to_use_product_image_idx',
-		).on(columns.image),
-		products_blocks_how_to_use_product_products_idx: index(
-			'products_blocks_how_to_use_product_products_idx',
-		).on(columns.products),
-		_parentIdFk: foreignKey({
+	(columns) => [
+		index('products_blocks_how_to_use_product_order_idx').on(columns._order),
+		index('products_blocks_how_to_use_product_parent_id_idx').on(columns._parentID),
+		index('products_blocks_how_to_use_product_path_idx').on(columns._path),
+		index('products_blocks_how_to_use_product_image_idx').on(columns.image),
+		index('products_blocks_how_to_use_product_products_idx').on(columns.products),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [products.id],
 			name: 'products_blocks_how_to_use_product_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const products_blocks_how_to_use_product_locales = sqliteTable(
@@ -6240,16 +5961,17 @@ export const products_blocks_how_to_use_product_locales = sqliteTable(
 		_locale: text('_locale', { enum: ['en', 'vi'] }).notNull(),
 		_parentID: text('_parent_id').notNull(),
 	},
-	(columns) => ({
-		_localeParent: uniqueIndex(
-			'products_blocks_how_to_use_product_locales_locale_parent_id_unique',
-		).on(columns._locale, columns._parentID),
-		_parentIdFk: foreignKey({
+	(columns) => [
+		uniqueIndex('products_blocks_how_to_use_product_locales_locale_parent_id_').on(
+			columns._locale,
+			columns._parentID,
+		),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [products_blocks_how_to_use_product.id],
 			name: 'products_blocks_how_to_use_product_locales_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const products_blocks_infinite_scroll = sqliteTable(
@@ -6261,16 +5983,16 @@ export const products_blocks_infinite_scroll = sqliteTable(
 		id: text('id').primaryKey(),
 		blockName: text('block_name'),
 	},
-	(columns) => ({
-		_orderIdx: index('products_blocks_infinite_scroll_order_idx').on(columns._order),
-		_parentIDIdx: index('products_blocks_infinite_scroll_parent_id_idx').on(columns._parentID),
-		_pathIdx: index('products_blocks_infinite_scroll_path_idx').on(columns._path),
-		_parentIdFk: foreignKey({
+	(columns) => [
+		index('products_blocks_infinite_scroll_order_idx').on(columns._order),
+		index('products_blocks_infinite_scroll_parent_id_idx').on(columns._parentID),
+		index('products_blocks_infinite_scroll_path_idx').on(columns._path),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [products.id],
 			name: 'products_blocks_infinite_scroll_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const products_blocks_infinite_scroll_locales = sqliteTable(
@@ -6279,24 +6001,23 @@ export const products_blocks_infinite_scroll_locales = sqliteTable(
 		graphic: integer('graphic_id').references(() => media.id, {
 			onDelete: 'set null',
 		}),
-		animationDuration: numeric('animation_duration').default('10'),
+		animationDuration: numeric('animation_duration', { mode: 'number' }).default(10),
 		id: integer('id').primaryKey(),
 		_locale: text('_locale', { enum: ['en', 'vi'] }).notNull(),
 		_parentID: text('_parent_id').notNull(),
 	},
-	(columns) => ({
-		products_blocks_infinite_scroll_graphic_idx: index(
-			'products_blocks_infinite_scroll_graphic_idx',
-		).on(columns.graphic, columns._locale),
-		_localeParent: uniqueIndex(
-			'products_blocks_infinite_scroll_locales_locale_parent_id_unique',
-		).on(columns._locale, columns._parentID),
-		_parentIdFk: foreignKey({
+	(columns) => [
+		index('products_blocks_infinite_scroll_graphic_idx').on(columns.graphic, columns._locale),
+		uniqueIndex('products_blocks_infinite_scroll_locales_locale_parent_id_uni').on(
+			columns._locale,
+			columns._parentID,
+		),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [products_blocks_infinite_scroll.id],
 			name: 'products_blocks_infinite_scroll_locales_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const products_blocks_latest_posts = sqliteTable(
@@ -6308,16 +6029,16 @@ export const products_blocks_latest_posts = sqliteTable(
 		id: text('id').primaryKey(),
 		blockName: text('block_name'),
 	},
-	(columns) => ({
-		_orderIdx: index('products_blocks_latest_posts_order_idx').on(columns._order),
-		_parentIDIdx: index('products_blocks_latest_posts_parent_id_idx').on(columns._parentID),
-		_pathIdx: index('products_blocks_latest_posts_path_idx').on(columns._path),
-		_parentIdFk: foreignKey({
+	(columns) => [
+		index('products_blocks_latest_posts_order_idx').on(columns._order),
+		index('products_blocks_latest_posts_parent_id_idx').on(columns._parentID),
+		index('products_blocks_latest_posts_path_idx').on(columns._path),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [products.id],
 			name: 'products_blocks_latest_posts_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const products_blocks_latest_posts_locales = sqliteTable(
@@ -6329,16 +6050,17 @@ export const products_blocks_latest_posts_locales = sqliteTable(
 		_locale: text('_locale', { enum: ['en', 'vi'] }).notNull(),
 		_parentID: text('_parent_id').notNull(),
 	},
-	(columns) => ({
-		_localeParent: uniqueIndex(
-			'products_blocks_latest_posts_locales_locale_parent_id_unique',
-		).on(columns._locale, columns._parentID),
-		_parentIdFk: foreignKey({
+	(columns) => [
+		uniqueIndex('products_blocks_latest_posts_locales_locale_parent_id_unique').on(
+			columns._locale,
+			columns._parentID,
+		),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [products_blocks_latest_posts.id],
 			name: 'products_blocks_latest_posts_locales_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const products_blocks_media = sqliteTable(
@@ -6355,17 +6077,17 @@ export const products_blocks_media = sqliteTable(
 			}),
 		blockName: text('block_name'),
 	},
-	(columns) => ({
-		_orderIdx: index('products_blocks_media_order_idx').on(columns._order),
-		_parentIDIdx: index('products_blocks_media_parent_id_idx').on(columns._parentID),
-		_pathIdx: index('products_blocks_media_path_idx').on(columns._path),
-		products_blocks_media_media_idx: index('products_blocks_media_media_idx').on(columns.media),
-		_parentIdFk: foreignKey({
+	(columns) => [
+		index('products_blocks_media_order_idx').on(columns._order),
+		index('products_blocks_media_parent_id_idx').on(columns._parentID),
+		index('products_blocks_media_path_idx').on(columns._path),
+		index('products_blocks_media_media_idx').on(columns.media),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [products.id],
 			name: 'products_blocks_media_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const products_blocks_products_carousel = sqliteTable(
@@ -6377,18 +6099,16 @@ export const products_blocks_products_carousel = sqliteTable(
 		id: text('id').primaryKey(),
 		blockName: text('block_name'),
 	},
-	(columns) => ({
-		_orderIdx: index('products_blocks_products_carousel_order_idx').on(columns._order),
-		_parentIDIdx: index('products_blocks_products_carousel_parent_id_idx').on(
-			columns._parentID,
-		),
-		_pathIdx: index('products_blocks_products_carousel_path_idx').on(columns._path),
-		_parentIdFk: foreignKey({
+	(columns) => [
+		index('products_blocks_products_carousel_order_idx').on(columns._order),
+		index('products_blocks_products_carousel_parent_id_idx').on(columns._parentID),
+		index('products_blocks_products_carousel_path_idx').on(columns._path),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [products.id],
 			name: 'products_blocks_products_carousel_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const products_blocks_products_carousel_locales = sqliteTable(
@@ -6404,16 +6124,17 @@ export const products_blocks_products_carousel_locales = sqliteTable(
 		_locale: text('_locale', { enum: ['en', 'vi'] }).notNull(),
 		_parentID: text('_parent_id').notNull(),
 	},
-	(columns) => ({
-		_localeParent: uniqueIndex(
-			'products_blocks_products_carousel_locales_locale_parent_id_unique',
-		).on(columns._locale, columns._parentID),
-		_parentIdFk: foreignKey({
+	(columns) => [
+		uniqueIndex('products_blocks_products_carousel_locales_locale_parent_id_u').on(
+			columns._locale,
+			columns._parentID,
+		),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [products_blocks_products_carousel.id],
 			name: 'products_blocks_products_carousel_locales_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const products_blocks_three_photo = sqliteTable(
@@ -6434,25 +6155,19 @@ export const products_blocks_three_photo = sqliteTable(
 		}),
 		blockName: text('block_name'),
 	},
-	(columns) => ({
-		_orderIdx: index('products_blocks_three_photo_order_idx').on(columns._order),
-		_parentIDIdx: index('products_blocks_three_photo_parent_id_idx').on(columns._parentID),
-		_pathIdx: index('products_blocks_three_photo_path_idx').on(columns._path),
-		products_blocks_three_photo_photo_left_idx: index(
-			'products_blocks_three_photo_photo_left_idx',
-		).on(columns.photoLeft),
-		products_blocks_three_photo_photo_center_idx: index(
-			'products_blocks_three_photo_photo_center_idx',
-		).on(columns.photoCenter),
-		products_blocks_three_photo_photo_right_idx: index(
-			'products_blocks_three_photo_photo_right_idx',
-		).on(columns.photoRight),
-		_parentIdFk: foreignKey({
+	(columns) => [
+		index('products_blocks_three_photo_order_idx').on(columns._order),
+		index('products_blocks_three_photo_parent_id_idx').on(columns._parentID),
+		index('products_blocks_three_photo_path_idx').on(columns._path),
+		index('products_blocks_three_photo_photo_left_idx').on(columns.photoLeft),
+		index('products_blocks_three_photo_photo_center_idx').on(columns.photoCenter),
+		index('products_blocks_three_photo_photo_right_idx').on(columns.photoRight),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [products.id],
 			name: 'products_blocks_three_photo_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const products_blocks_video_embed = sqliteTable(
@@ -6465,16 +6180,16 @@ export const products_blocks_video_embed = sqliteTable(
 		videoUrl: text('video_url').notNull(),
 		blockName: text('block_name'),
 	},
-	(columns) => ({
-		_orderIdx: index('products_blocks_video_embed_order_idx').on(columns._order),
-		_parentIDIdx: index('products_blocks_video_embed_parent_id_idx').on(columns._parentID),
-		_pathIdx: index('products_blocks_video_embed_path_idx').on(columns._path),
-		_parentIdFk: foreignKey({
+	(columns) => [
+		index('products_blocks_video_embed_order_idx').on(columns._order),
+		index('products_blocks_video_embed_parent_id_idx').on(columns._parentID),
+		index('products_blocks_video_embed_path_idx').on(columns._path),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [products.id],
 			name: 'products_blocks_video_embed_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const products = sqliteTable(
@@ -6495,12 +6210,12 @@ export const products = sqliteTable(
 			.notNull()
 			.default(sql`(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))`),
 	},
-	(columns) => ({
-		products_icon_idx: index('products_icon_idx').on(columns.icon),
-		products_slug_idx: index('products_slug_idx').on(columns.slug),
-		products_updated_at_idx: index('products_updated_at_idx').on(columns.updatedAt),
-		products_created_at_idx: index('products_created_at_idx').on(columns.createdAt),
-	}),
+	(columns) => [
+		index('products_icon_idx').on(columns.icon),
+		index('products_slug_idx').on(columns.slug),
+		index('products_updated_at_idx').on(columns.updatedAt),
+		index('products_created_at_idx').on(columns.createdAt),
+	],
 )
 
 export const products_locales = sqliteTable(
@@ -6518,21 +6233,21 @@ export const products_locales = sqliteTable(
 		_locale: text('_locale', { enum: ['en', 'vi'] }).notNull(),
 		_parentID: integer('_parent_id').notNull(),
 	},
-	(columns) => ({
-		products_meta_meta_meta_meta_image_idx: index('products_meta_meta_meta_meta_image_idx').on(
+	(columns) => [
+		index('products_meta_meta_meta_meta_image_idx').on(
 			columns.meta_meta_image,
 			columns._locale,
 		),
-		_localeParent: uniqueIndex('products_locales_locale_parent_id_unique').on(
+		uniqueIndex('products_locales_locale_parent_id_unique').on(
 			columns._locale,
 			columns._parentID,
 		),
-		_parentIdFk: foreignKey({
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [products.id],
 			name: 'products_locales_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const products_rels = sqliteTable(
@@ -6551,78 +6266,65 @@ export const products_rels = sqliteTable(
 		pagesID: integer('pages_id'),
 		productsID: integer('products_id'),
 	},
-	(columns) => ({
-		order: index('products_rels_order_idx').on(columns.order),
-		parentIdx: index('products_rels_parent_idx').on(columns.parent),
-		pathIdx: index('products_rels_path_idx').on(columns.path),
-		localeIdx: index('products_rels_locale_idx').on(columns.locale),
-		products_rels_product_categories_id_idx: index(
-			'products_rels_product_categories_id_idx',
-		).on(columns.productCategoriesID, columns.locale),
-		products_rels_product_sub_categories_id_idx: index(
-			'products_rels_product_sub_categories_id_idx',
-		).on(columns.productSubCategoriesID, columns.locale),
-		products_rels_media_id_idx: index('products_rels_media_id_idx').on(
-			columns.mediaID,
+	(columns) => [
+		index('products_rels_order_idx').on(columns.order),
+		index('products_rels_parent_idx').on(columns.parent),
+		index('products_rels_path_idx').on(columns.path),
+		index('products_rels_locale_idx').on(columns.locale),
+		index('products_rels_product_categories_id_idx').on(
+			columns.productCategoriesID,
 			columns.locale,
 		),
-		products_rels_post_categories_id_idx: index('products_rels_post_categories_id_idx').on(
-			columns.postCategoriesID,
+		index('products_rels_product_sub_categories_id_idx').on(
+			columns.productSubCategoriesID,
 			columns.locale,
 		),
-		products_rels_posts_id_idx: index('products_rels_posts_id_idx').on(
-			columns.postsID,
-			columns.locale,
-		),
-		products_rels_pages_id_idx: index('products_rels_pages_id_idx').on(
-			columns.pagesID,
-			columns.locale,
-		),
-		products_rels_products_id_idx: index('products_rels_products_id_idx').on(
-			columns.productsID,
-			columns.locale,
-		),
-		parentFk: foreignKey({
+		index('products_rels_media_id_idx').on(columns.mediaID, columns.locale),
+		index('products_rels_post_categories_id_idx').on(columns.postCategoriesID, columns.locale),
+		index('products_rels_posts_id_idx').on(columns.postsID, columns.locale),
+		index('products_rels_pages_id_idx').on(columns.pagesID, columns.locale),
+		index('products_rels_products_id_idx').on(columns.productsID, columns.locale),
+		foreignKey({
 			columns: [columns['parent']],
 			foreignColumns: [products.id],
 			name: 'products_rels_parent_fk',
 		}).onDelete('cascade'),
-		productCategoriesIdFk: foreignKey({
+		foreignKey({
 			columns: [columns['productCategoriesID']],
 			foreignColumns: [product_categories.id],
 			name: 'products_rels_product_categories_fk',
 		}).onDelete('cascade'),
-		productSubCategoriesIdFk: foreignKey({
+		foreignKey({
 			columns: [columns['productSubCategoriesID']],
 			foreignColumns: [product_sub_categories.id],
 			name: 'products_rels_product_sub_categories_fk',
 		}).onDelete('cascade'),
-		mediaIdFk: foreignKey({
+		foreignKey({
 			columns: [columns['mediaID']],
 			foreignColumns: [media.id],
 			name: 'products_rels_media_fk',
 		}).onDelete('cascade'),
-		postCategoriesIdFk: foreignKey({
+		foreignKey({
 			columns: [columns['postCategoriesID']],
 			foreignColumns: [post_categories.id],
 			name: 'products_rels_post_categories_fk',
 		}).onDelete('cascade'),
-		postsIdFk: foreignKey({
+		foreignKey({
 			columns: [columns['postsID']],
 			foreignColumns: [posts.id],
 			name: 'products_rels_posts_fk',
 		}).onDelete('cascade'),
-		pagesIdFk: foreignKey({
+		foreignKey({
 			columns: [columns['pagesID']],
 			foreignColumns: [pages.id],
 			name: 'products_rels_pages_fk',
 		}).onDelete('cascade'),
-		productsIdFk: foreignKey({
+		foreignKey({
 			columns: [columns['productsID']],
 			foreignColumns: [products.id],
 			name: 'products_rels_products_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const product_sub_categories = sqliteTable(
@@ -6644,18 +6346,12 @@ export const product_sub_categories = sqliteTable(
 			.notNull()
 			.default(sql`(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))`),
 	},
-	(columns) => ({
-		product_sub_categories_product_categories_idx: index(
-			'product_sub_categories_product_categories_idx',
-		).on(columns.productCategories),
-		product_sub_categories_slug_idx: index('product_sub_categories_slug_idx').on(columns.slug),
-		product_sub_categories_updated_at_idx: index('product_sub_categories_updated_at_idx').on(
-			columns.updatedAt,
-		),
-		product_sub_categories_created_at_idx: index('product_sub_categories_created_at_idx').on(
-			columns.createdAt,
-		),
-	}),
+	(columns) => [
+		index('product_sub_categories_product_categories_idx').on(columns.productCategories),
+		index('product_sub_categories_slug_idx').on(columns.slug),
+		index('product_sub_categories_updated_at_idx').on(columns.updatedAt),
+		index('product_sub_categories_created_at_idx').on(columns.createdAt),
+	],
 )
 
 export const product_sub_categories_locales = sqliteTable(
@@ -6666,17 +6362,17 @@ export const product_sub_categories_locales = sqliteTable(
 		_locale: text('_locale', { enum: ['en', 'vi'] }).notNull(),
 		_parentID: integer('_parent_id').notNull(),
 	},
-	(columns) => ({
-		_localeParent: uniqueIndex('product_sub_categories_locales_locale_parent_id_unique').on(
+	(columns) => [
+		uniqueIndex('product_sub_categories_locales_locale_parent_id_unique').on(
 			columns._locale,
 			columns._parentID,
 		),
-		_parentIdFk: foreignKey({
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [product_sub_categories.id],
 			name: 'product_sub_categories_locales_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const orders_cart = sqliteTable(
@@ -6690,20 +6386,20 @@ export const orders_cart = sqliteTable(
 		}),
 		sku: text('sku').notNull(),
 		title: text('title').notNull(),
-		quantity: numeric('quantity').notNull(),
-		priceAtBuy: numeric('price_at_buy').notNull(),
-		previewTotal: numeric('preview_total').notNull(),
+		quantity: numeric('quantity', { mode: 'number' }).notNull(),
+		priceAtBuy: numeric('price_at_buy', { mode: 'number' }).notNull(),
+		previewTotal: numeric('preview_total', { mode: 'number' }).notNull(),
 	},
-	(columns) => ({
-		_orderIdx: index('orders_cart_order_idx').on(columns._order),
-		_parentIDIdx: index('orders_cart_parent_id_idx').on(columns._parentID),
-		orders_cart_product_idx: index('orders_cart_product_idx').on(columns.product),
-		_parentIDFk: foreignKey({
+	(columns) => [
+		index('orders_cart_order_idx').on(columns._order),
+		index('orders_cart_parent_id_idx').on(columns._parentID),
+		index('orders_cart_product_idx').on(columns.product),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [orders.id],
 			name: 'orders_cart_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const orders_billing_transactions = sqliteTable(
@@ -6717,19 +6413,19 @@ export const orders_billing_transactions = sqliteTable(
 		),
 		code: text('code'),
 		content: text('content'),
-		transferAmount: numeric('transfer_amount'),
+		transferAmount: numeric('transfer_amount', { mode: 'number' }),
 		referenceCode: text('reference_code'),
 		description: text('description'),
 	},
-	(columns) => ({
-		_orderIdx: index('orders_billing_transactions_order_idx').on(columns._order),
-		_parentIDIdx: index('orders_billing_transactions_parent_id_idx').on(columns._parentID),
-		_parentIDFk: foreignKey({
+	(columns) => [
+		index('orders_billing_transactions_order_idx').on(columns._order),
+		index('orders_billing_transactions_parent_id_idx').on(columns._parentID),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [orders.id],
 			name: 'orders_billing_transactions_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const orders = sqliteTable(
@@ -6762,13 +6458,13 @@ export const orders = sqliteTable(
 				onDelete: 'set null',
 			},
 		),
-		prices_provisional: numeric('prices_provisional').notNull().default('0'),
-		prices_shipping: numeric('prices_shipping').notNull().default('0'),
-		prices_discount: numeric('prices_discount').notNull().default('0'),
-		prices_total: numeric('prices_total').notNull().default('0'),
-		prices_paidAmount: numeric('prices_paid_amount'),
+		prices_provisional: numeric('prices_provisional', { mode: 'number' }).notNull().default(0),
+		prices_shipping: numeric('prices_shipping', { mode: 'number' }).notNull().default(0),
+		prices_discount: numeric('prices_discount', { mode: 'number' }).notNull().default(0),
+		prices_total: numeric('prices_total', { mode: 'number' }).notNull().default(0),
+		prices_paidAmount: numeric('prices_paid_amount', { mode: 'number' }),
 		billing_method: text('billing_method', { enum: ['cod', 'bankTransfer'] }).default('cod'),
-		review_rating: numeric('review_rating'),
+		review_rating: numeric('review_rating', { mode: 'number' }),
 		review_content: text('review_content'),
 		review_approved: integer('review_approved', { mode: 'boolean' }).default(false),
 		updatedAt: text('updated_at')
@@ -6778,15 +6474,13 @@ export const orders = sqliteTable(
 			.notNull()
 			.default(sql`(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))`),
 	},
-	(columns) => ({
-		orders_invoice_id_idx: uniqueIndex('orders_invoice_id_idx').on(columns.invoiceId),
-		orders_customer_idx: index('orders_customer_idx').on(columns.customer),
-		orders_prices_prices_discount_code_idx: index('orders_prices_prices_discount_code_idx').on(
-			columns.prices_discountCode,
-		),
-		orders_updated_at_idx: index('orders_updated_at_idx').on(columns.updatedAt),
-		orders_created_at_idx: index('orders_created_at_idx').on(columns.createdAt),
-	}),
+	(columns) => [
+		uniqueIndex('orders_invoice_id_idx').on(columns.invoiceId),
+		index('orders_customer_idx').on(columns.customer),
+		index('orders_prices_prices_discount_code_idx').on(columns.prices_discountCode),
+		index('orders_updated_at_idx').on(columns.updatedAt),
+		index('orders_created_at_idx').on(columns.createdAt),
+	],
 )
 
 export const _orders_v_version_cart = sqliteTable(
@@ -6800,23 +6494,21 @@ export const _orders_v_version_cart = sqliteTable(
 		}),
 		sku: text('sku').notNull(),
 		title: text('title').notNull(),
-		quantity: numeric('quantity').notNull(),
-		priceAtBuy: numeric('price_at_buy').notNull(),
-		previewTotal: numeric('preview_total').notNull(),
+		quantity: numeric('quantity', { mode: 'number' }).notNull(),
+		priceAtBuy: numeric('price_at_buy', { mode: 'number' }).notNull(),
+		previewTotal: numeric('preview_total', { mode: 'number' }).notNull(),
 		_uuid: text('_uuid'),
 	},
-	(columns) => ({
-		_orderIdx: index('_orders_v_version_cart_order_idx').on(columns._order),
-		_parentIDIdx: index('_orders_v_version_cart_parent_id_idx').on(columns._parentID),
-		_orders_v_version_cart_product_idx: index('_orders_v_version_cart_product_idx').on(
-			columns.product,
-		),
-		_parentIDFk: foreignKey({
+	(columns) => [
+		index('_orders_v_version_cart_order_idx').on(columns._order),
+		index('_orders_v_version_cart_parent_id_idx').on(columns._parentID),
+		index('_orders_v_version_cart_product_idx').on(columns.product),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [_orders_v.id],
 			name: '_orders_v_version_cart_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const _orders_v_version_billing_transactions = sqliteTable(
@@ -6831,21 +6523,19 @@ export const _orders_v_version_billing_transactions = sqliteTable(
 		),
 		code: text('code'),
 		content: text('content'),
-		transferAmount: numeric('transfer_amount'),
+		transferAmount: numeric('transfer_amount', { mode: 'number' }),
 		referenceCode: text('reference_code'),
 		description: text('description'),
 	},
-	(columns) => ({
-		_orderIdx: index('_orders_v_version_billing_transactions_order_idx').on(columns._order),
-		_parentIDIdx: index('_orders_v_version_billing_transactions_parent_id_idx').on(
-			columns._parentID,
-		),
-		_parentIDFk: foreignKey({
+	(columns) => [
+		index('_orders_v_version_billing_transactions_order_idx').on(columns._order),
+		index('_orders_v_version_billing_transactions_parent_id_idx').on(columns._parentID),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [_orders_v.id],
 			name: '_orders_v_version_billing_transactions_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const _orders_v = sqliteTable(
@@ -6881,15 +6571,23 @@ export const _orders_v = sqliteTable(
 				onDelete: 'set null',
 			},
 		),
-		version_prices_provisional: numeric('version_prices_provisional').notNull().default('0'),
-		version_prices_shipping: numeric('version_prices_shipping').notNull().default('0'),
-		version_prices_discount: numeric('version_prices_discount').notNull().default('0'),
-		version_prices_total: numeric('version_prices_total').notNull().default('0'),
-		version_prices_paidAmount: numeric('version_prices_paid_amount'),
+		version_prices_provisional: numeric('version_prices_provisional', { mode: 'number' })
+			.notNull()
+			.default(0),
+		version_prices_shipping: numeric('version_prices_shipping', { mode: 'number' })
+			.notNull()
+			.default(0),
+		version_prices_discount: numeric('version_prices_discount', { mode: 'number' })
+			.notNull()
+			.default(0),
+		version_prices_total: numeric('version_prices_total', { mode: 'number' })
+			.notNull()
+			.default(0),
+		version_prices_paidAmount: numeric('version_prices_paid_amount', { mode: 'number' }),
 		version_billing_method: text('version_billing_method', {
 			enum: ['cod', 'bankTransfer'],
 		}).default('cod'),
-		version_review_rating: numeric('version_review_rating'),
+		version_review_rating: numeric('version_review_rating', { mode: 'number' }),
 		version_review_content: text('version_review_content'),
 		version_review_approved: integer('version_review_approved', { mode: 'boolean' }).default(
 			false,
@@ -6907,26 +6605,18 @@ export const _orders_v = sqliteTable(
 			.notNull()
 			.default(sql`(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))`),
 	},
-	(columns) => ({
-		_orders_v_parent_idx: index('_orders_v_parent_idx').on(columns.parent),
-		_orders_v_version_version_invoice_id_idx: index(
-			'_orders_v_version_version_invoice_id_idx',
-		).on(columns.version_invoiceId),
-		_orders_v_version_version_customer_idx: index('_orders_v_version_version_customer_idx').on(
-			columns.version_customer,
+	(columns) => [
+		index('_orders_v_parent_idx').on(columns.parent),
+		index('_orders_v_version_version_invoice_id_idx').on(columns.version_invoiceId),
+		index('_orders_v_version_version_customer_idx').on(columns.version_customer),
+		index('_orders_v_version_prices_version_prices_discount_code_idx').on(
+			columns.version_prices_discountCode,
 		),
-		_orders_v_version_prices_version_prices_discount_code_idx: index(
-			'_orders_v_version_prices_version_prices_discount_code_idx',
-		).on(columns.version_prices_discountCode),
-		_orders_v_version_version_updated_at_idx: index(
-			'_orders_v_version_version_updated_at_idx',
-		).on(columns.version_updatedAt),
-		_orders_v_version_version_created_at_idx: index(
-			'_orders_v_version_version_created_at_idx',
-		).on(columns.version_createdAt),
-		_orders_v_created_at_idx: index('_orders_v_created_at_idx').on(columns.createdAt),
-		_orders_v_updated_at_idx: index('_orders_v_updated_at_idx').on(columns.updatedAt),
-	}),
+		index('_orders_v_version_version_updated_at_idx').on(columns.version_updatedAt),
+		index('_orders_v_version_version_created_at_idx').on(columns.version_createdAt),
+		index('_orders_v_created_at_idx').on(columns.createdAt),
+		index('_orders_v_updated_at_idx').on(columns.updatedAt),
+	],
 )
 
 export const users_sessions = sqliteTable(
@@ -6940,15 +6630,15 @@ export const users_sessions = sqliteTable(
 			.notNull()
 			.default(sql`(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))`),
 	},
-	(columns) => ({
-		_orderIdx: index('users_sessions_order_idx').on(columns._order),
-		_parentIDIdx: index('users_sessions_parent_id_idx').on(columns._parentID),
-		_parentIDFk: foreignKey({
+	(columns) => [
+		index('users_sessions_order_idx').on(columns._order),
+		index('users_sessions_parent_id_idx').on(columns._parentID),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [users.id],
 			name: 'users_sessions_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const users = sqliteTable(
@@ -6971,14 +6661,14 @@ export const users = sqliteTable(
 		),
 		salt: text('salt'),
 		hash: text('hash'),
-		loginAttempts: numeric('login_attempts').default('0'),
+		loginAttempts: numeric('login_attempts', { mode: 'number' }).default(0),
 		lockUntil: text('lock_until').default(sql`(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))`),
 	},
-	(columns) => ({
-		users_updated_at_idx: index('users_updated_at_idx').on(columns.updatedAt),
-		users_created_at_idx: index('users_created_at_idx').on(columns.createdAt),
-		users_email_idx: uniqueIndex('users_email_idx').on(columns.email),
-	}),
+	(columns) => [
+		index('users_updated_at_idx').on(columns.updatedAt),
+		index('users_created_at_idx').on(columns.createdAt),
+		uniqueIndex('users_email_idx').on(columns.email),
+	],
 )
 
 export const redirects = sqliteTable(
@@ -6995,11 +6685,11 @@ export const redirects = sqliteTable(
 			.notNull()
 			.default(sql`(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))`),
 	},
-	(columns) => ({
-		redirects_from_idx: uniqueIndex('redirects_from_idx').on(columns.from),
-		redirects_updated_at_idx: index('redirects_updated_at_idx').on(columns.updatedAt),
-		redirects_created_at_idx: index('redirects_created_at_idx').on(columns.createdAt),
-	}),
+	(columns) => [
+		uniqueIndex('redirects_from_idx').on(columns.from),
+		index('redirects_updated_at_idx').on(columns.updatedAt),
+		index('redirects_created_at_idx').on(columns.createdAt),
+	],
 )
 
 export const redirects_rels = sqliteTable(
@@ -7012,28 +6702,28 @@ export const redirects_rels = sqliteTable(
 		pagesID: integer('pages_id'),
 		postsID: integer('posts_id'),
 	},
-	(columns) => ({
-		order: index('redirects_rels_order_idx').on(columns.order),
-		parentIdx: index('redirects_rels_parent_idx').on(columns.parent),
-		pathIdx: index('redirects_rels_path_idx').on(columns.path),
-		redirects_rels_pages_id_idx: index('redirects_rels_pages_id_idx').on(columns.pagesID),
-		redirects_rels_posts_id_idx: index('redirects_rels_posts_id_idx').on(columns.postsID),
-		parentFk: foreignKey({
+	(columns) => [
+		index('redirects_rels_order_idx').on(columns.order),
+		index('redirects_rels_parent_idx').on(columns.parent),
+		index('redirects_rels_path_idx').on(columns.path),
+		index('redirects_rels_pages_id_idx').on(columns.pagesID),
+		index('redirects_rels_posts_id_idx').on(columns.postsID),
+		foreignKey({
 			columns: [columns['parent']],
 			foreignColumns: [redirects.id],
 			name: 'redirects_rels_parent_fk',
 		}).onDelete('cascade'),
-		pagesIdFk: foreignKey({
+		foreignKey({
 			columns: [columns['pagesID']],
 			foreignColumns: [pages.id],
 			name: 'redirects_rels_pages_fk',
 		}).onDelete('cascade'),
-		postsIdFk: foreignKey({
+		foreignKey({
 			columns: [columns['postsID']],
 			foreignColumns: [posts.id],
 			name: 'redirects_rels_posts_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const forms_blocks_checkbox = sqliteTable(
@@ -7044,21 +6734,21 @@ export const forms_blocks_checkbox = sqliteTable(
 		_path: text('_path').notNull(),
 		id: text('id').primaryKey(),
 		name: text('name').notNull(),
-		width: numeric('width'),
+		width: numeric('width', { mode: 'number' }),
 		required: integer('required', { mode: 'boolean' }),
 		defaultValue: integer('default_value', { mode: 'boolean' }),
 		blockName: text('block_name'),
 	},
-	(columns) => ({
-		_orderIdx: index('forms_blocks_checkbox_order_idx').on(columns._order),
-		_parentIDIdx: index('forms_blocks_checkbox_parent_id_idx').on(columns._parentID),
-		_pathIdx: index('forms_blocks_checkbox_path_idx').on(columns._path),
-		_parentIdFk: foreignKey({
+	(columns) => [
+		index('forms_blocks_checkbox_order_idx').on(columns._order),
+		index('forms_blocks_checkbox_parent_id_idx').on(columns._parentID),
+		index('forms_blocks_checkbox_path_idx').on(columns._path),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [forms.id],
 			name: 'forms_blocks_checkbox_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const forms_blocks_checkbox_locales = sqliteTable(
@@ -7069,17 +6759,17 @@ export const forms_blocks_checkbox_locales = sqliteTable(
 		_locale: text('_locale', { enum: ['en', 'vi'] }).notNull(),
 		_parentID: text('_parent_id').notNull(),
 	},
-	(columns) => ({
-		_localeParent: uniqueIndex('forms_blocks_checkbox_locales_locale_parent_id_unique').on(
+	(columns) => [
+		uniqueIndex('forms_blocks_checkbox_locales_locale_parent_id_unique').on(
 			columns._locale,
 			columns._parentID,
 		),
-		_parentIdFk: foreignKey({
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [forms_blocks_checkbox.id],
 			name: 'forms_blocks_checkbox_locales_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const forms_blocks_country = sqliteTable(
@@ -7090,20 +6780,20 @@ export const forms_blocks_country = sqliteTable(
 		_path: text('_path').notNull(),
 		id: text('id').primaryKey(),
 		name: text('name').notNull(),
-		width: numeric('width'),
+		width: numeric('width', { mode: 'number' }),
 		required: integer('required', { mode: 'boolean' }),
 		blockName: text('block_name'),
 	},
-	(columns) => ({
-		_orderIdx: index('forms_blocks_country_order_idx').on(columns._order),
-		_parentIDIdx: index('forms_blocks_country_parent_id_idx').on(columns._parentID),
-		_pathIdx: index('forms_blocks_country_path_idx').on(columns._path),
-		_parentIdFk: foreignKey({
+	(columns) => [
+		index('forms_blocks_country_order_idx').on(columns._order),
+		index('forms_blocks_country_parent_id_idx').on(columns._parentID),
+		index('forms_blocks_country_path_idx').on(columns._path),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [forms.id],
 			name: 'forms_blocks_country_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const forms_blocks_country_locales = sqliteTable(
@@ -7114,17 +6804,17 @@ export const forms_blocks_country_locales = sqliteTable(
 		_locale: text('_locale', { enum: ['en', 'vi'] }).notNull(),
 		_parentID: text('_parent_id').notNull(),
 	},
-	(columns) => ({
-		_localeParent: uniqueIndex('forms_blocks_country_locales_locale_parent_id_unique').on(
+	(columns) => [
+		uniqueIndex('forms_blocks_country_locales_locale_parent_id_unique').on(
 			columns._locale,
 			columns._parentID,
 		),
-		_parentIdFk: foreignKey({
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [forms_blocks_country.id],
 			name: 'forms_blocks_country_locales_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const forms_blocks_email = sqliteTable(
@@ -7135,20 +6825,20 @@ export const forms_blocks_email = sqliteTable(
 		_path: text('_path').notNull(),
 		id: text('id').primaryKey(),
 		name: text('name').notNull(),
-		width: numeric('width'),
+		width: numeric('width', { mode: 'number' }),
 		required: integer('required', { mode: 'boolean' }),
 		blockName: text('block_name'),
 	},
-	(columns) => ({
-		_orderIdx: index('forms_blocks_email_order_idx').on(columns._order),
-		_parentIDIdx: index('forms_blocks_email_parent_id_idx').on(columns._parentID),
-		_pathIdx: index('forms_blocks_email_path_idx').on(columns._path),
-		_parentIdFk: foreignKey({
+	(columns) => [
+		index('forms_blocks_email_order_idx').on(columns._order),
+		index('forms_blocks_email_parent_id_idx').on(columns._parentID),
+		index('forms_blocks_email_path_idx').on(columns._path),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [forms.id],
 			name: 'forms_blocks_email_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const forms_blocks_email_locales = sqliteTable(
@@ -7159,17 +6849,17 @@ export const forms_blocks_email_locales = sqliteTable(
 		_locale: text('_locale', { enum: ['en', 'vi'] }).notNull(),
 		_parentID: text('_parent_id').notNull(),
 	},
-	(columns) => ({
-		_localeParent: uniqueIndex('forms_blocks_email_locales_locale_parent_id_unique').on(
+	(columns) => [
+		uniqueIndex('forms_blocks_email_locales_locale_parent_id_unique').on(
 			columns._locale,
 			columns._parentID,
 		),
-		_parentIdFk: foreignKey({
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [forms_blocks_email.id],
 			name: 'forms_blocks_email_locales_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const forms_blocks_message = sqliteTable(
@@ -7181,16 +6871,16 @@ export const forms_blocks_message = sqliteTable(
 		id: text('id').primaryKey(),
 		blockName: text('block_name'),
 	},
-	(columns) => ({
-		_orderIdx: index('forms_blocks_message_order_idx').on(columns._order),
-		_parentIDIdx: index('forms_blocks_message_parent_id_idx').on(columns._parentID),
-		_pathIdx: index('forms_blocks_message_path_idx').on(columns._path),
-		_parentIdFk: foreignKey({
+	(columns) => [
+		index('forms_blocks_message_order_idx').on(columns._order),
+		index('forms_blocks_message_parent_id_idx').on(columns._parentID),
+		index('forms_blocks_message_path_idx').on(columns._path),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [forms.id],
 			name: 'forms_blocks_message_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const forms_blocks_message_locales = sqliteTable(
@@ -7201,17 +6891,17 @@ export const forms_blocks_message_locales = sqliteTable(
 		_locale: text('_locale', { enum: ['en', 'vi'] }).notNull(),
 		_parentID: text('_parent_id').notNull(),
 	},
-	(columns) => ({
-		_localeParent: uniqueIndex('forms_blocks_message_locales_locale_parent_id_unique').on(
+	(columns) => [
+		uniqueIndex('forms_blocks_message_locales_locale_parent_id_unique').on(
 			columns._locale,
 			columns._parentID,
 		),
-		_parentIdFk: foreignKey({
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [forms_blocks_message.id],
 			name: 'forms_blocks_message_locales_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const forms_blocks_number = sqliteTable(
@@ -7222,21 +6912,21 @@ export const forms_blocks_number = sqliteTable(
 		_path: text('_path').notNull(),
 		id: text('id').primaryKey(),
 		name: text('name').notNull(),
-		width: numeric('width'),
-		defaultValue: numeric('default_value'),
+		width: numeric('width', { mode: 'number' }),
+		defaultValue: numeric('default_value', { mode: 'number' }),
 		required: integer('required', { mode: 'boolean' }),
 		blockName: text('block_name'),
 	},
-	(columns) => ({
-		_orderIdx: index('forms_blocks_number_order_idx').on(columns._order),
-		_parentIDIdx: index('forms_blocks_number_parent_id_idx').on(columns._parentID),
-		_pathIdx: index('forms_blocks_number_path_idx').on(columns._path),
-		_parentIdFk: foreignKey({
+	(columns) => [
+		index('forms_blocks_number_order_idx').on(columns._order),
+		index('forms_blocks_number_parent_id_idx').on(columns._parentID),
+		index('forms_blocks_number_path_idx').on(columns._path),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [forms.id],
 			name: 'forms_blocks_number_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const forms_blocks_number_locales = sqliteTable(
@@ -7247,17 +6937,17 @@ export const forms_blocks_number_locales = sqliteTable(
 		_locale: text('_locale', { enum: ['en', 'vi'] }).notNull(),
 		_parentID: text('_parent_id').notNull(),
 	},
-	(columns) => ({
-		_localeParent: uniqueIndex('forms_blocks_number_locales_locale_parent_id_unique').on(
+	(columns) => [
+		uniqueIndex('forms_blocks_number_locales_locale_parent_id_unique').on(
 			columns._locale,
 			columns._parentID,
 		),
-		_parentIdFk: foreignKey({
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [forms_blocks_number.id],
 			name: 'forms_blocks_number_locales_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const forms_blocks_select_options = sqliteTable(
@@ -7268,15 +6958,15 @@ export const forms_blocks_select_options = sqliteTable(
 		id: text('id').primaryKey(),
 		value: text('value').notNull(),
 	},
-	(columns) => ({
-		_orderIdx: index('forms_blocks_select_options_order_idx').on(columns._order),
-		_parentIDIdx: index('forms_blocks_select_options_parent_id_idx').on(columns._parentID),
-		_parentIDFk: foreignKey({
+	(columns) => [
+		index('forms_blocks_select_options_order_idx').on(columns._order),
+		index('forms_blocks_select_options_parent_id_idx').on(columns._parentID),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [forms_blocks_select.id],
 			name: 'forms_blocks_select_options_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const forms_blocks_select_options_locales = sqliteTable(
@@ -7287,16 +6977,17 @@ export const forms_blocks_select_options_locales = sqliteTable(
 		_locale: text('_locale', { enum: ['en', 'vi'] }).notNull(),
 		_parentID: text('_parent_id').notNull(),
 	},
-	(columns) => ({
-		_localeParent: uniqueIndex(
-			'forms_blocks_select_options_locales_locale_parent_id_unique',
-		).on(columns._locale, columns._parentID),
-		_parentIdFk: foreignKey({
+	(columns) => [
+		uniqueIndex('forms_blocks_select_options_locales_locale_parent_id_unique').on(
+			columns._locale,
+			columns._parentID,
+		),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [forms_blocks_select_options.id],
 			name: 'forms_blocks_select_options_locales_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const forms_blocks_select = sqliteTable(
@@ -7307,21 +6998,21 @@ export const forms_blocks_select = sqliteTable(
 		_path: text('_path').notNull(),
 		id: text('id').primaryKey(),
 		name: text('name').notNull(),
-		width: numeric('width'),
+		width: numeric('width', { mode: 'number' }),
 		placeholder: text('placeholder'),
 		required: integer('required', { mode: 'boolean' }),
 		blockName: text('block_name'),
 	},
-	(columns) => ({
-		_orderIdx: index('forms_blocks_select_order_idx').on(columns._order),
-		_parentIDIdx: index('forms_blocks_select_parent_id_idx').on(columns._parentID),
-		_pathIdx: index('forms_blocks_select_path_idx').on(columns._path),
-		_parentIdFk: foreignKey({
+	(columns) => [
+		index('forms_blocks_select_order_idx').on(columns._order),
+		index('forms_blocks_select_parent_id_idx').on(columns._parentID),
+		index('forms_blocks_select_path_idx').on(columns._path),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [forms.id],
 			name: 'forms_blocks_select_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const forms_blocks_select_locales = sqliteTable(
@@ -7333,17 +7024,17 @@ export const forms_blocks_select_locales = sqliteTable(
 		_locale: text('_locale', { enum: ['en', 'vi'] }).notNull(),
 		_parentID: text('_parent_id').notNull(),
 	},
-	(columns) => ({
-		_localeParent: uniqueIndex('forms_blocks_select_locales_locale_parent_id_unique').on(
+	(columns) => [
+		uniqueIndex('forms_blocks_select_locales_locale_parent_id_unique').on(
 			columns._locale,
 			columns._parentID,
 		),
-		_parentIdFk: foreignKey({
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [forms_blocks_select.id],
 			name: 'forms_blocks_select_locales_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const forms_blocks_state = sqliteTable(
@@ -7354,20 +7045,20 @@ export const forms_blocks_state = sqliteTable(
 		_path: text('_path').notNull(),
 		id: text('id').primaryKey(),
 		name: text('name').notNull(),
-		width: numeric('width'),
+		width: numeric('width', { mode: 'number' }),
 		required: integer('required', { mode: 'boolean' }),
 		blockName: text('block_name'),
 	},
-	(columns) => ({
-		_orderIdx: index('forms_blocks_state_order_idx').on(columns._order),
-		_parentIDIdx: index('forms_blocks_state_parent_id_idx').on(columns._parentID),
-		_pathIdx: index('forms_blocks_state_path_idx').on(columns._path),
-		_parentIdFk: foreignKey({
+	(columns) => [
+		index('forms_blocks_state_order_idx').on(columns._order),
+		index('forms_blocks_state_parent_id_idx').on(columns._parentID),
+		index('forms_blocks_state_path_idx').on(columns._path),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [forms.id],
 			name: 'forms_blocks_state_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const forms_blocks_state_locales = sqliteTable(
@@ -7378,17 +7069,17 @@ export const forms_blocks_state_locales = sqliteTable(
 		_locale: text('_locale', { enum: ['en', 'vi'] }).notNull(),
 		_parentID: text('_parent_id').notNull(),
 	},
-	(columns) => ({
-		_localeParent: uniqueIndex('forms_blocks_state_locales_locale_parent_id_unique').on(
+	(columns) => [
+		uniqueIndex('forms_blocks_state_locales_locale_parent_id_unique').on(
 			columns._locale,
 			columns._parentID,
 		),
-		_parentIdFk: foreignKey({
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [forms_blocks_state.id],
 			name: 'forms_blocks_state_locales_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const forms_blocks_text = sqliteTable(
@@ -7399,20 +7090,20 @@ export const forms_blocks_text = sqliteTable(
 		_path: text('_path').notNull(),
 		id: text('id').primaryKey(),
 		name: text('name').notNull(),
-		width: numeric('width'),
+		width: numeric('width', { mode: 'number' }),
 		required: integer('required', { mode: 'boolean' }),
 		blockName: text('block_name'),
 	},
-	(columns) => ({
-		_orderIdx: index('forms_blocks_text_order_idx').on(columns._order),
-		_parentIDIdx: index('forms_blocks_text_parent_id_idx').on(columns._parentID),
-		_pathIdx: index('forms_blocks_text_path_idx').on(columns._path),
-		_parentIdFk: foreignKey({
+	(columns) => [
+		index('forms_blocks_text_order_idx').on(columns._order),
+		index('forms_blocks_text_parent_id_idx').on(columns._parentID),
+		index('forms_blocks_text_path_idx').on(columns._path),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [forms.id],
 			name: 'forms_blocks_text_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const forms_blocks_text_locales = sqliteTable(
@@ -7424,17 +7115,17 @@ export const forms_blocks_text_locales = sqliteTable(
 		_locale: text('_locale', { enum: ['en', 'vi'] }).notNull(),
 		_parentID: text('_parent_id').notNull(),
 	},
-	(columns) => ({
-		_localeParent: uniqueIndex('forms_blocks_text_locales_locale_parent_id_unique').on(
+	(columns) => [
+		uniqueIndex('forms_blocks_text_locales_locale_parent_id_unique').on(
 			columns._locale,
 			columns._parentID,
 		),
-		_parentIdFk: foreignKey({
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [forms_blocks_text.id],
 			name: 'forms_blocks_text_locales_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const forms_blocks_textarea = sqliteTable(
@@ -7445,20 +7136,20 @@ export const forms_blocks_textarea = sqliteTable(
 		_path: text('_path').notNull(),
 		id: text('id').primaryKey(),
 		name: text('name').notNull(),
-		width: numeric('width'),
+		width: numeric('width', { mode: 'number' }),
 		required: integer('required', { mode: 'boolean' }),
 		blockName: text('block_name'),
 	},
-	(columns) => ({
-		_orderIdx: index('forms_blocks_textarea_order_idx').on(columns._order),
-		_parentIDIdx: index('forms_blocks_textarea_parent_id_idx').on(columns._parentID),
-		_pathIdx: index('forms_blocks_textarea_path_idx').on(columns._path),
-		_parentIdFk: foreignKey({
+	(columns) => [
+		index('forms_blocks_textarea_order_idx').on(columns._order),
+		index('forms_blocks_textarea_parent_id_idx').on(columns._parentID),
+		index('forms_blocks_textarea_path_idx').on(columns._path),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [forms.id],
 			name: 'forms_blocks_textarea_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const forms_blocks_textarea_locales = sqliteTable(
@@ -7470,17 +7161,17 @@ export const forms_blocks_textarea_locales = sqliteTable(
 		_locale: text('_locale', { enum: ['en', 'vi'] }).notNull(),
 		_parentID: text('_parent_id').notNull(),
 	},
-	(columns) => ({
-		_localeParent: uniqueIndex('forms_blocks_textarea_locales_locale_parent_id_unique').on(
+	(columns) => [
+		uniqueIndex('forms_blocks_textarea_locales_locale_parent_id_unique').on(
 			columns._locale,
 			columns._parentID,
 		),
-		_parentIdFk: foreignKey({
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [forms_blocks_textarea.id],
 			name: 'forms_blocks_textarea_locales_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const forms_emails = sqliteTable(
@@ -7495,15 +7186,15 @@ export const forms_emails = sqliteTable(
 		replyTo: text('reply_to'),
 		emailFrom: text('email_from'),
 	},
-	(columns) => ({
-		_orderIdx: index('forms_emails_order_idx').on(columns._order),
-		_parentIDIdx: index('forms_emails_parent_id_idx').on(columns._parentID),
-		_parentIDFk: foreignKey({
+	(columns) => [
+		index('forms_emails_order_idx').on(columns._order),
+		index('forms_emails_parent_id_idx').on(columns._parentID),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [forms.id],
 			name: 'forms_emails_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const forms_emails_locales = sqliteTable(
@@ -7515,17 +7206,17 @@ export const forms_emails_locales = sqliteTable(
 		_locale: text('_locale', { enum: ['en', 'vi'] }).notNull(),
 		_parentID: text('_parent_id').notNull(),
 	},
-	(columns) => ({
-		_localeParent: uniqueIndex('forms_emails_locales_locale_parent_id_unique').on(
+	(columns) => [
+		uniqueIndex('forms_emails_locales_locale_parent_id_unique').on(
 			columns._locale,
 			columns._parentID,
 		),
-		_parentIdFk: foreignKey({
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [forms_emails.id],
 			name: 'forms_emails_locales_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const forms = sqliteTable(
@@ -7544,10 +7235,10 @@ export const forms = sqliteTable(
 			.notNull()
 			.default(sql`(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))`),
 	},
-	(columns) => ({
-		forms_updated_at_idx: index('forms_updated_at_idx').on(columns.updatedAt),
-		forms_created_at_idx: index('forms_created_at_idx').on(columns.createdAt),
-	}),
+	(columns) => [
+		index('forms_updated_at_idx').on(columns.updatedAt),
+		index('forms_created_at_idx').on(columns.createdAt),
+	],
 )
 
 export const forms_locales = sqliteTable(
@@ -7559,17 +7250,14 @@ export const forms_locales = sqliteTable(
 		_locale: text('_locale', { enum: ['en', 'vi'] }).notNull(),
 		_parentID: integer('_parent_id').notNull(),
 	},
-	(columns) => ({
-		_localeParent: uniqueIndex('forms_locales_locale_parent_id_unique').on(
-			columns._locale,
-			columns._parentID,
-		),
-		_parentIdFk: foreignKey({
+	(columns) => [
+		uniqueIndex('forms_locales_locale_parent_id_unique').on(columns._locale, columns._parentID),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [forms.id],
 			name: 'forms_locales_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const form_submissions_submission_data = sqliteTable(
@@ -7581,15 +7269,15 @@ export const form_submissions_submission_data = sqliteTable(
 		field: text('field').notNull(),
 		value: text('value').notNull(),
 	},
-	(columns) => ({
-		_orderIdx: index('form_submissions_submission_data_order_idx').on(columns._order),
-		_parentIDIdx: index('form_submissions_submission_data_parent_id_idx').on(columns._parentID),
-		_parentIDFk: foreignKey({
+	(columns) => [
+		index('form_submissions_submission_data_order_idx').on(columns._order),
+		index('form_submissions_submission_data_parent_id_idx').on(columns._parentID),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [form_submissions.id],
 			name: 'form_submissions_submission_data_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const form_submissions = sqliteTable(
@@ -7608,15 +7296,11 @@ export const form_submissions = sqliteTable(
 			.notNull()
 			.default(sql`(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))`),
 	},
-	(columns) => ({
-		form_submissions_form_idx: index('form_submissions_form_idx').on(columns.form),
-		form_submissions_updated_at_idx: index('form_submissions_updated_at_idx').on(
-			columns.updatedAt,
-		),
-		form_submissions_created_at_idx: index('form_submissions_created_at_idx').on(
-			columns.createdAt,
-		),
-	}),
+	(columns) => [
+		index('form_submissions_form_idx').on(columns.form),
+		index('form_submissions_updated_at_idx').on(columns.updatedAt),
+		index('form_submissions_created_at_idx').on(columns.createdAt),
+	],
 )
 
 export const search_categories = sqliteTable(
@@ -7628,22 +7312,22 @@ export const search_categories = sqliteTable(
 		relationTo: text('relation_to'),
 		title: text('title'),
 	},
-	(columns) => ({
-		_orderIdx: index('search_categories_order_idx').on(columns._order),
-		_parentIDIdx: index('search_categories_parent_id_idx').on(columns._parentID),
-		_parentIDFk: foreignKey({
+	(columns) => [
+		index('search_categories_order_idx').on(columns._order),
+		index('search_categories_parent_id_idx').on(columns._parentID),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [search.id],
 			name: 'search_categories_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const search = sqliteTable(
 	'search',
 	{
 		id: integer('id').primaryKey(),
-		priority: numeric('priority'),
+		priority: numeric('priority', { mode: 'number' }),
 		slug: text('slug'),
 		meta_title: text('meta_title'),
 		meta_description: text('meta_description'),
@@ -7657,12 +7341,12 @@ export const search = sqliteTable(
 			.notNull()
 			.default(sql`(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))`),
 	},
-	(columns) => ({
-		search_slug_idx: index('search_slug_idx').on(columns.slug),
-		search_meta_meta_image_idx: index('search_meta_meta_image_idx').on(columns.meta_image),
-		search_updated_at_idx: index('search_updated_at_idx').on(columns.updatedAt),
-		search_created_at_idx: index('search_created_at_idx').on(columns.createdAt),
-	}),
+	(columns) => [
+		index('search_slug_idx').on(columns.slug),
+		index('search_meta_meta_image_idx').on(columns.meta_image),
+		index('search_updated_at_idx').on(columns.updatedAt),
+		index('search_created_at_idx').on(columns.createdAt),
+	],
 )
 
 export const search_locales = sqliteTable(
@@ -7673,17 +7357,17 @@ export const search_locales = sqliteTable(
 		_locale: text('_locale', { enum: ['en', 'vi'] }).notNull(),
 		_parentID: integer('_parent_id').notNull(),
 	},
-	(columns) => ({
-		_localeParent: uniqueIndex('search_locales_locale_parent_id_unique').on(
+	(columns) => [
+		uniqueIndex('search_locales_locale_parent_id_unique').on(
 			columns._locale,
 			columns._parentID,
 		),
-		_parentIdFk: foreignKey({
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [search.id],
 			name: 'search_locales_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const search_rels = sqliteTable(
@@ -7695,22 +7379,32 @@ export const search_rels = sqliteTable(
 		path: text('path').notNull(),
 		postsID: integer('posts_id'),
 	},
-	(columns) => ({
-		order: index('search_rels_order_idx').on(columns.order),
-		parentIdx: index('search_rels_parent_idx').on(columns.parent),
-		pathIdx: index('search_rels_path_idx').on(columns.path),
-		search_rels_posts_id_idx: index('search_rels_posts_id_idx').on(columns.postsID),
-		parentFk: foreignKey({
+	(columns) => [
+		index('search_rels_order_idx').on(columns.order),
+		index('search_rels_parent_idx').on(columns.parent),
+		index('search_rels_path_idx').on(columns.path),
+		index('search_rels_posts_id_idx').on(columns.postsID),
+		foreignKey({
 			columns: [columns['parent']],
 			foreignColumns: [search.id],
 			name: 'search_rels_parent_fk',
 		}).onDelete('cascade'),
-		postsIdFk: foreignKey({
+		foreignKey({
 			columns: [columns['postsID']],
 			foreignColumns: [posts.id],
 			name: 'search_rels_posts_fk',
 		}).onDelete('cascade'),
-	}),
+	],
+)
+
+export const payload_kv = sqliteTable(
+	'payload_kv',
+	{
+		id: integer('id').primaryKey(),
+		key: text('key').notNull(),
+		data: text('data', { mode: 'json' }).notNull(),
+	},
+	(columns) => [uniqueIndex('payload_kv_key_idx').on(columns.key)],
 )
 
 export const payload_jobs_log = sqliteTable(
@@ -7732,15 +7426,15 @@ export const payload_jobs_log = sqliteTable(
 		state: text('state', { enum: ['failed', 'succeeded'] }).notNull(),
 		error: text('error', { mode: 'json' }),
 	},
-	(columns) => ({
-		_orderIdx: index('payload_jobs_log_order_idx').on(columns._order),
-		_parentIDIdx: index('payload_jobs_log_parent_id_idx').on(columns._parentID),
-		_parentIDFk: foreignKey({
+	(columns) => [
+		index('payload_jobs_log_order_idx').on(columns._order),
+		index('payload_jobs_log_parent_id_idx').on(columns._parentID),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [payload_jobs.id],
 			name: 'payload_jobs_log_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const payload_jobs = sqliteTable(
@@ -7749,7 +7443,7 @@ export const payload_jobs = sqliteTable(
 		id: integer('id').primaryKey(),
 		input: text('input', { mode: 'json' }),
 		completedAt: text('completed_at').default(sql`(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))`),
-		totalTried: numeric('total_tried').default('0'),
+		totalTried: numeric('total_tried', { mode: 'number' }).default(0),
 		hasError: integer('has_error', { mode: 'boolean' }).default(false),
 		error: text('error', { mode: 'json' }),
 		taskSlug: text('task_slug', { enum: ['inline', 'schedulePublish'] }),
@@ -7763,19 +7457,17 @@ export const payload_jobs = sqliteTable(
 			.notNull()
 			.default(sql`(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))`),
 	},
-	(columns) => ({
-		payload_jobs_completed_at_idx: index('payload_jobs_completed_at_idx').on(
-			columns.completedAt,
-		),
-		payload_jobs_total_tried_idx: index('payload_jobs_total_tried_idx').on(columns.totalTried),
-		payload_jobs_has_error_idx: index('payload_jobs_has_error_idx').on(columns.hasError),
-		payload_jobs_task_slug_idx: index('payload_jobs_task_slug_idx').on(columns.taskSlug),
-		payload_jobs_queue_idx: index('payload_jobs_queue_idx').on(columns.queue),
-		payload_jobs_wait_until_idx: index('payload_jobs_wait_until_idx').on(columns.waitUntil),
-		payload_jobs_processing_idx: index('payload_jobs_processing_idx').on(columns.processing),
-		payload_jobs_updated_at_idx: index('payload_jobs_updated_at_idx').on(columns.updatedAt),
-		payload_jobs_created_at_idx: index('payload_jobs_created_at_idx').on(columns.createdAt),
-	}),
+	(columns) => [
+		index('payload_jobs_completed_at_idx').on(columns.completedAt),
+		index('payload_jobs_total_tried_idx').on(columns.totalTried),
+		index('payload_jobs_has_error_idx').on(columns.hasError),
+		index('payload_jobs_task_slug_idx').on(columns.taskSlug),
+		index('payload_jobs_queue_idx').on(columns.queue),
+		index('payload_jobs_wait_until_idx').on(columns.waitUntil),
+		index('payload_jobs_processing_idx').on(columns.processing),
+		index('payload_jobs_updated_at_idx').on(columns.updatedAt),
+		index('payload_jobs_created_at_idx').on(columns.createdAt),
+	],
 )
 
 export const payload_locked_documents = sqliteTable(
@@ -7790,17 +7482,11 @@ export const payload_locked_documents = sqliteTable(
 			.notNull()
 			.default(sql`(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))`),
 	},
-	(columns) => ({
-		payload_locked_documents_global_slug_idx: index(
-			'payload_locked_documents_global_slug_idx',
-		).on(columns.globalSlug),
-		payload_locked_documents_updated_at_idx: index(
-			'payload_locked_documents_updated_at_idx',
-		).on(columns.updatedAt),
-		payload_locked_documents_created_at_idx: index(
-			'payload_locked_documents_created_at_idx',
-		).on(columns.createdAt),
-	}),
+	(columns) => [
+		index('payload_locked_documents_global_slug_idx').on(columns.globalSlug),
+		index('payload_locked_documents_updated_at_idx').on(columns.updatedAt),
+		index('payload_locked_documents_created_at_idx').on(columns.createdAt),
+	],
 )
 
 export const payload_locked_documents_rels = sqliteTable(
@@ -7826,154 +7512,119 @@ export const payload_locked_documents_rels = sqliteTable(
 		formsID: integer('forms_id'),
 		'form-submissionsID': integer('form_submissions_id'),
 		searchID: integer('search_id'),
-		'payload-jobsID': integer('payload_jobs_id'),
 	},
-	(columns) => ({
-		order: index('payload_locked_documents_rels_order_idx').on(columns.order),
-		parentIdx: index('payload_locked_documents_rels_parent_idx').on(columns.parent),
-		pathIdx: index('payload_locked_documents_rels_path_idx').on(columns.path),
-		payload_locked_documents_rels_customers_id_idx: index(
-			'payload_locked_documents_rels_customers_id_idx',
-		).on(columns.customersID),
-		payload_locked_documents_rels_contact_form_id_idx: index(
-			'payload_locked_documents_rels_contact_form_id_idx',
-		).on(columns.contactFormID),
-		payload_locked_documents_rels_discount_codes_id_idx: index(
-			'payload_locked_documents_rels_discount_codes_id_idx',
-		).on(columns.discountCodesID),
-		payload_locked_documents_rels_media_id_idx: index(
-			'payload_locked_documents_rels_media_id_idx',
-		).on(columns.mediaID),
-		payload_locked_documents_rels_pages_id_idx: index(
-			'payload_locked_documents_rels_pages_id_idx',
-		).on(columns.pagesID),
-		payload_locked_documents_rels_post_categories_id_idx: index(
-			'payload_locked_documents_rels_post_categories_id_idx',
-		).on(columns.postCategoriesID),
-		payload_locked_documents_rels_posts_id_idx: index(
-			'payload_locked_documents_rels_posts_id_idx',
-		).on(columns.postsID),
-		payload_locked_documents_rels_product_categories_id_idx: index(
-			'payload_locked_documents_rels_product_categories_id_idx',
-		).on(columns.productCategoriesID),
-		payload_locked_documents_rels_products_id_idx: index(
-			'payload_locked_documents_rels_products_id_idx',
-		).on(columns.productsID),
-		payload_locked_documents_rels_product_sub_categories_id_idx: index(
-			'payload_locked_documents_rels_product_sub_categories_id_idx',
-		).on(columns.productSubCategoriesID),
-		payload_locked_documents_rels_orders_id_idx: index(
-			'payload_locked_documents_rels_orders_id_idx',
-		).on(columns.ordersID),
-		payload_locked_documents_rels_users_id_idx: index(
-			'payload_locked_documents_rels_users_id_idx',
-		).on(columns.usersID),
-		payload_locked_documents_rels_redirects_id_idx: index(
-			'payload_locked_documents_rels_redirects_id_idx',
-		).on(columns.redirectsID),
-		payload_locked_documents_rels_forms_id_idx: index(
-			'payload_locked_documents_rels_forms_id_idx',
-		).on(columns.formsID),
-		payload_locked_documents_rels_form_submissions_id_idx: index(
-			'payload_locked_documents_rels_form_submissions_id_idx',
-		).on(columns['form-submissionsID']),
-		payload_locked_documents_rels_search_id_idx: index(
-			'payload_locked_documents_rels_search_id_idx',
-		).on(columns.searchID),
-		payload_locked_documents_rels_payload_jobs_id_idx: index(
-			'payload_locked_documents_rels_payload_jobs_id_idx',
-		).on(columns['payload-jobsID']),
-		parentFk: foreignKey({
+	(columns) => [
+		index('payload_locked_documents_rels_order_idx').on(columns.order),
+		index('payload_locked_documents_rels_parent_idx').on(columns.parent),
+		index('payload_locked_documents_rels_path_idx').on(columns.path),
+		index('payload_locked_documents_rels_customers_id_idx').on(columns.customersID),
+		index('payload_locked_documents_rels_contact_form_id_idx').on(columns.contactFormID),
+		index('payload_locked_documents_rels_discount_codes_id_idx').on(columns.discountCodesID),
+		index('payload_locked_documents_rels_media_id_idx').on(columns.mediaID),
+		index('payload_locked_documents_rels_pages_id_idx').on(columns.pagesID),
+		index('payload_locked_documents_rels_post_categories_id_idx').on(columns.postCategoriesID),
+		index('payload_locked_documents_rels_posts_id_idx').on(columns.postsID),
+		index('payload_locked_documents_rels_product_categories_id_idx').on(
+			columns.productCategoriesID,
+		),
+		index('payload_locked_documents_rels_products_id_idx').on(columns.productsID),
+		index('payload_locked_documents_rels_product_sub_categories_id_idx').on(
+			columns.productSubCategoriesID,
+		),
+		index('payload_locked_documents_rels_orders_id_idx').on(columns.ordersID),
+		index('payload_locked_documents_rels_users_id_idx').on(columns.usersID),
+		index('payload_locked_documents_rels_redirects_id_idx').on(columns.redirectsID),
+		index('payload_locked_documents_rels_forms_id_idx').on(columns.formsID),
+		index('payload_locked_documents_rels_form_submissions_id_idx').on(
+			columns['form-submissionsID'],
+		),
+		index('payload_locked_documents_rels_search_id_idx').on(columns.searchID),
+		foreignKey({
 			columns: [columns['parent']],
 			foreignColumns: [payload_locked_documents.id],
 			name: 'payload_locked_documents_rels_parent_fk',
 		}).onDelete('cascade'),
-		customersIdFk: foreignKey({
+		foreignKey({
 			columns: [columns['customersID']],
 			foreignColumns: [customers.id],
 			name: 'payload_locked_documents_rels_customers_fk',
 		}).onDelete('cascade'),
-		contactFormIdFk: foreignKey({
+		foreignKey({
 			columns: [columns['contactFormID']],
 			foreignColumns: [contact_form.id],
 			name: 'payload_locked_documents_rels_contact_form_fk',
 		}).onDelete('cascade'),
-		discountCodesIdFk: foreignKey({
+		foreignKey({
 			columns: [columns['discountCodesID']],
 			foreignColumns: [discount_codes.id],
 			name: 'payload_locked_documents_rels_discount_codes_fk',
 		}).onDelete('cascade'),
-		mediaIdFk: foreignKey({
+		foreignKey({
 			columns: [columns['mediaID']],
 			foreignColumns: [media.id],
 			name: 'payload_locked_documents_rels_media_fk',
 		}).onDelete('cascade'),
-		pagesIdFk: foreignKey({
+		foreignKey({
 			columns: [columns['pagesID']],
 			foreignColumns: [pages.id],
 			name: 'payload_locked_documents_rels_pages_fk',
 		}).onDelete('cascade'),
-		postCategoriesIdFk: foreignKey({
+		foreignKey({
 			columns: [columns['postCategoriesID']],
 			foreignColumns: [post_categories.id],
 			name: 'payload_locked_documents_rels_post_categories_fk',
 		}).onDelete('cascade'),
-		postsIdFk: foreignKey({
+		foreignKey({
 			columns: [columns['postsID']],
 			foreignColumns: [posts.id],
 			name: 'payload_locked_documents_rels_posts_fk',
 		}).onDelete('cascade'),
-		productCategoriesIdFk: foreignKey({
+		foreignKey({
 			columns: [columns['productCategoriesID']],
 			foreignColumns: [product_categories.id],
 			name: 'payload_locked_documents_rels_product_categories_fk',
 		}).onDelete('cascade'),
-		productsIdFk: foreignKey({
+		foreignKey({
 			columns: [columns['productsID']],
 			foreignColumns: [products.id],
 			name: 'payload_locked_documents_rels_products_fk',
 		}).onDelete('cascade'),
-		productSubCategoriesIdFk: foreignKey({
+		foreignKey({
 			columns: [columns['productSubCategoriesID']],
 			foreignColumns: [product_sub_categories.id],
 			name: 'payload_locked_documents_rels_product_sub_categories_fk',
 		}).onDelete('cascade'),
-		ordersIdFk: foreignKey({
+		foreignKey({
 			columns: [columns['ordersID']],
 			foreignColumns: [orders.id],
 			name: 'payload_locked_documents_rels_orders_fk',
 		}).onDelete('cascade'),
-		usersIdFk: foreignKey({
+		foreignKey({
 			columns: [columns['usersID']],
 			foreignColumns: [users.id],
 			name: 'payload_locked_documents_rels_users_fk',
 		}).onDelete('cascade'),
-		redirectsIdFk: foreignKey({
+		foreignKey({
 			columns: [columns['redirectsID']],
 			foreignColumns: [redirects.id],
 			name: 'payload_locked_documents_rels_redirects_fk',
 		}).onDelete('cascade'),
-		formsIdFk: foreignKey({
+		foreignKey({
 			columns: [columns['formsID']],
 			foreignColumns: [forms.id],
 			name: 'payload_locked_documents_rels_forms_fk',
 		}).onDelete('cascade'),
-		'form-submissionsIdFk': foreignKey({
+		foreignKey({
 			columns: [columns['form-submissionsID']],
 			foreignColumns: [form_submissions.id],
 			name: 'payload_locked_documents_rels_form_submissions_fk',
 		}).onDelete('cascade'),
-		searchIdFk: foreignKey({
+		foreignKey({
 			columns: [columns['searchID']],
 			foreignColumns: [search.id],
 			name: 'payload_locked_documents_rels_search_fk',
 		}).onDelete('cascade'),
-		'payload-jobsIdFk': foreignKey({
-			columns: [columns['payload-jobsID']],
-			foreignColumns: [payload_jobs.id],
-			name: 'payload_locked_documents_rels_payload_jobs_fk',
-		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const payload_preferences = sqliteTable(
@@ -7989,15 +7640,11 @@ export const payload_preferences = sqliteTable(
 			.notNull()
 			.default(sql`(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))`),
 	},
-	(columns) => ({
-		payload_preferences_key_idx: index('payload_preferences_key_idx').on(columns.key),
-		payload_preferences_updated_at_idx: index('payload_preferences_updated_at_idx').on(
-			columns.updatedAt,
-		),
-		payload_preferences_created_at_idx: index('payload_preferences_created_at_idx').on(
-			columns.createdAt,
-		),
-	}),
+	(columns) => [
+		index('payload_preferences_key_idx').on(columns.key),
+		index('payload_preferences_updated_at_idx').on(columns.updatedAt),
+		index('payload_preferences_created_at_idx').on(columns.createdAt),
+	],
 )
 
 export const payload_preferences_rels = sqliteTable(
@@ -8009,24 +7656,22 @@ export const payload_preferences_rels = sqliteTable(
 		path: text('path').notNull(),
 		usersID: integer('users_id'),
 	},
-	(columns) => ({
-		order: index('payload_preferences_rels_order_idx').on(columns.order),
-		parentIdx: index('payload_preferences_rels_parent_idx').on(columns.parent),
-		pathIdx: index('payload_preferences_rels_path_idx').on(columns.path),
-		payload_preferences_rels_users_id_idx: index('payload_preferences_rels_users_id_idx').on(
-			columns.usersID,
-		),
-		parentFk: foreignKey({
+	(columns) => [
+		index('payload_preferences_rels_order_idx').on(columns.order),
+		index('payload_preferences_rels_parent_idx').on(columns.parent),
+		index('payload_preferences_rels_path_idx').on(columns.path),
+		index('payload_preferences_rels_users_id_idx').on(columns.usersID),
+		foreignKey({
 			columns: [columns['parent']],
 			foreignColumns: [payload_preferences.id],
 			name: 'payload_preferences_rels_parent_fk',
 		}).onDelete('cascade'),
-		usersIdFk: foreignKey({
+		foreignKey({
 			columns: [columns['usersID']],
 			foreignColumns: [users.id],
 			name: 'payload_preferences_rels_users_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const payload_migrations = sqliteTable(
@@ -8034,7 +7679,7 @@ export const payload_migrations = sqliteTable(
 	{
 		id: integer('id').primaryKey(),
 		name: text('name'),
-		batch: numeric('batch'),
+		batch: numeric('batch', { mode: 'number' }),
 		updatedAt: text('updated_at')
 			.notNull()
 			.default(sql`(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))`),
@@ -8042,14 +7687,10 @@ export const payload_migrations = sqliteTable(
 			.notNull()
 			.default(sql`(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))`),
 	},
-	(columns) => ({
-		payload_migrations_updated_at_idx: index('payload_migrations_updated_at_idx').on(
-			columns.updatedAt,
-		),
-		payload_migrations_created_at_idx: index('payload_migrations_created_at_idx').on(
-			columns.createdAt,
-		),
-	}),
+	(columns) => [
+		index('payload_migrations_updated_at_idx').on(columns.updatedAt),
+		index('payload_migrations_created_at_idx').on(columns.createdAt),
+	],
 )
 
 export const general_global = sqliteTable(
@@ -8062,11 +7703,7 @@ export const general_global = sqliteTable(
 		updatedAt: text('updated_at').default(sql`(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))`),
 		createdAt: text('created_at').default(sql`(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))`),
 	},
-	(columns) => ({
-		general_global_site_banner_idx: index('general_global_site_banner_idx').on(
-			columns.siteBanner,
-		),
-	}),
+	(columns) => [index('general_global_site_banner_idx').on(columns.siteBanner)],
 )
 
 export const general_global_locales = sqliteTable(
@@ -8077,17 +7714,17 @@ export const general_global_locales = sqliteTable(
 		_locale: text('_locale', { enum: ['en', 'vi'] }).notNull(),
 		_parentID: integer('_parent_id').notNull(),
 	},
-	(columns) => ({
-		_localeParent: uniqueIndex('general_global_locales_locale_parent_id_unique').on(
+	(columns) => [
+		uniqueIndex('general_global_locales_locale_parent_id_unique').on(
 			columns._locale,
 			columns._parentID,
 		),
-		_parentIdFk: foreignKey({
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [general_global.id],
 			name: 'general_global_locales_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const contact_form_global = sqliteTable('contact_form_global', {
@@ -8111,17 +7748,17 @@ export const contact_form_global_locales = sqliteTable(
 		_locale: text('_locale', { enum: ['en', 'vi'] }).notNull(),
 		_parentID: integer('_parent_id').notNull(),
 	},
-	(columns) => ({
-		_localeParent: uniqueIndex('contact_form_global_locales_locale_parent_id_unique').on(
+	(columns) => [
+		uniqueIndex('contact_form_global_locales_locale_parent_id_unique').on(
 			columns._locale,
 			columns._parentID,
 		),
-		_parentIdFk: foreignKey({
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [contact_form_global.id],
 			name: 'contact_form_global_locales_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const floating_global_links = sqliteTable(
@@ -8135,16 +7772,16 @@ export const floating_global_links = sqliteTable(
 			onDelete: 'set null',
 		}),
 	},
-	(columns) => ({
-		_orderIdx: index('floating_global_links_order_idx').on(columns._order),
-		_parentIDIdx: index('floating_global_links_parent_id_idx').on(columns._parentID),
-		floating_global_links_icon_idx: index('floating_global_links_icon_idx').on(columns.icon),
-		_parentIDFk: foreignKey({
+	(columns) => [
+		index('floating_global_links_order_idx').on(columns._order),
+		index('floating_global_links_parent_id_idx').on(columns._parentID),
+		index('floating_global_links_icon_idx').on(columns.icon),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [floating_global.id],
 			name: 'floating_global_links_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const floating_global = sqliteTable('floating_global', {
@@ -8161,17 +7798,17 @@ export const floating_global_locales = sqliteTable(
 		_locale: text('_locale', { enum: ['en', 'vi'] }).notNull(),
 		_parentID: integer('_parent_id').notNull(),
 	},
-	(columns) => ({
-		_localeParent: uniqueIndex('floating_global_locales_locale_parent_id_unique').on(
+	(columns) => [
+		uniqueIndex('floating_global_locales_locale_parent_id_unique').on(
 			columns._locale,
 			columns._parentID,
 		),
-		_parentIdFk: foreignKey({
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [floating_global.id],
 			name: 'floating_global_locales_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const footer_global = sqliteTable(
@@ -8184,11 +7821,7 @@ export const footer_global = sqliteTable(
 		updatedAt: text('updated_at').default(sql`(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))`),
 		createdAt: text('created_at').default(sql`(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))`),
 	},
-	(columns) => ({
-		footer_global_image_image_image_idx: index('footer_global_image_image_image_idx').on(
-			columns.image_image,
-		),
-	}),
+	(columns) => [index('footer_global_image_image_image_idx').on(columns.image_image)],
 )
 
 export const footer_global_locales = sqliteTable(
@@ -8204,17 +7837,17 @@ export const footer_global_locales = sqliteTable(
 		_locale: text('_locale', { enum: ['en', 'vi'] }).notNull(),
 		_parentID: integer('_parent_id').notNull(),
 	},
-	(columns) => ({
-		_localeParent: uniqueIndex('footer_global_locales_locale_parent_id_unique').on(
+	(columns) => [
+		uniqueIndex('footer_global_locales_locale_parent_id_unique').on(
 			columns._locale,
 			columns._parentID,
 		),
-		_parentIdFk: foreignKey({
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [footer_global.id],
 			name: 'footer_global_locales_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const header_global_header_items_left = sqliteTable(
@@ -8231,15 +7864,15 @@ export const header_global_header_items_left = sqliteTable(
 		}),
 		customUrl: text('custom_url'),
 	},
-	(columns) => ({
-		_orderIdx: index('header_global_header_items_left_order_idx').on(columns._order),
-		_parentIDIdx: index('header_global_header_items_left_parent_id_idx').on(columns._parentID),
-		_parentIDFk: foreignKey({
+	(columns) => [
+		index('header_global_header_items_left_order_idx').on(columns._order),
+		index('header_global_header_items_left_parent_id_idx').on(columns._parentID),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [header_global.id],
 			name: 'header_global_header_items_left_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const header_global_header_items_left_locales = sqliteTable(
@@ -8250,16 +7883,17 @@ export const header_global_header_items_left_locales = sqliteTable(
 		_locale: text('_locale', { enum: ['en', 'vi'] }).notNull(),
 		_parentID: text('_parent_id').notNull(),
 	},
-	(columns) => ({
-		_localeParent: uniqueIndex(
-			'header_global_header_items_left_locales_locale_parent_id_unique',
-		).on(columns._locale, columns._parentID),
-		_parentIdFk: foreignKey({
+	(columns) => [
+		uniqueIndex('header_global_header_items_left_locales_locale_parent_id_uni').on(
+			columns._locale,
+			columns._parentID,
+		),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [header_global_header_items_left.id],
 			name: 'header_global_header_items_left_locales_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const header_global_header_items_right = sqliteTable(
@@ -8276,15 +7910,15 @@ export const header_global_header_items_right = sqliteTable(
 		}),
 		customUrl: text('custom_url'),
 	},
-	(columns) => ({
-		_orderIdx: index('header_global_header_items_right_order_idx').on(columns._order),
-		_parentIDIdx: index('header_global_header_items_right_parent_id_idx').on(columns._parentID),
-		_parentIDFk: foreignKey({
+	(columns) => [
+		index('header_global_header_items_right_order_idx').on(columns._order),
+		index('header_global_header_items_right_parent_id_idx').on(columns._parentID),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [header_global.id],
 			name: 'header_global_header_items_right_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const header_global_header_items_right_locales = sqliteTable(
@@ -8295,16 +7929,17 @@ export const header_global_header_items_right_locales = sqliteTable(
 		_locale: text('_locale', { enum: ['en', 'vi'] }).notNull(),
 		_parentID: text('_parent_id').notNull(),
 	},
-	(columns) => ({
-		_localeParent: uniqueIndex(
-			'header_global_header_items_right_locales_locale_parent_id_unique',
-		).on(columns._locale, columns._parentID),
-		_parentIdFk: foreignKey({
+	(columns) => [
+		uniqueIndex('header_global_header_items_right_locales_locale_parent_id_un').on(
+			columns._locale,
+			columns._parentID,
+		),
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [header_global_header_items_right.id],
 			name: 'header_global_header_items_right_locales_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const header_global = sqliteTable('header_global', {
@@ -8327,64 +7962,54 @@ export const header_global_rels = sqliteTable(
 		productsID: integer('products_id'),
 		productSubCategoriesID: integer('product_sub_categories_id'),
 	},
-	(columns) => ({
-		order: index('header_global_rels_order_idx').on(columns.order),
-		parentIdx: index('header_global_rels_parent_idx').on(columns.parent),
-		pathIdx: index('header_global_rels_path_idx').on(columns.path),
-		header_global_rels_pages_id_idx: index('header_global_rels_pages_id_idx').on(
-			columns.pagesID,
+	(columns) => [
+		index('header_global_rels_order_idx').on(columns.order),
+		index('header_global_rels_parent_idx').on(columns.parent),
+		index('header_global_rels_path_idx').on(columns.path),
+		index('header_global_rels_pages_id_idx').on(columns.pagesID),
+		index('header_global_rels_post_categories_id_idx').on(columns.postCategoriesID),
+		index('header_global_rels_posts_id_idx').on(columns.postsID),
+		index('header_global_rels_product_categories_id_idx').on(columns.productCategoriesID),
+		index('header_global_rels_products_id_idx').on(columns.productsID),
+		index('header_global_rels_product_sub_categories_id_idx').on(
+			columns.productSubCategoriesID,
 		),
-		header_global_rels_post_categories_id_idx: index(
-			'header_global_rels_post_categories_id_idx',
-		).on(columns.postCategoriesID),
-		header_global_rels_posts_id_idx: index('header_global_rels_posts_id_idx').on(
-			columns.postsID,
-		),
-		header_global_rels_product_categories_id_idx: index(
-			'header_global_rels_product_categories_id_idx',
-		).on(columns.productCategoriesID),
-		header_global_rels_products_id_idx: index('header_global_rels_products_id_idx').on(
-			columns.productsID,
-		),
-		header_global_rels_product_sub_categories_id_idx: index(
-			'header_global_rels_product_sub_categories_id_idx',
-		).on(columns.productSubCategoriesID),
-		parentFk: foreignKey({
+		foreignKey({
 			columns: [columns['parent']],
 			foreignColumns: [header_global.id],
 			name: 'header_global_rels_parent_fk',
 		}).onDelete('cascade'),
-		pagesIdFk: foreignKey({
+		foreignKey({
 			columns: [columns['pagesID']],
 			foreignColumns: [pages.id],
 			name: 'header_global_rels_pages_fk',
 		}).onDelete('cascade'),
-		postCategoriesIdFk: foreignKey({
+		foreignKey({
 			columns: [columns['postCategoriesID']],
 			foreignColumns: [post_categories.id],
 			name: 'header_global_rels_post_categories_fk',
 		}).onDelete('cascade'),
-		postsIdFk: foreignKey({
+		foreignKey({
 			columns: [columns['postsID']],
 			foreignColumns: [posts.id],
 			name: 'header_global_rels_posts_fk',
 		}).onDelete('cascade'),
-		productCategoriesIdFk: foreignKey({
+		foreignKey({
 			columns: [columns['productCategoriesID']],
 			foreignColumns: [product_categories.id],
 			name: 'header_global_rels_product_categories_fk',
 		}).onDelete('cascade'),
-		productsIdFk: foreignKey({
+		foreignKey({
 			columns: [columns['productsID']],
 			foreignColumns: [products.id],
 			name: 'header_global_rels_products_fk',
 		}).onDelete('cascade'),
-		productSubCategoriesIdFk: foreignKey({
+		foreignKey({
 			columns: [columns['productSubCategoriesID']],
 			foreignColumns: [product_sub_categories.id],
 			name: 'header_global_rels_product_sub_categories_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const popup_banner_global = sqliteTable('popup_banner_global', {
@@ -8411,17 +8036,17 @@ export const promo_global_locales = sqliteTable(
 		_locale: text('_locale', { enum: ['en', 'vi'] }).notNull(),
 		_parentID: integer('_parent_id').notNull(),
 	},
-	(columns) => ({
-		_localeParent: uniqueIndex('promo_global_locales_locale_parent_id_unique').on(
+	(columns) => [
+		uniqueIndex('promo_global_locales_locale_parent_id_unique').on(
 			columns._locale,
 			columns._parentID,
 		),
-		_parentIdFk: foreignKey({
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [promo_global.id],
 			name: 'promo_global_locales_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const promo_global_rels = sqliteTable(
@@ -8438,60 +8063,52 @@ export const promo_global_rels = sqliteTable(
 		productsID: integer('products_id'),
 		productSubCategoriesID: integer('product_sub_categories_id'),
 	},
-	(columns) => ({
-		order: index('promo_global_rels_order_idx').on(columns.order),
-		parentIdx: index('promo_global_rels_parent_idx').on(columns.parent),
-		pathIdx: index('promo_global_rels_path_idx').on(columns.path),
-		promo_global_rels_pages_id_idx: index('promo_global_rels_pages_id_idx').on(columns.pagesID),
-		promo_global_rels_post_categories_id_idx: index(
-			'promo_global_rels_post_categories_id_idx',
-		).on(columns.postCategoriesID),
-		promo_global_rels_posts_id_idx: index('promo_global_rels_posts_id_idx').on(columns.postsID),
-		promo_global_rels_product_categories_id_idx: index(
-			'promo_global_rels_product_categories_id_idx',
-		).on(columns.productCategoriesID),
-		promo_global_rels_products_id_idx: index('promo_global_rels_products_id_idx').on(
-			columns.productsID,
-		),
-		promo_global_rels_product_sub_categories_id_idx: index(
-			'promo_global_rels_product_sub_categories_id_idx',
-		).on(columns.productSubCategoriesID),
-		parentFk: foreignKey({
+	(columns) => [
+		index('promo_global_rels_order_idx').on(columns.order),
+		index('promo_global_rels_parent_idx').on(columns.parent),
+		index('promo_global_rels_path_idx').on(columns.path),
+		index('promo_global_rels_pages_id_idx').on(columns.pagesID),
+		index('promo_global_rels_post_categories_id_idx').on(columns.postCategoriesID),
+		index('promo_global_rels_posts_id_idx').on(columns.postsID),
+		index('promo_global_rels_product_categories_id_idx').on(columns.productCategoriesID),
+		index('promo_global_rels_products_id_idx').on(columns.productsID),
+		index('promo_global_rels_product_sub_categories_id_idx').on(columns.productSubCategoriesID),
+		foreignKey({
 			columns: [columns['parent']],
 			foreignColumns: [promo_global.id],
 			name: 'promo_global_rels_parent_fk',
 		}).onDelete('cascade'),
-		pagesIdFk: foreignKey({
+		foreignKey({
 			columns: [columns['pagesID']],
 			foreignColumns: [pages.id],
 			name: 'promo_global_rels_pages_fk',
 		}).onDelete('cascade'),
-		postCategoriesIdFk: foreignKey({
+		foreignKey({
 			columns: [columns['postCategoriesID']],
 			foreignColumns: [post_categories.id],
 			name: 'promo_global_rels_post_categories_fk',
 		}).onDelete('cascade'),
-		postsIdFk: foreignKey({
+		foreignKey({
 			columns: [columns['postsID']],
 			foreignColumns: [posts.id],
 			name: 'promo_global_rels_posts_fk',
 		}).onDelete('cascade'),
-		productCategoriesIdFk: foreignKey({
+		foreignKey({
 			columns: [columns['productCategoriesID']],
 			foreignColumns: [product_categories.id],
 			name: 'promo_global_rels_product_categories_fk',
 		}).onDelete('cascade'),
-		productsIdFk: foreignKey({
+		foreignKey({
 			columns: [columns['productsID']],
 			foreignColumns: [products.id],
 			name: 'promo_global_rels_products_fk',
 		}).onDelete('cascade'),
-		productSubCategoriesIdFk: foreignKey({
+		foreignKey({
 			columns: [columns['productSubCategoriesID']],
 			foreignColumns: [product_sub_categories.id],
 			name: 'promo_global_rels_product_sub_categories_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const reviews_global = sqliteTable('reviews_global', {
@@ -8514,17 +8131,17 @@ export const reviews_global_locales = sqliteTable(
 		_locale: text('_locale', { enum: ['en', 'vi'] }).notNull(),
 		_parentID: integer('_parent_id').notNull(),
 	},
-	(columns) => ({
-		_localeParent: uniqueIndex('reviews_global_locales_locale_parent_id_unique').on(
+	(columns) => [
+		uniqueIndex('reviews_global_locales_locale_parent_id_unique').on(
 			columns._locale,
 			columns._parentID,
 		),
-		_parentIdFk: foreignKey({
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [reviews_global.id],
 			name: 'reviews_global_locales_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const payment_global = sqliteTable('payment_global', {
@@ -8539,8 +8156,8 @@ export const payment_global = sqliteTable('payment_global', {
 export const checkout_page_global = sqliteTable('checkout_page_global', {
 	id: integer('id').primaryKey(),
 	address_phoneInputLabel: text('address_phone_input_label'),
-	shipping_standardShippingPrice: numeric('shipping_standard_shipping_price'),
-	shipping_fastShippingPrice: numeric('shipping_fast_shipping_price'),
+	shipping_standardShippingPrice: numeric('shipping_standard_shipping_price', { mode: 'number' }),
+	shipping_fastShippingPrice: numeric('shipping_fast_shipping_price', { mode: 'number' }),
 	updatedAt: text('updated_at').default(sql`(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))`),
 	createdAt: text('created_at').default(sql`(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))`),
 })
@@ -8585,17 +8202,17 @@ export const checkout_page_global_locales = sqliteTable(
 		_locale: text('_locale', { enum: ['en', 'vi'] }).notNull(),
 		_parentID: integer('_parent_id').notNull(),
 	},
-	(columns) => ({
-		_localeParent: uniqueIndex('checkout_page_global_locales_locale_parent_id_unique').on(
+	(columns) => [
+		uniqueIndex('checkout_page_global_locales_locale_parent_id_unique').on(
 			columns._locale,
 			columns._parentID,
 		),
-		_parentIdFk: foreignKey({
+		foreignKey({
 			columns: [columns['_parentID']],
 			foreignColumns: [checkout_page_global.id],
 			name: 'checkout_page_global_locales_parent_id_fk',
 		}).onDelete('cascade'),
-	}),
+	],
 )
 
 export const relations_customers = relations(customers, () => ({}))
@@ -12765,6 +12382,7 @@ export const relations_search = relations(search, ({ one, many }) => ({
 		relationName: '_rels',
 	}),
 }))
+export const relations_payload_kv = relations(payload_kv, () => ({}))
 export const relations_payload_jobs_log = relations(payload_jobs_log, ({ one }) => ({
 	_parentID: one(payload_jobs, {
 		fields: [payload_jobs_log._parentID],
@@ -12864,11 +12482,6 @@ export const relations_payload_locked_documents_rels = relations(
 			fields: [payload_locked_documents_rels.searchID],
 			references: [search.id],
 			relationName: 'search',
-		}),
-		'payload-jobsID': one(payload_jobs, {
-			fields: [payload_locked_documents_rels['payload-jobsID']],
-			references: [payload_jobs.id],
-			relationName: 'payload-jobs',
 		}),
 	}),
 )
@@ -13438,6 +13051,7 @@ type DatabaseSchema = {
 	search: typeof search
 	search_locales: typeof search_locales
 	search_rels: typeof search_rels
+	payload_kv: typeof payload_kv
 	payload_jobs_log: typeof payload_jobs_log
 	payload_jobs: typeof payload_jobs
 	payload_locked_documents: typeof payload_locked_documents
@@ -13753,6 +13367,7 @@ type DatabaseSchema = {
 	relations_search_locales: typeof relations_search_locales
 	relations_search_rels: typeof relations_search_rels
 	relations_search: typeof relations_search
+	relations_payload_kv: typeof relations_payload_kv
 	relations_payload_jobs_log: typeof relations_payload_jobs_log
 	relations_payload_jobs: typeof relations_payload_jobs
 	relations_payload_locked_documents_rels: typeof relations_payload_locked_documents_rels
