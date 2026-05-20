@@ -12,20 +12,27 @@ type UseClickableCardType<T extends HTMLElement> = {
 	}
 }
 
-interface Props {
+interface Props<T extends HTMLElement> {
 	external?: boolean
 	newTab?: boolean
 	scroll?: boolean
+	cardRef?: RefObject<T | null>
+	linkRef?: RefObject<HTMLAnchorElement | null>
 }
 
 function useClickableCard<T extends HTMLElement>({
 	external = false,
 	newTab = false,
 	scroll = true,
-}: Props): UseClickableCardType<T> {
+	cardRef,
+	linkRef,
+}: Props<T>): UseClickableCardType<T> {
 	const router = useRouter()
-	const card = useRef<T>(null)
-	const link = useRef<HTMLAnchorElement>(null)
+	const internalCard = useRef<T>(null)
+	const internalLink = useRef<HTMLAnchorElement>(null)
+
+	const card = (cardRef as RefObject<T | null>) ?? internalCard
+	const link = (linkRef as RefObject<HTMLAnchorElement | null>) ?? internalLink
 	const timeDown = useRef<number>(0)
 	const hasActiveParent = useRef<boolean>(false)
 	const pressedButton = useRef<number>(0)
