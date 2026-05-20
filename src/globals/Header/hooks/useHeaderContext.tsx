@@ -2,15 +2,24 @@
 
 import { createContext, useContext, useEffect, useState } from 'react'
 
+import { Lang } from '@/utilities/lang'
+
 type HeaderContextType = {
 	allTopBarsHeight: number
 	smallNavOpen: boolean
 	setSmallNavOpen: (open: boolean) => void
+	locale: Lang
 }
 
 const HeaderContext = createContext<HeaderContextType | null>(null)
 
-export function HeaderProvider({ children }: { children: React.ReactNode }): React.JSX.Element {
+export function HeaderProvider({
+	children,
+	initialLocale,
+}: {
+	children: React.ReactNode
+	initialLocale?: Lang
+}): React.JSX.Element {
 	const [allTopBarsHeight, setAllTopBarsHeight] = useState(0)
 	function refresh(): void {
 		const header = document.querySelector('body > header')
@@ -30,12 +39,15 @@ export function HeaderProvider({ children }: { children: React.ReactNode }): Rea
 
 	const [smallNavOpen, setSmallNavOpen] = useState(false)
 
+	const [locale] = useState<Lang>(initialLocale ?? (Lang.Vietnamese as Lang))
+
 	return (
 		<HeaderContext.Provider
 			value={{
 				allTopBarsHeight,
 				smallNavOpen,
 				setSmallNavOpen,
+				locale,
 			}}
 		>
 			{children}

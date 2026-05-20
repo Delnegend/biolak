@@ -19,15 +19,19 @@ import { Lang } from '@/utilities/lang'
 import { matchLang } from '@/utilities/matchLang'
 import { cn } from '@/utilities/ui'
 
+import { useHeaderContext } from '../hooks/useHeaderContext'
+
 export function INTERNAL_CartSidebar({
 	label,
 	locale,
 	size = 'lg',
 }: {
 	label?: string
-	locale: Lang
+	locale?: Lang
 	size?: 'lg' | 'sm'
 }): React.JSX.Element {
+	const { locale: ctxLocale } = useHeaderContext()
+	const effectiveLocale = locale ?? ctxLocale
 	const syncWithLocalStorage = true
 
 	const { cart, uncheckAll } = useCartManager({
@@ -54,13 +58,13 @@ export function INTERNAL_CartSidebar({
 					<span className={cn(size === 'sm' && 'hidden')}>
 						{label ??
 							matchLang({ [Lang.English]: 'Cart', [Lang.Vietnamese]: 'Giỏ hàng' })(
-								locale,
+								effectiveLocale,
 							)}
 					</span>
 					<span className={cn(size === 'lg' && 'hidden')}>
 						<span className="sr-only">
 							{matchLang({ [Lang.English]: 'Cart', [Lang.Vietnamese]: 'Giỏ hàng' })(
-								locale,
+								effectiveLocale,
 							)}
 						</span>
 						<ShoppingCart />
@@ -80,7 +84,7 @@ export function INTERNAL_CartSidebar({
 						{matchLang({
 							[Lang.English]: 'Your cart',
 							[Lang.Vietnamese]: 'Giỏ hàng của bạn',
-						})(locale)}
+						})(effectiveLocale)}
 					</SheetTitle>
 				</SheetHeader>
 				{cart.length > 0 ? (
@@ -109,7 +113,7 @@ export function INTERNAL_CartSidebar({
 									{matchLang({
 										[Lang.English]: 'Unselect all',
 										[Lang.Vietnamese]: 'Bỏ chọn tất cả',
-									})(locale)}
+									})(effectiveLocale)}
 								</button>
 
 								<hr style={{ gridArea: 'hr' }} className="my-6 border-border" />
@@ -118,7 +122,7 @@ export function INTERNAL_CartSidebar({
 									{matchLang({
 										[Lang.English]: 'Total',
 										[Lang.Vietnamese]: 'Tạm tính',
-									})(locale)}
+									})(effectiveLocale)}
 								</div>
 
 								<div
@@ -144,7 +148,7 @@ export function INTERNAL_CartSidebar({
 										{matchLang({
 											[Lang.English]: 'Checkout',
 											[Lang.Vietnamese]: 'Thanh toán',
-										})(locale)}
+										})(effectiveLocale)}
 									</a>
 								</Button>
 							</div>
@@ -156,13 +160,13 @@ export function INTERNAL_CartSidebar({
 							{matchLang({
 								[Lang.English]: 'Peek-a-boo...',
 								[Lang.Vietnamese]: 'Ú òa...',
-							})(locale)}
+							})(effectiveLocale)}
 						</h2>
 						<div className="text-balance text-center text-2xl text-[#271D13]">
 							{matchLang({
 								[Lang.English]: 'Your cart is empty',
 								[Lang.Vietnamese]: 'Hiện không có sản phẩm nào trong giỏ của bạn',
-							})(locale)}
+							})(effectiveLocale)}
 						</div>
 					</div>
 				)}

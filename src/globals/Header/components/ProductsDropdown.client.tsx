@@ -166,14 +166,16 @@ export function INTERNAL_ProductsDropdownClient({
 	useEffect(() => {
 		if (open) return
 
-		setActiveCategory(null)
-		setActiveSubCategory(null)
+		queueMicrotask(() => {
+			setActiveCategory(null)
+			setActiveSubCategory(null)
+		})
 	}, [open])
 
 	// close on route change
 	const pathname = usePathname()
 	useEffect(() => {
-		setOpen(false)
+		queueMicrotask(() => setOpen(false))
 	}, [pathname])
 
 	return (

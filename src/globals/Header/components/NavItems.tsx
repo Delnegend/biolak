@@ -47,20 +47,19 @@ export const NavItems: Record<
 	),
 	contact: ({ label, locale }) => (
 		<Dialog>
-			<DialogTrigger asChild>
-				<INTERNAL_CloseSmallNavWrapper asChild>
-					<button className="whitespace-nowrap">
+			<DialogTrigger>
+				<INTERNAL_CloseSmallNavWrapper>
+					<span className="whitespace-nowrap">
 						{label ??
 							matchLang({
 								[Lang.English]: 'Contacts',
 								[Lang.Vietnamese]: 'Liên hệ',
 							})(locale)}
-					</button>
+					</span>
 				</INTERNAL_CloseSmallNavWrapper>
 			</DialogTrigger>
 			<DialogContent className="min-w-[932px] overflow-hidden !rounded-2xl bg-primary-foreground p-12">
 				<ContactFormGlobalComponent inDialog={true} />
-				``
 			</DialogContent>
 		</Dialog>
 	),
