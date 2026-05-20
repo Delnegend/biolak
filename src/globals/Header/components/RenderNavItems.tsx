@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import React from 'react'
 
 import type { HeaderGlobal } from '@/payload-types'
 import { Lang } from '@/utilities/lang'
@@ -22,17 +23,30 @@ export function INTERNAL_RenderNavItems({
 	return (
 		<nav className={cn('flex items-center gap-9 text-xl max-md:flex-col', className)}>
 			{items?.map((item, index) => {
+				const makeKey = (): string => {
+					if (item.kind === 'prebuilt')
+						return `prebuilt-${item.prebuilt}-${item.label ?? ''}`
+					if (item.kind === 'internalUrl') {
+						const doc =
+							typeof item.internalUrl?.value === 'object'
+								? item.internalUrl?.value
+								: null
+						return `internal-${item.internalUrl?.relationTo}-${doc?.slug ?? ''}`
+					}
+					if (item.kind === 'customUrl') return `custom-${item.customUrl ?? ''}`
+					return `item-${index}`
+				}
+
+				const key = makeKey()
+
 				switch (item.kind) {
 					case 'prebuilt': {
 						if (!item.prebuilt) return null
 						const Elem = NavItems[item.prebuilt]
 						return Elem ? (
-							<Elem
-								key={`header-left-${index}`}
-								label={item.label ?? undefined}
-								locale={locale}
-								size={size}
-							/>
+							<React.Fragment key={key}>
+								<Elem label={item.label ?? undefined} locale={locale} size={size} />
+							</React.Fragment>
 						) : null
 					}
 					case 'internalUrl': {
@@ -64,35 +78,39 @@ export function INTERNAL_RenderNavItems({
 						}
 
 						return item.internalUrl?.value ? (
-							<INTERNAL_CloseSmallNavWrapper asChild key={`header-left-${index}`}>
-								<Link href={url ?? '#'} className="whitespace-nowrap">
-									{item.label ??
-										doc?.title ??
-										matchLang({
-											[Lang.English]: 'Internal link',
-											[Lang.Vietnamese]: 'Liên kết nội bộ',
-										})(locale)}
-								</Link>
-							</INTERNAL_CloseSmallNavWrapper>
+							<React.Fragment key={key}>
+								<INTERNAL_CloseSmallNavWrapper asChild>
+									<Link href={url ?? '#'} className="whitespace-nowrap">
+										{item.label ??
+											doc?.title ??
+											matchLang({
+												[Lang.English]: 'Internal link',
+												[Lang.Vietnamese]: 'Liên kết nội bộ',
+											})(locale)}
+									</Link>
+								</INTERNAL_CloseSmallNavWrapper>
+							</React.Fragment>
 						) : null
 					}
 					case 'customUrl': {
 						return (
-							<INTERNAL_CloseSmallNavWrapper asChild key={`header-left-${index}`}>
-								<Link
-									href={item.customUrl ?? '#'}
-									target="_blank"
-									rel="noopener noreferrer"
-									className="whitespace-nowrap"
-								>
-									{item.label ??
-										item.customUrl?.replaceAll(/https?:\/\//, '') ??
-										matchLang({
-											[Lang.English]: 'External link',
-											[Lang.Vietnamese]: 'Liên kết ngoài',
-										})(locale)}
-								</Link>
-							</INTERNAL_CloseSmallNavWrapper>
+							<React.Fragment key={key}>
+								<INTERNAL_CloseSmallNavWrapper asChild>
+									<Link
+										href={item.customUrl ?? '#'}
+										target="_blank"
+										rel="noopener noreferrer"
+										className="whitespace-nowrap"
+									>
+										{item.label ??
+											item.customUrl?.replaceAll(/https?:\/\//, '') ??
+											matchLang({
+												[Lang.English]: 'External link',
+												[Lang.Vietnamese]: 'Liên kết ngoài',
+											})(locale)}
+									</Link>
+								</INTERNAL_CloseSmallNavWrapper>
+							</React.Fragment>
 						)
 					}
 				}
