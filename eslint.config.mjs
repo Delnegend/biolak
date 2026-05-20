@@ -11,7 +11,7 @@ const compat = new FlatCompat({
 	resolvePluginsRelativeTo: __dirname,
 })
 
-export default [
+const config = [
 	...compat.extends('next/core-web-vitals', 'next/typescript'),
 	{
 		plugins: {
@@ -48,3 +48,4 @@ export default [
 		ignores: ['.next/', './src/migrations/', './src/app/(payload)/admin/importMap.js'],
 	},
 ]
+export default config
