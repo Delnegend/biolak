@@ -81,7 +81,9 @@ export function useCartManager({
 	locale: Lang
 }) {
 	const cartCtx = useContext(CartContext)
-	const [loadedFromLocalStorageDone, setLoadedFromLocalStorageDone] = useState(false)
+	const [loadedFromLocalStorageDone, setLoadedFromLocalStorageDone] = useState<boolean>(
+		() => !syncWithLocalStorage,
+	)
 
 	if (!cartCtx) {
 		throw new Error('useCartManager must be used within a CartContextProvider')
@@ -98,7 +100,6 @@ export function useCartManager({
 
 	useEffect(() => {
 		if (!syncWithLocalStorage) {
-			setLoadedFromLocalStorageDone(true)
 			return
 		}
 
@@ -109,7 +110,7 @@ export function useCartManager({
 			if (process.env.NODE_ENV === 'development')
 				cnsole.error("Can't parse cart from localStorage:", parsedUnvalidated)
 			localStorage.setItem(cartKey, JSON.stringify([]))
-			setLoadedFromLocalStorageDone(true)
+			setTimeout(() => setLoadedFromLocalStorageDone(true), 0)
 			return
 		}
 
@@ -120,7 +121,7 @@ export function useCartManager({
 			if (process.env.NODE_ENV === 'development')
 				cnsole.error("Can't validate cart from localStorage:", z.prettifyError(error))
 			localStorage.setItem(cartKey, JSON.stringify([]))
-			setLoadedFromLocalStorageDone(true)
+			setTimeout(() => setLoadedFromLocalStorageDone(true), 0)
 			return
 		}
 
