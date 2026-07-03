@@ -94,6 +94,7 @@ export default buildConfig({
 				return process.env.DATABASE_URI
 			})(),
 		},
+		// @ts-expect-error Payload db-sqlite and drizzle Drizzle types diverge at this version
 		prodMigrations: migrations,
 	}),
 	collections: [
