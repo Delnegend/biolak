@@ -3,6 +3,8 @@ import './globals.css'
 import type { Metadata } from 'next'
 import { Crimson_Pro, Manrope } from 'next/font/google'
 import { draftMode, headers as getHeaders } from 'next/headers'
+import { NextIntlClientProvider } from 'next-intl'
+import { getMessages } from 'next-intl/server'
 import React from 'react'
 
 import { AdminBar } from '@/components/AdminBar'
@@ -11,6 +13,7 @@ import { FloatingGlobalComponent } from '@/globals/Floating/Component'
 import { HeaderGlobalComponent } from '@/globals/Header/Component'
 import { PromoGlobalComponent } from '@/globals/Promo/Component'
 import { CartContextProvider } from '@/hooks/useCartManager'
+import { routing } from '@/i18n/routing'
 import { getServerSideURL } from '@/utilities/getURL'
 import { HeaderName } from '@/utilities/headerName'
 import { mergeOpenGraph } from '@/utilities/mergeOpenGraph'
@@ -29,41 +32,59 @@ const crimsonPro = Crimson_Pro({
 
 export const dynamic = 'force-dynamic'
 
-export default async function RootLayout({ children }: { children: React.ReactNode }) {
-	const [{ isEnabled }, headers] = await Promise.all([draftMode(), getHeaders()])
+export default async function RootLayout({
+	children,
+	params,
+}: {
+	children: React.ReactNode
+	params: Promise<{ locale: string }>
+}) {
+	const { locale } = await params
+	const [{ isEnabled }, headers, messages] = await Promise.all([
+		draftMode(),
+		getHeaders(),
+		getMessages(),
+	])
 	const pathname = headers.get(HeaderName.CurrentPath)
 
 	return (
 		<html
 			className={cn(manrope.variable, crimsonPro.variable, `font-sans`)}
 			data-theme="light"
+			lang={locale}
 			suppressHydrationWarning
 		>
 			<head>
 				<link href="/favicon.ico" rel="icon" />
 			</head>
 			<body>
-				<CartContextProvider>
-					<Toaster theme="light" />
-					<AdminBar
-						adminBarProps={{
-							preview: isEnabled,
-						}}
-					/>
-					{pathname === '/checkout' ? (
-						<></>
-					) : (
-						<>
-							<PromoGlobalComponent />
-							<HeaderGlobalComponent />
-						</>
-					)}
-					<FloatingGlobalComponent />
-					{children}
-				</CartContextProvider>
+				<NextIntlClientProvider messages={messages}>
+					<CartContextProvider>
+						<Toaster theme="light" />
+						<AdminBar
+							adminBarProps={{
+								preview: isEnabled,
+							}}
+						/>
+						{pathname === `/${locale}/checkout` ? (
+							<></>
+						) : (
+							<>
+								<PromoGlobalComponent />
+								<HeaderGlobalComponent />
+							</>
+						)}
+						<FloatingGlobalComponent />
+						{children}
+					</CartContextProvider>
+				</NextIntlClientProvider>
 			</body>
 		</html>
 	)
+}
+
+export function generateStaticParams() {
+	return routing.locales.map((locale) => ({ locale }))
 }
 
 export async function generateMetadata(): Promise<Metadata> {
