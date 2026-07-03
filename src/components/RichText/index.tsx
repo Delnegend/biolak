@@ -69,16 +69,17 @@ const jsxConverters =
 
 export default function RichText(
 	props: {
-		data: DefaultTypedEditorState
+		data: unknown
 		enableGutter?: boolean
 		enableProse?: boolean
 		locale: Lang
 	} & React.HTMLAttributes<HTMLDivElement>,
 ) {
-	const { className, enableProse = true, enableGutter = true, locale, ...rest } = props
+	const { className, data, enableProse = true, enableGutter = true, locale, ...rest } = props
 	return (
 		<ConvertRichText
 			converters={jsxConverters(locale)}
+			data={data as DefaultTypedEditorState}
 			className={cn(
 				'payload-richtext',
 				{
