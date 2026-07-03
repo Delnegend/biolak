@@ -56,21 +56,3 @@ export function useLanguage(): LanguageContextType {
 
 	return context
 }
-
-export function useTranslation<TTranslations extends Translations>(translations: TTranslations) {
-	const { language, toggleLanguage } = useLanguage()
-
-	return {
-		t: extractLocalizedStrings({ translations, language }),
-		language,
-		toggleLanguage,
-	}
-}
-
-export function text<T>(language: LanguageCode, translations: Record<LanguageCode, T>): T {
-	return translations[language] ?? translations[defaultLanguage]
-}
-
-export function createText<T>(translations: Record<LanguageCode, T>) {
-	return (language: LanguageCode) => text(language, translations)
-}
