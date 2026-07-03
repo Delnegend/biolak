@@ -31,7 +31,7 @@ export const PromoGlobalConf: GlobalConfig<typeof PromoGlobalSlug> = {
 				if (!context.disableRevalidate) {
 					payload.logger.info(`Revalidating promo`)
 
-					revalidateTag(PromoGlobalSlug)
+					revalidateTag(PromoGlobalSlug, 'default')
 				}
 
 				return doc

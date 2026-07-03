@@ -97,7 +97,7 @@ export const ContactFormGlobalConf: GlobalConfig<typeof ContactFormGlobalSlug> =
 				if (!context.disableRevalidate) {
 					payload.logger.info(`Revalidating contact form`)
 
-					revalidateTag(ContactFormGlobalSlug)
+					revalidateTag(ContactFormGlobalSlug, 'default')
 				}
 
 				return doc

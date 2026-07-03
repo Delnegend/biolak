@@ -22,7 +22,7 @@ export const PopupBannerGlobalConf: GlobalConfig<typeof PopupBannerGlobalSlug> =
 				if (!context.disableRevalidate) {
 					payload.logger.info(`Revalidating popup banner`)
 
-					revalidateTag(PopupBannerGlobalSlug)
+					revalidateTag(PopupBannerGlobalSlug, 'default')
 				}
 
 				return doc

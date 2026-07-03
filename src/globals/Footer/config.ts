@@ -115,7 +115,7 @@ export const FooterGlobalConf: GlobalConfig<typeof FooterGlobalSlug> = {
 				if (!context.disableRevalidate) {
 					payload.logger.info(`Revalidating footer`)
 
-					revalidateTag(FooterGlobalSlug)
+					revalidateTag(FooterGlobalSlug, 'default')
 				}
 
 				return doc

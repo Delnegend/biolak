@@ -88,7 +88,7 @@ export const ReviewsGlobalConf: GlobalConfig<typeof ReviewsGlobalSlug> = {
 				if (!context.disableRevalidate) {
 					payload.logger.info(`Revalidating reviews`)
 
-					revalidateTag(ReviewsGlobalSlug)
+					revalidateTag(ReviewsGlobalSlug, 'default')
 				}
 
 				return doc

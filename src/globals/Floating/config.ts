@@ -78,7 +78,7 @@ export const FloatingGlobalConf: GlobalConfig<typeof FloatingGlobalSlug> = {
 				if (!context.disableRevalidate) {
 					payload.logger.info(`Revalidating floating`)
 
-					revalidateTag(FloatingGlobalSlug)
+					revalidateTag(FloatingGlobalSlug, 'default')
 				}
 
 				return doc

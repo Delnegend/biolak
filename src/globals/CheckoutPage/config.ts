@@ -455,7 +455,7 @@ export const CheckoutPageGlobalConf: GlobalConfig<typeof CheckoutPageGlobalSlug>
 				if (!context.disableRevalidate) {
 					payload.logger.info(`Revalidating checkout page labels`)
 
-					revalidateTag(CheckoutPageGlobalSlug)
+					revalidateTag(CheckoutPageGlobalSlug, 'default')
 				}
 
 				return doc
