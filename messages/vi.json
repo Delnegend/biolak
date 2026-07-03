@@ -1,0 +1,363 @@
+{
+  "globals": {
+    "header": {
+      "logoAlt": "Logo BioLAK",
+      "search": "Tìm kiếm",
+      "contacts": "Liên hệ",
+      "nav": {
+        "search": "Tìm kiếm",
+        "contacts": "Liên hệ",
+        "cart": {
+          "trigger": "Giỏ hàng",
+          "title": "Giỏ hàng của bạn",
+          "unselectAll": "Bỏ chọn tất cả",
+          "total": "Tạm tính",
+          "checkout": "Thanh toán",
+          "empty": {
+            "title": "Ú òa...",
+            "description": "Hiện không có sản phẩm nào trong giỏ của bạn"
+          }
+        },
+        "products": {
+          "label": "Sản phẩm",
+          "dropdownTitle": "Sản phẩm",
+          "close": "Đóng danh mục sản phẩm",
+          "categoryLabel": "Danh mục sản phẩm",
+          "closeSubcategory": "Đóng danh mục con",
+          "all": "Tất cả",
+          "closeProducts": "Đóng sản phẩm",
+          "outOfStock": "Hết hàng",
+          "productIcon": "Biểu tượng sản phẩm"
+        },
+        "internalLink": "Liên kết nội bộ",
+        "externalLink": "Liên kết ngoài"
+      }
+    },
+    "footer": {
+      "imageAlt": {
+        "large": "Ảnh Lanscape",
+        "stamp": "Đã thông báo bộ Công Thương"
+      },
+      "contactUs": {
+        "title": "Đăng kí để nhận thông tin khuyến mãi sớm nhất từ BioLAK",
+        "emailInputLabel": "Nhập địa chỉ Email",
+        "description": "Đăng kí để nhận thông tin liên lạc về các sản phẩm, dịch vụ, cửa hàng, sự kiện và các vấn đề đáng quan tâm của BioLAK."
+      },
+      "legal": {
+        "title": "Website thuộc quyền của công ty trách nhiệm hữu hạn ELAK",
+        "content": "GCNDKKD 0107874681 | Sở kế hoạch và đầu tư TP. Hà Nội\ncấp ngày 05/06/2017,\nđăng ký thay đổi lần 2 ngày 12/01/2024\nĐịa chỉ: Xóm 5 thôn Long Phú, xã Hòa Thạch, huyện Quốc Oai,\nTP Hà Nội, Việt Nam.\nĐiện thoại: 0983335596 - Email: info@biolak.vn",
+        "copyright": "(c) 2025 BioLAK Việt Nam. Mọi quyền được bảo lưu."
+      }
+    },
+    "contactForm": {
+      "title": "Liên hệ với BioLAK",
+      "name": "Nhập tên của bạn",
+      "phoneNumber": "Nhập số điện thoại",
+      "email": "Nhập địa chỉ email",
+      "question": "Câu hỏi của bạn tới chúng tôi",
+      "actionSend": "GỬI BIOLAK",
+      "biolakPhoneNumber": "0987654321",
+      "actionCall": "GỌI BIOLAK",
+      "toastSuccess": "BioLAK đã nhận đuợc phản hồi của bạn",
+      "toastError": "Không thể gửi phản hồi"
+    },
+    "floating": {
+      "contact": "Liên hệ",
+      "iconAlt": "Biểu tượng nổi liên hệ"
+    },
+    "reviews": {
+      "title": "Đánh giá từ khách hàng",
+      "reviewButtonLabel": "VIẾT ĐÁNH GIÁ",
+      "reviewDialogTitle": "Đánh giá của bạn",
+      "heartsSelectionLabel": "Đánh giá cho sản phẩm này",
+      "invoiceIdLabel": "Mã đơn hàng của bạn",
+      "contentLabel": "Cảm nhận về sản phẩm",
+      "sendReviewButtonLabel": "VIẾT ĐÁNH GIÁ",
+      "toastSuccess": "Đánh giá đã được gửi thành công",
+      "toastError": "Không thể gửi đánh giá",
+      "dialogAriaLabel": "Hộp thoại gửi đánh giá cho đơn hàng của bạn",
+      "heartButtonLabel": "Đặt đánh giá tới {n} trên 5",
+      "reviewImageAlt": "Hình ảnh đánh giá {n}",
+      "addImageLabel": "Thêm hình ảnh đánh giá",
+      "anonymous": "Ẩn danh",
+      "emptyState": {
+        "oh": "Ồ",
+        "noReviews": "Chưa có đánh giá nào cả"
+      }
+    },
+    "checkout": {
+      "logoAlt": "Logo thuơng hiệu",
+      "metaTitle": "Thanh toán | BioLAK",
+      "emptyCart": "Giỏ hàng của bạn đang trống.",
+      "loadingCart": "Đang tải giỏ hàng của bạn...",
+      "goHome": "Về trang chủ",
+      "invalidAddress": "Quận hoặc phường không hợp lệ cho thành phố đã chọn",
+      "cantProcess": "Không thể xử lý yêu cầu của bạn",
+      "toggleCartDetails": "Ẩn hiện chi tiết giỏ hàng",
+      "cartDetails": "Chi tiết giỏ hàng",
+      "hideDetails": "Ẩn chi tiết",
+      "qrAlt": "Mã QR chuyển khoản ngân hàng",
+      "contacts": {
+        "title": "Thông tin liên hệ của bạn",
+        "emailInputLabel": "Nhập địa chỉ email",
+        "acceptNewsletter": "Tôi đồng ý nhận mọi thông tin khuyến mãi"
+      },
+      "address": {
+        "title": "Địa chỉ giao hàng",
+        "nameInputLabel": "Họ và tên",
+        "phoneInputLabel": "Số điện thoại",
+        "provinceCityInputLabel": "Chọn Tỉnh/Thành phố",
+        "districtInputLabel": "Chọn Quận/Huyện",
+        "wardInputLabel": "Chọn Phuờng/Xã",
+        "details": "Số nhà, đường, khu vực",
+        "saveForNextTime": "Lưu thông tin thanh toán cho những lần tiếp theo"
+      },
+      "shipping": {
+        "title": "Phuơng thức vận chuyển",
+        "standardShippingLabel": "Giao hàng tiêu chuẩn (5-7 ngày)",
+        "fastShippingLabel": "Giao hàng nhanh (<3 ngày)"
+      },
+      "payment": {
+        "title": "Phương thức thanh toán",
+        "codLabel": "Thanh toán khi nhận hàng",
+        "bankTransferLabel": "Chuyển khoản ngân hàng"
+      },
+      "gift": {
+        "title": "Tặng quà",
+        "sender": "Người gửi",
+        "recipient": "Người nhận",
+        "message": "Lời nhắn. Giới hạn 1000 chữ."
+      },
+      "order": {
+        "title": "Chi tiết đơn hàng"
+      },
+      "discount": {
+        "title": "Mã giảm giá",
+        "inputLabel": "Mã khuyến mãi",
+        "applyButton": "Áp dụng"
+      },
+      "orderSummary": {
+        "provisional": "Tạm tính",
+        "discount": "Giảm giá",
+        "shipping": "Vận chuyển",
+        "total": "Tổng cộng",
+        "acknowledge": "Khi nhấn nút Đặt hàng nghĩa là bạn đã đọc và đồng ý với các điều khoản, chính sách bán hàng và bảo mật của chúng tôi tại Website.",
+        "orderButton": "Đặt hàng"
+      },
+      "popup": {
+        "successTitle": "Đơn hàng đã được đặt thành công",
+        "successDescription": "Đơn hàng sẽ được giao đến bạn trong 2-3 ngày.",
+        "backToHomeButton": "Quay về trang chủ"
+      }
+    },
+    "payment": {
+      "invalidBankName": "Tên ngân hàng không hợp lệ hoặc không được Sepay hỗ trợ"
+    }
+  },
+  "blocks": {
+    "productsCarousel": {
+      "title": "SẢN PHẨM BÁN CHẠY",
+      "watchMoreBtnLabel": "XEM THÊM",
+      "allProductsBtnLabel": "XEM TẤT CẢ SẢN PHẨM",
+      "productImageAlt": "Hình ảnh sản phẩm"
+    },
+    "productsCategory": {
+      "buttonLabel": "XEM TẤT CẢ CÁC SẢN PHẨM"
+    },
+    "bestSeller": {
+      "title": "Sản phẩm bán chạy",
+      "viewAllProductsButton": "XEM TẤT CẢ SẢN PHẨM →"
+    },
+    "latestPosts": {
+      "title": "Bài viết mới nhất",
+      "buttonLabel": "TẤT CẢ BÀI VIẾT"
+    },
+    "certificates": {
+      "title": "Chứng nhận bởi các tổ chức quốc tế"
+    },
+    "howToUseProduct": {
+      "title": "Hướng dẫn sử dụng",
+      "bgImageAlt": "Hình nền hướng dẫn sử dụng sản phẩm"
+    },
+    "callToActionRight": {
+      "buttonLabel": "Tìm hiểu thêm",
+      "productImageAlt": "Ảnh sản phẩm {title}"
+    },
+    "callToActionLeft": {
+      "buttonLabel": "Tìm hiểu thêm"
+    },
+    "callToActionCenter": {
+      "buttonLabel": "Tìm hiểu thêm"
+    },
+    "callToActionPost": {
+      "buttonLabel": "ĐỌC BÀI VIẾT",
+      "postImageAlt": "Hình ảnh bài viết"
+    },
+    "callToAddToCart": {
+      "buttonLabel": "THÊM VÀO GIỎ HÀNG",
+      "bgImageAlt": "Hình nền cho nút thêm vào giỏ hàng"
+    },
+    "buyNow": {
+      "buttonLabel": "MUA NGAY"
+    },
+    "relatedPosts": {
+      "title": "Bài viết liên quan"
+    },
+    "postsGrid": {
+      "category": "Danh mục"
+    },
+    "focusRightLargeImage": {
+      "alt": "Hình ảnh lớn bên phải"
+    },
+    "focusLeftSmallImage": {
+      "alt": "Hình ảnh nhỏ bên trái"
+    },
+    "focusRightSmallImage": {
+      "alt": "Hình ảnh nhỏ bên phải"
+    },
+    "threePhoto": {
+      "left": "Ảnh bên trái",
+      "center": "Ảnh ở giữa",
+      "right": "Ảnh bên phải"
+    },
+    "highlightRight": {
+      "alt": "Hình ảnh nổi bật bên phải"
+    },
+    "highlightLeft": {
+      "alt": "Hình ảnh nổi bật bên trái"
+    },
+    "highlightCenter": {
+      "alt": "Hình ảnh nổi bật ở giữa"
+    },
+    "infiniteScroll": {
+      "alt": "Hình ảnh băng chuyền vô tận"
+    },
+    "form": {
+      "country": {
+        "selectTrigger": "Kích hoạt hộp thoại thả xuống chọn quốc gia",
+        "selectContent": "Chọn một quốc gia"
+      }
+    }
+  },
+  "components": {
+    "productCard": {
+      "imageAlt": "Hình ảnh sản phẩm",
+      "outOfStock": "Hết hàng"
+    },
+    "postCard": {
+      "imageAlt": "Hình ảnh bài viết"
+    },
+    "cartList": {
+      "imageAlt": "Ảnh {productName}",
+      "removeButton": "Xoá {productName} ({variantName}) khỏi giỏ hàng",
+      "decreaseQuantity": "Giảm số lượng {productName} ({variantName})",
+      "increaseQuantity": "Tăng số lượng {productName} ({variantName})"
+    },
+    "heartsRow": {
+      "setRating": "Đặt đánh giá tới {n} trên 5"
+    }
+  },
+  "heros": {
+    "productHero": {
+      "mainImageAlt": "Hình ảnh chính sản phẩm",
+      "buyNow": {
+        "ariaLabel": "Mua ngay {product} loại {variant}",
+        "label": "MUA NGAY / HẾT HÀNG"
+      },
+      "addToCart": {
+        "toast": "Đã thêm {product} loại {variant} vào giỏ hàng",
+        "ariaLabel": "Thêm {product} loại {variant} vào giỏ hàng",
+        "label": "THÊM VÀO GIỎ / HẾT HÀNG"
+      }
+    },
+    "postHero": {
+      "section": "Bài viết"
+    }
+  },
+  "app": {
+    "notFound": {
+      "message": "Trang này không tồn tại.",
+      "backToHome": "Quay về trang chủ"
+    },
+    "category": {
+      "errorFetching": "Lỗi khi lấy danh mục",
+      "errorFetchingProducts": "Lỗi khi lấy sản phẩm cho danh mục này",
+      "noProducts": "Không tìm thấy sản phẩm trong danh mục này",
+      "notFound": "Không tìm thấy danh mục"
+    }
+  },
+  "api": {
+    "discount": {
+      "codeRequired": "Mã giảm giá là bắt buộc",
+      "internalError": "Lỗi nội bộ: {error}",
+      "invalidCode": "Mã giảm giá không hợp lệ",
+      "expired": "Mã giảm giá đã hết hạn"
+    }
+  },
+  "checkout": {
+    "validation": {
+      "nameRequired": "Họ và tên là bắt buộc",
+      "emailRequired": "Email là bắt buộc",
+      "invalidEmail": "Địa chỉ email không hợp lệ",
+      "phoneRequired": "Số điện thoại là bắt buộc",
+      "phoneDigitsOnly": "Số điện thoại chỉ được chứa chữ số",
+      "cityRequired": "Tỉnh/Thành phố là bắt buộc",
+      "districtRequired": "Quận là bắt buộc",
+      "wardRequired": "Phường là bắt buộc",
+      "houseNumberRequired": "Số nhà là bắt buộc"
+    },
+    "errors": {
+      "invalidDestination": "Quận hoặc phường không hợp lệ cho thành phố đã chọn",
+      "cantInitPayload": "Lỗi nội bộ, không thể khởi tạo payload: {error}",
+      "cantFindCustomer": "Lỗi nội bộ, không thể tìm thấy khách hàng: {error}",
+      "cantCreateCustomer": "Lỗi nội bộ, không thể tạo khách hàng mới: {error}",
+      "cantCreateCustomerFallback": "Không thể tạo khách hàng mới",
+      "cantFindDiscount": "Lỗi nội bộ, không thể tìm thấy mã giảm giá: {error}",
+      "discountNotFound": "Không tìm thấy mã giảm giá",
+      "cantGetProducts": "Lỗi nội bộ, không thể lấy sản phẩm: {error}",
+      "cantCreateOrder": "Lỗi nội bộ, không thể tạo đơn hàng: {error}",
+      "orderNotCreated": "Đơn hàng không được tạo"
+    }
+  },
+  "orders": {
+    "validation": {
+      "productNotSelected": "Chưa chọn sản phẩm",
+      "productNotFound": "Không tìm thấy sản phẩm",
+      "noVariants": "Sản phẩm không có loại nào",
+      "skuMustBeOneOf": "Mã SKU chỉ có thể là một trong các loại",
+      "variantNotFound": "Không tìm thấy loại",
+      "quantityMin": "Số lượng phải lớn hơn hoặc bằng 1",
+      "quantityExceedsStock": "Số lượng vượt quá tồn kho"
+    }
+  },
+  "fields": {
+    "link": {
+      "linkType": "Loại liên kết",
+      "internalLink": "Liên kết nội bộ",
+      "customUrl": "Liên kết tùy chỉnh",
+      "openInNewTab": "Mở trong tab mới",
+      "link": "Liên kết",
+      "linkToInternal": "Liên kết tới trang nội bộ",
+      "customUrlLabel": "Liên kết tùy chỉnh",
+      "label": "Nhãn"
+    }
+  },
+  "cartManager": {
+    "cartFull": "Giỏ hàng đã đầy, vui lòng xóa một số mặt hàng trước khi thêm.",
+    "addedToCart": "Đã thêm {product} ({variant}) vào giỏ hàng"
+  },
+  "search": {
+    "label": "Tìm kiếm",
+    "placeholder": "Nhập từ khóa",
+    "title": "Tìm kiếm | BioLAK",
+    "noResults": "Không tìm thấy kết quả."
+  },
+  "productCardAddToCart": {
+    "title": "Thêm vào giỏ hàng"
+  },
+  "form": {
+    "loading": "Đang tải, vui lòng chờ...",
+    "error": "Đã xảy ra lỗi.",
+    "internalServerError": "Lỗi máy chủ nội bộ"
+  }
+}

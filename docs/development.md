@@ -51,11 +51,63 @@ If you can't interact with the DB conflicts resolver in the terminal:
 
 ## Localization
 
-- Admin/docs: Payload localization docs — https://payloadcms.com/docs/configuration/localization
-- Frontend:
-    - Use `utilities/lang.ts` for the `Lang` enum.
-    - Use `setLocale()` for client-side locale changes.
-    - Use `getClientLang()` for server-side detection.
+- **Admin labels**: Payload `i18n` translates the admin panel.
+- **Dynamic content** (page body, products, etc.): Payload `localization` stores per-locale values in the DB.
+- **Frontend static UI** (buttons, errors, labels, alt texts): [next-intl](https://next-intl.dev) with locale path prefixing.
+
+### Locale Path Prefixing
+
+All public routes are prefixed by locale:
+
+```
+/en          → English homepage
+/en/products → English products page
+/vi          → Vietnamese homepage
+/vi/san-pham → Vietnamese products page
+```
+
+- **Middleware** (`middleware.ts` at project root) detects the user's language from the `Accept-Language` header and redirects `/` → `/{locale}`.
+- The chosen locale is persisted in a cookie for subsequent visits.
+- The admin panel stays at `/admin` (no prefix).
+
+### Translating UI Strings
+
+Message files live in `messages/{locale}.json`. To add or change text:
+
+1. Edit the key in `messages/en.json` and `messages/vi.json`.
+2. TypeScript will flag any missing keys or typos at compile time.
+3. Restart the dev server to pick up changes.
+
+### Using Translations in Components
+
+**Server components** — use `getTranslations`:
+
+```tsx
+import { getTranslations } from 'next-intl/server'
+
+export default async function MyComponent() {
+	const t = await getTranslations('namespace')
+	return <button>{t('buttonLabel')}</button>
+}
+```
+
+**Client components** — use `useTranslations`:
+
+```tsx
+import { useTranslations } from 'next-intl'
+
+export default function MyComponent() {
+	const t = useTranslations('namespace')
+	return <button>{t('buttonLabel')}</button>
+}
+```
+
+### Adding a New Language
+
+1. Add the locale to `src/utilities/lang.ts`.
+2. Add it to the `locales` array in `src/i18n/routing.ts`.
+3. Create `messages/{code}.json` with all required keys.
+4. Add the language to Payload's `localization.locales` and `i18n.supportedLanguages` in `src/payload.config.ts`.
 
 ## Tips
 

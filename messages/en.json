@@ -1,0 +1,363 @@
+{
+  "globals": {
+    "header": {
+      "logoAlt": "BioLAK Logo",
+      "search": "Search",
+      "contacts": "Contacts",
+      "nav": {
+        "search": "Search",
+        "contacts": "Contacts",
+        "cart": {
+          "trigger": "Cart",
+          "title": "Your cart",
+          "unselectAll": "Unselect all",
+          "total": "Total",
+          "checkout": "Checkout",
+          "empty": {
+            "title": "Peek-a-boo...",
+            "description": "Your cart is empty"
+          }
+        },
+        "products": {
+          "label": "Products",
+          "dropdownTitle": "Products",
+          "close": "Close products dropdown",
+          "categoryLabel": "Product category",
+          "closeSubcategory": "Close subcategory",
+          "all": "All",
+          "closeProducts": "Close products",
+          "outOfStock": "Out of stock",
+          "productIcon": "Product Icon"
+        },
+        "internalLink": "Internal link",
+        "externalLink": "External link"
+      }
+    },
+    "footer": {
+      "imageAlt": {
+        "large": "Lanscape Image",
+        "stamp": "Noticed by the Board of Directors"
+      },
+      "contactUs": {
+        "title": "Register to receive the latest news and updates from BioLAK",
+        "emailInputLabel": "Enter your email address",
+        "description": "Register to receive the latest news about products, services, events, and other information from BioLAK."
+      },
+      "legal": {
+        "title": "Website owned by the ELAK company",
+        "content": "Business Registration Certificate 0107874681 | Hanoi Department of Planning and Investment\nissued on June 5, 2017,\nregistered for the second change on January 12, 2024\nAddress: Hamlet 5, Long Phu village, Hoa Thach commune, Quoc Oai district,\nHanoi, Vietnam.\nPhone: 0983335596 - Email: info@biolak.vn",
+        "copyright": "(c) 2025 BioLAK Vietnam. All rights reserved."
+      }
+    },
+    "contactForm": {
+      "title": "Contact Us",
+      "name": "Input your name",
+      "phoneNumber": "Input your phone number",
+      "email": "Input your email",
+      "question": "Ask your question to us",
+      "actionSend": "SEND BIOLAK",
+      "biolakPhoneNumber": "0987654321",
+      "actionCall": "CALL BIOLAK",
+      "toastSuccess": "BioLAK has received your feedback",
+      "toastError": "Unable to send feedback"
+    },
+    "floating": {
+      "contact": "Contacts",
+      "iconAlt": "Floating Contacts Icon"
+    },
+    "reviews": {
+      "title": "Reviews from customers",
+      "reviewButtonLabel": "WRITE A REVIEW",
+      "reviewDialogTitle": "Your review",
+      "heartsSelectionLabel": "Review for this product",
+      "invoiceIdLabel": "Your order ID",
+      "contentLabel": "Product review",
+      "sendReviewButtonLabel": "WRITE REVIEW",
+      "toastSuccess": "Review has been sent successfully",
+      "toastError": "Unable to send review",
+      "dialogAriaLabel": "Send a review for your order dialog",
+      "heartButtonLabel": "Set rating to {n} over 5",
+      "reviewImageAlt": "Review image {n}",
+      "addImageLabel": "Add a review image",
+      "anonymous": "Anonymous",
+      "emptyState": {
+        "oh": "Oh",
+        "noReviews": "There are no reviews yet"
+      }
+    },
+    "checkout": {
+      "logoAlt": "Brand Logo",
+      "metaTitle": "Checkout | BioLAK",
+      "emptyCart": "Your cart is empty.",
+      "loadingCart": "Loading your cart...",
+      "goHome": "Go to home page",
+      "invalidAddress": "Invalid district or ward for the selected city",
+      "cantProcess": "Can't process your request",
+      "toggleCartDetails": "Toggle cart details",
+      "cartDetails": "Cart details",
+      "hideDetails": "Hide details",
+      "qrAlt": "Bank Transfer QR",
+      "contacts": {
+        "title": "Your contact information",
+        "emailInputLabel": "Input email",
+        "acceptNewsletter": "I accept all newsletters"
+      },
+      "address": {
+        "title": "Address",
+        "nameInputLabel": "Name",
+        "phoneInputLabel": "Phone number",
+        "provinceCityInputLabel": "Select Province/City",
+        "districtInputLabel": "Select District/Ward",
+        "wardInputLabel": "Select Ward/Block",
+        "details": "Number of people, street, building",
+        "saveForNextTime": "Save details for next time"
+      },
+      "shipping": {
+        "title": "Shipping method",
+        "standardShippingLabel": "Standard shipping (5-7 days)",
+        "fastShippingLabel": "Fast shipping (<3 days)"
+      },
+      "payment": {
+        "title": "Payment method",
+        "codLabel": "Cash on delivery",
+        "bankTransferLabel": "Bank Transfer"
+      },
+      "gift": {
+        "title": "Gift",
+        "sender": "Sender",
+        "recipient": "Recipient",
+        "message": "Message. Limit 1000 characters."
+      },
+      "order": {
+        "title": "Order details"
+      },
+      "discount": {
+        "title": "Coupon code",
+        "inputLabel": "Coupon code",
+        "applyButton": "Apply"
+      },
+      "orderSummary": {
+        "provisional": "Provisional",
+        "discount": "Discount",
+        "shipping": "Shipping",
+        "total": "Total",
+        "acknowledge": "When pressing the Order button, you confirm that you have read and agree to our terms, sales policy, and privacy policy on the Website.",
+        "orderButton": "Order"
+      },
+      "popup": {
+        "successTitle": "Order placed successfully",
+        "successDescription": "The order will be shipped to you in 2-3 days.",
+        "backToHomeButton": "Back to home"
+      }
+    },
+    "payment": {
+      "invalidBankName": "Invalid bank name or unsupported by Sepay"
+    }
+  },
+  "blocks": {
+    "productsCarousel": {
+      "title": "POPULAR PRODUCTS",
+      "watchMoreBtnLabel": "WATCH MORE",
+      "allProductsBtnLabel": "VIEW ALL PRODUCTS",
+      "productImageAlt": "Product Image"
+    },
+    "productsCategory": {
+      "buttonLabel": "VIEW ALL PRODUCTS"
+    },
+    "bestSeller": {
+      "title": "Best Seller",
+      "viewAllProductsButton": "VIEW ALL PRODUCTS →"
+    },
+    "latestPosts": {
+      "title": "Latest posts",
+      "buttonLabel": "ALL POSTS"
+    },
+    "certificates": {
+      "title": "Certified by international organizations"
+    },
+    "howToUseProduct": {
+      "title": "How to use",
+      "bgImageAlt": "How to use product background image"
+    },
+    "callToActionRight": {
+      "buttonLabel": "Find out more",
+      "productImageAlt": "{title} product image"
+    },
+    "callToActionLeft": {
+      "buttonLabel": "Find out more"
+    },
+    "callToActionCenter": {
+      "buttonLabel": "Find out more"
+    },
+    "callToActionPost": {
+      "buttonLabel": "READ POST",
+      "postImageAlt": "Post hero image"
+    },
+    "callToAddToCart": {
+      "buttonLabel": "ADD TO CART",
+      "bgImageAlt": "Background image for call to add to cart button"
+    },
+    "buyNow": {
+      "buttonLabel": "BUY NOW"
+    },
+    "relatedPosts": {
+      "title": "Related Posts"
+    },
+    "postsGrid": {
+      "category": "Category"
+    },
+    "focusRightLargeImage": {
+      "alt": "Focus Right Large Image"
+    },
+    "focusLeftSmallImage": {
+      "alt": "Focus left small image"
+    },
+    "focusRightSmallImage": {
+      "alt": "Focus right small image"
+    },
+    "threePhoto": {
+      "left": "Left Photo",
+      "center": "Center Photo",
+      "right": "Right Photo"
+    },
+    "highlightRight": {
+      "alt": "Highlight right image"
+    },
+    "highlightLeft": {
+      "alt": "Highlight left image"
+    },
+    "highlightCenter": {
+      "alt": "Highlight center image"
+    },
+    "infiniteScroll": {
+      "alt": "Infinite scroll banner image"
+    },
+    "form": {
+      "country": {
+        "selectTrigger": "Select a country dropdown trigger",
+        "selectContent": "Select a country"
+      }
+    }
+  },
+  "components": {
+    "productCard": {
+      "imageAlt": "Product image",
+      "outOfStock": "Out of stock"
+    },
+    "postCard": {
+      "imageAlt": "Post hero image"
+    },
+    "cartList": {
+      "imageAlt": "{productName}'s image",
+      "removeButton": "Remove {productName} ({variantName}) from cart",
+      "decreaseQuantity": "Decrease quantity of {productName} ({variantName})",
+      "increaseQuantity": "Increase quantity of {productName} ({variantName})"
+    },
+    "heartsRow": {
+      "setRating": "Set rating to {n} over 5"
+    }
+  },
+  "heros": {
+    "productHero": {
+      "mainImageAlt": "Product main image",
+      "buyNow": {
+        "ariaLabel": "Buy {product} variant {variant} now",
+        "label": "BUY NOW / OUT OF STOCK"
+      },
+      "addToCart": {
+        "toast": "Added {product} variant {variant} to cart",
+        "ariaLabel": "Add {product} variant {variant} to cart",
+        "label": "ADD TO CART / OUT OF STOCK"
+      }
+    },
+    "postHero": {
+      "section": "Post"
+    }
+  },
+  "app": {
+    "notFound": {
+      "message": "This page does not exist.",
+      "backToHome": "Back to Homepage"
+    },
+    "category": {
+      "errorFetching": "Error fetching category",
+      "errorFetchingProducts": "Error fetching products for this category",
+      "noProducts": "No products found in this category",
+      "notFound": "Category not found"
+    }
+  },
+  "api": {
+    "discount": {
+      "codeRequired": "Code is required",
+      "internalError": "Internal error: {error}",
+      "invalidCode": "Invalid discount code",
+      "expired": "Discount code has expired"
+    }
+  },
+  "checkout": {
+    "validation": {
+      "nameRequired": "Name is required",
+      "emailRequired": "Email is required",
+      "invalidEmail": "Invalid email address",
+      "phoneRequired": "Phone number is required",
+      "phoneDigitsOnly": "Phone number must contain only digits",
+      "cityRequired": "City is required",
+      "districtRequired": "District is required",
+      "wardRequired": "Ward is required",
+      "houseNumberRequired": "House number is required"
+    },
+    "errors": {
+      "invalidDestination": "Invalid district or ward for the selected city",
+      "cantInitPayload": "Internal error, can't initialize payload: {error}",
+      "cantFindCustomer": "Internal error, can't find customer: {error}",
+      "cantCreateCustomer": "Internal error, can't create new customer: {error}",
+      "cantCreateCustomerFallback": "Can't create new customer",
+      "cantFindDiscount": "Internal error, can't find discount code: {error}",
+      "discountNotFound": "Discount code not found",
+      "cantGetProducts": "Internal error, can't get products: {error}",
+      "cantCreateOrder": "Internal error, can't create order: {error}",
+      "orderNotCreated": "Order not created"
+    }
+  },
+  "orders": {
+    "validation": {
+      "productNotSelected": "Product not selected",
+      "productNotFound": "Product not found",
+      "noVariants": "Product has no variants",
+      "skuMustBeOneOf": "SKU must be one of",
+      "variantNotFound": "Variant not found",
+      "quantityMin": "Quantity must be at least 1",
+      "quantityExceedsStock": "Quantity exceeds stock"
+    }
+  },
+  "fields": {
+    "link": {
+      "linkType": "Link type",
+      "internalLink": "Internal link",
+      "customUrl": "Custom URL",
+      "openInNewTab": "Open in new tab",
+      "link": "Link",
+      "linkToInternal": "Link to internal page",
+      "customUrlLabel": "Custom URL",
+      "label": "Label"
+    }
+  },
+  "cartManager": {
+    "cartFull": "Cart is full, please remove some items before adding more.",
+    "addedToCart": "Added {product} ({variant}) to cart"
+  },
+  "search": {
+    "label": "Search",
+    "placeholder": "Enter keywords",
+    "title": "Search | BioLAK",
+    "noResults": "No results found."
+  },
+  "productCardAddToCart": {
+    "title": "Add to cart"
+  },
+  "form": {
+    "loading": "Loading, please wait...",
+    "error": "Something went wrong.",
+    "internalServerError": "Internal Server Error"
+  }
+}

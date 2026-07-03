@@ -7,20 +7,19 @@ import {
 import type { Block } from 'payload'
 
 import { PostCategoriesSlug } from '@/collections/PostCategories/slug'
-import { localize } from '@/translations/components/blocks'
 
 export const ArchiveBlockConf: Block = {
 	slug: 'archive',
 	interfaceName: 'ArchiveBlockProps',
 	labels: {
-		plural: localize((t) => t.archive.label.plural),
-		singular: localize((t) => t.archive.label.singular),
+		plural: 'Archives',
+		singular: 'Archive',
 	},
 	fields: [
 		{
 			name: 'introContent',
 			type: 'richText',
-			label: localize((t) => t.archive.labels.introContent),
+			label: 'Intro Content',
 			editor: lexicalEditor({
 				features: ({ rootFeatures }) => {
 					return [
@@ -35,15 +34,15 @@ export const ArchiveBlockConf: Block = {
 		{
 			name: 'populateBy',
 			type: 'select',
-			label: localize((t) => t.archive.labels.populateBy),
+			label: 'Populate By',
 			defaultValue: 'collection',
 			options: [
 				{
-					label: localize((t) => t.archive.labels.populateByOptions.collection),
+					label: 'Collection',
 					value: 'collection',
 				},
 				{
-					label: localize((t) => t.archive.labels.populateByOptions.selection),
+					label: 'Selection',
 					value: 'selection',
 				},
 			],
@@ -51,14 +50,14 @@ export const ArchiveBlockConf: Block = {
 		{
 			name: 'relationTo',
 			type: 'select',
-			label: localize((t) => t.archive.labels.relationTo),
+			label: 'Relation To',
 			admin: {
 				condition: (_, siblingData) => siblingData.populateBy === 'collection',
 			},
 			defaultValue: 'posts',
 			options: [
 				{
-					label: localize((t) => t.archive.labels.relationToOptions.posts),
+					label: 'Posts',
 					value: 'posts',
 				},
 			],
@@ -66,7 +65,7 @@ export const ArchiveBlockConf: Block = {
 		{
 			name: PostCategoriesSlug,
 			type: 'relationship',
-			label: localize((t) => t.archive.labels.categories),
+			label: 'Categories',
 			admin: {
 				condition: (_, siblingData) => siblingData.populateBy === 'collection',
 			},
@@ -76,7 +75,7 @@ export const ArchiveBlockConf: Block = {
 		{
 			name: 'limit',
 			type: 'number',
-			label: localize((t) => t.archive.labels.limit),
+			label: 'Limit',
 			admin: {
 				condition: (_, siblingData) => siblingData.populateBy === 'collection',
 				step: 1,
@@ -86,7 +85,7 @@ export const ArchiveBlockConf: Block = {
 		{
 			name: 'selectedDocs',
 			type: 'relationship',
-			label: localize((t) => t.archive.labels.selectedDocs),
+			label: 'Selected Docs',
 			admin: {
 				condition: (_, siblingData) => siblingData.populateBy === 'selection',
 			},
