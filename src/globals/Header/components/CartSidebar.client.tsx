@@ -36,7 +36,7 @@ export function INTERNAL_CartSidebar({
 
 	const { cart, uncheckAll } = useCartManager({
 		syncWithLocalStorage,
-		locale,
+		locale: effectiveLocale,
 	})
 	const [open, setOpen] = useState(false)
 	const cartProductCount = cart
@@ -90,7 +90,7 @@ export function INTERNAL_CartSidebar({
 				{cart.length > 0 ? (
 					<div className="flex h-[calc(100%-6rem)] flex-col justify-between gap-10">
 						<CartListClient
-							locale={locale}
+							locale={effectiveLocale}
 							showCheckbox={true}
 							syncWithLocalStorage={syncWithLocalStorage}
 						/>
