@@ -22,15 +22,16 @@ const nextConfig = {
 					protocol: url.protocol.replace(':', ''),
 				}
 			})(),
-			new URL('https://placehold.co/**'),
+			{
+				hostname: 'placehold.co',
+				protocol: 'https',
+			},
 		],
+		formats: ['image/avif', 'image/webp'],
 		qualities: [75, 85, 90, 95, 100],
 	},
 	reactStrictMode: true,
 	redirects,
-	images: {
-		formats: ['image/avif', 'image/webp'],
-	},
 	output: 'standalone',
 }
 
