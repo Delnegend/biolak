@@ -2,86 +2,58 @@ import type { Block } from 'payload'
 
 import { MediaSlug } from '@/collections/Media/slug'
 import { link } from '@/fields/link'
-import { Lang } from '@/i18n/routing'
+import { adminLabel } from '@/utilities/adminLabel'
+
+import vi from '../../../messages/vi.json'
 
 export const CallToActionRightBlockConf: Block = {
 	slug: 'cta-right',
 	interfaceName: 'CallToActionRightBlockProps',
 	imageURL: '/thumbs/call-to-action-right.avif',
 	labels: {
-		plural: {
-			[Lang.English]: 'Call to Action (Right)',
-			[Lang.Vietnamese]: 'Kêu gọi hành động (Phải)',
-		},
-		singular: {
-			[Lang.English]: 'Call to Action (Right)',
-			[Lang.Vietnamese]: 'Kêu gọi hành động (Phải)',
-		},
+		plural: adminLabel('admin.blocks.cta-right.labelPlural'),
+		singular: adminLabel('admin.blocks.cta-right.label'),
 	},
 	fields: [
 		{
 			name: 'title',
 			type: 'textarea',
-			label: {
-				[Lang.English]: 'Title',
-				[Lang.Vietnamese]: 'Tiêu đề',
-			},
+			label: adminLabel('admin.blocks.cta-right.fieldTitle'),
 			required: true,
 			localized: true,
 		},
 		{
 			name: 'sub-title',
 			type: 'textarea',
-			label: {
-				[Lang.English]: 'Sub Title',
-				[Lang.Vietnamese]: 'Tiêu đề phụ',
-			},
+			label: adminLabel('admin.blocks.cta-right.fieldSubTitle'),
 			localized: true,
 		},
 		{
 			name: 'description',
 			type: 'richText',
-			label: {
-				[Lang.English]: 'Description',
-				[Lang.Vietnamese]: 'Mô tả',
-			},
+			label: adminLabel('admin.blocks.cta-right.fieldDescription'),
 			localized: true,
 		},
 		{
 			name: 'gallery',
 			type: 'array',
-			label: {
-				[Lang.English]: 'Gallery',
-				[Lang.Vietnamese]: 'Thư viện',
-			},
+			label: adminLabel('admin.blocks.cta-right.fieldGallery'),
 			labels: {
-				singular: {
-					[Lang.English]: 'Image',
-					[Lang.Vietnamese]: 'Hình ảnh',
-				},
-				plural: {
-					[Lang.English]: 'Images',
-					[Lang.Vietnamese]: 'Hình ảnh',
-				},
+				singular: adminLabel('admin.blocks.cta-right.arrayGallerySingular'),
+				plural: adminLabel('admin.blocks.cta-right.arrayGalleryPlural'),
 			},
 			fields: [
 				{
 					name: 'title',
 					type: 'text',
-					label: {
-						[Lang.English]: 'Image Title',
-						[Lang.Vietnamese]: 'Tiêu đề hình ảnh',
-					},
+					label: adminLabel('admin.blocks.cta-right.fieldGalleryTitle'),
 					required: true,
 					localized: true,
 				},
 				{
 					name: 'image',
 					type: 'upload',
-					label: {
-						[Lang.English]: 'Image',
-						[Lang.Vietnamese]: 'Hình ảnh',
-					},
+					label: adminLabel('admin.blocks.cta-right.fieldGalleryImage'),
 					relationTo: MediaSlug,
 				},
 			],
@@ -92,7 +64,7 @@ export const CallToActionRightBlockConf: Block = {
 				localized: true,
 			},
 			label: {
-				placeholder: 'Tìm hiểu thêm',
+				placeholder: vi.admin.blocks['cta-right'].placeholderLinkLabel,
 				required: false,
 			},
 		}),

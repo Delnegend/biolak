@@ -2,57 +2,44 @@ import { Block } from 'payload'
 
 import { ProductsSlug } from '@/collections/Products/slug'
 import { link } from '@/fields/link'
-import { Lang } from '@/i18n/routing'
+import { adminLabel } from '@/utilities/adminLabel'
+
+import vi from '../../../messages/vi.json'
 
 export const BestSellerBlockConf: Block = {
 	slug: 'bestSeller',
 	interfaceName: 'BestSellerBlockProps',
 	imageURL: '/thumbs/bestseller.avif',
 	labels: {
-		plural: {
-			[Lang.English]: 'Best Sellers',
-			[Lang.Vietnamese]: 'Sản phẩm bán chạy',
-		},
-		singular: {
-			[Lang.English]: 'Best Seller',
-			[Lang.Vietnamese]: 'Sản phẩm bán chạy',
-		},
+		plural: adminLabel('admin.blocks.bestSeller.labelPlural'),
+		singular: adminLabel('admin.blocks.bestSeller.label'),
 	},
 	fields: [
 		{
 			name: 'title',
 			type: 'text',
-			label: {
-				[Lang.Vietnamese]: 'Tiêu đề',
-				[Lang.English]: 'Title',
-			},
+			label: adminLabel('admin.blocks.bestSeller.fieldTitle'),
 			localized: true,
 			admin: {
-				placeholder: 'Sản phẩm bán chạy',
+				placeholder: vi.admin.blocks.bestSeller.placeholderTitle,
 			},
 		},
 		{
 			name: 'description',
 			type: 'textarea',
-			label: {
-				[Lang.Vietnamese]: 'Mô tả',
-				[Lang.English]: 'Description',
-			},
+			label: adminLabel('admin.blocks.bestSeller.fieldDescription'),
 			localized: true,
 		},
 		{
 			name: 'products',
-			label: {
-				[Lang.Vietnamese]: 'Sản phẩm',
-				[Lang.English]: 'Products',
-			},
+			label: adminLabel('admin.blocks.bestSeller.fieldProducts'),
 			type: 'relationship',
 			relationTo: ProductsSlug,
 			hasMany: true,
 		},
 		link({
 			label: {
-				placeholder: 'XEM TẤT CẢ SẢN PHẨM →',
+				placeholder: vi.admin.blocks.bestSeller.placeholderLinkLabel,
 				required: false,
 			},
 		}),

@@ -6,7 +6,7 @@ import {
 import type { Block, Field } from 'payload'
 
 import { link } from '@/fields/link'
-import { Lang } from '@/i18n/routing'
+import { adminLabel } from '@/utilities/adminLabel'
 
 const columnFields: Field[] = [
 	{
@@ -16,73 +16,43 @@ const columnFields: Field[] = [
 		options: [
 			{
 				value: 'oneThird',
-				label: {
-					[Lang.English]: 'One Third',
-					[Lang.Vietnamese]: 'Một phần ba',
-				},
+				label: adminLabel('admin.blocks.content.optionSizeOneThird'),
 			},
 			{
 				value: 'half',
-				label: {
-					[Lang.English]: 'Half',
-					[Lang.Vietnamese]: 'Một nửa',
-				},
+				label: adminLabel('admin.blocks.content.optionSizeHalf'),
 			},
 			{
 				value: 'twoThirds',
-				label: {
-					[Lang.English]: 'Two Thirds',
-					[Lang.Vietnamese]: 'Hai phần ba',
-				},
+				label: adminLabel('admin.blocks.content.optionSizeTwoThirds'),
 			},
 			{
 				value: 'full',
-				label: {
-					[Lang.English]: 'Full',
-					[Lang.Vietnamese]: 'Toàn bộ',
-				},
+				label: adminLabel('admin.blocks.content.optionSizeFull'),
 			},
 		],
-		label: {
-			[Lang.English]: 'Size',
-			[Lang.Vietnamese]: 'Kích thước',
-		},
+		label: adminLabel('admin.blocks.content.fieldSize'),
 	},
 	{
 		name: 'font',
 		type: 'select',
 		defaultValue: 'default',
-		label: {
-			[Lang.English]: 'Font',
-			[Lang.Vietnamese]: 'Phông chữ',
-		},
+		label: adminLabel('admin.blocks.content.fieldFont'),
 		options: [
 			{
-				label: {
-					[Lang.English]: 'Default',
-					[Lang.Vietnamese]: 'Mặc định',
-				},
+				label: adminLabel('admin.blocks.content.optionFontDefault'),
 				value: 'default',
 			},
 			{
-				label: {
-					[Lang.English]: 'Serif',
-					[Lang.Vietnamese]: 'Serif',
-				},
+				label: adminLabel('admin.blocks.content.optionFontSerif'),
 				value: 'serif',
 			},
 			{
-				label: {
-					[Lang.English]: 'Sans-serif',
-					[Lang.Vietnamese]: 'Sans-serif',
-				},
+				label: adminLabel('admin.blocks.content.optionFontSansSerif'),
 				value: 'sans-serif',
 			},
 			{
-				label: {
-					[Lang.English]: 'Monospace',
-					[Lang.Vietnamese]: 'Monospace',
-				},
+				label: adminLabel('admin.blocks.content.optionFontMonospace'),
 				value: 'monospace',
 			},
 		],
@@ -91,10 +61,7 @@ const columnFields: Field[] = [
 		name: 'customCss',
 		type: 'textarea',
 		defaultValue: '',
-		label: {
-			[Lang.English]: 'Custom CSS',
-			[Lang.Vietnamese]: 'CSS tùy chỉnh',
-		},
+		label: adminLabel('admin.blocks.content.fieldCustomCss'),
 	},
 	{
 		name: 'richText',
@@ -111,10 +78,7 @@ const columnFields: Field[] = [
 	{
 		name: 'enableLink',
 		type: 'checkbox',
-		label: {
-			[Lang.English]: 'Enable Link',
-			[Lang.Vietnamese]: 'Kích hoạt liên kết',
-		},
+		label: adminLabel('admin.blocks.content.fieldEnableLink'),
 	},
 	link({
 		overrides: {
@@ -131,32 +95,17 @@ export const ContentBlockConf: Block = {
 	slug: 'content',
 	interfaceName: 'ContentBlockProps',
 	labels: {
-		singular: {
-			[Lang.English]: 'Content',
-			[Lang.Vietnamese]: 'Nội dung',
-		},
-		plural: {
-			[Lang.English]: 'Contents',
-			[Lang.Vietnamese]: 'Nội dung',
-		},
+		singular: adminLabel('admin.blocks.content.label'),
+		plural: adminLabel('admin.blocks.content.labelPlural'),
 	},
 	fields: [
 		{
 			name: 'columns',
 			type: 'array',
-			label: {
-				[Lang.English]: 'Columns',
-				[Lang.Vietnamese]: 'Cột',
-			},
+			label: adminLabel('admin.blocks.content.fieldColumns'),
 			labels: {
-				singular: {
-					[Lang.English]: 'Column',
-					[Lang.Vietnamese]: 'Cột',
-				},
-				plural: {
-					[Lang.English]: 'Columns',
-					[Lang.Vietnamese]: 'Cột',
-				},
+				singular: adminLabel('admin.blocks.content.arrayColumnsSingular'),
+				plural: adminLabel('admin.blocks.content.arrayColumnsPlural'),
 			},
 			admin: {
 				initCollapsed: true,

@@ -1,5 +1,7 @@
 import { Block } from 'payload'
 
+import { adminLabel } from '@/utilities/adminLabel'
+
 import { validateVideoLink } from './hooks/validateVideoLink'
 
 export const VideoEmbedBlockConf: Block = {
@@ -7,14 +9,8 @@ export const VideoEmbedBlockConf: Block = {
 	interfaceName: 'VideoEmbedBlockProps',
 	imageURL: '/thumbs/video-embed.avif',
 	labels: {
-		singular: {
-			en: 'Video Embed',
-			vi: 'Nhúng Video',
-		},
-		plural: {
-			en: 'Video Embeds',
-			vi: 'Nhúng Video',
-		},
+		singular: adminLabel('admin.blocks.videoEmbed.label'),
+		plural: adminLabel('admin.blocks.videoEmbed.labelPlural'),
 	},
 	fields: [
 		{
@@ -23,7 +19,7 @@ export const VideoEmbedBlockConf: Block = {
 			label: false,
 			required: true,
 			admin: {
-				placeholder: 'https://www.youtube.com/watch?v=example',
+				placeholder: adminLabel('admin.blocks.videoEmbed.placeholderVideoUrl'),
 			},
 			validate: validateVideoLink,
 		},

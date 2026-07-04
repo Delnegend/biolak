@@ -2,19 +2,15 @@ import { Block } from 'payload'
 
 import { PostsSlug } from '@/collections/Posts/slug'
 import { link } from '@/fields/link'
-import { Lang } from '@/i18n/routing'
+import { adminLabel } from '@/utilities/adminLabel'
+
+import vi from '../../../messages/vi.json'
 
 export const CallToActionPostBlockConf: Block = {
 	slug: 'call-to-action-post',
 	labels: {
-		singular: {
-			[Lang.English]: 'Call to Action (Post)',
-			[Lang.Vietnamese]: 'Kêu gọi hành động (Bài viết)',
-		},
-		plural: {
-			[Lang.English]: 'Call to Action (Post)',
-			[Lang.Vietnamese]: 'Kêu gọi hành động (Bài viết)',
-		},
+		singular: adminLabel('admin.blocks.call-to-action-post.label'),
+		plural: adminLabel('admin.blocks.call-to-action-post.labelPlural'),
 	},
 	interfaceName: 'CallToActionPostBlockProps',
 	imageURL: '/thumbs/call-to-action-post.avif',
@@ -23,28 +19,19 @@ export const CallToActionPostBlockConf: Block = {
 			name: 'post',
 			type: 'relationship',
 			relationTo: PostsSlug,
-			label: {
-				[Lang.English]: 'Post',
-				[Lang.Vietnamese]: 'Bài viết',
-			},
+			label: adminLabel('admin.blocks.call-to-action-post.fieldPost'),
 			required: true,
 		},
 		{
 			name: 'overwriteTitle',
 			type: 'text',
-			label: {
-				[Lang.English]: 'Overwrite Title',
-				[Lang.Vietnamese]: 'Ghi đè tiêu đề',
-			},
+			label: adminLabel('admin.blocks.call-to-action-post.fieldOverwriteTitle'),
 			localized: true,
 		},
 		{
 			name: 'overwriteDescription',
 			type: 'textarea',
-			label: {
-				[Lang.English]: 'Overwrite Description',
-				[Lang.Vietnamese]: 'Ghi đè mô tả',
-			},
+			label: adminLabel('admin.blocks.call-to-action-post.fieldOverwriteDescription'),
 			localized: true,
 		},
 		link({
@@ -53,7 +40,7 @@ export const CallToActionPostBlockConf: Block = {
 				localized: true,
 			},
 			label: {
-				placeholder: 'ĐỌC BÀI VIẾT',
+				placeholder: vi.admin.blocks['call-to-action-post'].placeholderLinkLabel,
 				required: false,
 			},
 		}),

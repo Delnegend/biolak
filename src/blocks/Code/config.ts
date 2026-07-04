@@ -1,5 +1,7 @@
 import type { Block } from 'payload'
 
+import { adminLabel } from '@/utilities/adminLabel'
+
 export const Code: Block = {
 	slug: 'code',
 	interfaceName: 'CodeBlockProps',
@@ -10,15 +12,15 @@ export const Code: Block = {
 			defaultValue: 'typescript',
 			options: [
 				{
-					label: 'Typescript',
+					label: adminLabel('admin.blocks.code.optionLanguageTypescript'),
 					value: 'typescript',
 				},
 				{
-					label: 'Javascript',
+					label: adminLabel('admin.blocks.code.optionLanguageJavascript'),
 					value: 'javascript',
 				},
 				{
-					label: 'CSS',
+					label: adminLabel('admin.blocks.code.optionLanguageCss'),
 					value: 'css',
 				},
 			],

@@ -2,58 +2,42 @@ import type { Block } from 'payload'
 
 import { MediaSlug } from '@/collections/Media/slug'
 import { link } from '@/fields/link'
-import { Lang } from '@/i18n/routing'
+import { adminLabel } from '@/utilities/adminLabel'
+
+import vi from '../../../messages/vi.json'
 
 export const CallToActionCenterBlockConf: Block = {
 	slug: 'cta-center',
 	interfaceName: 'CallToActionCenterBlockProps',
 	imageURL: '/thumbs/call-to-action-center.avif',
 	labels: {
-		plural: {
-			[Lang.English]: 'Call to Action (Center)',
-			[Lang.Vietnamese]: 'Kêu gọi hành động (Trung tâm)',
-		},
-		singular: {
-			[Lang.English]: 'Call to Action (Center)',
-			[Lang.Vietnamese]: 'Kêu gọi hành động (Trung tâm)',
-		},
+		plural: adminLabel('admin.blocks.cta-center.labelPlural'),
+		singular: adminLabel('admin.blocks.cta-center.label'),
 	},
 	fields: [
 		{
 			name: 'title',
 			type: 'textarea',
-			label: {
-				[Lang.English]: 'Title',
-				[Lang.Vietnamese]: 'Tiêu đề',
-			},
+			label: adminLabel('admin.blocks.cta-center.fieldTitle'),
 			required: true,
 			localized: true,
 		},
 		{
 			name: 'sub-title',
 			type: 'textarea',
-			label: {
-				[Lang.English]: 'Sub Title',
-				[Lang.Vietnamese]: 'Tiêu đề phụ',
-			},
+			label: adminLabel('admin.blocks.cta-center.fieldSubTitle'),
 			localized: true,
 		},
 		{
 			name: 'description',
 			type: 'richText',
-			label: {
-				[Lang.English]: 'Description',
-				[Lang.Vietnamese]: 'Mô tả',
-			},
+			label: adminLabel('admin.blocks.cta-center.fieldDescription'),
 			localized: true,
 		},
 		{
 			name: 'background',
 			type: 'upload',
-			label: {
-				[Lang.English]: 'Background',
-				[Lang.Vietnamese]: 'Ảnh nền',
-			},
+			label: adminLabel('admin.blocks.cta-center.fieldBackground'),
 			relationTo: MediaSlug,
 		},
 		link({
@@ -62,7 +46,7 @@ export const CallToActionCenterBlockConf: Block = {
 				localized: true,
 			},
 			label: {
-				placeholder: 'Tìm hiểu thêm',
+				placeholder: vi.admin.blocks['cta-center'].placeholderLinkLabel,
 				required: false,
 			},
 		}),

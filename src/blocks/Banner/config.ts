@@ -5,20 +5,14 @@ import {
 } from '@payloadcms/richtext-lexical'
 import type { Block } from 'payload'
 
-import { Lang } from '@/i18n/routing'
+import { adminLabel } from '@/utilities/adminLabel'
 
 export const BannerBlockConf: Block = {
 	slug: 'banner',
 	interfaceName: 'BannerBlockProps',
 	labels: {
-		plural: {
-			[Lang.English]: 'Banners',
-			[Lang.Vietnamese]: 'Biểu ngữ',
-		},
-		singular: {
-			[Lang.English]: 'Banner',
-			[Lang.Vietnamese]: 'Biểu ngữ',
-		},
+		plural: adminLabel('admin.blocks.banner.labelPlural'),
+		singular: adminLabel('admin.blocks.banner.label'),
 	},
 	fields: [
 		{
@@ -27,31 +21,19 @@ export const BannerBlockConf: Block = {
 			defaultValue: 'info',
 			options: [
 				{
-					label: {
-						[Lang.English]: 'Info',
-						[Lang.Vietnamese]: 'Thông tin',
-					},
+					label: adminLabel('admin.blocks.banner.optionStyleInfo'),
 					value: 'info',
 				},
 				{
-					label: {
-						[Lang.English]: 'Warning',
-						[Lang.Vietnamese]: 'Cảnh báo',
-					},
+					label: adminLabel('admin.blocks.banner.optionStyleWarning'),
 					value: 'warning',
 				},
 				{
-					label: {
-						[Lang.English]: 'Error',
-						[Lang.Vietnamese]: 'Lỗi',
-					},
+					label: adminLabel('admin.blocks.banner.optionStyleError'),
 					value: 'error',
 				},
 				{
-					label: {
-						[Lang.English]: 'Success',
-						[Lang.Vietnamese]: 'Thành công',
-					},
+					label: adminLabel('admin.blocks.banner.optionStyleSuccess'),
 					value: 'success',
 				},
 			],

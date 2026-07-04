@@ -2,42 +2,30 @@ import { Block } from 'payload'
 
 import { MediaSlug } from '@/collections/Media/slug'
 import { ProductsSlug } from '@/collections/Products/slug'
-import { Lang } from '@/i18n/routing'
+import { adminLabel } from '@/utilities/adminLabel'
 
 export const HowToUseProductBlockConf: Block = {
 	slug: 'how-to-use-product',
 	interfaceName: 'HowToUseProductBlockProps',
 	imageURL: '/thumbs/how-to-use-product.avif',
 	labels: {
-		singular: {
-			[Lang.English]: 'How to use product',
-			[Lang.Vietnamese]: 'Huớng dẫn sử dụng sản phẩm',
-		},
-		plural: {
-			[Lang.English]: 'How to use product',
-			[Lang.Vietnamese]: 'Huớng dẫn sử dụng sản phẩm',
-		},
+		singular: adminLabel('admin.blocks.how-to-use-product.label'),
+		plural: adminLabel('admin.blocks.how-to-use-product.labelPlural'),
 	},
 	fields: [
 		{
 			name: 'title',
 			type: 'text',
-			label: {
-				[Lang.English]: 'Title',
-				[Lang.Vietnamese]: 'Tiêu đề',
-			},
+			label: adminLabel('admin.blocks.how-to-use-product.fieldTitle'),
 			localized: true,
 			admin: {
-				placeholder: 'Hướng dẫn sử dụng',
+				placeholder: adminLabel('admin.blocks.how-to-use-product.placeholderTitle'),
 			},
 		},
 		{
 			name: 'subtitle',
 			type: 'text',
-			label: {
-				[Lang.English]: 'Subtitle',
-				[Lang.Vietnamese]: 'Tiêu đề phụ',
-			},
+			label: adminLabel('admin.blocks.how-to-use-product.fieldSubtitle'),
 			localized: true,
 			admin: {
 				condition: (data) => {
@@ -53,10 +41,7 @@ export const HowToUseProductBlockConf: Block = {
 		{
 			name: 'content',
 			type: 'richText',
-			label: {
-				[Lang.English]: 'Content',
-				[Lang.Vietnamese]: 'Nội dung',
-			},
+			label: adminLabel('admin.blocks.how-to-use-product.fieldContent'),
 			required: true,
 			localized: true,
 		},
@@ -64,19 +49,13 @@ export const HowToUseProductBlockConf: Block = {
 			name: 'image',
 			type: 'upload',
 			relationTo: MediaSlug,
-			label: {
-				[Lang.English]: 'Image',
-				[Lang.Vietnamese]: 'Ảnh minh họa',
-			},
+			label: adminLabel('admin.blocks.how-to-use-product.fieldImage'),
 		},
 		{
 			name: ProductsSlug,
 			type: 'relationship',
 			relationTo: ProductsSlug,
-			label: {
-				[Lang.English]: 'Product',
-				[Lang.Vietnamese]: 'Sản phẩm',
-			},
+			label: adminLabel('admin.blocks.how-to-use-product.fieldProducts'),
 			admin: {
 				condition: (data) => {
 					const isProductDocument =

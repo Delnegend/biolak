@@ -1,59 +1,41 @@
 import { Block } from 'payload'
 
 import { MediaSlug } from '@/collections/Media/slug'
-import { Lang } from '@/i18n/routing'
+import { adminLabel } from '@/utilities/adminLabel'
 
 export const HighlighRightBlockConf: Block = {
 	slug: 'highlight-right',
 	interfaceName: 'HighlightRightBlockProps',
 	imageURL: '/thumbs/highlight-right.avif',
 	labels: {
-		singular: {
-			[Lang.English]: 'Highlight Right',
-			[Lang.Vietnamese]: 'Nổi bật phải',
-		},
-		plural: {
-			[Lang.English]: 'Highlight Right',
-			[Lang.Vietnamese]: 'Nổi bật phải',
-		},
+		singular: adminLabel('admin.blocks.highlight-right.label'),
+		plural: adminLabel('admin.blocks.highlight-right.labelPlural'),
 	},
 	fields: [
 		{
 			name: 'order',
 			type: 'number',
-			label: {
-				[Lang.English]: 'Order',
-				[Lang.Vietnamese]: 'Thứ tự',
-			},
+			label: adminLabel('admin.blocks.highlight-right.fieldOrder'),
 			required: true,
 		},
 		{
 			name: 'title',
 			type: 'text',
-			label: {
-				[Lang.English]: 'Title',
-				[Lang.Vietnamese]: 'Tiêu đề',
-			},
+			label: adminLabel('admin.blocks.highlight-right.fieldTitle'),
 			required: true,
 			localized: true,
 		},
 		{
 			name: 'description',
 			type: 'textarea',
-			label: {
-				[Lang.English]: 'Description',
-				[Lang.Vietnamese]: 'Mô tả',
-			},
+			label: adminLabel('admin.blocks.highlight-right.fieldDescription'),
 			required: true,
 			localized: true,
 		},
 		{
 			name: 'image',
 			type: 'upload',
-			label: {
-				[Lang.English]: 'Image',
-				[Lang.Vietnamese]: 'Hình ảnh',
-			},
+			label: adminLabel('admin.blocks.highlight-right.fieldImage'),
 			relationTo: MediaSlug,
 		},
 	],

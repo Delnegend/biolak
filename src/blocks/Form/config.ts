@@ -6,6 +6,8 @@ import {
 } from '@payloadcms/richtext-lexical'
 import type { Block } from 'payload'
 
+import { adminLabel } from '@/utilities/adminLabel'
+
 export const FormBlockConf: Block = {
 	slug: 'formBlock',
 	interfaceName: 'FormBlockProps',
@@ -19,7 +21,7 @@ export const FormBlockConf: Block = {
 		{
 			name: 'enableIntro',
 			type: 'checkbox',
-			label: 'Enable Intro Content',
+			label: adminLabel('admin.blocks.formBlock.fieldEnableIntro'),
 		},
 		{
 			name: 'introContent',
@@ -37,14 +39,14 @@ export const FormBlockConf: Block = {
 					]
 				},
 			}),
-			label: 'Intro Content',
+			label: adminLabel('admin.blocks.formBlock.fieldIntroContent'),
 		},
 	],
 	graphQL: {
 		singularName: 'FormBlock',
 	},
 	labels: {
-		plural: 'Form Blocks',
-		singular: 'Form Block',
+		plural: adminLabel('admin.blocks.formBlock.labelPlural'),
+		singular: adminLabel('admin.blocks.formBlock.label'),
 	},
 }

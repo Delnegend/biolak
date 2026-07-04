@@ -2,43 +2,31 @@ import { Block } from 'payload'
 
 import { ProductCategoriesSlug } from '@/collections/ProductCategories/slug'
 import { ProductSubCategoriesSlug } from '@/collections/ProductSubCategories/slug'
-import { Lang } from '@/i18n/routing'
+import { adminLabel } from '@/utilities/adminLabel'
 
 export const ProductsCategoryBlockConf: Block = {
 	slug: 'productsCategory',
 	interfaceName: 'ProductsCategoryBlockProps',
 	imageURL: '/thumbs/products-category.avif',
 	labels: {
-		singular: {
-			[Lang.English]: 'Products Category Preview',
-			[Lang.Vietnamese]: 'Danh mục sản phẩm xem trước',
-		},
-		plural: {
-			[Lang.English]: 'Products Categories Preview',
-			[Lang.Vietnamese]: 'Danh mục sản phẩm xem trước',
-		},
+		singular: adminLabel('admin.blocks.productsCategory.label'),
+		plural: adminLabel('admin.blocks.productsCategory.labelPlural'),
 	},
 	fields: [
 		{
 			name: 'category',
 			type: 'relationship',
 			relationTo: [ProductCategoriesSlug, ProductSubCategoriesSlug],
-			label: {
-				[Lang.English]: 'Products Category',
-				[Lang.Vietnamese]: 'Danh mục sản phẩm',
-			},
+			label: adminLabel('admin.blocks.productsCategory.fieldCategory'),
 			required: true,
 		},
 		{
 			name: 'buttonLabel',
 			type: 'text',
-			label: {
-				[Lang.English]: 'Button Label',
-				[Lang.Vietnamese]: 'Nhãn nút',
-			},
+			label: adminLabel('admin.blocks.productsCategory.fieldButtonLabel'),
 			localized: true,
 			admin: {
-				placeholder: 'XEM TẤT CẢ CÁC SẢN PHẨM',
+				placeholder: adminLabel('admin.blocks.productsCategory.placeholderButtonLabel'),
 			},
 		},
 	],
