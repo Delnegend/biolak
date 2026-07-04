@@ -13,15 +13,15 @@ import { CheckoutPageGlobalSlug } from '@/globals/CheckoutPage/config'
 import { Lang } from '@/i18n/routing'
 import { CheckoutPageGlobal } from '@/payload-types'
 import { calculatePrices } from '@/utilities/calculatePrices'
-import { cnsoleBuilder } from '@/utilities/cnsole'
 import { getCachedGlobal } from '@/utilities/getGlobals'
+import { newLogger } from '@/utilities/logger'
 import { tryCatch, tryCatchSync } from '@/utilities/tryCatch'
 
 import { cartSchema } from './cartSchema'
 import { CheckoutSchema } from './checkoutSchema'
 import CITY_DISTRICT_WARD from './city-district-ward.json'
 
-const cnsole = cnsoleBuilder('confirmDetailsAction')
+const logger = newLogger('confirmDetailsAction')
 
 interface CityDistrictWard {
 	[key: string]: {
@@ -106,7 +106,7 @@ export async function confirmDetailsAction(
 		error: payloadError,
 	} = await tryCatch(() => getPayload({ config }))
 	if (!payloadOk) {
-		cnsole.error("Can't initialize payload:", payloadError)
+		logger.error("Can't initialize payload:", payloadError)
 		return {
 			success: false,
 			data: null,
@@ -235,7 +235,7 @@ export async function confirmDetailsAction(
 		}),
 	)
 	if (!matchedProductsOk) {
-		cnsole.error("Can't get products to validate")
+		logger.error("Can't get products to validate")
 		return {
 			success: false,
 			data: null,
@@ -251,7 +251,7 @@ export async function confirmDetailsAction(
 			const matchedSku = matchedProduct?.variants.find((v) => v.sku === item.productSku)
 
 			if (!matchedSku) {
-				cnsole.error(
+				logger.error(
 					"Can't get matched variant for product in cart",
 					'productId',
 					item.productId,

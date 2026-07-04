@@ -3,10 +3,10 @@ import { NumberFieldSingleValidation } from 'payload'
 
 import { ProductsSlug } from '@/collections/Products/slug'
 import { Order } from '@/payload-types'
-import { cnsoleBuilder } from '@/utilities/cnsole'
 import { depthHandler } from '@/utilities/depthHandler'
+import { newLogger } from '@/utilities/logger'
 
-const cnsole = cnsoleBuilder('Orders/validateQuantity')
+const logger = newLogger('Orders/validateQuantity')
 
 export const validateQuantity: NumberFieldSingleValidation = async (value, ctx) => {
 	const t = await getTranslations('orders.validation')
@@ -29,7 +29,7 @@ export const validateQuantity: NumberFieldSingleValidation = async (value, ctx) 
 			}),
 	})
 	if (!productOk) {
-		cnsole.error("Can't fetch product:", productError)
+		logger.error("Can't fetch product:", productError)
 		return t('productNotFound')
 	}
 

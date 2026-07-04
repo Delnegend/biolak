@@ -3,11 +3,11 @@ import { CollectionAfterChangeHook } from 'payload'
 import { CustomersSlug } from '@/collections/Customers/slug'
 import { UsersSlug } from '@/collections/Users/slug'
 import { Order } from '@/payload-types'
-import { cnsoleBuilder } from '@/utilities/cnsole'
 import { depthHandler } from '@/utilities/depthHandler'
+import { newLogger } from '@/utilities/logger'
 import { tryCatch } from '@/utilities/tryCatch'
 
-const cnsole = cnsoleBuilder('Orders/sendOrderCreatedEmail')
+const logger = newLogger('Orders/sendOrderCreatedEmail')
 
 export const sendOrderCreatedEmail: CollectionAfterChangeHook<Order> = async ({
 	doc,
@@ -33,7 +33,7 @@ export const sendOrderCreatedEmail: CollectionAfterChangeHook<Order> = async ({
 			}),
 	})
 	if (!customerOk) {
-		cnsole.error("Can't fetch customer:", customerError)
+		logger.error("Can't fetch customer:", customerError)
 		return doc
 	}
 
@@ -76,7 +76,7 @@ export const sendOrderCreatedEmail: CollectionAfterChangeHook<Order> = async ({
 		}),
 	)
 	if (!ok) {
-		cnsole.error("Can't fetch users for email:", error)
+		logger.error("Can't fetch users for email:", error)
 		return doc
 	}
 	const to = users.docs
@@ -85,7 +85,7 @@ export const sendOrderCreatedEmail: CollectionAfterChangeHook<Order> = async ({
 		.join(', ')
 
 	if (!to) {
-		cnsole.info('No users to send email to, skipping email sending')
+		logger.info('No users to send email to, skipping email sending')
 		return doc
 	}
 
@@ -102,9 +102,9 @@ export const sendOrderCreatedEmail: CollectionAfterChangeHook<Order> = async ({
 		}),
 	)
 	if (!resultOk) {
-		cnsole.error("Can't send email:", resultError)
+		logger.error("Can't send email:", resultError)
 		return doc
 	}
-	cnsole.info('Message sent:', result)
+	logger.info('Message sent:', result)
 	return doc
 }

@@ -3,12 +3,12 @@ import { getPayload } from 'payload'
 
 import { Lang } from '@/i18n/routing'
 import { InfiniteScrollBlockProps } from '@/payload-types'
-import { cnsoleBuilder } from '@/utilities/cnsole'
 import { depthHandler } from '@/utilities/depthHandler'
+import { newLogger } from '@/utilities/logger'
 
 import { INTERNAL_InfiniteScrollBlock } from './Component.client'
 
-const cnsole = cnsoleBuilder('blocks/InfiniteScroll')
+const logger = newLogger('blocks/InfiniteScroll')
 
 export async function InfiniteScrollBlock({
 	graphic,
@@ -33,7 +33,7 @@ export async function InfiniteScrollBlock({
 			return result
 		},
 	})
-	if (!ok) cnsole.error("Can't fetching graphic:", error)
+	if (!ok) logger.error("Can't fetching graphic:", error)
 
 	return (
 		<INTERNAL_InfiniteScrollBlock

@@ -9,10 +9,10 @@ import { z } from 'zod/v4'
 
 import { ProductsSlug } from '@/collections/Products/slug'
 import { type Product } from '@/payload-types'
-import { cnsoleBuilder } from '@/utilities/cnsole'
+import { newLogger } from '@/utilities/logger'
 import { tryCatch, tryCatchSync } from '@/utilities/tryCatch'
 
-const cnsole = cnsoleBuilder('hooks/useCartManager')
+const logger = newLogger('hooks/useCartManager')
 
 const ProductInCartInLocalStorageSchema = z.object({
 	product: z.object({
@@ -106,7 +106,7 @@ export function useCartManager({
 		)
 		if (!ok) {
 			if (process.env.NODE_ENV === 'development')
-				cnsole.error("Can't parse cart from localStorage:", parsedUnvalidated)
+				logger.error("Can't parse cart from localStorage:", parsedUnvalidated)
 			localStorage.setItem(cartKey, JSON.stringify([]))
 			setTimeout(() => setLoadedFromLocalStorageDone(true), 0)
 			return
@@ -117,7 +117,7 @@ export function useCartManager({
 			.safeParse(parsedUnvalidated)
 		if (!success) {
 			if (process.env.NODE_ENV === 'development')
-				cnsole.error("Can't validate cart from localStorage:", z.prettifyError(error))
+				logger.error("Can't validate cart from localStorage:", z.prettifyError(error))
 			localStorage.setItem(cartKey, JSON.stringify([]))
 			setTimeout(() => setLoadedFromLocalStorageDone(true), 0)
 			return
@@ -162,7 +162,7 @@ export function useCartManager({
 			)
 
 			if (!respOk || !resp.ok) {
-				cnsole.error("Can't refresh product in cart info:", respError)
+				logger.error("Can't refresh product in cart info:", respError)
 				return
 			}
 
@@ -181,7 +181,7 @@ export function useCartManager({
 			)
 
 			if (!ok) {
-				cnsole.error("Can't parse products for cart:", error)
+				logger.error("Can't parse products for cart:", error)
 				return
 			}
 
@@ -191,7 +191,7 @@ export function useCartManager({
 				for (const item of prev) {
 					const productInResponse = data.docs.find((prod) => prod.id === item.product.id)
 					if (!productInResponse) {
-						cnsole.warn(
+						logger.warn(
 							`Product with id ${item.product.id} not found in response, removing from cart.`,
 						)
 						continue
@@ -200,7 +200,7 @@ export function useCartManager({
 						(variant) => variant.sku === item.variant.sku,
 					)
 					if (!variantInResponse) {
-						cnsole.warn(
+						logger.warn(
 							`Variant with sku ${item.variant.sku} not found for product ${item.product.id}, removing from cart.`,
 						)
 						continue

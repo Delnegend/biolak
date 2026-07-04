@@ -13,13 +13,13 @@ import { Button } from '@/components/ui/button'
 import { Carousel, CarouselContent, CarouselItem } from '@/components/ui/carousel'
 import { Lang } from '@/i18n/routing'
 import type { ProductsCarouselBlockProps } from '@/payload-types'
-import { cnsoleBuilder } from '@/utilities/cnsole'
 import { arrayDepthHandler, depthHandler } from '@/utilities/depthHandler'
+import { newLogger } from '@/utilities/logger'
 import { cn } from '@/utilities/ui'
 
 import { ProductsCarouselNavButton } from './ProductsCarouselNavButton'
 
-const cnsole = cnsoleBuilder('blocks/ProductsCarousel')
+const logger = newLogger('blocks/ProductsCarousel')
 
 const phudu = Phudu({
 	subsets: ['vietnamese'],
@@ -76,7 +76,7 @@ export async function ProductsCarouselBlock(
 									}),
 							})
 							if (!ok)
-								cnsole.error(
+								logger.error(
 									`Can't fetching image for product ${product.id}:`,
 									error,
 								)

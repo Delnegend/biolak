@@ -10,11 +10,11 @@ import { ProductCard } from '@/components/ProductCard'
 import { Carousel, CarouselContent, CarouselItem } from '@/components/ui/carousel'
 import { Lang } from '@/i18n/routing'
 import { BestSellerBlockProps } from '@/payload-types'
-import { cnsoleBuilder } from '@/utilities/cnsole'
 import { arrayDepthHandler } from '@/utilities/depthHandler'
+import { newLogger } from '@/utilities/logger'
 import { cn } from '@/utilities/ui'
 
-const cnsole = cnsoleBuilder('blocks/BestSeller')
+const logger = newLogger('blocks/BestSeller')
 
 const phudu = Phudu({
 	subsets: ['vietnamese'],
@@ -52,7 +52,7 @@ export async function BestSellerBlock({
 				.then((res) => res.docs),
 	})
 	if (!productsOk) {
-		cnsole.error("Can't fetching products:", productsError)
+		logger.error("Can't fetching products:", productsError)
 	}
 
 	return (

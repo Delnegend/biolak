@@ -6,12 +6,12 @@ import { MediaSlug } from '@/collections/Media/slug'
 import { GeneralGlobalSlug } from '@/globals/General/config'
 import { GeneralGlobal } from '@/payload-types'
 
-import { cnsoleBuilder } from './cnsole'
 import { depthHandler } from './depthHandler'
 import { getCachedGlobal } from './getGlobals'
+import { newLogger } from './logger'
 import { tryCatch } from './tryCatch'
 
-const cnsole = cnsoleBuilder('mergeOpenGraph')
+const logger = newLogger('mergeOpenGraph')
 
 export async function mergeOpenGraph(og?: Metadata['openGraph']): Promise<Metadata['openGraph']> {
 	const generalGlobal = await getCachedGlobal<GeneralGlobal>(GeneralGlobalSlug)()
@@ -20,7 +20,7 @@ export async function mergeOpenGraph(og?: Metadata['openGraph']): Promise<Metada
 		ok: payloadOk,
 		error: payloadError,
 	} = await tryCatch(() => getPayload({ config }))
-	if (!payloadOk) cnsole.error(`Failed to initialize Payload: ${payloadError}`)
+	if (!payloadOk) logger.error(`Failed to initialize Payload: ${payloadError}`)
 
 	const {
 		data: siteBanner,
@@ -37,7 +37,7 @@ export async function mergeOpenGraph(og?: Metadata['openGraph']): Promise<Metada
 					})
 				: null,
 	})
-	if (!siteBannerOk) cnsole.error(`Failed to fetch site banner: ${siteBannerError}`)
+	if (!siteBannerOk) logger.error(`Failed to fetch site banner: ${siteBannerError}`)
 
 	return {
 		...{

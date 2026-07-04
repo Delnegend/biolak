@@ -8,12 +8,12 @@ import { FormProvider, useForm } from 'react-hook-form'
 import RichText from '@/components/RichText'
 import { Button } from '@/components/ui/button'
 import { Lang } from '@/i18n/routing'
-import { cnsoleBuilder } from '@/utilities/cnsole'
 import { getClientSideURL } from '@/utilities/getURL'
+import { newLogger } from '@/utilities/logger'
 
 import { fields } from './fields'
 
-const cnsole = cnsoleBuilder('blocks/FormBlock')
+const logger = newLogger('blocks/FormBlock')
 
 export type FormBlockType = {
 	blockName?: string
@@ -92,7 +92,7 @@ export function FormBlock(props: FormBlockType): React.JSX.Element {
 						if (redirectUrl) router.push(redirectUrl)
 					}
 				} catch (err) {
-					cnsole.warn("Can't submit form:", err)
+					logger.warn("Can't submit form:", err)
 					setIsLoading(false)
 					setError({
 						message: 'Something went wrong.',
