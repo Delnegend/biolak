@@ -25,7 +25,6 @@ import {
 	SelectValue,
 } from '@/components/ui/select'
 import { TextInput } from '@/components/ui/text-input'
-import { CheckoutPageGlobalDefaults as defaults } from '@/globals/CheckoutPage/defaults'
 import { useCartManager } from '@/hooks/useCartManager'
 import { Lang } from '@/i18n/routing'
 import { CheckoutPageGlobal, Product } from '@/payload-types'
@@ -110,10 +109,7 @@ export default function PageClient({
 
 	const prices = calculatePrices({
 		code: null,
-		shipping:
-			shippingMethod === 'express'
-				? defaults.shipping.fastShippingPrice
-				: defaults.shipping.standardShippingPrice,
+		shipping: shippingMethod === 'express' ? 50000 : 30000,
 		products: cart
 			.filter((item) => item.checked)
 			.map((item) => ({
@@ -294,11 +290,10 @@ export default function PageClient({
 				<DialogContent className="overflow-hidden rounded-3xl [&>button]:hidden">
 					<DialogHeader>
 						<DialogTitle className="text-center">
-							{global.popup?.successTitle ?? defaults.popup.successTitle(locale)}
+							{global.popup?.successTitle ?? t('popup.successTitle')}
 						</DialogTitle>
 						<DialogDescription className="text-center">
-							{global.popup?.successDescription ??
-								defaults.popup.successDescription(locale)}
+							{global.popup?.successDescription ?? t('popup.successDescription')}
 							{processingState.state === 'success' &&
 								processingState.paymentMethod === 'bankTransfer' &&
 								global.bankName &&
@@ -317,8 +312,7 @@ export default function PageClient({
 					<Button className="justify-between" asChild>
 						{/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
 						<a href="/" className="w-full">
-							{global.popup?.backToHomeButtonLabel ??
-								defaults.popup.backToHomeButton(locale)}
+							{global.popup?.backToHomeButtonLabel ?? t('popup.backToHomeButton')}
 							<ArrowRight />
 						</a>
 					</Button>
@@ -331,9 +325,7 @@ export default function PageClient({
 				<div className="flex flex-col gap-y-5">
 					{/* personal info */}
 					<INTERNAL_Card>
-						<CartTitle>
-							{global.contacts?.title ?? defaults.contacts.title(locale)}
-						</CartTitle>
+						<CartTitle>{global.contacts?.title ?? t('contacts.title')}</CartTitle>
 
 						<div>
 							<FormField
@@ -345,7 +337,7 @@ export default function PageClient({
 											<TextInput
 												label={
 													global.contacts?.emailInputLabel ??
-													defaults.contacts.emailInputLabel(locale)
+													t('contacts.emailInputLabel')
 												}
 												{...field}
 											/>
@@ -365,7 +357,7 @@ export default function PageClient({
 												id="newsletter"
 												label={
 													global.contacts?.acceptNewsletter ??
-													defaults.contacts.acceptNewsletter(locale)
+													t('contacts.acceptNewsletter')
 												}
 												{...field}
 												checked={field.value}
@@ -377,9 +369,7 @@ export default function PageClient({
 							/>
 						</div>
 
-						<CartTitle>
-							{global.address?.title ?? defaults.address.title(locale)}
-						</CartTitle>
+						<CartTitle>{global.address?.title ?? t('address.title')}</CartTitle>
 
 						<div className="grid grid-cols-2 gap-x-6 gap-y-9">
 							<FormField
@@ -392,7 +382,7 @@ export default function PageClient({
 												size="sm"
 												label={
 													global.address?.nameInputLabel ??
-													defaults.address.nameInputLabel(locale)
+													t('address.nameInputLabel')
 												}
 												{...field}
 											/>
@@ -412,7 +402,7 @@ export default function PageClient({
 												size="sm"
 												label={
 													global.address?.phoneInputLabel ??
-													defaults.address.phoneInputLabel(locale)
+													t('address.phoneInputLabel')
 												}
 												{...field}
 											/>
@@ -438,11 +428,11 @@ export default function PageClient({
 											<SelectTrigger
 												label={
 													global.address?.provinceCityInputLabel ??
-													defaults.address.provinceCityInputLabel(locale)
+													t('address.provinceCityInputLabel')
 												}
 												aria-label={
 													global.address?.provinceCityInputLabel ??
-													defaults.address.provinceCityInputLabel(locale)
+													t('address.provinceCityInputLabel')
 												}
 											>
 												<SelectValue />
@@ -480,11 +470,11 @@ export default function PageClient({
 												<SelectTrigger
 													label={
 														global.address?.districtInputLabel ??
-														defaults.address.districtInputLabel(locale)
+														t('address.districtInputLabel')
 													}
 													aria-label={
 														global.address?.districtInputLabel ??
-														defaults.address.districtInputLabel(locale)
+														t('address.districtInputLabel')
 													}
 												>
 													<SelectValue />
@@ -529,11 +519,11 @@ export default function PageClient({
 												<SelectTrigger
 													label={
 														global.address?.wardInputLabel ??
-														defaults.address.wardInputLabel(locale)
+														t('address.wardInputLabel')
 													}
 													aria-label={
 														global.address?.wardInputLabel ??
-														defaults.address.wardInputLabel(locale)
+														t('address.wardInputLabel')
 													}
 												>
 													<SelectValue />
@@ -567,8 +557,7 @@ export default function PageClient({
 											<TextInput
 												size="sm"
 												label={
-													global.address?.details ??
-													defaults.address.details(locale)
+													global.address?.details ?? t('address.details')
 												}
 												{...field}
 											/>
@@ -580,10 +569,7 @@ export default function PageClient({
 
 						<Checkbox
 							id="saveForNextTime"
-							label={
-								global.address?.saveForNextTime ??
-								defaults.address.saveForNextTime(locale)
-							}
+							label={global.address?.saveForNextTime ?? t('address.saveForNextTime')}
 							classNames={{ container: 'col-span-2' }}
 							checked={loadPersonalDetailsOnLoad}
 							onCheckedChange={setLoadPersonalDetailsOnLoad}
@@ -592,9 +578,7 @@ export default function PageClient({
 
 					{/* shipping method */}
 					<INTERNAL_Card>
-						<CartTitle>
-							{global.shipping?.title ?? defaults.shipping.title(locale)}
-						</CartTitle>
+						<CartTitle>{global.shipping?.title ?? t('shipping.title')}</CartTitle>
 						<FormField
 							control={form.control}
 							name="shippingInfo.method"
@@ -604,7 +588,7 @@ export default function PageClient({
 										id="standardShipping"
 										label={
 											global.shipping?.standardShippingLabel ??
-											defaults.shipping.standardShippingLabel(locale)
+											t('shipping.standardShippingLabel')
 										}
 										checked={field.value === 'standard'}
 										onCheckedChange={(value) => {
@@ -616,7 +600,7 @@ export default function PageClient({
 										id="fastShipping"
 										label={
 											global.shipping?.fastShippingLabel ??
-											defaults.shipping.fastShippingLabel(locale)
+											t('shipping.fastShippingLabel')
 										}
 										checked={field.value === 'express'}
 										onCheckedChange={(value) => {
@@ -631,9 +615,7 @@ export default function PageClient({
 
 					{/* payment method */}
 					<INTERNAL_Card>
-						<CartTitle>
-							{global.payment?.title ?? defaults.payment.title(locale)}
-						</CartTitle>
+						<CartTitle>{global.payment?.title ?? t('payment.title')}</CartTitle>
 						<FormField
 							control={form.control}
 							name="paymentMethod"
@@ -641,10 +623,7 @@ export default function PageClient({
 								<FormItem>
 									<Checkbox
 										id="cod"
-										label={
-											global.payment?.codLabel ??
-											defaults.payment.codLabel(locale)
-										}
+										label={global.payment?.codLabel ?? t('payment.codLabel')}
 										checked={field.value === 'cod'}
 										onCheckedChange={(value) =>
 											field.onChange(value ? 'cod' : 'bankTransfer')
@@ -654,7 +633,7 @@ export default function PageClient({
 										id="bankTransfer"
 										label={
 											global.payment?.bankTransferLabel ??
-											defaults.payment.bankTransferLabel(locale)
+											t('payment.bankTransferLabel')
 										}
 										checked={field.value === 'bankTransfer'}
 										onCheckedChange={(value) =>
@@ -668,7 +647,7 @@ export default function PageClient({
 
 					{/* send as gift */}
 					<INTERNAL_Card>
-						<CartTitle>{global.gift?.title ?? defaults.gift.title(locale)}</CartTitle>
+						<CartTitle>{global.gift?.title ?? t('gift.title')}</CartTitle>
 						<div className="grid grid-cols-2 gap-x-6 gap-y-3">
 							<FormField
 								control={form.control}
@@ -680,7 +659,7 @@ export default function PageClient({
 												size="sm"
 												label={
 													global.gift?.senderInputLabel ??
-													defaults.gift.sender(locale)
+													t('gift.sender')
 												}
 												{...field}
 											/>
@@ -698,7 +677,7 @@ export default function PageClient({
 												size="sm"
 												label={
 													global.gift?.recipientInputLabel ??
-													defaults.gift.recipient(locale)
+													t('gift.recipient')
 												}
 												{...field}
 											/>
@@ -719,7 +698,7 @@ export default function PageClient({
 												}}
 												label={
 													global.gift?.messageInputLabel ??
-													defaults.gift.message(locale)
+													t('gift.message')
 												}
 												{...field}
 											/>
@@ -732,13 +711,11 @@ export default function PageClient({
 				</div>
 
 				<INTERNAL_Card className="h-fit">
-					<CartTitle>{global.order?.title ?? defaults.order.title(locale)}</CartTitle>
+					<CartTitle>{global.order?.title ?? t('order.title')}</CartTitle>
 					<INTERNAl_CartListWithAccordion syncWithLocalStorage={syncWithLocalStorage} />
 					<hr />
 
-					<CartTitle>
-						{global.discount?.title ?? defaults.discount.title(locale)}
-					</CartTitle>
+					<CartTitle>{global.discount?.title ?? t('discount.title')}</CartTitle>
 					<div className="flex h-[4.5rem] items-center justify-between rounded-[0.5rem] border border-primary p-[0.625rem]">
 						<FormField
 							control={form.control}
@@ -750,11 +727,11 @@ export default function PageClient({
 											type="text"
 											placeholder={
 												global.discount?.inputPlaceholder ??
-												defaults.discount.inputLabel(locale)
+												t('discount.inputLabel')
 											}
 											aria-label={
 												global.discount?.inputPlaceholder ??
-												defaults.discount.inputLabel(locale)
+												t('discount.inputLabel')
 											}
 											className="h-[calc(4.5rem-1.25rem)] w-full border-primary bg-transparent px-3 text-lg placeholder:text-muted-foreground focus:outline-none"
 											{...field}
@@ -766,8 +743,7 @@ export default function PageClient({
 						<Button
 							hideArrow
 							aria-label={
-								global.discount?.applyButtonLabel ??
-								defaults.discount.applyButton(locale)
+								global.discount?.applyButtonLabel ?? t('discount.applyButton')
 							}
 							className="h-[calc(4.5rem-1.25rem)]"
 							size="md"
@@ -775,8 +751,7 @@ export default function PageClient({
 								e.preventDefault()
 							}}
 						>
-							{global.discount?.applyButtonLabel ??
-								defaults.discount.applyButton(locale)}
+							{global.discount?.applyButtonLabel ?? t('discount.applyButton')}
 						</Button>
 					</div>
 					<hr className="my-2" />
@@ -784,29 +759,26 @@ export default function PageClient({
 					<div>
 						<div className="grid grid-cols-[auto_1fr] gap-2">
 							<div className="font-bold">
-								{global.orderSummary?.provisional ??
-									defaults.orderSummary.provisional(locale)}
+								{global.orderSummary?.provisional ?? t('orderSummary.provisional')}
 							</div>
 							<div className="place-self-end">{formatPrice(prices.provisional)}</div>
 							<div className="font-bold">
-								{global.orderSummary?.shipping ??
-									defaults.orderSummary.shipping(locale)}
+								{global.orderSummary?.shipping ?? t('orderSummary.shipping')}
 							</div>
 							<div className="place-self-end">{formatPrice(prices.shipping)}</div>
 							<div className="font-bold">
-								{global.orderSummary?.discount ??
-									defaults.orderSummary.discount(locale)}
+								{global.orderSummary?.discount ?? t('orderSummary.discount')}
 							</div>
 							<div className="place-self-end">{formatPrice(prices.discount)}</div>
 							<div className="font-bold">
-								{global.orderSummary?.total ?? defaults.orderSummary.total(locale)}
+								{global.orderSummary?.total ?? t('orderSummary.total')}
 							</div>
 							<div className="place-self-end">{formatPrice(prices.total)}</div>
 						</div>
 						<ul className="my-6 text-balance italic">
 							<li>
 								{global.orderSummary?.acknowledgment ??
-									defaults.orderSummary.acknowledge(locale)}
+									t('orderSummary.acknowledge')}
 							</li>
 						</ul>
 						<Button
@@ -818,8 +790,7 @@ export default function PageClient({
 							hideArrow
 							disabled={processingState.state !== 'idle'}
 						>
-							{global.orderSummary?.orderButtonLabel ??
-								defaults.orderSummary.orderButton(locale)}
+							{global.orderSummary?.orderButtonLabel ?? t('orderSummary.orderButton')}
 						</Button>
 					</div>
 				</INTERNAL_Card>

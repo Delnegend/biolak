@@ -10,7 +10,6 @@ import { DiscountCodesSlug } from '@/collections/DiscountCode/slug'
 import { OrdersSlug } from '@/collections/Orders/slug'
 import { ProductsSlug } from '@/collections/Products/slug'
 import { CheckoutPageGlobalSlug } from '@/globals/CheckoutPage/config'
-import { CheckoutPageGlobalDefaults } from '@/globals/CheckoutPage/defaults'
 import { Lang } from '@/i18n/routing'
 import { CheckoutPageGlobal } from '@/payload-types'
 import { calculatePrices } from '@/utilities/calculatePrices'
@@ -297,10 +296,8 @@ export async function confirmDetailsAction(
 	// final prices
 
 	const { shipping } = await getCachedGlobal<CheckoutPageGlobal>(CheckoutPageGlobalSlug)()
-	const standardPrice =
-		shipping?.standardShippingPrice ?? CheckoutPageGlobalDefaults.shipping.standardShippingPrice
-	const expressPrice =
-		shipping?.fastShippingPrice ?? CheckoutPageGlobalDefaults.shipping.fastShippingPrice
+	const standardPrice = shipping?.standardShippingPrice ?? 30000
+	const expressPrice = shipping?.fastShippingPrice ?? 50000
 
 	const finalPrices = calculatePrices({
 		shipping: details.shippingInfo.method === 'express' ? expressPrice : standardPrice,
