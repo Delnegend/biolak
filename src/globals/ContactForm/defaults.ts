@@ -1,4 +1,4 @@
-import { Lang } from '@/utilities/lang'
+import { Lang } from '@/i18n/routing'
 import { matchLang } from '@/utilities/matchLang'
 
 export const ContactFormGlobalDefaults = {

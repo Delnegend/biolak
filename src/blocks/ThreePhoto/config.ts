@@ -1,7 +1,7 @@
 import { Block } from 'payload'
 
 import { MediaSlug } from '@/collections/Media/slug'
-import { Lang } from '@/utilities/lang'
+import { Lang } from '@/i18n/routing'
 
 export const ThreePhotoBlockConf: Block = {
 	slug: 'threePhoto',

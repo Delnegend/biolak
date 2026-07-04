@@ -1,4 +1,4 @@
-import { defaultLocale, Lang } from './lang'
+import { defaultLocale, Lang } from '@/i18n/routing'
 
 export function matchLang(
 	translations: Record<Lang, string>,

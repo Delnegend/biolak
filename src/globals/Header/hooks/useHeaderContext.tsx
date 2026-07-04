@@ -2,7 +2,7 @@
 
 import { createContext, useContext, useEffect, useState } from 'react'
 
-import { Lang } from '@/utilities/lang'
+import { Lang } from '@/i18n/routing'
 
 type HeaderContextType = {
 	allTopBarsHeight: number

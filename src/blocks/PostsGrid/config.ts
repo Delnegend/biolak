@@ -1,8 +1,8 @@
 import { Block } from 'payload'
 
 import { PostCategoriesSlug } from '@/collections/PostCategories/slug'
+import { Lang } from '@/i18n/routing'
 import { PostCategory } from '@/payload-types'
-import { Lang } from '@/utilities/lang'
 
 export const PostsGridBlockConf: Block = {
 	slug: 'posts-grid',

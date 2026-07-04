@@ -1,8 +1,8 @@
 import { Access, CollectionConfig } from 'payload'
 
 import { allow, Role } from '@/access/allow'
+import { Lang } from '@/i18n/routing'
 import { User } from '@/payload-types'
-import { Lang } from '@/utilities/lang'
 
 import { UsersSlug } from './slug'
 

@@ -2,7 +2,7 @@ import { revalidateTag } from 'next/cache'
 import { GlobalConfig } from 'payload'
 
 import { allow, Role } from '@/access/allow'
-import { Lang } from '@/utilities/lang'
+import { Lang } from '@/i18n/routing'
 
 export const PopupBannerGlobalSlug = 'popupBannerGlobal'
 export const PopupBannerGlobalConf: GlobalConfig<typeof PopupBannerGlobalSlug> = {

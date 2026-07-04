@@ -104,7 +104,7 @@ export default function MyComponent() {
 
 ### Adding a New Language
 
-1. Add the locale to `src/utilities/lang.ts`.
+1. Add the locale to `src/i18n/routing.ts`.
 2. Add it to the `locales` array in `src/i18n/routing.ts`.
 3. Create `messages/{code}.json` with all required keys.
 4. Add the language to Payload's `localization.locales` and `i18n.supportedLanguages` in `src/payload.config.ts`.

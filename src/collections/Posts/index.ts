@@ -24,7 +24,7 @@ import { VideoEmbedBlockConf } from '@/blocks/VideoEmbed/config'
 import { FooterSizeField } from '@/fields/footer'
 import { metaTab } from '@/fields/metaTab'
 import { slugField } from '@/fields/slug'
-import { Lang } from '@/utilities/lang'
+import { Lang } from '@/i18n/routing'
 
 import { adminOrPublished } from '../../access/adminOrPublished'
 import { MediaBlockConf } from '../../blocks/MediaBlock/config'

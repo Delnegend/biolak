@@ -1,6 +1,6 @@
 import { SelectField } from 'payload'
 
-import { Lang } from '@/utilities/lang'
+import { Lang } from '@/i18n/routing'
 
 export const FooterSizeField: SelectField = {
 	type: 'select',

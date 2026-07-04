@@ -3,7 +3,7 @@ import type { GlobalConfig } from 'payload'
 
 import { allow, Role } from '@/access/allow'
 import { MediaSlug } from '@/collections/Media/slug'
-import { Lang } from '@/utilities/lang'
+import { Lang } from '@/i18n/routing'
 
 import { FooterGlobalDefaults as defaults } from './defaults'
 

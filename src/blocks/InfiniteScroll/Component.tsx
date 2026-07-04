@@ -1,10 +1,10 @@
 import config from '@payload-config'
 import { getPayload } from 'payload'
 
+import { Lang } from '@/i18n/routing'
 import { InfiniteScrollBlockProps } from '@/payload-types'
 import { cnsoleBuilder } from '@/utilities/cnsole'
 import { depthHandler } from '@/utilities/depthHandler'
-import { Lang } from '@/utilities/lang'
 
 import { INTERNAL_InfiniteScrollBlock } from './Component.client'
 

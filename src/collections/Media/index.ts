@@ -6,7 +6,7 @@ import {
 import { CollectionConfig } from 'payload'
 
 import { allow, Role } from '@/access/allow'
-import { Lang } from '@/utilities/lang'
+import { Lang } from '@/i18n/routing'
 
 import { MediaSlug } from './slug'
 

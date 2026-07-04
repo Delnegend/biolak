@@ -23,7 +23,7 @@ import { FooterSizeField } from '@/fields/footer'
 import { linkGroup } from '@/fields/linkGroup'
 import { metaTab } from '@/fields/metaTab'
 import { slugField } from '@/fields/slug'
-import { Lang } from '@/utilities/lang'
+import { Lang } from '@/i18n/routing'
 
 import { adminOrPublished } from '../../access/adminOrPublished'
 import { ArchiveBlockConf } from '../../blocks/ArchiveBlock/config'

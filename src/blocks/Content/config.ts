@@ -6,7 +6,7 @@ import {
 import type { Block, Field } from 'payload'
 
 import { link } from '@/fields/link'
-import { Lang } from '@/utilities/lang'
+import { Lang } from '@/i18n/routing'
 
 const columnFields: Field[] = [
 	{

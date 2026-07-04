@@ -3,8 +3,8 @@ import React from 'react'
 import { HighImpactHero } from '@/heros/HighImpact'
 import { LowImpactHero } from '@/heros/LowImpact'
 import { MediumImpactHero } from '@/heros/MediumImpact'
+import { Lang } from '@/i18n/routing'
 import { Page } from '@/payload-types'
-import { Lang } from '@/utilities/lang'
 
 const heroes = {
 	highImpact: HighImpactHero,

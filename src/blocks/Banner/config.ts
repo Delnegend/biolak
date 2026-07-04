@@ -5,7 +5,7 @@ import {
 } from '@payloadcms/richtext-lexical'
 import type { Block } from 'payload'
 
-import { Lang } from '@/utilities/lang'
+import { Lang } from '@/i18n/routing'
 
 export const BannerBlockConf: Block = {
 	slug: 'banner',

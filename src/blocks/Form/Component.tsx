@@ -7,9 +7,9 @@ import { FormProvider, useForm } from 'react-hook-form'
 
 import RichText from '@/components/RichText'
 import { Button } from '@/components/ui/button'
+import { Lang } from '@/i18n/routing'
 import { cnsoleBuilder } from '@/utilities/cnsole'
 import { getClientSideURL } from '@/utilities/getURL'
-import { Lang } from '@/utilities/lang'
 
 import { fields } from './fields'
 

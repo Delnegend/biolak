@@ -2,7 +2,7 @@ import { SerializedEditorState } from '@payloadcms/richtext-lexical/lexical'
 import React from 'react'
 
 import RichText from '@/components/RichText'
-import { Lang } from '@/utilities/lang'
+import { Lang } from '@/i18n/routing'
 
 import { Width } from '../Width'
 

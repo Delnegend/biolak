@@ -2,7 +2,7 @@ import type { Field, GlobalConfig } from 'payload'
 
 import { allow, Role } from '@/access/allow'
 import { LinkFieldRelations } from '@/fields/link'
-import { Lang } from '@/utilities/lang'
+import { Lang } from '@/i18n/routing'
 
 import { revalidateHeader } from './hooks/revalidateHeader'
 import { HeaderGlobalSlug } from './slug'

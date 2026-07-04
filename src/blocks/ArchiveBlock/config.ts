@@ -7,7 +7,7 @@ import {
 import type { Block } from 'payload'
 
 import { PostCategoriesSlug } from '@/collections/PostCategories/slug'
-import { Lang } from '@/utilities/lang'
+import { Lang } from '@/i18n/routing'
 
 export const ArchiveBlockConf: Block = {
 	slug: 'archive',
