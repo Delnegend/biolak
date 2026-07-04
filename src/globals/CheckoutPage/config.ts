@@ -4,7 +4,7 @@ import { GlobalConfig } from 'payload'
 import { allow, Role } from '@/access/allow'
 import { Lang } from '@/i18n/routing'
 
-import { CheckoutPageGlobalDefaults as defaults } from './defaults'
+import vi from '../../../messages/vi.json'
 
 export const CheckoutPageGlobalSlug = 'checkoutPageGlobal'
 export const CheckoutPageGlobalConf: GlobalConfig<typeof CheckoutPageGlobalSlug> = {
@@ -34,7 +34,7 @@ export const CheckoutPageGlobalConf: GlobalConfig<typeof CheckoutPageGlobalSlug>
 							label: false,
 							localized: true,
 							admin: {
-								placeholder: defaults.contacts.title(Lang.Vietnamese),
+								placeholder: vi.globals.checkout.contacts.title,
 							},
 						},
 						{
@@ -43,7 +43,7 @@ export const CheckoutPageGlobalConf: GlobalConfig<typeof CheckoutPageGlobalSlug>
 							label: false,
 							localized: true,
 							admin: {
-								placeholder: defaults.contacts.emailInputLabel(Lang.Vietnamese),
+								placeholder: vi.globals.checkout.contacts.emailInputLabel,
 							},
 						},
 						{
@@ -52,7 +52,7 @@ export const CheckoutPageGlobalConf: GlobalConfig<typeof CheckoutPageGlobalSlug>
 							label: false,
 							localized: true,
 							admin: {
-								placeholder: defaults.contacts.acceptNewsletter(Lang.Vietnamese),
+								placeholder: vi.globals.checkout.contacts.acceptNewsletter,
 							},
 						},
 					],
@@ -70,7 +70,7 @@ export const CheckoutPageGlobalConf: GlobalConfig<typeof CheckoutPageGlobalSlug>
 							label: false,
 							localized: true,
 							admin: {
-								placeholder: defaults.address.title(Lang.Vietnamese),
+								placeholder: vi.globals.checkout.address.title,
 							},
 						},
 						{
@@ -79,7 +79,7 @@ export const CheckoutPageGlobalConf: GlobalConfig<typeof CheckoutPageGlobalSlug>
 							label: false,
 							localized: true,
 							admin: {
-								placeholder: defaults.address.nameInputLabel(Lang.Vietnamese),
+								placeholder: vi.globals.checkout.address.nameInputLabel,
 							},
 						},
 						{
@@ -87,7 +87,7 @@ export const CheckoutPageGlobalConf: GlobalConfig<typeof CheckoutPageGlobalSlug>
 							type: 'text',
 							label: false,
 							admin: {
-								placeholder: defaults.address.phoneInputLabel(Lang.Vietnamese),
+								placeholder: vi.globals.checkout.address.phoneInputLabel,
 							},
 						},
 						{
@@ -96,9 +96,7 @@ export const CheckoutPageGlobalConf: GlobalConfig<typeof CheckoutPageGlobalSlug>
 							label: false,
 							localized: true,
 							admin: {
-								placeholder: defaults.address.provinceCityInputLabel(
-									Lang.Vietnamese,
-								),
+								placeholder: vi.globals.checkout.address.provinceCityInputLabel,
 							},
 						},
 						{
@@ -107,7 +105,7 @@ export const CheckoutPageGlobalConf: GlobalConfig<typeof CheckoutPageGlobalSlug>
 							label: false,
 							localized: true,
 							admin: {
-								placeholder: defaults.address.districtInputLabel(Lang.Vietnamese),
+								placeholder: vi.globals.checkout.address.districtInputLabel,
 							},
 						},
 						{
@@ -116,7 +114,7 @@ export const CheckoutPageGlobalConf: GlobalConfig<typeof CheckoutPageGlobalSlug>
 							label: false,
 							localized: true,
 							admin: {
-								placeholder: defaults.address.wardInputLabel(Lang.Vietnamese),
+								placeholder: vi.globals.checkout.address.wardInputLabel,
 							},
 						},
 						{
@@ -125,7 +123,7 @@ export const CheckoutPageGlobalConf: GlobalConfig<typeof CheckoutPageGlobalSlug>
 							label: false,
 							localized: true,
 							admin: {
-								placeholder: defaults.address.details(Lang.Vietnamese),
+								placeholder: vi.globals.checkout.address.details,
 							},
 						},
 						{
@@ -134,7 +132,7 @@ export const CheckoutPageGlobalConf: GlobalConfig<typeof CheckoutPageGlobalSlug>
 							label: false,
 							localized: true,
 							admin: {
-								placeholder: defaults.address.saveForNextTime(Lang.Vietnamese),
+								placeholder: vi.globals.checkout.address.saveForNextTime,
 							},
 						},
 					],
@@ -152,7 +150,7 @@ export const CheckoutPageGlobalConf: GlobalConfig<typeof CheckoutPageGlobalSlug>
 							label: false,
 							localized: true,
 							admin: {
-								placeholder: defaults.shipping.title(Lang.Vietnamese),
+								placeholder: vi.globals.checkout.shipping.title,
 							},
 						},
 						{
@@ -164,9 +162,8 @@ export const CheckoutPageGlobalConf: GlobalConfig<typeof CheckoutPageGlobalSlug>
 									label: false,
 									localized: true,
 									admin: {
-										placeholder: defaults.shipping.standardShippingLabel(
-											Lang.Vietnamese,
-										),
+										placeholder:
+											vi.globals.checkout.shipping.standardShippingLabel,
 									},
 								},
 								{
@@ -175,9 +172,7 @@ export const CheckoutPageGlobalConf: GlobalConfig<typeof CheckoutPageGlobalSlug>
 									label: false,
 									localized: true,
 									admin: {
-										placeholder: defaults.shipping.fastShippingLabel(
-											Lang.Vietnamese,
-										),
+										placeholder: vi.globals.checkout.shipping.fastShippingLabel,
 									},
 								},
 							],
@@ -193,8 +188,7 @@ export const CheckoutPageGlobalConf: GlobalConfig<typeof CheckoutPageGlobalSlug>
 										[Lang.Vietnamese]: 'Giá vận chuyển tiêu chuẩn',
 									},
 									admin: {
-										placeholder:
-											defaults.shipping.standardShippingPrice.toString(),
+										placeholder: '30000',
 									},
 								},
 								{
@@ -205,7 +199,7 @@ export const CheckoutPageGlobalConf: GlobalConfig<typeof CheckoutPageGlobalSlug>
 										[Lang.Vietnamese]: 'Giá vận chuyển nhanh',
 									},
 									admin: {
-										placeholder: defaults.shipping.fastShippingPrice.toString(),
+										placeholder: '50000',
 									},
 								},
 							],
@@ -225,7 +219,7 @@ export const CheckoutPageGlobalConf: GlobalConfig<typeof CheckoutPageGlobalSlug>
 							label: false,
 							localized: true,
 							admin: {
-								placeholder: defaults.payment.title(Lang.Vietnamese),
+								placeholder: vi.globals.checkout.payment.title,
 							},
 						},
 						{
@@ -234,7 +228,7 @@ export const CheckoutPageGlobalConf: GlobalConfig<typeof CheckoutPageGlobalSlug>
 							label: false,
 							localized: true,
 							admin: {
-								placeholder: defaults.payment.codLabel(Lang.Vietnamese),
+								placeholder: vi.globals.checkout.payment.codLabel,
 							},
 						},
 						{
@@ -243,7 +237,7 @@ export const CheckoutPageGlobalConf: GlobalConfig<typeof CheckoutPageGlobalSlug>
 							label: false,
 							localized: true,
 							admin: {
-								placeholder: defaults.payment.bankTransferLabel(Lang.Vietnamese),
+								placeholder: vi.globals.checkout.payment.bankTransferLabel,
 							},
 						},
 					],
@@ -261,7 +255,7 @@ export const CheckoutPageGlobalConf: GlobalConfig<typeof CheckoutPageGlobalSlug>
 							label: false,
 							localized: true,
 							admin: {
-								placeholder: defaults.gift.title(Lang.Vietnamese),
+								placeholder: vi.globals.checkout.gift.title,
 							},
 						},
 						{
@@ -270,7 +264,7 @@ export const CheckoutPageGlobalConf: GlobalConfig<typeof CheckoutPageGlobalSlug>
 							label: false,
 							localized: true,
 							admin: {
-								placeholder: defaults.gift.sender(Lang.Vietnamese),
+								placeholder: vi.globals.checkout.gift.sender,
 							},
 						},
 						{
@@ -279,7 +273,7 @@ export const CheckoutPageGlobalConf: GlobalConfig<typeof CheckoutPageGlobalSlug>
 							label: false,
 							localized: true,
 							admin: {
-								placeholder: defaults.gift.recipient(Lang.Vietnamese),
+								placeholder: vi.globals.checkout.gift.recipient,
 							},
 						},
 						{
@@ -288,7 +282,7 @@ export const CheckoutPageGlobalConf: GlobalConfig<typeof CheckoutPageGlobalSlug>
 							label: false,
 							localized: true,
 							admin: {
-								placeholder: defaults.gift.message(Lang.Vietnamese),
+								placeholder: vi.globals.checkout.gift.message,
 							},
 						},
 					],
@@ -306,7 +300,7 @@ export const CheckoutPageGlobalConf: GlobalConfig<typeof CheckoutPageGlobalSlug>
 							label: false,
 							localized: true,
 							admin: {
-								placeholder: defaults.order.title(Lang.Vietnamese),
+								placeholder: vi.globals.checkout.order.title,
 							},
 						},
 					],
@@ -324,7 +318,7 @@ export const CheckoutPageGlobalConf: GlobalConfig<typeof CheckoutPageGlobalSlug>
 							label: false,
 							localized: true,
 							admin: {
-								placeholder: defaults.discount.title(Lang.Vietnamese),
+								placeholder: vi.globals.checkout.discount.title,
 							},
 						},
 						{
@@ -333,7 +327,7 @@ export const CheckoutPageGlobalConf: GlobalConfig<typeof CheckoutPageGlobalSlug>
 							label: false,
 							localized: true,
 							admin: {
-								placeholder: defaults.discount.inputLabel(Lang.Vietnamese),
+								placeholder: vi.globals.checkout.discount.inputLabel,
 							},
 						},
 						{
@@ -342,7 +336,7 @@ export const CheckoutPageGlobalConf: GlobalConfig<typeof CheckoutPageGlobalSlug>
 							label: false,
 							localized: true,
 							admin: {
-								placeholder: defaults.discount.applyButton(Lang.Vietnamese),
+								placeholder: vi.globals.checkout.discount.applyButton,
 							},
 						},
 					],
@@ -360,7 +354,7 @@ export const CheckoutPageGlobalConf: GlobalConfig<typeof CheckoutPageGlobalSlug>
 							label: false,
 							localized: true,
 							admin: {
-								placeholder: defaults.orderSummary.provisional(Lang.Vietnamese),
+								placeholder: vi.globals.checkout.orderSummary.provisional,
 							},
 						},
 						{
@@ -369,7 +363,7 @@ export const CheckoutPageGlobalConf: GlobalConfig<typeof CheckoutPageGlobalSlug>
 							label: false,
 							localized: true,
 							admin: {
-								placeholder: defaults.orderSummary.discount(Lang.Vietnamese),
+								placeholder: vi.globals.checkout.orderSummary.discount,
 							},
 						},
 						{
@@ -378,7 +372,7 @@ export const CheckoutPageGlobalConf: GlobalConfig<typeof CheckoutPageGlobalSlug>
 							label: false,
 							localized: true,
 							admin: {
-								placeholder: defaults.orderSummary.shipping(Lang.Vietnamese),
+								placeholder: vi.globals.checkout.orderSummary.shipping,
 							},
 						},
 						{
@@ -387,7 +381,7 @@ export const CheckoutPageGlobalConf: GlobalConfig<typeof CheckoutPageGlobalSlug>
 							label: false,
 							localized: true,
 							admin: {
-								placeholder: defaults.orderSummary.total(Lang.Vietnamese),
+								placeholder: vi.globals.checkout.orderSummary.total,
 							},
 						},
 						{
@@ -396,7 +390,7 @@ export const CheckoutPageGlobalConf: GlobalConfig<typeof CheckoutPageGlobalSlug>
 							label: false,
 							localized: true,
 							admin: {
-								placeholder: defaults.orderSummary.acknowledge(Lang.Vietnamese),
+								placeholder: vi.globals.checkout.orderSummary.acknowledge,
 							},
 						},
 						{
@@ -405,7 +399,7 @@ export const CheckoutPageGlobalConf: GlobalConfig<typeof CheckoutPageGlobalSlug>
 							label: false,
 							localized: true,
 							admin: {
-								placeholder: defaults.orderSummary.orderButton(Lang.Vietnamese),
+								placeholder: vi.globals.checkout.orderSummary.orderButton,
 							},
 						},
 					],
@@ -423,7 +417,7 @@ export const CheckoutPageGlobalConf: GlobalConfig<typeof CheckoutPageGlobalSlug>
 							label: false,
 							localized: true,
 							admin: {
-								placeholder: defaults.popup.successTitle(Lang.Vietnamese),
+								placeholder: vi.globals.checkout.popup.successTitle,
 							},
 						},
 						{
@@ -432,7 +426,7 @@ export const CheckoutPageGlobalConf: GlobalConfig<typeof CheckoutPageGlobalSlug>
 							label: false,
 							localized: true,
 							admin: {
-								placeholder: defaults.popup.successDescription(Lang.Vietnamese),
+								placeholder: vi.globals.checkout.popup.successDescription,
 							},
 						},
 						{
@@ -441,7 +435,7 @@ export const CheckoutPageGlobalConf: GlobalConfig<typeof CheckoutPageGlobalSlug>
 							label: false,
 							localized: true,
 							admin: {
-								placeholder: defaults.popup.backToHomeButton(Lang.Vietnamese),
+								placeholder: vi.globals.checkout.popup.backToHomeButton,
 							},
 						},
 					],

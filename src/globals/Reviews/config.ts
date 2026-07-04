@@ -4,7 +4,7 @@ import { GlobalConfig } from 'payload'
 import { allow, Role } from '@/access/allow'
 import { Lang } from '@/i18n/routing'
 
-import { ReviewsGlobalDefaults as defaults } from './defaults'
+import vi from '../../../messages/vi.json'
 
 export const ReviewsGlobalSlug = 'reviewsGlobal'
 export const ReviewsGlobalConf: GlobalConfig<typeof ReviewsGlobalSlug> = {
@@ -24,7 +24,7 @@ export const ReviewsGlobalConf: GlobalConfig<typeof ReviewsGlobalSlug> = {
 			label: false,
 			localized: true,
 			admin: {
-				placeholder: defaults.title(Lang.Vietnamese),
+				placeholder: vi.globals.reviews.title,
 			},
 		},
 		{
@@ -33,7 +33,7 @@ export const ReviewsGlobalConf: GlobalConfig<typeof ReviewsGlobalSlug> = {
 			label: false,
 			localized: true,
 			admin: {
-				placeholder: defaults.reviewButtonLabel(Lang.Vietnamese),
+				placeholder: vi.globals.reviews.reviewButtonLabel,
 			},
 		},
 		{
@@ -42,7 +42,7 @@ export const ReviewsGlobalConf: GlobalConfig<typeof ReviewsGlobalSlug> = {
 			label: false,
 			localized: true,
 			admin: {
-				placeholder: defaults.reviewDialogTitle(Lang.Vietnamese),
+				placeholder: vi.globals.reviews.reviewDialogTitle,
 			},
 		},
 		{
@@ -51,7 +51,7 @@ export const ReviewsGlobalConf: GlobalConfig<typeof ReviewsGlobalSlug> = {
 			label: false,
 			localized: true,
 			admin: {
-				placeholder: defaults.heartsSelectionLabel(Lang.Vietnamese),
+				placeholder: vi.globals.reviews.heartsSelectionLabel,
 			},
 		},
 		{
@@ -60,7 +60,7 @@ export const ReviewsGlobalConf: GlobalConfig<typeof ReviewsGlobalSlug> = {
 			label: false,
 			localized: true,
 			admin: {
-				placeholder: defaults.invoiceIdLabel(Lang.Vietnamese),
+				placeholder: vi.globals.reviews.invoiceIdLabel,
 			},
 		},
 		{
@@ -69,7 +69,7 @@ export const ReviewsGlobalConf: GlobalConfig<typeof ReviewsGlobalSlug> = {
 			label: false,
 			localized: true,
 			admin: {
-				placeholder: defaults.contentLabel(Lang.Vietnamese),
+				placeholder: vi.globals.reviews.contentLabel,
 			},
 		},
 		{
@@ -78,7 +78,7 @@ export const ReviewsGlobalConf: GlobalConfig<typeof ReviewsGlobalSlug> = {
 			label: false,
 			localized: true,
 			admin: {
-				placeholder: defaults.sendReviewButtonLabel(Lang.Vietnamese),
+				placeholder: vi.globals.reviews.sendReviewButtonLabel,
 			},
 		},
 	],
