@@ -1,6 +1,7 @@
 import configPromise from '@payload-config'
 import { Phudu } from 'next/font/google'
 import Link from 'next/link'
+import { getTranslations } from 'next-intl/server'
 import { getPayload } from 'payload'
 
 import { ProductCategoriesSlug } from '@/collections/ProductCategories/slug'
@@ -8,6 +9,7 @@ import { ProductsSlug } from '@/collections/Products/slug'
 import { ProductSubCategoriesSlug } from '@/collections/ProductSubCategories/slug'
 import { ProductCard } from '@/components/ProductCard'
 import { Carousel, CarouselContent, CarouselItem } from '@/components/ui/carousel'
+import { Lang } from '@/i18n/routing'
 import { ProductsCategoryBlockProps } from '@/payload-types'
 import { tryCatch } from '@/utilities/tryCatch'
 import { cn } from '@/utilities/ui'
@@ -17,20 +19,18 @@ const phudu = Phudu({
 })
 
 export async function ProductsCategoryBlock(
-	props: ProductsCategoryBlockProps,
+	props: ProductsCategoryBlockProps & {
+		locale: Lang
+	},
 ): Promise<React.JSX.Element> {
+	const [t, payload] = await Promise.all([
+		getTranslations({ locale: props.locale, namespace: 'blocks.productsCategory' }),
+		getPayload({ config: configPromise }),
+	])
 	const category = typeof props.category.value === 'object' ? props.category.value : null
 
-	const {
-		data: payload,
-		ok: payloadOk,
-		error: payloadErr,
-	} = await tryCatch(() => getPayload({ config: configPromise }))
-	if (!payloadOk) {
-		throw new Error(`ProductsCategoryBlock: Error getting payload client: ${payloadErr}`)
-	}
-
 	let products
+
 	const {
 		data: productFromCategory,
 		ok: productFromCategoryOk,
@@ -86,7 +86,7 @@ export async function ProductsCategoryBlock(
 						className="underline-offset-4 hover:underline"
 						href={category?.slug ? `/category/${category.slug}` : '#'}
 					>
-						{props.buttonLabel} →
+						{props.buttonLabel ?? t('buttonLabel')} →
 					</Link>
 				</div>
 			</div>

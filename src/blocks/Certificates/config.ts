@@ -1,9 +1,7 @@
 import { Block } from 'payload'
 
 import { MediaSlug } from '@/collections/Media/slug'
-import { Lang } from '@/utilities/lang'
-
-import { CertificatesBlockDefaults as defaults } from './defaults'
+import { Lang } from '@/i18n/routing'
 
 export const CertificatesBlockConf: Block = {
 	slug: 'certificates',
@@ -29,7 +27,7 @@ export const CertificatesBlockConf: Block = {
 			},
 			localized: true,
 			admin: {
-				placeholder: defaults.title(Lang.Vietnamese),
+				placeholder: 'Chứng nhận bởi các tổ chức quốc tế',
 			},
 		},
 		{

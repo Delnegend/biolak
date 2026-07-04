@@ -1,18 +1,20 @@
+import { getTranslations } from 'next-intl/server'
+
 import { HeadlessImage } from '@/components/Media/HeadlessImage'
+import { Lang } from '@/i18n/routing'
 import { CertificatesBlockProps } from '@/payload-types'
-import { Lang } from '@/utilities/lang'
 
-import { CertificatesBlockDefaults as defaults } from './defaults'
-
-export function CertificatesBlock(
+export async function CertificatesBlock(
 	props: CertificatesBlockProps & {
-		__locale: Lang
+		locale: Lang
 	},
-): React.JSX.Element {
+): Promise<React.JSX.Element> {
+	const t = await getTranslations({ locale: props.locale, namespace: 'blocks.certificates' })
+
 	return (
 		<div className="safe-width flex w-full flex-col items-center justify-center max-lg:my-6 lg:my-16">
 			<div className="mb-6 text-balance text-center font-serif text-5xl font-bold text-primary md:mb-16">
-				{props.title ?? defaults.title(props.__locale)}
+				{props.title ?? t('title')}
 			</div>
 			<div className="flex flex-col gap-6 md:grid md:w-5/6 md:max-w-7xl md:grid-cols-3">
 				{props.organizations?.map((org, index) => {

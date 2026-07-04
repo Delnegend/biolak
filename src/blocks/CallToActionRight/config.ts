@@ -2,9 +2,7 @@ import type { Block } from 'payload'
 
 import { MediaSlug } from '@/collections/Media/slug'
 import { link } from '@/fields/link'
-import { Lang } from '@/utilities/lang'
-
-import { CallToActionRightBlockDefaults as defaults } from './defaults'
+import { Lang } from '@/i18n/routing'
 
 export const CallToActionRightBlockConf: Block = {
 	slug: 'cta-right',
@@ -90,12 +88,11 @@ export const CallToActionRightBlockConf: Block = {
 		},
 		link({
 			overrides: {
-				defaultValue: defaults.buttonLabel,
 				required: true,
 				localized: true,
 			},
 			label: {
-				placeholder: defaults.buttonLabel(Lang.Vietnamese),
+				placeholder: 'Tìm hiểu thêm',
 				required: false,
 			},
 		}),

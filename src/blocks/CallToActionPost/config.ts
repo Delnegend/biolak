@@ -2,9 +2,7 @@ import { Block } from 'payload'
 
 import { PostsSlug } from '@/collections/Posts/slug'
 import { link } from '@/fields/link'
-import { Lang } from '@/utilities/lang'
-
-import { CallToActionPostBlockDefaults as defaults } from './defaults'
+import { Lang } from '@/i18n/routing'
 
 export const CallToActionPostBlockConf: Block = {
 	slug: 'call-to-action-post',
@@ -51,12 +49,11 @@ export const CallToActionPostBlockConf: Block = {
 		},
 		link({
 			overrides: {
-				defaultValue: defaults.buttonLabel,
 				required: true,
 				localized: true,
 			},
 			label: {
-				placeholder: defaults.buttonLabel(Lang.Vietnamese),
+				placeholder: 'ĐỌC BÀI VIẾT',
 				required: false,
 			},
 		}),

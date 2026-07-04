@@ -1,19 +1,18 @@
 import { ArrowRight } from 'lucide-react'
+import { getTranslations } from 'next-intl/server'
 
 import { CMSLink } from '@/components/CMSLink'
 import { HeadlessImage } from '@/components/Media/HeadlessImage'
 import { Button } from '@/components/ui/button'
+import { Lang } from '@/i18n/routing'
 import { CallToActionPostBlockProps } from '@/payload-types'
-import { Lang } from '@/utilities/lang'
-import { matchLang } from '@/utilities/matchLang'
 
-import { CallToActionPostBlockDefaults as defaults } from './defaults'
-
-export function CallToActionPostBlock(
+export async function CallToActionPostBlock(
 	props: CallToActionPostBlockProps & {
-		__locale: Lang
+		locale: Lang
 	},
-): React.JSX.Element {
+): Promise<React.JSX.Element> {
+	const t = await getTranslations({ locale: props.locale, namespace: 'blocks.callToActionPost' })
 	const post = props.post && typeof props.post === 'object' ? props.post : null
 
 	const title = props.overwriteTitle ?? post?.title
@@ -30,7 +29,7 @@ export function CallToActionPostBlock(
 					<CMSLink
 						{...props.link}
 						type={props.link?.type ?? undefined}
-						label={props.link?.label ?? defaults.buttonLabel(props.__locale)}
+						label={props.link?.label ?? t('buttonLabel')}
 					>
 						<ArrowRight />
 					</CMSLink>
@@ -40,10 +39,7 @@ export function CallToActionPostBlock(
 				<HeadlessImage
 					media={post?.meta?.meta?.image}
 					placeholder={{ width: 1000, height: 1000 }}
-					alt={matchLang({
-						[Lang.English]: 'Post hero image',
-						[Lang.Vietnamese]: 'Hình ảnh bài viết',
-					})(props.__locale)}
+					alt={t('postImageAlt')}
 					className="size-full object-cover max-lg:aspect-square lg:absolute"
 				/>
 			</div>

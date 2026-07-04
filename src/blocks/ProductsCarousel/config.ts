@@ -2,9 +2,7 @@ import { Block } from 'payload'
 
 import { ProductsSlug } from '@/collections/Products/slug'
 import { link } from '@/fields/link'
-import { Lang } from '@/utilities/lang'
-
-import { ProductsCarouselBlockDefaults as defaults } from './defaults'
+import { Lang } from '@/i18n/routing'
 
 export const ProductsCarouselBlockConf: Block = {
 	slug: 'productsCarousel',
@@ -30,7 +28,7 @@ export const ProductsCarouselBlockConf: Block = {
 			},
 			localized: true,
 			admin: {
-				placeholder: defaults.title(Lang.Vietnamese),
+				placeholder: 'SẢN PHẨM BÁN CHẠY',
 			},
 		},
 		{
@@ -52,7 +50,7 @@ export const ProductsCarouselBlockConf: Block = {
 			},
 			localized: true,
 			admin: {
-				placeholder: defaults.watchMoreBtnLabel(Lang.Vietnamese),
+				placeholder: 'XEM THÊM',
 			},
 		},
 		link({
@@ -66,7 +64,7 @@ export const ProductsCarouselBlockConf: Block = {
 				required: true,
 			},
 			label: {
-				placeholder: defaults.allProductsBtnLabel(Lang.Vietnamese),
+				placeholder: 'XEM TẤT CẢ SẢN PHẨM',
 				required: false,
 			},
 		}),

@@ -1,9 +1,7 @@
 import { Block } from 'payload'
 
 import { ProductsSlug } from '@/collections/Products/slug'
-import { Lang } from '@/utilities/lang'
-
-import { BuyNowBlockDefaults as defaults } from './defaults'
+import { Lang } from '@/i18n/routing'
 
 export const BuyNowBlockConf: Block = {
 	slug: 'buy-now',
@@ -29,7 +27,7 @@ export const BuyNowBlockConf: Block = {
 			},
 			localized: true,
 			admin: {
-				placeholder: defaults.buttonLabel(Lang.Vietnamese),
+				placeholder: 'MUA NGAY',
 			},
 		},
 		{

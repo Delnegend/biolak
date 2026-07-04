@@ -2,9 +2,7 @@ import { Block } from 'payload'
 
 import { ProductsSlug } from '@/collections/Products/slug'
 import { link } from '@/fields/link'
-import { Lang } from '@/utilities/lang'
-
-import { BestSellerBlockDefaults as defaults } from './defaults'
+import { Lang } from '@/i18n/routing'
 
 export const BestSellerBlockConf: Block = {
 	slug: 'bestSeller',
@@ -30,7 +28,7 @@ export const BestSellerBlockConf: Block = {
 			},
 			localized: true,
 			admin: {
-				placeholder: defaults.title(Lang.Vietnamese),
+				placeholder: 'Sản phẩm bán chạy',
 			},
 		},
 		{
@@ -54,7 +52,7 @@ export const BestSellerBlockConf: Block = {
 		},
 		link({
 			label: {
-				placeholder: defaults.viewAllProductsButton(Lang.Vietnamese),
+				placeholder: 'XEM TẤT CẢ SẢN PHẨM →',
 				required: false,
 			},
 		}),

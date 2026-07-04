@@ -2,6 +2,7 @@ import config from '@payload-config'
 import { ArrowRight } from 'lucide-react'
 import { Phudu } from 'next/font/google'
 import Link from 'next/link'
+import { getTranslations } from 'next-intl/server'
 import { getPayload } from 'payload'
 
 import { MediaSlug } from '@/collections/Media/slug'
@@ -10,14 +11,12 @@ import { CMSLink } from '@/components/CMSLink'
 import { HeadlessImage } from '@/components/Media/HeadlessImage'
 import { Button } from '@/components/ui/button'
 import { Carousel, CarouselContent, CarouselItem } from '@/components/ui/carousel'
+import { Lang } from '@/i18n/routing'
 import type { ProductsCarouselBlockProps } from '@/payload-types'
 import { cnsoleBuilder } from '@/utilities/cnsole'
 import { arrayDepthHandler, depthHandler } from '@/utilities/depthHandler'
-import { Lang } from '@/utilities/lang'
-import { matchLang } from '@/utilities/matchLang'
 import { cn } from '@/utilities/ui'
 
-import { ProductsCarouselBlockDefaults as defaults } from './defaults'
 import { ProductsCarouselNavButton } from './ProductsCarouselNavButton'
 
 const cnsole = cnsoleBuilder('blocks/ProductsCarousel')
@@ -29,10 +28,13 @@ const phudu = Phudu({
 
 export async function ProductsCarouselBlock(
 	props: ProductsCarouselBlockProps & {
-		__locale: Lang
+		locale: Lang
 	},
 ): Promise<React.JSX.Element> {
-	const payload = await getPayload({ config })
+	const [t, payload] = await Promise.all([
+		getTranslations({ locale: props.locale, namespace: 'blocks.productsCarousel' }),
+		getPayload({ config }),
+	])
 	const {
 		data: products,
 		ok: productsOk,
@@ -86,20 +88,13 @@ export async function ProductsCarouselBlock(
 								>
 									<HeadlessImage
 										media={product.gallery?.[0]}
-										alt={
-											img?.alt ??
-											product.title ??
-											matchLang({
-												[Lang.English]: 'Product Image',
-												[Lang.Vietnamese]: 'Hình ảnh sản phẩm',
-											})(props.__locale)
-										}
+										alt={img?.alt ?? product.title ?? t('productImageAlt')}
 										placeholder={{ width: 720, height: 880 }}
 										className="size-full max-h-[55rem] object-cover"
 									/>
 									<div className="flex flex-col justify-center gap-3 text-balance bg-primary px-14 py-12 text-[#F1DAAE] max-md:h-fit max-md:px-4 max-md:py-6">
 										<div className="text-xl font-medium max-md:text-base">
-											{props.title ?? defaults.title(props.__locale)}
+											{props.title ?? t('title')}
 										</div>
 										<div className="font-serif text-7xl font-bold max-md:text-[2.5rem]">
 											{product.title}
@@ -115,8 +110,7 @@ export async function ProductsCarouselBlock(
 												href="/[slug]"
 												as={product.slug ? `/product/${product.slug}` : '#'}
 											>
-												{props.watchMoreBtnLabel ??
-													defaults.watchMoreBtnLabel(props.__locale)}
+												{props.watchMoreBtnLabel ?? t('watchMoreBtnLabel')}
 												<ArrowRight />
 											</Link>
 										</Button>
@@ -151,10 +145,7 @@ export async function ProductsCarouselBlock(
 											)}
 											{...props.apb}
 											type={props.apb?.type ?? undefined}
-											label={
-												props.apb.label ??
-												defaults.allProductsBtnLabel(props.__locale)
-											}
+											label={props.apb.label ?? t('allProductsBtnLabel')}
 										/>
 									</div>
 								</CarouselItem>

@@ -1,9 +1,7 @@
 import { Block } from 'payload'
 
 import { PostsSlug } from '@/collections/Posts/slug'
-import { Lang } from '@/utilities/lang'
-
-import { LatestPostsBlockDefaults as defaults } from './defaults'
+import { Lang } from '@/i18n/routing'
 
 export const LatestPostsBlockConf: Block = {
 	slug: 'latestPosts',
@@ -28,9 +26,8 @@ export const LatestPostsBlockConf: Block = {
 				[Lang.Vietnamese]: 'Tiêu đề',
 			},
 			localized: true,
-			defaultValue: defaults.title,
 			admin: {
-				placeholder: defaults.title(Lang.Vietnamese),
+				placeholder: 'Bài viết mới nhất',
 			},
 		},
 		{
@@ -41,9 +38,8 @@ export const LatestPostsBlockConf: Block = {
 				[Lang.Vietnamese]: 'Nhãn nút',
 			},
 			localized: true,
-			defaultValue: defaults.buttonLabel,
 			admin: {
-				placeholder: defaults.buttonLabel(Lang.Vietnamese),
+				placeholder: 'TẤT CẢ BÀI VIẾT',
 			},
 		},
 		{

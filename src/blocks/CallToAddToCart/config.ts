@@ -2,9 +2,7 @@ import { Block } from 'payload'
 
 import { MediaSlug } from '@/collections/Media/slug'
 import { ProductsSlug } from '@/collections/Products/slug'
-import { Lang } from '@/utilities/lang'
-
-import { CallToAddToCartBlockDefaults as defaults } from './defaults'
+import { Lang } from '@/i18n/routing'
 
 export const CallToAddToCartBlockConf: Block = {
 	slug: 'call-to-add-to-cart',
@@ -47,9 +45,8 @@ export const CallToAddToCartBlockConf: Block = {
 				[Lang.Vietnamese]: 'Nhãn nút',
 			},
 			localized: true,
-			defaultValue: defaults.buttonLabel,
 			admin: {
-				placeholder: defaults.buttonLabel(Lang.Vietnamese),
+				placeholder: 'THÊM VÀO GIỎ HÀNG',
 			},
 		},
 		{

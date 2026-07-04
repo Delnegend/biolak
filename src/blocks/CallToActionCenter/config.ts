@@ -2,9 +2,7 @@ import type { Block } from 'payload'
 
 import { MediaSlug } from '@/collections/Media/slug'
 import { link } from '@/fields/link'
-import { Lang } from '@/utilities/lang'
-
-import { CallToActionCenterBlockDefaults as defaults } from './defaults'
+import { Lang } from '@/i18n/routing'
 
 export const CallToActionCenterBlockConf: Block = {
 	slug: 'cta-center',
@@ -64,7 +62,7 @@ export const CallToActionCenterBlockConf: Block = {
 				localized: true,
 			},
 			label: {
-				placeholder: defaults.buttonLabel(Lang.Vietnamese),
+				placeholder: 'Tìm hiểu thêm',
 				required: false,
 			},
 		}),

@@ -2,9 +2,7 @@ import { Block } from 'payload'
 
 import { MediaSlug } from '@/collections/Media/slug'
 import { ProductsSlug } from '@/collections/Products/slug'
-import { Lang } from '@/utilities/lang'
-
-import { HowToUseProductBlockDefaults as defaults } from './defaults'
+import { Lang } from '@/i18n/routing'
 
 export const HowToUseProductBlockConf: Block = {
 	slug: 'how-to-use-product',
@@ -29,9 +27,8 @@ export const HowToUseProductBlockConf: Block = {
 				[Lang.Vietnamese]: 'Tiêu đề',
 			},
 			localized: true,
-			defaultValue: defaults.title,
 			admin: {
-				placeholder: defaults.title(Lang.Vietnamese),
+				placeholder: 'Hướng dẫn sử dụng',
 			},
 		},
 		{
