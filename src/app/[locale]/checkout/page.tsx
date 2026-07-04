@@ -1,30 +1,33 @@
 import config from '@payload-config'
 import Image from 'next/image'
+import { getTranslations } from 'next-intl/server'
 import { getPayload } from 'payload'
 import React from 'react'
 
 import { ProductsSlug } from '@/collections/Products/slug'
 import { CheckoutPageGlobalSlug } from '@/globals/CheckoutPage/config'
 import { PaymentGlobalSlug } from '@/globals/Payment/slug'
+import { Lang } from '@/i18n/routing'
 import { CheckoutPageGlobal, PaymentGlobal } from '@/payload-types'
-import { getClientLang } from '@/utilities/getClientLocale'
 import { getCachedGlobal } from '@/utilities/getGlobals'
-import { Lang } from '@/utilities/lang'
-import { matchLang } from '@/utilities/matchLang'
 import { tryCatch } from '@/utilities/tryCatch'
 
 import PageClient from './page.client'
 
 export default async function Checkout({
+	params,
 	searchParams: searchParams_,
 }: {
+	params: Promise<{ locale: string }>
 	searchParams: Promise<{ [key: string]: string | string[] | undefined }>
 }): Promise<React.JSX.Element> {
-	const [locale, payload, searchParams] = await Promise.all([
-		getClientLang(),
+	const [{ locale: _locale }, payload, searchParams, t] = await Promise.all([
+		params,
 		getPayload({ config }),
 		searchParams_,
+		getTranslations('globals.checkout'),
 	])
+	const locale = _locale as Lang
 
 	const [global, paymentGlobal, overrideProduct] = await Promise.all([
 		getCachedGlobal<CheckoutPageGlobal>(CheckoutPageGlobalSlug, 1, locale)(),
@@ -84,10 +87,7 @@ export default async function Checkout({
 				width={96}
 				height={49}
 				src="/biolak-logo.svg"
-				alt={matchLang({
-					[Lang.English]: 'Brand Logo',
-					[Lang.Vietnamese]: 'Logo thuơng hiệu',
-				})(locale)}
+				alt={t('logoAlt')}
 				className="my-16 h-16 w-32 overflow-hidden object-contain"
 			/>
 			<PageClient
@@ -109,12 +109,9 @@ export async function generateMetadata(): Promise<{
 	metadataBase: URL
 	title: string
 }> {
-	const locale = await getClientLang()
+	const t = await getTranslations('globals.checkout')
 	return {
 		metadataBase: new URL('https://biolak.vn'),
-		title: matchLang({
-			[Lang.English]: 'Checkout | BioLAK',
-			[Lang.Vietnamese]: 'Thanh toán | BioLAK',
-		})(locale),
+		title: t('metaTitle'),
 	}
 }

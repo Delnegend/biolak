@@ -1,15 +1,15 @@
 import Link from 'next/link'
+import { getTranslations } from 'next-intl/server'
 import React from 'react'
 
+import { Lang } from '@/i18n/routing'
 import type { HeaderGlobal } from '@/payload-types'
-import { Lang } from '@/utilities/lang'
-import { matchLang } from '@/utilities/matchLang'
 import { cn } from '@/utilities/ui'
 
 import { INTERNAL_CloseSmallNavWrapper } from './CloseSmallNavWrapper.client'
 import { NavItems } from './NavItems'
 
-export function INTERNAL_RenderNavItems({
+export async function INTERNAL_RenderNavItems({
 	items,
 	locale,
 	size,
@@ -19,7 +19,8 @@ export function INTERNAL_RenderNavItems({
 	locale: Lang
 	size: 'lg' | 'sm'
 	className?: string
-}): React.JSX.Element {
+}): Promise<React.JSX.Element> {
+	const t = await getTranslations('globals.header.nav')
 	return (
 		<nav className={cn('flex items-center gap-9 text-xl max-md:flex-col', className)}>
 			{items?.map((item, index) => {
@@ -81,12 +82,7 @@ export function INTERNAL_RenderNavItems({
 							<React.Fragment key={key}>
 								<INTERNAL_CloseSmallNavWrapper asChild>
 									<Link href={url ?? '#'} className="whitespace-nowrap">
-										{item.label ??
-											doc?.title ??
-											matchLang({
-												[Lang.English]: 'Internal link',
-												[Lang.Vietnamese]: 'Liên kết nội bộ',
-											})(locale)}
+										{item.label ?? doc?.title ?? t('internalLink')}
 									</Link>
 								</INTERNAL_CloseSmallNavWrapper>
 							</React.Fragment>
@@ -104,10 +100,7 @@ export function INTERNAL_RenderNavItems({
 									>
 										{item.label ??
 											item.customUrl?.replaceAll(/https?:\/\//, '') ??
-											matchLang({
-												[Lang.English]: 'External link',
-												[Lang.Vietnamese]: 'Liên kết ngoài',
-											})(locale)}
+											t('externalLink')}
 									</Link>
 								</INTERNAL_CloseSmallNavWrapper>
 							</React.Fragment>

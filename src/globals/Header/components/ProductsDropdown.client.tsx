@@ -3,6 +3,7 @@ import { X } from 'lucide-react'
 import { AnimatePresence, motion, Variants } from 'motion/react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
+import { useTranslations } from 'next-intl'
 import { PaginatedDocs, Where } from 'payload'
 import { stringify } from 'qs-esm'
 import React, { useEffect, useState } from 'react'
@@ -13,8 +14,6 @@ import { ProductSubCategoriesSlug } from '@/collections/ProductSubCategories/slu
 import { HeadlessImage } from '@/components/Media/HeadlessImage'
 import { Product, ProductCategory, ProductSubCategory } from '@/payload-types'
 import { getPriceRange } from '@/utilities/getPriceRange'
-import { Lang } from '@/utilities/lang'
-import { matchLang } from '@/utilities/matchLang'
 import { RESTFetcher } from '@/utilities/RESTFetcher'
 import { cn } from '@/utilities/ui'
 
@@ -117,14 +116,13 @@ function DropdownColumn({
 export function INTERNAL_ProductsDropdownClient({
 	categories,
 	label,
-	locale,
 	size,
 }: {
 	categories: PaginatedDocs<ProductCategory>
 	label?: string
-	locale: Lang
 	size: 'lg' | 'sm'
 }): React.JSX.Element {
+	const t = useTranslations('globals.header.nav.products')
 	const { allTopBarsHeight, setSmallNavOpen } = useHeaderContext()
 
 	const [open, setOpen] = useState(false)
@@ -181,11 +179,7 @@ export function INTERNAL_ProductsDropdownClient({
 	return (
 		<div className="relative">
 			<button onClick={() => setOpen(!open)} className="whitespace-nowrap">
-				{label ??
-					matchLang({
-						[Lang.English]: 'Products',
-						[Lang.Vietnamese]: 'Sản phẩm',
-					})(locale)}
+				{label ?? t('label')}
 			</button>
 			<AnimatePresence>
 				{open && (
@@ -220,17 +214,9 @@ export function INTERNAL_ProductsDropdownClient({
 								key="categories"
 								className="flex items-center justify-between"
 							>
-								<span>
-									{matchLang({
-										[Lang.English]: 'Products',
-										[Lang.Vietnamese]: 'Sản phẩm',
-									})(locale)}
-								</span>
+								<span>{t('dropdownTitle')}</span>
 								<button
-									aria-label={matchLang({
-										[Lang.English]: 'Close products dropdown',
-										[Lang.Vietnamese]: 'Đóng danh mục sản phẩm',
-									})(locale)}
+									aria-label={t('close')}
 									onClick={() => {
 										setOpen(false)
 									}}
@@ -279,18 +265,9 @@ export function INTERNAL_ProductsDropdownClient({
 										key={activeCategory?.slug}
 										className="flex items-center justify-between"
 									>
-										<span>
-											{activeCategory?.title ??
-												matchLang({
-													[Lang.English]: 'Product category',
-													[Lang.Vietnamese]: 'Danh mục sản phẩm',
-												})(locale)}
-										</span>
+										<span>{activeCategory?.title ?? t('categoryLabel')}</span>
 										<button
-											aria-label={matchLang({
-												[Lang.English]: 'Close subcategory',
-												[Lang.Vietnamese]: 'Đóng danh mục con',
-											})(locale)}
+											aria-label={t('closeSubcategory')}
 											onClick={() => {
 												setOpen(true)
 												setActiveCategory(null)
@@ -312,10 +289,7 @@ export function INTERNAL_ProductsDropdownClient({
 												setOpen(false)
 											}}
 										>
-											{matchLang({
-												[Lang.English]: 'All',
-												[Lang.Vietnamese]: 'Tất cả',
-											})(locale)}
+											{t('all')}
 										</Link>
 									</DropdownItem>
 									{activeCategory?.productSubCategories?.docs
@@ -363,17 +337,10 @@ export function INTERNAL_ProductsDropdownClient({
 											className="flex items-center justify-between"
 										>
 											<span>
-												{activeSubCategory?.title ??
-													matchLang({
-														[Lang.English]: 'Product category',
-														[Lang.Vietnamese]: 'Danh mục sản phẩm',
-													})(locale)}
+												{activeSubCategory?.title ?? t('categoryLabel')}
 											</span>
 											<button
-												aria-label={matchLang({
-													[Lang.English]: 'Close products',
-													[Lang.Vietnamese]: 'Đóng sản phẩm',
-												})(locale)}
+												aria-label={t('closeProducts')}
 												onClick={() => {
 													setOpen(true)
 													setActiveSubCategory(null)
@@ -424,18 +391,11 @@ export function INTERNAL_ProductsDropdownClient({
 															style={{ gridArea: 'price' }}
 														>
 															{getPriceRange(product) ??
-																matchLang({
-																	[Lang.English]: 'Out of stock',
-																	[Lang.Vietnamese]: 'Hết hàng',
-																})(locale)}
+																t('outOfStock')}
 														</div>
 														<HeadlessImage
 															media={product.icon}
-															alt={matchLang({
-																[Lang.English]: 'Product Icon',
-																[Lang.Vietnamese]:
-																	'Biểu tượng sản phẩm',
-															})(locale)}
+															alt={t('productIcon')}
 															placeholder={{
 																width: 200,
 																height: 200,

@@ -1,9 +1,9 @@
 import { Phudu } from 'next/font/google'
+import { getTranslations } from 'next-intl/server'
 
 import { HeadlessImage } from '@/components/Media/HeadlessImage'
+import { Lang } from '@/i18n/routing'
 import { HighlightCenterBlockProps } from '@/payload-types'
-import { Lang } from '@/utilities/lang'
-import { matchLang } from '@/utilities/matchLang'
 import { cn } from '@/utilities/ui'
 
 const phudu = Phudu({
@@ -11,20 +11,19 @@ const phudu = Phudu({
 	weight: '400',
 })
 
-export function HighlightCenterBlock(
+export async function HighlightCenterBlock(
 	props: HighlightCenterBlockProps & {
-		__locale: Lang
+		locale: Lang
 	},
-): React.JSX.Element {
+): Promise<React.JSX.Element> {
+	const t = await getTranslations({ locale: props.locale, namespace: 'blocks.highlightCenter' })
+
 	return (
 		<div className="safe-width my-28 flex flex-col text-primary max-md:max-w-md">
 			<div className="flex w-full flex-col items-center justify-center">
 				<HeadlessImage
 					media={props.image}
-					alt={matchLang({
-						[Lang.English]: 'Highlight center image',
-						[Lang.Vietnamese]: 'Hình ảnh nổi bật ở giữa',
-					})(props.__locale)}
+					alt={t('alt')}
 					placeholder={{ width: 600, height: 600 }}
 					className="aspect-square size-[9.75rem] overflow-hidden rounded-full object-cover md:size-[32.75rem]"
 				/>

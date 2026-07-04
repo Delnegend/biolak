@@ -1,19 +1,20 @@
 'use client'
 
+import { useTranslations } from 'next-intl'
+
 import { Button } from '@/components/ui/button'
 import { formatPrice } from '@/utilities/formatPrice'
-import { Lang } from '@/utilities/lang'
-import { matchLang } from '@/utilities/matchLang'
 
 import { useSelectedProductVariant } from './ProductVariantContext'
 
 export function INTERNAL_BuyNowButton({
 	disabled,
-	locale,
+	locale: _locale,
 }: {
 	disabled?: boolean
-	locale?: Lang
+	locale?: string
 }): React.JSX.Element {
+	const t = useTranslations('heros.productHero.buyNow')
 	const { selectedProductVariant } = useSelectedProductVariant()
 
 	return (
@@ -34,15 +35,12 @@ export function INTERNAL_BuyNowButton({
 						e.preventDefault()
 					}
 				}}
-				aria-label={matchLang({
-					[Lang.English]: `Buy ${selectedProductVariant?.product.title} variant ${selectedProductVariant?.variant.title} now`,
-					[Lang.Vietnamese]: `Mua ngay ${selectedProductVariant?.product.title} loại ${selectedProductVariant?.variant.title}`,
-				})(locale)}
+				aria-label={t('ariaLabel', {
+					product: selectedProductVariant?.product.title ?? '',
+					variant: selectedProductVariant?.variant.title ?? '',
+				})}
 			>
-				{matchLang({
-					[Lang.English]: disabled ? 'OUT OF STOCK' : 'BUY NOW',
-					[Lang.Vietnamese]: disabled ? 'HẾT HÀNG' : 'MUA NGAY',
-				})(locale)}
+				{disabled ? t('outOfStock') : t('label')}
 				{selectedProductVariant && (
 					<span> - {formatPrice(selectedProductVariant?.variant.price)}</span>
 				)}

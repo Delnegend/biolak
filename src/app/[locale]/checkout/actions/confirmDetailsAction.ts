@@ -1,6 +1,7 @@
 'use server'
 import config from '@payload-config'
 import { nanoid } from 'nanoid'
+import { getTranslations } from 'next-intl/server'
 import { getPayload } from 'payload'
 import { z } from 'zod/v4'
 
@@ -10,13 +11,11 @@ import { OrdersSlug } from '@/collections/Orders/slug'
 import { ProductsSlug } from '@/collections/Products/slug'
 import { CheckoutPageGlobalSlug } from '@/globals/CheckoutPage/config'
 import { CheckoutPageGlobalDefaults } from '@/globals/CheckoutPage/defaults'
+import { Lang } from '@/i18n/routing'
 import { CheckoutPageGlobal } from '@/payload-types'
 import { calculatePrices } from '@/utilities/calculatePrices'
 import { cnsoleBuilder } from '@/utilities/cnsole'
-import { getClientLang } from '@/utilities/getClientLocale'
 import { getCachedGlobal } from '@/utilities/getGlobals'
-import { Lang } from '@/utilities/lang'
-import { matchLang } from '@/utilities/matchLang'
 import { tryCatch, tryCatchSync } from '@/utilities/tryCatch'
 
 import { cartSchema } from './cartSchema'
@@ -40,7 +39,10 @@ function confirmDetailsActionSchema(locale: Lang) {
 
 export type ConfirmDetailsActionInput = z.infer<ReturnType<typeof confirmDetailsActionSchema>>
 
-export async function confirmDetailsAction(input: unknown): Promise<
+export async function confirmDetailsAction(
+	input: unknown,
+	locale?: Lang,
+): Promise<
 	| {
 			success: true
 			data: {
@@ -54,8 +56,8 @@ export async function confirmDetailsAction(input: unknown): Promise<
 			error: string
 	  }
 > {
-	const locale = await getClientLang()
-	const schema = confirmDetailsActionSchema(locale)
+	const t = await getTranslations('checkout.errors')
+	const schema = confirmDetailsActionSchema(locale ?? Lang.Vietnamese)
 
 	// parse input
 
@@ -94,10 +96,7 @@ export async function confirmDetailsAction(input: unknown): Promise<
 		return {
 			success: false,
 			data: null,
-			error: matchLang({
-				[Lang.English]: 'Invalid district or ward for the selected city',
-				[Lang.Vietnamese]: 'Quận hoặc phường không hợp lệ cho thành phố đã chọn',
-			})(locale),
+			error: t('invalidDestination'),
 		}
 
 	// init payload
@@ -112,10 +111,7 @@ export async function confirmDetailsAction(input: unknown): Promise<
 		return {
 			success: false,
 			data: null,
-			error: matchLang({
-				[Lang.English]: `Internal error, can't initialize payload: ${payloadError}`,
-				[Lang.Vietnamese]: `Lỗi nội bộ, không thể khởi tạo payload: ${payloadError}`,
-			})(locale),
+			error: t('cantInitPayload', { error: `${payloadError}` }),
 		}
 	}
 
@@ -150,10 +146,7 @@ export async function confirmDetailsAction(input: unknown): Promise<
 		return {
 			success: false,
 			data: null,
-			error: matchLang({
-				[Lang.English]: `Internal error, can't find customer: ${matchedCustomerError}`,
-				[Lang.Vietnamese]: `Lỗi nội bộ, không thể tìm thấy khách hàng: ${matchedCustomerError}`,
-			})(locale),
+			error: t('cantFindCustomer', { error: `${matchedCustomerError}` }),
 		}
 
 	// create new customer if not exists
@@ -179,10 +172,7 @@ export async function confirmDetailsAction(input: unknown): Promise<
 			return {
 				success: false,
 				data: null,
-				error: matchLang({
-					[Lang.English]: `Internal error, can't create new customer: ${newCustomerError}`,
-					[Lang.Vietnamese]: `Lỗi nội bộ, không thể tạo khách hàng mới: ${newCustomerError}`,
-				})(locale),
+				error: t('cantCreateCustomer', { error: `${newCustomerError}` }),
 			}
 
 		customerExistingInfo = data
@@ -191,10 +181,7 @@ export async function confirmDetailsAction(input: unknown): Promise<
 		return {
 			success: false,
 			data: null,
-			error: matchLang({
-				[Lang.English]: "Can't create new customer",
-				[Lang.Vietnamese]: 'Không thể tạo khách hàng mới',
-			})(locale),
+			error: t('cantCreateCustomerFallback'),
 		}
 
 	// validate discount code
@@ -218,10 +205,7 @@ export async function confirmDetailsAction(input: unknown): Promise<
 			return {
 				success: false,
 				data: null,
-				error: matchLang({
-					[Lang.English]: `Internal error, can't find discount code: ${error}`,
-					[Lang.Vietnamese]: `Lỗi nội bộ, không thể tìm thấy mã giảm giá: ${error}`,
-				})(locale),
+				error: t('cantFindDiscount', { error: `${error}` }),
 			}
 
 		if (data.docs.length > 0) {
@@ -230,10 +214,7 @@ export async function confirmDetailsAction(input: unknown): Promise<
 				return {
 					success: false,
 					data: null,
-					error: matchLang({
-						[Lang.English]: 'Discount code not found',
-						[Lang.Vietnamese]: 'Không tìm thấy mã giảm giá',
-					})(locale),
+					error: t('discountNotFound'),
 				}
 		}
 	}
@@ -259,10 +240,7 @@ export async function confirmDetailsAction(input: unknown): Promise<
 		return {
 			success: false,
 			data: null,
-			error: matchLang({
-				[Lang.English]: `Internal error, can't get products: ${matchedProductsError}`,
-				[Lang.Vietnamese]: `Lỗi nội bộ, không thể lấy sản phẩm: ${matchedProductsError}`,
-			})(locale),
+			error: t('cantGetProducts', { error: `${matchedProductsError}` }),
 		}
 	}
 
@@ -389,20 +367,14 @@ export async function confirmDetailsAction(input: unknown): Promise<
 		return {
 			success: false,
 			data: null,
-			error: matchLang({
-				[Lang.English]: `Internal error, can't create order: ${orderError}`,
-				[Lang.Vietnamese]: `Lỗi nội bộ, không thể tạo đơn hàng: ${orderError}`,
-			})(locale),
+			error: t('cantCreateOrder', { error: `${orderError}` }),
 		}
 
 	if (!order)
 		return {
 			success: false,
 			data: null,
-			error: matchLang({
-				[Lang.English]: 'Order not created',
-				[Lang.Vietnamese]: 'Đơn hàng không được tạo',
-			})(locale),
+			error: t('orderNotCreated'),
 		}
 
 	return {

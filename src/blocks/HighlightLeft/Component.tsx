@@ -1,9 +1,9 @@
 import { Phudu } from 'next/font/google'
+import { getTranslations } from 'next-intl/server'
 
 import { HeadlessImage } from '@/components/Media/HeadlessImage'
+import { Lang } from '@/i18n/routing'
 import { HighlightLeftBlockProps } from '@/payload-types'
-import { Lang } from '@/utilities/lang'
-import { matchLang } from '@/utilities/matchLang'
 import { cn } from '@/utilities/ui'
 
 const phudu = Phudu({
@@ -11,20 +11,19 @@ const phudu = Phudu({
 	weight: '400',
 })
 
-export function HighlightLeftBlock(
+export async function HighlightLeftBlock(
 	props: HighlightLeftBlockProps & {
-		__locale: Lang
+		locale: Lang
 	},
-): React.JSX.Element {
+): Promise<React.JSX.Element> {
+	const t = await getTranslations({ locale: props.locale, namespace: 'blocks.highlightLeft' })
+
 	return (
 		<div className="safe-width my-28 grid grid-cols-[5.625rem_1fr] gap-12 text-primary max-md:max-w-md md:grid-cols-[25rem_1fr] md:gap-20 lg:gap-28">
 			<div>
 				<HeadlessImage
 					media={props.image}
-					alt={matchLang({
-						[Lang.English]: 'Highlight left image',
-						[Lang.Vietnamese]: 'Hình ảnh nổi bật bên trái',
-					})(props.__locale)}
+					alt={t('alt')}
 					className="aspect-square size-[5.625rem] overflow-hidden rounded-full object-cover md:size-[25rem]"
 				/>{' '}
 				<div

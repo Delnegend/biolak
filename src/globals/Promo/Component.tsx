@@ -1,12 +1,15 @@
 import { CMSLink } from '@/components/CMSLink'
+import { Lang } from '@/i18n/routing'
 import { PromoGlobal } from '@/payload-types'
-import { getClientLang } from '@/utilities/getClientLocale'
 import { getCachedGlobal } from '@/utilities/getGlobals'
 
 import { PromoGlobalSlug } from './config'
 
-export async function PromoGlobalComponent(): Promise<React.JSX.Element> {
-	const locale = await getClientLang()
+export async function PromoGlobalComponent({
+	locale,
+}: {
+	locale: Lang
+}): Promise<React.JSX.Element> {
 	const global = await getCachedGlobal<PromoGlobal>(PromoGlobalSlug, 1, locale)()
 	if (!global.message) return <></>
 

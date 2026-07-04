@@ -1,24 +1,27 @@
 import config from '@payload-config'
+import { getTranslations } from 'next-intl/server'
 import { getPayload } from 'payload'
 
 import { PostCategoriesSlug } from '@/collections/PostCategories/slug'
 import { PostsSlug } from '@/collections/Posts/slug'
 import { PostCard } from '@/components/PostCard'
+import { Lang } from '@/i18n/routing'
 import { PostCategory, PostsGridBlockProps } from '@/payload-types'
 import { cnsoleBuilder } from '@/utilities/cnsole'
 import { depthHandler } from '@/utilities/depthHandler'
-import { Lang } from '@/utilities/lang'
-import { matchLang } from '@/utilities/matchLang'
 
 const cnsole = cnsoleBuilder('PostsGridBlock')
 
 export async function PostsGridBlock(
 	props: PostsGridBlockProps & {
 		__postCategory?: PostCategory
-		__locale: Lang
+		locale: Lang
 	},
 ): Promise<React.JSX.Element> {
-	const payload = await getPayload({ config })
+	const [t, payload] = await Promise.all([
+		getTranslations({ locale: props.locale, namespace: 'blocks.postsGrid' }),
+		getPayload({ config }),
+	])
 	const posts = await payload.find({
 		collection: PostsSlug,
 		where: {
@@ -56,13 +59,7 @@ export async function PostsGridBlock(
 								cnsole.error("Can't fetching post category's name:", error)
 							}
 
-							return (
-								data?.title ??
-								matchLang({
-									[Lang.English]: 'Category',
-									[Lang.Vietnamese]: 'Danh mục',
-								})(props.__locale)
-							)
+							return data?.title ?? t('category')
 						})())}
 				</h1>
 			)}

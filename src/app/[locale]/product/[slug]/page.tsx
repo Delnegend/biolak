@@ -11,8 +11,8 @@ import { FooterGlobalComponent } from '@/globals/Footer/Component'
 import { ReviewsGlobalComponent } from '@/globals/Reviews/Component'
 import { ProductHero } from '@/heros/ProductHero'
 import { ProductVariantContextProvider } from '@/heros/ProductHero/ProductVariantContext'
+import { defaultLocale, Lang } from '@/i18n/routing'
 import { generateMeta } from '@/utilities/generateMeta'
-import { getClientLang } from '@/utilities/getClientLocale'
 import { tryCatch } from '@/utilities/tryCatch'
 
 import PageClient from './page.client'
@@ -24,7 +24,6 @@ export async function generateStaticParams() {
 		error: payloadError,
 	} = await tryCatch(() => getPayload({ config: configPromise }))
 	if (!payloadOk) throw new Error(`Failed to initialize Payload: ${payloadError}`)
-	const locale = await getClientLang()
 
 	const {
 		data: products,
@@ -39,7 +38,7 @@ export async function generateStaticParams() {
 			select: {
 				slug: true,
 			},
-			locale,
+			locale: defaultLocale,
 		}),
 	)
 	if (!productsOk) throw new Error(`Failed to fetch products: ${productsError}`)
@@ -47,7 +46,7 @@ export async function generateStaticParams() {
 	return products.docs.map((doc) => doc.slug).map((slug) => ({ slug: slug ?? '' }))
 }
 
-const queryProductBySlug = cache(async ({ slug }: { slug: string }) => {
+const queryProductBySlug = cache(async ({ slug, locale }: { slug: string; locale: Lang }) => {
 	const { isEnabled: draft } = await draftMode()
 	const {
 		data: payload,
@@ -55,7 +54,6 @@ const queryProductBySlug = cache(async ({ slug }: { slug: string }) => {
 		error: payloadError,
 	} = await tryCatch(() => getPayload({ config: configPromise }))
 	if (!payloadOk) throw new Error(`Failed to initialize Payload: ${payloadError}`)
-	const locale = await getClientLang()
 
 	const {
 		data: result,
@@ -84,10 +82,11 @@ const queryProductBySlug = cache(async ({ slug }: { slug: string }) => {
 export async function generateMetadata({
 	params: paramsPromise,
 }: {
-	params: Promise<{ slug?: string }>
+	params: Promise<{ slug?: string; locale: string }>
 }) {
-	const { slug = '' } = await paramsPromise
-	const doc = await queryProductBySlug({ slug })
+	const { slug = '', locale: _locale } = await paramsPromise
+	const locale = _locale as Lang
+	const doc = await queryProductBySlug({ slug, locale })
 	return generateMeta({
 		doc: {
 			...doc,
@@ -99,12 +98,13 @@ export async function generateMetadata({
 export default async function Product({
 	params: paramsPromise,
 }: {
-	params: Promise<{ slug?: string }>
+	params: Promise<{ slug?: string; locale: string }>
 }) {
 	const { isEnabled: draft } = await draftMode()
-	const { slug = '' } = await paramsPromise
+	const { slug = '', locale: _locale } = await paramsPromise
+	const locale = _locale as Lang
 	const url = '/product/' + slug
-	const product = await queryProductBySlug({ slug })
+	const product = await queryProductBySlug({ slug, locale })
 
 	if (!product) return <PayloadRedirects url={url} />
 
@@ -114,8 +114,8 @@ export default async function Product({
 				<PageClient />
 				<PayloadRedirects disableNotFound url={url} />
 				{draft && <LivePreviewListener />}
-				<ProductHero product={product} />
-				<RenderBlocks blocks={product.productLayout} product={product} />
+				<ProductHero product={product} locale={locale} />
+				<RenderBlocks blocks={product.productLayout} product={product} locale={locale} />
 
 				{/* reviews */}
 				{product.reviewsVisible === 'show' && (
@@ -127,10 +127,11 @@ export default async function Product({
 										.filter((o) => o.review?.approved)
 								: null
 						}
+						locale={locale}
 					/>
 				)}
 
-				<FooterGlobalComponent size={product.footerSize} />
+				<FooterGlobalComponent size={product.footerSize} locale={locale} />
 			</article>
 		</ProductVariantContextProvider>
 	)

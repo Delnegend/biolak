@@ -1,11 +1,9 @@
 import config from '@payload-config'
+import { getTranslations } from 'next-intl/server'
 import { getPayload } from 'payload'
 
 import { DiscountCodesSlug } from '@/collections/DiscountCode/slug'
 import { DiscountCode } from '@/payload-types'
-import { getClientLang } from '@/utilities/getClientLocale'
-import { Lang } from '@/utilities/lang'
-import { matchLang } from '@/utilities/matchLang'
 import { tryCatch } from '@/utilities/tryCatch'
 
 export type GetDiscountAPI = {
@@ -33,9 +31,9 @@ export type GetDiscountAPI = {
 export async function GET({ url }: Request): Promise<Response> {
 	const { searchParams } = new URL(url)
 	const code = searchParams.get('code')
-	const [{ data: payload, ok: payloadOk, error: payloadError }, locale] = await Promise.all([
+	const [{ data: payload, ok: payloadOk, error: payloadError }, t] = await Promise.all([
 		tryCatch(() => getPayload({ config })),
-		getClientLang(),
+		getTranslations('api.discount'),
 	])
 
 	if (!code)
@@ -43,10 +41,7 @@ export async function GET({ url }: Request): Promise<Response> {
 			JSON.stringify({
 				ok: false,
 				data: null,
-				error: matchLang({
-					[Lang.English]: 'Code is required',
-					[Lang.Vietnamese]: 'Mã giảm giá là bắt buộc',
-				})(locale),
+				error: t('codeRequired'),
 			} satisfies GetDiscountAPI['Response']),
 			{
 				status: 400,
@@ -58,10 +53,7 @@ export async function GET({ url }: Request): Promise<Response> {
 			JSON.stringify({
 				ok: false,
 				data: null,
-				error: matchLang({
-					[Lang.English]: `Internal error: ${payloadError}`,
-					[Lang.Vietnamese]: `Lỗi nội bộ: ${payloadError}`,
-				})(locale),
+				error: t('internalError', { error: `${payloadError}` }),
 			} satisfies GetDiscountAPI['Response']),
 			{
 				status: 500,
@@ -105,10 +97,7 @@ export async function GET({ url }: Request): Promise<Response> {
 			JSON.stringify({
 				ok: false,
 				data: null,
-				error: matchLang({
-					[Lang.English]: `Internal error: ${error}`,
-					[Lang.Vietnamese]: `Lỗi nội bộ: ${error}`,
-				})(locale),
+				error: t('internalError', { error: `${error}` }),
 			} satisfies GetDiscountAPI['Response']),
 			{
 				status: 500,
@@ -129,10 +118,7 @@ export async function GET({ url }: Request): Promise<Response> {
 			JSON.stringify({
 				ok: false,
 				data: null,
-				error: matchLang({
-					[Lang.English]: 'Invalid discount code',
-					[Lang.Vietnamese]: 'Mã giảm giá không hợp lệ',
-				})(locale),
+				error: t('invalidCode'),
 			} satisfies GetDiscountAPI['Response']),
 			{
 				status: 404,
@@ -150,10 +136,7 @@ export async function GET({ url }: Request): Promise<Response> {
 				JSON.stringify({
 					ok: false,
 					data: null,
-					error: matchLang({
-						[Lang.English]: 'Discount code has expired',
-						[Lang.Vietnamese]: 'Mã giảm giá đã hết hạn',
-					})(locale),
+					error: t('expired'),
 				} satisfies GetDiscountAPI['Response']),
 				{
 					status: 400,

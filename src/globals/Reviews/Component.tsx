@@ -1,18 +1,15 @@
 import { Heart } from 'lucide-react'
 import { Phudu } from 'next/font/google'
+import { getTranslations } from 'next-intl/server'
 import { Fragment } from 'react'
 
 import { HeartsRow } from '@/components/HeartsRow'
 import { ReviewsGlobalSlug } from '@/globals/Reviews/config'
 import { INTERNAL_ReviewDialogContentClient } from '@/globals/Reviews/ReviewDialogContent.client'
+import { Lang } from '@/i18n/routing'
 import { Order, ReviewsGlobal } from '@/payload-types'
-import { getClientLang } from '@/utilities/getClientLocale'
 import { getCachedGlobal } from '@/utilities/getGlobals'
-import { Lang } from '@/utilities/lang'
-import { matchLang } from '@/utilities/matchLang'
 import { cn } from '@/utilities/ui'
-
-import { ReviewsGlobalDefaults as defaults } from './defaults'
 
 const phudu = Phudu({
 	subsets: ['vietnamese'],
@@ -29,10 +26,12 @@ interface Review {
 
 export async function ReviewsGlobalComponent({
 	ordersWithRating,
+	locale,
 }: {
 	ordersWithRating: Order[] | null
+	locale: Lang
 }): Promise<React.JSX.Element> {
-	const locale = await getClientLang()
+	const t = await getTranslations('globals.reviews')
 	const global = await getCachedGlobal<ReviewsGlobal>(ReviewsGlobalSlug, 1, locale)()
 
 	const avgRating =
@@ -55,12 +54,7 @@ export async function ReviewsGlobalComponent({
 			if (order.review && typeof order.customer === 'object' && order.review.rating) {
 				acc.push({
 					id: order.id,
-					customer:
-						order.customer?.name ??
-						matchLang({
-							[Lang.English]: 'Anonymous',
-							[Lang.Vietnamese]: 'Ẩn danh',
-						})(locale),
+					customer: order.customer?.name ?? t('anonymous'),
 					rating: order.review.rating ?? undefined,
 					content: order.review.content ?? undefined,
 					createdAt: new Date(order.createdAt),
@@ -84,23 +78,14 @@ export async function ReviewsGlobalComponent({
 			<div className="safe-width mt-20 flex h-[26rem] flex-col items-center justify-between py-20 text-center text-2xl font-medium text-primary">
 				<div>
 					<h1 className="mb-8 text-8xl font-semibold uppercase text-muted-foreground">
-						{matchLang({
-							[Lang.English]: 'Oh',
-							[Lang.Vietnamese]: 'Ồ',
-						})(locale)}
+						{t('emptyState.oh')}
 					</h1>
-					<div>
-						{matchLang({
-							[Lang.English]: 'There are no reviews yet',
-							[Lang.Vietnamese]: 'Chưa có đánh giá nào cả',
-						})(locale)}
-					</div>
+					<div>{t('emptyState.noReviews')}</div>
 				</div>
 
 				<INTERNAL_ReviewDialogContentClient
 					global={global}
 					className={{ triggerButton: 'self-center' }}
-					locale={locale}
 				/>
 			</div>
 		)
@@ -109,9 +94,7 @@ export async function ReviewsGlobalComponent({
 	return (
 		<div className="safe-width mt-20 grid grid-cols-[auto_1fr] gap-x-20 text-primary">
 			<div>
-				<div className="font-serif text-2xl font-medium">
-					{global.title ?? defaults.title(locale)}
-				</div>
+				<div className="font-serif text-2xl font-medium">{global.title ?? t('title')}</div>
 				<div className="font-serif text-9xl font-medium">
 					{Math.round(avgRating * 10) / 10}
 				</div>
@@ -126,14 +109,14 @@ export async function ReviewsGlobalComponent({
 					{Array.from({ length: 5 }).map((_, i) => {
 						return (
 							<div key={i} className="flex items-center">
-								<HeartsRow size={16} rating={5 - i} locale={locale} />
+								<HeartsRow size={16} rating={5 - i} />
 								<span className="ml-5 text-2xl">{ratingCounts[5 - i] ?? 0}</span>
 							</div>
 						)
 					})}
 				</div>
 
-				<INTERNAL_ReviewDialogContentClient global={global} locale={locale} />
+				<INTERNAL_ReviewDialogContentClient global={global} />
 			</div>
 
 			<hr className="col-span-2 mb-10 mt-20 border-border" />

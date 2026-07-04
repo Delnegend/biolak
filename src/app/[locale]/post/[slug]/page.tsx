@@ -11,8 +11,8 @@ import { LivePreviewListener } from '@/components/LivePreviewListener'
 import { PayloadRedirects } from '@/components/PayloadRedirects'
 import { FooterGlobalComponent } from '@/globals/Footer/Component'
 import { PostHero } from '@/heros/PostHero'
+import { defaultLocale, Lang } from '@/i18n/routing'
 import { generateMeta } from '@/utilities/generateMeta'
-import { getClientLang } from '@/utilities/getClientLocale'
 import { tryCatch } from '@/utilities/tryCatch'
 
 import PageClient from './page.client'
@@ -24,7 +24,6 @@ export async function generateStaticParams() {
 		error: payloadError,
 	} = await tryCatch(() => getPayload({ config: configPromise }))
 	if (!payloadOk) throw new Error(`Failed to initialize Payload: ${payloadError}`)
-	const locale = await getClientLang()
 
 	const {
 		data: posts,
@@ -40,7 +39,7 @@ export async function generateStaticParams() {
 			select: {
 				slug: true,
 			},
-			locale,
+			locale: defaultLocale,
 		}),
 	)
 	if (!postsOk) throw new Error(`Failed to fetch posts: ${postsError}`)
@@ -51,15 +50,16 @@ export async function generateStaticParams() {
 type Args = {
 	params: Promise<{
 		slug?: string
+		locale: string
 	}>
 }
 
 export default async function Post({ params: paramsPromise }: Args) {
 	const { isEnabled: draft } = await draftMode()
-	const { slug = '' } = await paramsPromise
+	const { slug = '', locale: _locale } = await paramsPromise
+	const locale = _locale as Lang
 	const url = '/post/' + slug
-	const post = await queryPostBySlug({ slug })
-	const locale = await getClientLang()
+	const post = await queryPostBySlug({ slug, locale })
 
 	if (!post) return <PayloadRedirects url={url} />
 
@@ -75,29 +75,30 @@ export default async function Post({ params: paramsPromise }: Args) {
 			<PostHero post={post} />
 
 			<div className="mt-8 items-center">
-				<RenderBlocks blocks={post.postLayout} post={post} />
+				<RenderBlocks blocks={post.postLayout} post={post} locale={locale} />
 				{post.relatedPosts && post.relatedPosts.length > 0 && (
 					<RelatedPosts
 						className="col-span-3 col-start-1 mt-12 max-w-[52rem] grid-rows-[2fr] lg:grid lg:grid-cols-subgrid"
 						docs={post.relatedPosts.filter((post) => typeof post === 'object')}
-						__locale={locale}
+						locale={locale}
 					/>
 				)}
 			</div>
 
-			<FooterGlobalComponent size={post.footerSize} />
+			<FooterGlobalComponent size={post.footerSize} locale={locale} />
 		</article>
 	)
 }
 
 export async function generateMetadata({ params: paramsPromise }: Args): Promise<Metadata> {
-	const { slug = '' } = await paramsPromise
-	const post = await queryPostBySlug({ slug })
+	const { slug = '', locale: _locale } = await paramsPromise
+	const locale = _locale as Lang
+	const post = await queryPostBySlug({ slug, locale })
 
 	return generateMeta({ doc: post })
 }
 
-const queryPostBySlug = cache(async ({ slug }: { slug: string }) => {
+const queryPostBySlug = cache(async ({ slug, locale }: { slug: string; locale: Lang }) => {
 	const { isEnabled: draft } = await draftMode()
 	const {
 		data: payload,
@@ -105,7 +106,6 @@ const queryPostBySlug = cache(async ({ slug }: { slug: string }) => {
 		error: payloadError,
 	} = await tryCatch(() => getPayload({ config: configPromise }))
 	if (!payloadOk) throw new Error(`Failed to initialize Payload: ${payloadError}`)
-	const locale = await getClientLang()
 
 	const {
 		data: result,

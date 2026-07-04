@@ -1,5 +1,5 @@
+import { Lang } from '@/i18n/routing'
 import type { HeaderGlobal } from '@/payload-types'
-import { getClientLang } from '@/utilities/getClientLocale'
 import { getCachedGlobal } from '@/utilities/getGlobals'
 
 import { INTERNAL_LargeNav } from './blocks/LargeNav'
@@ -7,8 +7,7 @@ import { INTERNAL_SmallNav } from './blocks/SmallNav'
 import { HeaderProvider } from './hooks/useHeaderContext'
 import { HeaderGlobalSlug } from './slug'
 
-export async function HeaderGlobalComponent() {
-	const locale = await getClientLang()
+export async function HeaderGlobalComponent({ locale }: { locale: Lang }) {
 	const global = await getCachedGlobal<HeaderGlobal>(HeaderGlobalSlug, 1, locale)()
 
 	return (

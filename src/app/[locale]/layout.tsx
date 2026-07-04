@@ -14,6 +14,7 @@ import { HeaderGlobalComponent } from '@/globals/Header/Component'
 import { PromoGlobalComponent } from '@/globals/Promo/Component'
 import { CartContextProvider } from '@/hooks/useCartManager'
 import { routing } from '@/i18n/routing'
+import { Lang } from '@/i18n/routing'
 import { getServerSideURL } from '@/utilities/getURL'
 import { HeaderName } from '@/utilities/headerName'
 import { mergeOpenGraph } from '@/utilities/mergeOpenGraph'
@@ -39,7 +40,7 @@ export default async function RootLayout({
 	children: React.ReactNode
 	params: Promise<{ locale: string }>
 }) {
-	const { locale } = await params
+	const locale = (await params).locale as Lang
 	const [{ isEnabled }, headers, messages] = await Promise.all([
 		draftMode(),
 		getHeaders(),
@@ -70,11 +71,11 @@ export default async function RootLayout({
 							<></>
 						) : (
 							<>
-								<PromoGlobalComponent />
-								<HeaderGlobalComponent />
+								<PromoGlobalComponent locale={locale} />
+								<HeaderGlobalComponent locale={locale} />
 							</>
 						)}
-						<FloatingGlobalComponent />
+						<FloatingGlobalComponent locale={locale} />
 						{children}
 					</CartContextProvider>
 				</NextIntlClientProvider>

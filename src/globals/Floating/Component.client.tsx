@@ -5,26 +5,18 @@ import { AnimatePresence, motion } from 'motion/react'
 import { Inter } from 'next/font/google'
 import Image from 'next/image'
 import Link from 'next/link'
+import { useTranslations } from 'next-intl'
 import { useState } from 'react'
 
 import { Button } from '@/components/ui/button'
 import { FloatingGlobal } from '@/payload-types'
-import { Lang } from '@/utilities/lang'
-import { matchLang } from '@/utilities/matchLang'
 import { toFaviconUrl } from '@/utilities/toFaviconUrl'
 import { cn } from '@/utilities/ui'
 
-import { FloatingGlobalDefaults as defaults } from './defaults'
-
 const inter = Inter({ subsets: ['vietnamese'], weight: ['400'] })
 
-export function INTERNAL_FloatingClient({
-	global,
-	locale,
-}: {
-	global: FloatingGlobal
-	locale: Lang
-}): React.JSX.Element {
+export function INTERNAL_FloatingClient({ global }: { global: FloatingGlobal }): React.JSX.Element {
+	const t = useTranslations('globals.floating')
 	const [open, setOpen] = useState(false)
 
 	return (
@@ -49,13 +41,7 @@ export function INTERNAL_FloatingClient({
 											toFaviconUrl(l.link) ??
 											'https://placehold.co/256x256'
 										}
-										alt={
-											icon?.alt ??
-											matchLang({
-												[Lang.English]: 'Floating Contacts Icon',
-												[Lang.Vietnamese]: 'Biểu tượng nổi liên hệ',
-											})(locale)
-										}
+										alt={icon?.alt ?? t('iconAlt')}
 										width={icon?.width ?? 256}
 										height={icon?.height ?? 256}
 										unoptimized={!icon}
@@ -95,7 +81,7 @@ export function INTERNAL_FloatingClient({
 							exit={{ opacity: 0 }}
 							transition={{ duration: 0.2 }}
 						>
-							{global.label ?? defaults.contact(locale)}
+							{global.label ?? t('contact')}
 						</motion.div>
 					)}
 				</AnimatePresence>

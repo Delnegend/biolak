@@ -1,17 +1,17 @@
 import { Menu } from 'lucide-react'
 import Image from 'next/image'
+import { getTranslations } from 'next-intl/server'
 
 import { Button } from '@/components/ui/button'
+import { Lang } from '@/i18n/routing'
 import type { HeaderGlobal } from '@/payload-types'
-import { Lang } from '@/utilities/lang'
-import { matchLang } from '@/utilities/matchLang'
 import { cn } from '@/utilities/ui'
 
 import { NavItems } from '../components/NavItems'
 import { INTERNAL_RenderNavItems } from '../components/RenderNavItems'
 import { INTERNAL_SmallNavToggler } from './SmallNavToggler.client'
 
-export function INTERNAL_SmallNav({
+export async function INTERNAL_SmallNav({
 	locale,
 	global,
 	className,
@@ -19,7 +19,8 @@ export function INTERNAL_SmallNav({
 	locale: Lang
 	global?: HeaderGlobal | null
 	className?: string
-}): React.JSX.Element {
+}): Promise<React.JSX.Element> {
+	const t = await getTranslations('globals.header')
 	return (
 		<div className={cn('grid w-full grid-cols-3 items-center', className)}>
 			<INTERNAL_SmallNavToggler
@@ -44,10 +45,7 @@ export function INTERNAL_SmallNav({
 				width={96}
 				height={49}
 				src="/biolak-logo.svg"
-				alt={matchLang({
-					[Lang.English]: 'BioLAK Logo',
-					[Lang.Vietnamese]: 'Logo BioLAK',
-				})(locale)}
+				alt={t('logoAlt')}
 				className="h-10 w-auto place-self-center"
 			/>
 			<span className="place-self-end">{NavItems.cart({ locale, size: 'sm' })}</span>

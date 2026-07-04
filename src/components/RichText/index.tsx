@@ -14,12 +14,12 @@ import { BannerBlock } from '@/blocks/Banner/Component'
 import { CallToActionCenterBlock } from '@/blocks/CallToActionCenter/Component'
 import { CodeBlock, CodeBlockProps } from '@/blocks/Code/Component'
 import { MediaBlockComponent } from '@/blocks/MediaBlock/Component'
+import { Lang } from '@/i18n/routing'
 import type {
 	BannerBlockProps,
 	CallToActionCenterBlockProps,
 	MediaBlockProps,
 } from '@/payload-types'
-import { Lang } from '@/utilities/lang'
 import { cn } from '@/utilities/ui'
 
 type NodeTypes =
@@ -62,7 +62,7 @@ const jsxConverters =
 			),
 			code: ({ node }) => <CodeBlock className="col-start-2" {...node.fields} />,
 			cta: ({ node }: { node: SerializedBlockNode<CallToActionCenterBlockProps> }) => (
-				<CallToActionCenterBlock {...node.fields} __locale={locale} />
+				<CallToActionCenterBlock {...node.fields} locale={locale} />
 			),
 		},
 	})

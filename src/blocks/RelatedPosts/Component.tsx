@@ -1,9 +1,9 @@
 import { SerializedEditorState } from '@payloadcms/richtext-lexical/lexical'
+import { getTranslations } from 'next-intl/server'
 import React from 'react'
 
+import { Lang } from '@/i18n/routing'
 import type { Post } from '@/payload-types'
-import { Lang } from '@/utilities/lang'
-import { matchLang } from '@/utilities/matchLang'
 
 import { LatestPostsBlock } from '../LatestPosts/Component'
 
@@ -13,20 +13,18 @@ export type RelatedPostsProps = {
 	introContent?: SerializedEditorState
 }
 
-export function RelatedPosts(
+export async function RelatedPosts(
 	props: RelatedPostsProps & {
-		__locale: Lang
+		locale: Lang
 	},
-): React.JSX.Element {
+): Promise<React.JSX.Element> {
+	const t = await getTranslations({ locale: props.locale, namespace: 'blocks.relatedPosts' })
 	return (
 		<LatestPostsBlock
 			posts={props.docs ?? []}
 			blockType="latestPosts"
-			title={matchLang({
-				[Lang.English]: 'Related Posts',
-				[Lang.Vietnamese]: 'Bài viết liên quan',
-			})(props.__locale)}
-			__locale={props.__locale}
+			title={t('title')}
+			locale={props.locale}
 		/>
 	)
 }

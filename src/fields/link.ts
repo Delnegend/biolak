@@ -7,8 +7,6 @@ import { ProductCategoriesSlug } from '@/collections/ProductCategories/slug'
 import { ProductsSlug } from '@/collections/Products/slug'
 import { ProductSubCategoriesSlug } from '@/collections/ProductSubCategories/slug'
 import deepMerge from '@/utilities/deepMerge'
-import { Lang } from '@/utilities/lang'
-import { matchLang } from '@/utilities/matchLang'
 
 export const LinkFieldRelations = [
 	PagesSlug,
@@ -35,7 +33,7 @@ export function link({
 	overrides?: Partial<GroupField>
 	label?: {
 		placeholder?: string
-		defaultValue?: ReturnType<typeof matchLang>
+		defaultValue?: Record<string, string>
 		required?: boolean
 	}
 } = {}): Field {
@@ -52,10 +50,7 @@ export function link({
 					{
 						name: 'type',
 						type: 'radio',
-						label: {
-							[Lang.English]: 'Link type',
-							[Lang.Vietnamese]: 'Loại liên kết',
-						},
+						label: 'Link type',
 						admin: {
 							layout: 'horizontal',
 							width: '50%',
@@ -64,27 +59,18 @@ export function link({
 						options: [
 							{
 								value: 'reference',
-								label: {
-									[Lang.English]: 'Internal link',
-									[Lang.Vietnamese]: 'Liên kết nội bộ',
-								},
+								label: 'Internal link',
 							},
 							{
 								value: 'custom',
-								label: {
-									[Lang.English]: 'Custom URL',
-									[Lang.Vietnamese]: 'Liên kết tùy chỉnh',
-								},
+								label: 'Custom URL',
 							},
 						],
 					},
 					{
 						name: 'newTab',
 						type: 'checkbox',
-						label: {
-							[Lang.English]: 'Open in new tab',
-							[Lang.Vietnamese]: 'Mở trong tab mới',
-						},
+						label: 'Open in new tab',
 						admin: {
 							style: {
 								alignSelf: 'flex-end',
@@ -95,10 +81,7 @@ export function link({
 				],
 			},
 		],
-		label: {
-			[Lang.English]: 'Link',
-			[Lang.Vietnamese]: 'Liên kết',
-		},
+		label: 'Link',
 	}
 
 	const linkTypes: Field[] = [
@@ -108,10 +91,7 @@ export function link({
 			admin: {
 				condition: (_, siblingData) => siblingData?.type === 'reference',
 			},
-			label: {
-				[Lang.English]: 'Link to internal page',
-				[Lang.Vietnamese]: 'Liên kết tới trang nội bộ',
-			},
+			label: 'Link to internal page',
 			relationTo: [...LinkFieldRelations],
 			required: true,
 		},
@@ -121,10 +101,7 @@ export function link({
 			admin: {
 				condition: (_, siblingData) => siblingData?.type === 'custom',
 			},
-			label: {
-				[Lang.English]: 'Custom URL',
-				[Lang.Vietnamese]: 'Liên kết tùy chỉnh',
-			},
+			label: 'Custom URL',
 			required: true,
 		},
 	]
@@ -149,10 +126,7 @@ export function link({
 						width: '50%',
 						placeholder: label?.placeholder,
 					},
-					label: {
-						[Lang.English]: 'Label',
-						[Lang.Vietnamese]: 'Nhãn',
-					},
+					label: 'Label',
 					required: label?.required ?? true,
 					localized: true,
 					defaultValue: label?.defaultValue,

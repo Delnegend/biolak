@@ -10,15 +10,14 @@ import { LivePreviewListener } from '@/components/LivePreviewListener'
 import { PayloadRedirects } from '@/components/PayloadRedirects'
 import { FooterGlobalComponent } from '@/globals/Footer/Component'
 import { RenderHero } from '@/heros/RenderHero'
+import { defaultLocale, Lang } from '@/i18n/routing'
 import { generateMeta } from '@/utilities/generateMeta'
-import { getClientLang } from '@/utilities/getClientLocale'
 import { tryCatch } from '@/utilities/tryCatch'
 
 import PageClient from './page.client'
 
 export async function generateStaticParams() {
-	const [locale, { ok: payloadOk, data: payload, error: payloadError }] = await Promise.all([
-		getClientLang(),
+	const [{ ok: payloadOk, data: payload, error: payloadError }] = await Promise.all([
 		tryCatch(() => getPayload({ config })),
 	])
 
@@ -37,7 +36,7 @@ export async function generateStaticParams() {
 			select: {
 				slug: true,
 			},
-			locale,
+			locale: defaultLocale,
 		}),
 	)
 	if (!pagesOk) throw new Error(`Failed to fetch pages: ${pagesError}`)
@@ -48,16 +47,17 @@ export async function generateStaticParams() {
 type Args = {
 	params: Promise<{
 		slug?: string
+		locale: string
 	}>
 }
 
 export default async function Page({ params: paramsPromise }: Args) {
 	const { isEnabled: draft } = await draftMode()
-	const { slug = 'home' } = await paramsPromise
+	const { slug = 'home', locale: _locale } = await paramsPromise
+	const locale = _locale as Lang
 	const url = '/' + (slug || 'home')
-	const locale = await getClientLang()
 
-	const page = await queryPageBySlug({ slug })
+	const page = await queryPageBySlug({ slug, locale })
 
 	if (!page) {
 		return <PayloadRedirects url={url} />
@@ -72,22 +72,23 @@ export default async function Page({ params: paramsPromise }: Args) {
 			{draft && <LivePreviewListener />}
 
 			<RenderHero {...page.hero} __locale={locale} />
-			<RenderBlocks blocks={page.pageLayout} />
-			<FooterGlobalComponent size={page.footerSize} />
+			<RenderBlocks blocks={page.pageLayout} locale={locale} />
+			<FooterGlobalComponent size={page.footerSize} locale={locale} />
 		</article>
 	)
 }
 
 export async function generateMetadata({ params: paramsPromise }: Args): Promise<Metadata> {
-	const { slug = 'home' } = await paramsPromise
-	const page = await queryPageBySlug({ slug })
+	const { slug = 'home', locale: _locale } = await paramsPromise
+	const locale = _locale as Lang
+	const page = await queryPageBySlug({ slug, locale })
 
 	return generateMeta({ doc: page })
 }
 
-const queryPageBySlug = cache(async ({ slug }: { slug: string }) => {
-	const [{ isEnabled: draft }, locale, { data: payload, ok: payloadOk, error: payloadError }] =
-		await Promise.all([draftMode(), getClientLang(), tryCatch(() => getPayload({ config }))])
+const queryPageBySlug = cache(async ({ slug, locale }: { slug: string; locale: Lang }) => {
+	const [{ isEnabled: draft }, { data: payload, ok: payloadOk, error: payloadError }] =
+		await Promise.all([draftMode(), tryCatch(() => getPayload({ config }))])
 
 	if (!payloadOk) throw new Error(`Failed to initialize Payload: ${payloadError}`)
 

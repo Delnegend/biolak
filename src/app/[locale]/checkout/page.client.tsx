@@ -1,6 +1,7 @@
 'use client'
 import { standardSchemaResolver } from '@hookform/resolvers/standard-schema'
 import { ArrowRight } from 'lucide-react'
+import { useTranslations } from 'next-intl'
 import React, { useEffect, useRef, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
@@ -26,11 +27,10 @@ import {
 import { TextInput } from '@/components/ui/text-input'
 import { CheckoutPageGlobalDefaults as defaults } from '@/globals/CheckoutPage/defaults'
 import { useCartManager } from '@/hooks/useCartManager'
+import { Lang } from '@/i18n/routing'
 import { CheckoutPageGlobal, Product } from '@/payload-types'
 import { calculatePrices } from '@/utilities/calculatePrices'
 import { formatPrice } from '@/utilities/formatPrice'
-import { Lang } from '@/utilities/lang'
-import { matchLang } from '@/utilities/matchLang'
 import { cn } from '@/utilities/ui'
 
 import { CheckoutSchema } from './actions/checkoutSchema'
@@ -94,11 +94,11 @@ export default function PageClient({
 	} | null
 	locale: Lang
 }): React.JSX.Element {
+	const t = useTranslations('globals.checkout')
 	const syncWithLocalStorage = !overrideProduct
 
 	const { cart, loadedFromLocalStorageDone, loadProduct } = useCartManager({
 		syncWithLocalStorage,
-		locale,
 	})
 	const checkoutSchema = CheckoutSchema(locale)
 
@@ -169,12 +169,7 @@ export default function PageClient({
 				!cityDistrictWard[city][district] ||
 				!cityDistrictWard[city][district].includes(ward)
 			) {
-				toast.error(
-					matchLang({
-						[Lang.English]: 'Invalid district or ward for the selected city',
-						[Lang.Vietnamese]: 'Quận hoặc phường không hợp lệ cho thành phố đã chọn',
-					})(locale),
-				)
+				toast.error(t('invalidAddress'))
 				setProcessingState({ state: 'idle' })
 				return
 			}
@@ -183,27 +178,24 @@ export default function PageClient({
 				data: result,
 				success,
 				error,
-			} = await confirmDetailsAction({
-				cart: cart
-					.filter((item) => item.checked)
-					.map((item) => ({
-						productId: item.product.id,
-						productSku: item.variant.sku,
-						quantity: item.quantity,
-					})),
-				details: data,
-			} satisfies ConfirmDetailsActionInput)
+			} = await confirmDetailsAction(
+				{
+					cart: cart
+						.filter((item) => item.checked)
+						.map((item) => ({
+							productId: item.product.id,
+							productSku: item.variant.sku,
+							quantity: item.quantity,
+						})),
+					details: data,
+				} satisfies ConfirmDetailsActionInput,
+				locale,
+			)
 
 			if (!success) {
-				toast.error(
-					matchLang({
-						[Lang.English]: "Can't process your request",
-						[Lang.Vietnamese]: 'Không thể xử lý yêu cầu của bạn',
-					})(locale),
-					{
-						description: <span className="whitespace-pre-wrap">{error}</span>,
-					},
-				)
+				toast.error(t('cantProcess'), {
+					description: <span className="whitespace-pre-wrap">{error}</span>,
+				})
 				setProcessingState({ state: 'idle' })
 				return
 			}
@@ -282,24 +274,12 @@ export default function PageClient({
 	if (cart.length === 0)
 		return (
 			<div className="flex flex-col gap-10">
-				<h2>
-					{matchLang({
-						[Lang.English]: loadedFromLocalStorageDone
-							? 'Your cart is empty.'
-							: 'Loading your cart...',
-						[Lang.Vietnamese]: loadedFromLocalStorageDone
-							? 'Giỏ hàng của bạn đang trống.'
-							: 'Đang tải giỏ hàng của bạn...',
-					})(locale)}
-				</h2>
+				<h2>{loadedFromLocalStorageDone ? t('emptyCart') : t('loadingCart')}</h2>
 				{loadedFromLocalStorageDone && (
 					<Button className="w-fit justify-between" asChild>
 						{/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
 						<a href="/">
-							{matchLang({
-								[Lang.English]: 'Go to home page',
-								[Lang.Vietnamese]: 'Về trang chủ',
-							})(locale)}
+							{t('goHome')}
 							<ArrowRight />
 						</a>
 					</Button>
@@ -328,7 +308,6 @@ export default function PageClient({
 											bankName={global.bankName}
 											bankAccountNumber={global.bankAccountNumber}
 											amount={prices.total}
-											locale={locale}
 											invoiceId={processingState.invoiceId}
 										/>
 									</>
@@ -754,10 +733,7 @@ export default function PageClient({
 
 				<INTERNAL_Card className="h-fit">
 					<CartTitle>{global.order?.title ?? defaults.order.title(locale)}</CartTitle>
-					<INTERNAl_CartListWithAccordion
-						locale={locale}
-						syncWithLocalStorage={syncWithLocalStorage}
-					/>
+					<INTERNAl_CartListWithAccordion syncWithLocalStorage={syncWithLocalStorage} />
 					<hr />
 
 					<CartTitle>

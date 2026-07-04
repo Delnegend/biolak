@@ -1,12 +1,11 @@
+import { getTranslations } from 'next-intl/server'
 import React from 'react'
 
 import { HeadlessImage } from '@/components/Media/HeadlessImage'
 import RichText from '@/components/RichText'
+import { Lang } from '@/i18n/routing'
 import { Product } from '@/payload-types'
 import { findValidProductVariant } from '@/utilities/findValidProductVariant'
-import { getClientLang } from '@/utilities/getClientLocale'
-import { Lang } from '@/utilities/lang'
-import { matchLang } from '@/utilities/matchLang'
 
 import { INTERNAL_AddToCartButton } from './AddToCart.client'
 import { INTERNAL_BuyNowButton } from './BuyNow.client'
@@ -14,10 +13,12 @@ import { INTERNAL_ProductVariantSelector } from './ProductVariantSelector.client
 
 export async function ProductHero({
 	product: p,
+	locale,
 }: {
 	product: Product
+	locale: Lang
 }): Promise<React.JSX.Element> {
-	const locale = await getClientLang()
+	const t = await getTranslations('heros.productHero')
 
 	const category =
 		Array.isArray(p.productCategories) && typeof p.productCategories[0] === 'object'
@@ -38,10 +39,7 @@ export async function ProductHero({
 			<div className="pointer-events-none inset-0 z-0 overflow-hidden md:absolute">
 				<HeadlessImage
 					media={p.gallery?.[0]}
-					alt={matchLang({
-						[Lang.English]: 'Product main image',
-						[Lang.Vietnamese]: 'Hình ảnh chính sản phẩm',
-					})(locale)}
+					alt={t('mainImageAlt')}
 					placeholder={{ width: 1000, height: 1000 }}
 					className="h-full overflow-hidden object-cover max-md:w-full md:w-2/5 lg:w-1/2"
 				/>
@@ -61,7 +59,7 @@ export async function ProductHero({
 
 				<div className="mt-8 grid size-full h-fit grid-cols-[repeat(auto-fill,minmax(15rem,1fr))] gap-4">
 					<INTERNAL_BuyNowButton locale={locale} disabled={validVariant === null} />
-					<INTERNAL_AddToCartButton locale={locale} disabled={validVariant === null} />
+					<INTERNAL_AddToCartButton disabled={validVariant === null} />
 				</div>
 			</div>
 		</div>
