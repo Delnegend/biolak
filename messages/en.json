@@ -362,5 +362,241 @@
     "loading": "Loading, please wait...",
     "error": "Something went wrong.",
     "internalServerError": "Internal Server Error"
+  },
+  "admin": {
+    "blocks": {
+      "archive": {
+        "label": "Archive",
+        "labelPlural": "Archives",
+        "fieldIntroContent": "Intro Content",
+        "fieldPopulateBy": "Populate By",
+        "optionPopulateByCollection": "Collection",
+        "optionPopulateBySelection": "Individual Selection",
+        "fieldRelationTo": "Relation To",
+        "optionRelationToPosts": "Posts",
+        "fieldPostCategories": "Categories",
+        "fieldLimit": "Limit",
+        "fieldSelectedDocs": "Selected Posts"
+      },
+      "banner": {
+        "label": "Banner",
+        "labelPlural": "Banners",
+        "optionStyleInfo": "Info",
+        "optionStyleWarning": "Warning",
+        "optionStyleError": "Error",
+        "optionStyleSuccess": "Success"
+      },
+      "bestSeller": {
+        "label": "Best Seller",
+        "labelPlural": "Best Sellers",
+        "fieldTitle": "Title",
+        "fieldDescription": "Description",
+        "fieldProducts": "Products",
+        "placeholderTitle": "S\u1ea3n ph\u1ea9m b\u00e1n ch\u1ea1y",
+        "placeholderLinkLabel": "XEM T\u1ea4T C\u1ea2 S\u1ea2N PH\u1ea8M \u2192"
+      },
+      "buy-now": {
+        "label": "Buy Now",
+        "labelPlural": "Buy Nows",
+        "fieldButtonLabel": "Button Label",
+        "fieldProducts": "Product",
+        "placeholderButtonLabel": "MUA NGAY"
+      },
+      "cta-center": {
+        "label": "Call to Action (Center)",
+        "labelPlural": "Call to Action (Center)",
+        "fieldTitle": "Title",
+        "fieldSubTitle": "Sub Title",
+        "fieldDescription": "Description",
+        "fieldBackground": "Background",
+        "placeholderLinkLabel": "T\u00ecm hi\u1ec3u th\u00eam"
+      },
+      "cta-left": {
+        "label": "Call to Action (Left)",
+        "labelPlural": "Call to Action (Left)",
+        "fieldTitle": "Title",
+        "fieldDescription": "Description",
+        "fieldBackground": "Background",
+        "placeholderLinkLabel": "T\u00ecm hi\u1ec3u th\u00eam"
+      },
+      "call-to-action-post": {
+        "label": "Call to Action (Post)",
+        "labelPlural": "Call to Action (Post)",
+        "fieldPost": "Post",
+        "fieldOverwriteTitle": "Overwrite Title",
+        "fieldOverwriteDescription": "Overwrite Description",
+        "placeholderLinkLabel": "\u0110\u1eccC B\u00c0I VI\u1ebeT"
+      },
+      "cta-right": {
+        "label": "Call to Action (Right)",
+        "labelPlural": "Call to Action (Right)",
+        "fieldTitle": "Title",
+        "fieldSubTitle": "Sub Title",
+        "fieldDescription": "Description",
+        "fieldGallery": "Gallery",
+        "fieldGalleryTitle": "Image Title",
+        "fieldGalleryImage": "Image",
+        "arrayGallerySingular": "Image",
+        "arrayGalleryPlural": "Images",
+        "placeholderLinkLabel": "T\u00ecm hi\u1ec3u th\u00eam"
+      },
+      "call-to-add-to-cart": {
+        "label": "CTA (Add To Cart)",
+        "labelPlural": "CTAs (Add To Cart)",
+        "fieldImage": "Image",
+        "fieldContent": "Content",
+        "fieldButtonLabel": "Button Label",
+        "fieldProducts": "Product",
+        "placeholderButtonLabel": "TH\u00caM V\u00c0O GI\u1ece H\u00c0NG"
+      },
+      "certificates": {
+        "label": "Certificate",
+        "labelPlural": "Certificates",
+        "fieldTitle": "Title",
+        "fieldOrganizations": "Organizations",
+        "fieldOrgTitle": "Organization Name",
+        "fieldOrgDescription": "Description",
+        "fieldOrgLogo": "Logo",
+        "arrayOrganizationsSingular": "Organization",
+        "arrayOrganizationsPlural": "Organizations",
+        "placeholderTitle": "Ch\u1ee9ng nh\u1eadn b\u1edfi c\u00e1c t\u1ed5 ch\u1ee9c qu\u1ed1c t\u1ebf"
+      },
+      "code": {
+        "optionLanguageTypescript": "Typescript",
+        "optionLanguageJavascript": "Javascript",
+        "optionLanguageCss": "CSS"
+      },
+      "content": {
+        "label": "Content",
+        "labelPlural": "Contents",
+        "fieldColumns": "Columns",
+        "fieldSize": "Size",
+        "fieldFont": "Font",
+        "fieldCustomCss": "Custom CSS",
+        "fieldEnableLink": "Enable Link",
+        "optionSizeOneThird": "One Third",
+        "optionSizeHalf": "Half",
+        "optionSizeTwoThirds": "Two Thirds",
+        "optionSizeFull": "Full",
+        "optionFontDefault": "Default",
+        "optionFontSerif": "Serif",
+        "optionFontSansSerif": "Sans-serif",
+        "optionFontMonospace": "Monospace",
+        "arrayColumnsSingular": "Column",
+        "arrayColumnsPlural": "Columns"
+      },
+      "focus-left-small-image": {
+        "label": "Focus Left Small Image",
+        "labelPlural": "Focuses Left Small Image",
+        "fieldImage": "Image",
+        "fieldContent": "Content"
+      },
+      "focus-right-large-image": {
+        "label": "Focus Right Large Image",
+        "labelPlural": "Focuses Right Large Image",
+        "fieldImage": "Image",
+        "fieldContent": "Content"
+      },
+      "focus-right-small-image": {
+        "label": "Focus Right Small Image",
+        "labelPlural": "Focuses Right Small Image",
+        "fieldImage": "Image",
+        "fieldContent": "Content"
+      },
+      "formBlock": {
+        "label": "Form Block",
+        "labelPlural": "Form Blocks",
+        "fieldEnableIntro": "Enable Intro Content",
+        "fieldIntroContent": "Intro Content"
+      },
+      "highlight-center": {
+        "label": "Highlight Center",
+        "labelPlural": "Highlight Centers",
+        "fieldOrder": "Order",
+        "fieldTitle": "Title",
+        "fieldDescription": "Description",
+        "fieldImage": "Image"
+      },
+      "highlight-left": {
+        "label": "Highlight Left",
+        "labelPlural": "Highlight Left",
+        "fieldOrder": "Order",
+        "fieldTitle": "Title",
+        "fieldDescription": "Description",
+        "fieldImage": "Image"
+      },
+      "highlight-right": {
+        "label": "Highlight Right",
+        "labelPlural": "Highlight Right",
+        "fieldOrder": "Order",
+        "fieldTitle": "Title",
+        "fieldDescription": "Description",
+        "fieldImage": "Image"
+      },
+      "how-to-use-product": {
+        "label": "How to use product",
+        "labelPlural": "How to use product",
+        "fieldTitle": "Title",
+        "fieldSubtitle": "Subtitle",
+        "fieldContent": "Content",
+        "fieldImage": "Image",
+        "fieldProducts": "Product",
+        "placeholderTitle": "Hu\u1edbng d\u1eabn s\u1eed d\u1ee5ng"
+      },
+      "infiniteScroll": {
+        "label": "Infinite Scroll",
+        "labelPlural": "Infinite Scroll",
+        "fieldGraphic": "Graphic",
+        "fieldAnimationDuration": "Animation Duration in seconds"
+      },
+      "latestPosts": {
+        "label": "Latest Posts",
+        "labelPlural": "Latest Posts",
+        "fieldTitle": "Title",
+        "fieldButtonLabel": "Button Label",
+        "fieldPosts": "Posts",
+        "placeholderTitle": "B\u00e0i vi\u1ebft m\u1edbi nh\u1ea5t",
+        "placeholderButtonLabel": "T\u1ea4T C\u1ea2 B\u00c0I VI\u1ebeT"
+      },
+      "media": {
+        "fieldMedia": "Media"
+      },
+      "posts-grid": {
+        "label": "Posts Grid",
+        "labelPlural": "Posts Grids",
+        "fieldShowTitle": "Show post category title",
+        "fieldPostCategories": "Post Category"
+      },
+      "productsCarousel": {
+        "label": "Product Carousel",
+        "labelPlural": "Products Carousel",
+        "fieldTitle": "Title",
+        "fieldProducts": "Products",
+        "fieldWatchMoreBtnLabel": "Watch More Button Label",
+        "fieldApb": "All Products Button",
+        "placeholderTitle": "S\u1ea2N PH\u1ea8M B\u00c1N CH\u1ea0Y",
+        "placeholderWatchMoreBtnLabel": "XEM TH\u00caM",
+        "placeholderApbLabel": "XEM T\u1ea4T C\u1ea2 S\u1ea2N PH\u1ea8M"
+      },
+      "productsCategory": {
+        "label": "Products Category Preview",
+        "labelPlural": "Products Categories Preview",
+        "fieldCategory": "Products Category",
+        "fieldButtonLabel": "Button Label",
+        "placeholderButtonLabel": "XEM T\u1ea4T C\u1ea2 C\u00c1C S\u1ea2N PH\u1ea8M"
+      },
+      "threePhoto": {
+        "label": "Three Photo",
+        "labelPlural": "Three Photos",
+        "fieldPhotoLeft": "Photo Left",
+        "fieldPhotoCenter": "Photo Center",
+        "fieldPhotoRight": "Photo Right"
+      },
+      "videoEmbed": {
+        "label": "Video Embed",
+        "labelPlural": "Video Embeds",
+        "placeholderVideoUrl": "https://www.youtube.com/watch?v=example"
+      }
+    }
   }
 }
