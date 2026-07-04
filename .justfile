@@ -3,10 +3,10 @@ export NODE_OPTIONS := "--no-deprecation"
 @default:
     just --choose
 
-dev:
+dev: check
     pnpm next dev
 
-build:
+build: check
     pnpm next build --experimental-build-mode compile
 
 gen-stuffs:
