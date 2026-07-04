@@ -1,81 +1,52 @@
 import { Block } from 'payload'
 
 import { MediaSlug } from '@/collections/Media/slug'
-import { Lang } from '@/utilities/lang'
-
-import { CertificatesBlockDefaults as defaults } from './defaults'
+import { adminLabel } from '@/utilities/adminLabel'
 
 export const CertificatesBlockConf: Block = {
 	slug: 'certificates',
 	interfaceName: 'CertificatesBlockProps',
 	imageURL: '/thumbs/certificates.avif',
 	labels: {
-		plural: {
-			[Lang.English]: 'Certificates',
-			[Lang.Vietnamese]: 'Chứng nhận',
-		},
-		singular: {
-			[Lang.English]: 'Certificate',
-			[Lang.Vietnamese]: 'Chứng nhận',
-		},
+		plural: adminLabel('admin.blocks.certificates.labelPlural'),
+		singular: adminLabel('admin.blocks.certificates.label'),
 	},
 	fields: [
 		{
 			name: 'title',
 			type: 'text',
-			label: {
-				[Lang.English]: 'Title',
-				[Lang.Vietnamese]: 'Tiêu đề',
-			},
+			label: adminLabel('admin.blocks.certificates.fieldTitle'),
 			localized: true,
 			admin: {
-				placeholder: defaults.title(Lang.Vietnamese),
+				placeholder: adminLabel('admin.blocks.certificates.placeholderTitle'),
 			},
 		},
 		{
 			type: 'array',
 			name: 'organizations',
-			label: {
-				[Lang.English]: 'Organizations',
-				[Lang.Vietnamese]: 'Tổ chức',
-			},
+			label: adminLabel('admin.blocks.certificates.fieldOrganizations'),
 			labels: {
-				singular: {
-					[Lang.English]: 'Organization',
-					[Lang.Vietnamese]: 'Tổ chức',
-				},
-				plural: {
-					[Lang.English]: 'Organizations',
-					[Lang.Vietnamese]: 'Tổ chức',
-				},
+				singular: adminLabel('admin.blocks.certificates.arrayOrganizationsSingular'),
+				plural: adminLabel('admin.blocks.certificates.arrayOrganizationsPlural'),
 			},
 			fields: [
 				{
 					name: 'title',
 					type: 'text',
-					label: {
-						[Lang.English]: 'Organization Name',
-						[Lang.Vietnamese]: 'Tên tổ chức',
-					},
+					label: adminLabel('admin.blocks.certificates.fieldOrgTitle'),
 					required: true,
 					localized: true,
 				},
 				{
 					name: 'description',
 					type: 'text',
-					label: {
-						[Lang.English]: 'Description',
-						[Lang.Vietnamese]: 'Mô tả',
-					},
+					label: adminLabel('admin.blocks.certificates.fieldOrgDescription'),
 					localized: true,
 				},
 				{
 					name: 'logo',
 					type: 'upload',
-					label: {
-						[Lang.English]: 'Logo',
-						[Lang.Vietnamese]: 'Logo',
-					},
+					label: adminLabel('admin.blocks.certificates.fieldOrgLogo'),
 					relationTo: MediaSlug,
 				},
 			],

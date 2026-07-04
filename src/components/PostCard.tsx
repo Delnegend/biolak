@@ -1,14 +1,12 @@
 import Link from 'next/link'
+import { getTranslations } from 'next-intl/server'
 
 import { Post } from '@/payload-types'
-import { getClientLang } from '@/utilities/getClientLocale'
-import { Lang } from '@/utilities/lang'
-import { matchLang } from '@/utilities/matchLang'
 
 import { HeadlessImage } from './Media/HeadlessImage'
 
 export async function PostCard({ post }: { post: Post }): Promise<React.JSX.Element> {
-	const locale = await getClientLang()
+	const t = await getTranslations('components.postCard')
 	const author = typeof post.authors?.[0] === 'object' ? post.authors[0] : null
 	const lastModified = typeof post.updatedAt === 'string' ? new Date(post.updatedAt) : new Date()
 	const lastModifiedStr = `${lastModified.getDate().toString().padStart(2, '0')}.${lastModified.getMonth().toString().padStart(2, '0')}.${lastModified.getFullYear().toString().slice(2)}`
@@ -18,10 +16,7 @@ export async function PostCard({ post }: { post: Post }): Promise<React.JSX.Elem
 			<Link href={`/post/${post.slug}`}>
 				<HeadlessImage
 					media={post.meta?.meta?.image}
-					alt={matchLang({
-						[Lang.English]: 'Post hero image',
-						[Lang.Vietnamese]: 'Hình ảnh bài viết',
-					})(locale)}
+					alt={t('imageAlt')}
 					placeholder={{ width: 460, height: 400 }}
 					className="h-[25rem] w-[28.75rem] rounded-[0.5rem] object-cover"
 				/>

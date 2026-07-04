@@ -9,7 +9,7 @@ import { Tab } from 'payload'
 
 import { allow, Role } from '@/access/allow'
 import { MediaSlug } from '@/collections/Media/slug'
-import { Lang } from '@/utilities/lang'
+import { Lang } from '@/i18n/routing'
 
 export const metaTab: Tab = {
 	name: 'meta',

@@ -2,7 +2,8 @@
 
 import React from 'react'
 
-import { Lang, PreferredLocaleCookieName } from '@/utilities/lang'
+import { usePathname, useRouter } from '@/i18n/routing'
+import { Lang } from '@/i18n/routing'
 
 import { useHeaderContext } from '../hooks/useHeaderContext'
 
@@ -15,16 +16,16 @@ export function INTERNAL_LanguageSwitcher({
 }): React.JSX.Element {
 	const { locale: ctxLocale } = useHeaderContext()
 	const effectiveLocale = locale ?? ctxLocale
+	const pathname = usePathname()
+	const router = useRouter()
+	const targetLocale = effectiveLocale === Lang.English ? Lang.Vietnamese : Lang.English
 
 	return (
 		<a
 			href="#"
 			onClick={(e) => {
 				e.preventDefault()
-				document.cookie = `${PreferredLocaleCookieName}=${
-					effectiveLocale === Lang.English ? Lang.Vietnamese : Lang.English
-				}; path=/`
-				window.location.reload()
+				router.replace(pathname, { locale: targetLocale })
 			}}
 			className="whitespace-nowrap"
 		>

@@ -3,7 +3,7 @@ import { CollectionConfig } from 'payload'
 import { allow, Role } from '@/access/allow'
 import { FooterSizeField } from '@/fields/footer'
 import { slugField } from '@/fields/slug'
-import { Lang } from '@/utilities/lang'
+import { Lang } from '@/i18n/routing'
 
 import { ProductsSlug } from '../Products/slug'
 import { ProductSubCategoriesSlug } from '../ProductSubCategories/slug'

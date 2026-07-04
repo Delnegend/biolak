@@ -10,7 +10,7 @@ export const revalidatePayment: GlobalAfterChangeHook = async ({
 	if (!context.disableRevalidate) {
 		payload.logger.info(`Revalidating payment`)
 
-		revalidateTag(PaymentGlobalSlug)
+		revalidateTag(PaymentGlobalSlug, 'default')
 	}
 
 	return doc

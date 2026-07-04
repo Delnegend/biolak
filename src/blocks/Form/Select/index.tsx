@@ -11,9 +11,6 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from '@/components/ui/select'
-import { getClientLang } from '@/utilities/getClientLocale'
-import { Lang } from '@/utilities/lang'
-import { matchLang } from '@/utilities/matchLang'
 
 import { Error } from '../Error'
 import { Width } from '../Width'
@@ -24,8 +21,6 @@ export async function Select(
 		errors: Partial<FieldErrorsImpl>
 	},
 ): Promise<React.JSX.Element> {
-	const locale = await getClientLang()
-
 	return (
 		<Width width={props.width}>
 			<Label htmlFor={props.name}>
@@ -59,14 +54,7 @@ export async function Select(
 							<SelectContent>
 								{props.options.map(({ label, value }) => {
 									return (
-										<SelectItem
-											key={value}
-											value={value}
-											aria-label={matchLang({
-												[Lang.English]: label,
-												[Lang.Vietnamese]: label,
-											})(locale)}
-										>
+										<SelectItem key={value} value={value} aria-label={label}>
 											{label}
 										</SelectItem>
 									)

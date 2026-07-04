@@ -1,17 +1,19 @@
+import { getTranslations } from 'next-intl/server'
+
 import { ProductsSlug } from '@/collections/Products/slug'
+import { Lang } from '@/i18n/routing'
 import { BuyNowBlockProps, Product } from '@/payload-types'
 import { findValidProductVariant } from '@/utilities/findValidProductVariant'
-import { Lang } from '@/utilities/lang'
 
 import { INTERNAL_BuyNowClient } from './Component.client'
-import { BuyNowBlockDefaults as defaults } from './defaults'
 
-export function BuyNowBlock(
+export async function BuyNowBlock(
 	props: BuyNowBlockProps & {
 		__product?: Product | null
-		__locale: Lang
+		locale: Lang
 	},
 ) {
+	const t = await getTranslations({ locale: props.locale, namespace: 'blocks.buyNow' })
 	const p =
 		typeof props[ProductsSlug] === 'object' && !!props[ProductsSlug]
 			? props[ProductsSlug]
@@ -27,7 +29,7 @@ export function BuyNowBlock(
 			<INTERNAL_BuyNowClient
 				productSlug={p.slug}
 				fallbackVariantSku={findValidProductVariant(p.variants)?.sku}
-				buttonLabel={props.buttonLabel ?? defaults.buttonLabel(props.__locale)}
+				buttonLabel={props.buttonLabel ?? t('buttonLabel')}
 			/>
 		</div>
 	)

@@ -1,32 +1,29 @@
 import { ArrowRight } from 'lucide-react'
 import Link from 'next/link'
+import { getTranslations } from 'next-intl/server'
 
 import { HeadlessImage } from '@/components/Media/HeadlessImage'
 import { Button } from '@/components/ui/button'
 import { Carousel, CarouselContent, CarouselItem } from '@/components/ui/carousel'
+import { Lang } from '@/i18n/routing'
 import { LatestPostsBlockProps } from '@/payload-types'
-import { Lang } from '@/utilities/lang'
-import { matchLang } from '@/utilities/matchLang'
 
-import { LatestPostsBlockDefaults as defaults } from './defaults'
-
-export function LatestPostsBlock(
+export async function LatestPostsBlock(
 	props: LatestPostsBlockProps & {
-		__locale: Lang
+		locale: Lang
 	},
-): React.JSX.Element {
+): Promise<React.JSX.Element> {
+	const t = await getTranslations({ locale: props.locale, namespace: 'blocks.latestPosts' })
 	const posts = props.posts.filter((post) => typeof post === 'object') ?? []
 
 	return (
 		<div className="border-t py-14">
 			<div className="safe-width">
 				<div className="mb-12 flex flex-row items-center justify-between font-semibold italic">
-					<div className="font-serif text-7xl">
-						{props.title ?? defaults.title(props.__locale)}
-					</div>
+					<div className="font-serif text-7xl">{props.title ?? t('title')}</div>
 					<Button size="lg" className="justify-between" variant="outline" asChild>
 						<Link href={'/events'}>
-							{props.buttonLabel ?? defaults.buttonLabel(props.__locale)}
+							{props.buttonLabel ?? t('buttonLabel')}
 							<ArrowRight />
 						</Link>
 					</Button>
@@ -48,10 +45,7 @@ export function LatestPostsBlock(
 									<CarouselItem key={index} className="max-w-[25rem]">
 										<HeadlessImage
 											media={post.meta?.meta?.image}
-											alt={matchLang({
-												[Lang.English]: 'Post hero image',
-												[Lang.Vietnamese]: 'Hình ảnh bài viết',
-											})(props.__locale)}
+											alt={t('postImageAlt')}
 											placeholder={{ width: 460, height: 400 }}
 											className="h-[25rem] w-[28.75rem] rounded-[0.5rem] object-cover"
 										/>

@@ -1,5 +1,6 @@
 'use client'
 
+import { useTranslations } from 'next-intl'
 import { PaginatedDocs } from 'payload'
 import { stringify } from 'qs-esm'
 import { createContext, useContext, useEffect, useState } from 'react'
@@ -9,8 +10,6 @@ import { z } from 'zod/v4'
 import { ProductsSlug } from '@/collections/Products/slug'
 import { type Product } from '@/payload-types'
 import { cnsoleBuilder } from '@/utilities/cnsole'
-import { Lang } from '@/utilities/lang'
-import { matchLang } from '@/utilities/matchLang'
 import { tryCatch, tryCatchSync } from '@/utilities/tryCatch'
 
 const cnsole = cnsoleBuilder('hooks/useCartManager')
@@ -74,12 +73,11 @@ const cartKey = 'cart'
 export function useCartManager({
 	syncWithLocalStorage = true,
 	showNotification = false,
-	locale,
 }: {
 	syncWithLocalStorage?: boolean
 	showNotification?: boolean
-	locale: Lang
 }) {
+	const t = useTranslations('cartManager')
 	const cartCtx = useContext(CartContext)
 	const [loadedFromLocalStorageDone, setLoadedFromLocalStorageDone] = useState<boolean>(
 		() => !syncWithLocalStorage,
@@ -249,14 +247,7 @@ export function useCartManager({
 
 		loadProduct(product: ProductInCart): void {
 			if (cart.length >= 1000) {
-				toast.error(
-					matchLang({
-						[Lang.English]:
-							'Cart is full, please remove some items before adding more.',
-						[Lang.Vietnamese]:
-							'Giỏ hàng đã đầy, vui lòng xóa một số mặt hàng trước khi thêm.',
-					})(locale),
-				)
+				toast.error(t('cartFull'))
 				return
 			}
 
@@ -284,10 +275,10 @@ export function useCartManager({
 
 			if (showNotification)
 				toast.success(
-					matchLang({
-						[Lang.English]: `Added ${product.product.title} (${product.variant.title}) to cart`,
-						[Lang.Vietnamese]: `Đã thêm ${product.product.title} (${product.variant.title}) vào giỏ hàng`,
-					})(locale),
+					t('addedToCart', {
+						product: product.product.title ?? '',
+						variant: product.variant.title ?? '',
+					}),
 				)
 		},
 

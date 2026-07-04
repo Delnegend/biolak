@@ -1,9 +1,9 @@
 import configPromise from '@payload-config'
 import { unstable_cache } from 'next/cache'
 import { getPayload } from 'payload'
-import type { Config } from 'src/payload-types'
 
-import { defaultLocale, Lang } from './lang'
+import { defaultLocale, Lang } from '@/i18n/routing'
+import type { Config } from '@/payload-types'
 
 type Global = keyof Config['globals']
 
@@ -13,7 +13,7 @@ async function getGlobal<T = unknown>(slug: Global, depth = 0, locale?: Lang | '
 	return payload.findGlobal({
 		slug,
 		depth,
-		locale,
+		locale: locale as Lang,
 		fallbackLocale: defaultLocale,
 	}) as Promise<T>
 }

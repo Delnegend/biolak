@@ -24,7 +24,7 @@ export async function generateMeta(args: {
 	const generalGlobal = await getCachedGlobal<GeneralGlobal>(GeneralGlobalSlug)()
 
 	const product = args.doc as Partial<Product>
-	const productImg = !!product.gallery ? product.gallery[0] : null
+	const productImg = product?.gallery?.[0] ?? null
 
 	const img = await depthHandler({
 		data: meta?.image ?? productImg ?? generalGlobal.siteBanner,

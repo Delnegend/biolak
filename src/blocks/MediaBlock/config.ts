@@ -1,7 +1,7 @@
 import type { Block } from 'payload'
 
 import { MediaSlug } from '@/collections/Media/slug'
-import { Lang } from '@/utilities/lang'
+import { adminLabel } from '@/utilities/adminLabel'
 
 export const MediaBlockConf: Block = {
 	slug: 'media',
@@ -11,10 +11,7 @@ export const MediaBlockConf: Block = {
 			name: 'media',
 			type: 'upload',
 			relationTo: MediaSlug,
-			label: {
-				[Lang.English]: 'Media',
-				[Lang.Vietnamese]: 'Phương tiện',
-			},
+			label: adminLabel('admin.blocks.media.fieldMedia'),
 			required: true,
 		},
 	],

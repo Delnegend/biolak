@@ -1,7 +1,7 @@
 import { Field } from 'payload'
 
 import { allow, Role } from '@/access/allow'
-import { Lang } from '@/utilities/lang'
+import { Lang } from '@/i18n/routing'
 
 export const ORDERS_tab_review: Field = {
 	type: 'group',

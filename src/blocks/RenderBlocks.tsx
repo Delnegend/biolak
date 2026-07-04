@@ -5,8 +5,8 @@ import { CallToActionCenterBlock } from '@/blocks/CallToActionCenter/Component'
 import { ContentBlock } from '@/blocks/Content/Component'
 import { FormBlock } from '@/blocks/Form/Component'
 import { MediaBlockComponent } from '@/blocks/MediaBlock/Component'
+import { Lang } from '@/i18n/routing'
 import type { Page, Post, PostCategory, Product } from '@/payload-types'
-import { getClientLang } from '@/utilities/getClientLocale'
 
 import { ArchiveBlockConf } from './ArchiveBlock/config'
 import { BannerBlock } from './Banner/Component'
@@ -91,6 +91,7 @@ const blockComponents = {
 export async function RenderBlocks({
 	blocks,
 	product,
+	locale,
 	// TODO: might need these in the future
 	post: _post,
 	postCategory,
@@ -101,14 +102,13 @@ export async function RenderBlocks({
 		| Product['productLayout']
 		| PostCategory['postCategoryLayout']
 	product?: Product | null
+	locale: Lang
 	post?: Post | null
 	postCategory?: PostCategory | null
 }): Promise<React.JSX.Element> {
 	if (!(blocks && Array.isArray(blocks) && blocks.length > 0)) {
 		return <></>
 	}
-
-	const locale = await getClientLang()
 
 	return (
 		<>

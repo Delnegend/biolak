@@ -1,25 +1,28 @@
+import { getTranslations } from 'next-intl/server'
+
 import { DialogTitle } from '@/components/ui/dialog'
+import { Lang } from '@/i18n/routing'
 import { ContactFormGlobal } from '@/payload-types'
-import { getClientLang } from '@/utilities/getClientLocale'
 import { getCachedGlobal } from '@/utilities/getGlobals'
 
 import { INTERNAL_ContactFormClient } from './Component.client'
 import { ContactFormGlobalSlug } from './config'
-import { ContactFormGlobalDefaults as defaults } from './defaults'
 
-export async function ContactFormGlobalComponent({ inDialog }: { inDialog?: boolean }) {
-	const locale = await getClientLang()
-	const global = await getCachedGlobal<ContactFormGlobal>(ContactFormGlobalSlug, 1, locale)()
+export async function ContactFormGlobalComponent(props: { inDialog?: boolean; locale: Lang }) {
+	const global = await getCachedGlobal<ContactFormGlobal>(
+		ContactFormGlobalSlug,
+		1,
+		props.locale,
+	)()
+	const t = await getTranslations({ locale: props.locale, namespace: 'globals.contactForm' })
 
-	if (inDialog) {
+	if (props.inDialog) {
 		return (
 			<>
-				<DialogTitle className="sr-only">
-					{global.title ?? defaults.title(locale)}
-				</DialogTitle>
-				<INTERNAL_ContactFormClient global={global} locale={locale} />
+				<DialogTitle className="sr-only">{global.title ?? t('title')}</DialogTitle>
+				<INTERNAL_ContactFormClient global={global} />
 			</>
 		)
 	}
-	return <INTERNAL_ContactFormClient global={global} locale={locale} />
+	return <INTERNAL_ContactFormClient global={global} />
 }

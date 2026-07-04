@@ -1,0 +1,117 @@
+import config from '@payload-config'
+import type { Metadata } from 'next'
+import { draftMode } from 'next/headers'
+import { getPayload } from 'payload'
+import { cache } from 'react'
+
+import { RenderBlocks } from '@/blocks/RenderBlocks'
+import { PagesSlug } from '@/collections/Pages/slug'
+import { LivePreviewListener } from '@/components/LivePreviewListener'
+import { PayloadRedirects } from '@/components/PayloadRedirects'
+import { FooterGlobalComponent } from '@/globals/Footer/Component'
+import { RenderHero } from '@/heros/RenderHero'
+import { defaultLocale, Lang } from '@/i18n/routing'
+import { generateMeta } from '@/utilities/generateMeta'
+import { tryCatch } from '@/utilities/tryCatch'
+
+import PageClient from './page.client'
+
+export async function generateStaticParams() {
+	const [{ ok: payloadOk, data: payload, error: payloadError }] = await Promise.all([
+		tryCatch(() => getPayload({ config })),
+	])
+
+	if (!payloadOk) throw new Error(`Failed to initialize Payload: ${payloadError}`)
+
+	const {
+		ok: pagesOk,
+		data: pages,
+		error: pagesError,
+	} = await tryCatch(() =>
+		payload.find({
+			collection: PagesSlug,
+			draft: false,
+			limit: 1000,
+			pagination: false,
+			select: {
+				slug: true,
+			},
+			locale: defaultLocale,
+		}),
+	)
+	if (!pagesOk) throw new Error(`Failed to fetch pages: ${pagesError}`)
+
+	return pages.docs.map(({ slug }) => ({ slug: slug ?? '' }))
+}
+
+type Args = {
+	params: Promise<{
+		slug?: string
+		locale: string
+	}>
+}
+
+export default async function Page({ params: paramsPromise }: Args) {
+	const { isEnabled: draft } = await draftMode()
+	const { slug = 'home', locale: _locale } = await paramsPromise
+	const locale = _locale as Lang
+	const url = '/' + (slug || 'home')
+
+	const page = await queryPageBySlug({ slug, locale })
+
+	if (!page) {
+		return <PayloadRedirects url={url} />
+	}
+
+	return (
+		<article>
+			<PageClient />
+			{/* Allows redirects for valid pages too */}
+			<PayloadRedirects disableNotFound url={url} />
+
+			{draft && <LivePreviewListener />}
+
+			<RenderHero {...page.hero} __locale={locale} />
+			<RenderBlocks blocks={page.pageLayout} locale={locale} />
+			<FooterGlobalComponent size={page.footerSize} locale={locale} />
+		</article>
+	)
+}
+
+export async function generateMetadata({ params: paramsPromise }: Args): Promise<Metadata> {
+	const { slug = 'home', locale: _locale } = await paramsPromise
+	const locale = _locale as Lang
+	const page = await queryPageBySlug({ slug, locale })
+
+	return generateMeta({ doc: page })
+}
+
+const queryPageBySlug = cache(async ({ slug, locale }: { slug: string; locale: Lang }) => {
+	const [{ isEnabled: draft }, { data: payload, ok: payloadOk, error: payloadError }] =
+		await Promise.all([draftMode(), tryCatch(() => getPayload({ config }))])
+
+	if (!payloadOk) throw new Error(`Failed to initialize Payload: ${payloadError}`)
+
+	const {
+		data: result,
+		ok,
+		error,
+	} = await tryCatch(() =>
+		payload.find({
+			collection: PagesSlug,
+			draft,
+			limit: 1,
+			pagination: false,
+			overrideAccess: draft,
+			where: {
+				slug: {
+					equals: slug,
+				},
+			},
+			locale,
+		}),
+	)
+	if (!ok) throw new Error(`Failed to fetch page by slug "${slug}": ${error}`)
+
+	return result.docs?.[0] || null
+})

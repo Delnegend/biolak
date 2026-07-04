@@ -1,20 +1,23 @@
 import { ArrowRight } from 'lucide-react'
+import { getTranslations } from 'next-intl/server'
 import React from 'react'
 
 import { CMSLink } from '@/components/CMSLink'
 import RichText from '@/components/RichText'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Lang } from '@/i18n/routing'
 import type { CallToActionCenterBlockProps } from '@/payload-types'
-import { Lang } from '@/utilities/lang'
 
-import { CallToActionCenterBlockDefaults as defaults } from './defaults'
-
-export function CallToActionCenterBlock(
+export async function CallToActionCenterBlock(
 	props: CallToActionCenterBlockProps & {
-		__locale: Lang
+		locale: Lang
 	},
-): React.JSX.Element {
+): Promise<React.JSX.Element> {
+	const t = await getTranslations({
+		locale: props.locale,
+		namespace: 'blocks.callToActionCenter',
+	})
 	const bgUrl =
 		props.background && typeof props.background === 'object' && props.background.url
 			? props.background.url
@@ -45,7 +48,7 @@ export function CallToActionCenterBlock(
 							data={props.description}
 							enableGutter={false}
 							className="text-balance text-center text-2xl text-[#834621] max-md:text-base"
-							locale={props.__locale}
+							locale={props.locale}
 						/>
 					)}
 				</CardHeader>
@@ -59,7 +62,7 @@ export function CallToActionCenterBlock(
 							className="justify-between"
 							{...props.link}
 							type={props.link?.type ?? undefined}
-							label={props.link?.label ?? defaults.buttonLabel(props.__locale)}
+							label={props.link?.label ?? t('buttonLabel')}
 						>
 							<ArrowRight />
 						</CMSLink>

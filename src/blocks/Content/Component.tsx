@@ -1,9 +1,9 @@
 import React from 'react'
 
 import RichText from '@/components/RichText'
+import { Lang } from '@/i18n/routing'
 import type { ContentBlockProps } from '@/payload-types'
 import { cssStringToStyle } from '@/utilities/cssStringToStyle'
-import { Lang } from '@/utilities/lang'
 import { cn } from '@/utilities/ui'
 
 import { CMSLink } from '../../components/CMSLink'

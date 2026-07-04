@@ -1,11 +1,11 @@
 import { SearchIcon } from 'lucide-react'
 import Link from 'next/link'
+import { getTranslations } from 'next-intl/server'
 
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog'
 import { ContactFormGlobalComponent } from '@/globals/ContactForm/Component'
+import { defaultLocale, Lang } from '@/i18n/routing'
 import { HeaderGlobal } from '@/payload-types'
-import { Lang } from '@/utilities/lang'
-import { matchLang } from '@/utilities/matchLang'
 
 import { INTERNAL_CartSidebar } from './CartSidebar.client'
 import { INTERNAL_CloseSmallNavWrapper } from './CloseSmallNavWrapper.client'
@@ -21,52 +21,46 @@ export const NavItems: Record<
 	>,
 	(props: {
 		label?: string
-		locale: Lang
+		locale: Lang | undefined
 		size: 'lg' | 'sm'
-	}) => React.JSX.Element | Promise<React.JSX.Element>
+	}) => Promise<React.JSX.Element>
 > = {
-	search: ({ label, locale }) => (
-		<INTERNAL_CloseSmallNavWrapper asChild>
-			<Link href="#" className="flex size-7 items-center justify-center">
-				<span className="sr-only">
-					{label ??
-						matchLang({
-							[Lang.English]: 'Search',
-							[Lang.Vietnamese]: 'Tìm kiếm',
-						})(locale)}
-				</span>
-				<SearchIcon className="w-5 scale-110 text-primary" size={30} />
-			</Link>
-		</INTERNAL_CloseSmallNavWrapper>
-	),
+	search: async ({ label, locale: _locale }) => {
+		const t = await getTranslations('globals.header.nav')
+		return (
+			<INTERNAL_CloseSmallNavWrapper asChild>
+				<Link href="#" className="flex size-7 items-center justify-center">
+					<span className="sr-only">{label ?? t('search')}</span>
+					<SearchIcon className="w-5 scale-110 text-primary" size={30} />
+				</Link>
+			</INTERNAL_CloseSmallNavWrapper>
+		)
+	},
 	products: INTERNAL_ProductsDropdown,
-	about: ({ label }) => (
+	about: async ({ label }) => (
 		<INTERNAL_CloseSmallNavWrapper asChild>
 			<Link href="/about">{label ?? 'BioLAK'}</Link>
 		</INTERNAL_CloseSmallNavWrapper>
 	),
-	contact: ({ label, locale }) => (
-		<Dialog>
-			<DialogTrigger>
-				<INTERNAL_CloseSmallNavWrapper>
-					<span className="whitespace-nowrap">
-						{label ??
-							matchLang({
-								[Lang.English]: 'Contacts',
-								[Lang.Vietnamese]: 'Liên hệ',
-							})(locale)}
-					</span>
-				</INTERNAL_CloseSmallNavWrapper>
-			</DialogTrigger>
-			<DialogContent className="min-w-[932px] overflow-hidden !rounded-2xl bg-primary-foreground p-12">
-				<ContactFormGlobalComponent inDialog={true} />
-			</DialogContent>
-		</Dialog>
-	),
-	'vie-en': ({ label, locale }) => (
+	contact: async ({ label, locale }) => {
+		const t = await getTranslations('globals.header.nav')
+		return (
+			<Dialog>
+				<DialogTrigger>
+					<INTERNAL_CloseSmallNavWrapper>
+						<span className="whitespace-nowrap">{label ?? t('contacts')}</span>
+					</INTERNAL_CloseSmallNavWrapper>
+				</DialogTrigger>
+				<DialogContent className="min-w-[932px] overflow-hidden !rounded-2xl bg-primary-foreground p-12">
+					<ContactFormGlobalComponent inDialog={true} locale={locale ?? defaultLocale} />
+				</DialogContent>
+			</Dialog>
+		)
+	},
+	'vie-en': async ({ label, locale }) => (
 		<INTERNAL_CloseSmallNavWrapper asChild>
 			<INTERNAL_LanguageSwitcher label={label} locale={locale} />
 		</INTERNAL_CloseSmallNavWrapper>
 	),
-	cart: (props) => <INTERNAL_CartSidebar {...props} />,
+	cart: async (props) => <INTERNAL_CartSidebar {...props} />,
 }

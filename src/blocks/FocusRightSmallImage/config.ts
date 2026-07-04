@@ -1,39 +1,27 @@
 import { Block } from 'payload'
 
 import { MediaSlug } from '@/collections/Media/slug'
-import { Lang } from '@/utilities/lang'
+import { adminLabel } from '@/utilities/adminLabel'
 
 export const FocusRightSmallImageBlockConf: Block = {
 	slug: 'focus-right-small-image',
 	interfaceName: 'FocusRightSmallImageBlockProps',
 	imageURL: '/thumbs/focus-right-small-image.avif',
 	labels: {
-		singular: {
-			[Lang.English]: 'Focus Right Small Image',
-			[Lang.Vietnamese]: 'Hình ảnh nhỏ bên phải',
-		},
-		plural: {
-			[Lang.English]: 'Focuses Right Small Image',
-			[Lang.Vietnamese]: 'Hình ảnh nhỏ bên phải',
-		},
+		singular: adminLabel('admin.blocks.focus-right-small-image.label'),
+		plural: adminLabel('admin.blocks.focus-right-small-image.labelPlural'),
 	},
 	fields: [
 		{
 			name: 'image',
 			type: 'upload',
-			label: {
-				[Lang.English]: 'Image',
-				[Lang.Vietnamese]: 'Hình ảnh',
-			},
+			label: adminLabel('admin.blocks.focus-right-small-image.fieldImage'),
 			relationTo: MediaSlug,
 		},
 		{
 			name: 'content',
 			type: 'richText',
-			label: {
-				[Lang.English]: 'Content',
-				[Lang.Vietnamese]: 'Nội dung',
-			},
+			label: adminLabel('admin.blocks.focus-right-small-image.fieldContent'),
 			required: true,
 			localized: true,
 		},

@@ -53,7 +53,7 @@ Nếu bạn không thể tương tác với trình giải quyết xung đột DB
 
 - Admin/tài liệu: Tài liệu đa ngôn ngữ của Payload — https://payloadcms.com/docs/configuration/localization
 - Frontend:
-    - Sử dụng `utilities/lang.ts` cho enum `Lang`.
+    - Sử dụng `i18n/routing.ts` cho enum `Lang`.
     - Sử dụng `setLocale()` để thay đổi ngôn ngữ phía client.
     - Sử dụng `getClientLang()` để nhận diện ngôn ngữ phía server.
 

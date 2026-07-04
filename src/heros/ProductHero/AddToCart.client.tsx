@@ -1,23 +1,17 @@
 'use client'
 
 import { ShoppingCart } from 'lucide-react'
+import { useTranslations } from 'next-intl'
 import { toast } from 'sonner'
 
 import { Button } from '@/components/ui/button'
 import { useCartManager } from '@/hooks/useCartManager'
-import { Lang } from '@/utilities/lang'
-import { matchLang } from '@/utilities/matchLang'
 
 import { useSelectedProductVariant } from './ProductVariantContext'
 
-export function INTERNAL_AddToCartButton({
-	locale,
-	disabled,
-}: {
-	locale: Lang
-	disabled?: boolean
-}): React.JSX.Element {
-	const { loadProduct } = useCartManager({ syncWithLocalStorage: true, locale })
+export function INTERNAL_AddToCartButton({ disabled }: { disabled?: boolean }): React.JSX.Element {
+	const t = useTranslations('heros.productHero.addToCart')
+	const { loadProduct } = useCartManager({ syncWithLocalStorage: true })
 	const { selectedProductVariant } = useSelectedProductVariant()
 
 	return (
@@ -35,24 +29,19 @@ export function INTERNAL_AddToCartButton({
 					checked: true,
 				})
 				toast.success(
-					matchLang({
-						[Lang.English]: `Added ${selectedProductVariant.product.title} variant ${selectedProductVariant?.variant.title} to cart`,
-						[Lang.Vietnamese]: `Đã thêm ${selectedProductVariant.product.title} loại ${selectedProductVariant?.variant.title} vào giỏ hàng`,
-					})(locale),
+					t('toast', {
+						product: selectedProductVariant.product.title,
+						variant: selectedProductVariant.variant.title,
+					}),
 				)
 			}}
 			disabled={!selectedProductVariant || disabled}
-			aria-label={matchLang({
-				[Lang.English]: `Add ${selectedProductVariant?.product.title} variant ${selectedProductVariant?.variant.title} to cart`,
-				[Lang.Vietnamese]: `Thêm ${selectedProductVariant?.product.title} loại ${selectedProductVariant?.variant.title} vào giỏ hàng`,
-			})(locale)}
+			aria-label={t('ariaLabel', {
+				product: selectedProductVariant?.product.title ?? '',
+				variant: selectedProductVariant?.variant.title ?? '',
+			})}
 		>
-			<span>
-				{matchLang({
-					[Lang.English]: disabled ? 'OUT OF STOCK' : 'ADD TO CART',
-					[Lang.Vietnamese]: disabled ? 'HẾT HÀNG' : 'THÊM VÀO GIỎ',
-				})(locale)}
-			</span>
+			<span>{disabled ? t('outOfStock') : t('label')}</span>
 			<ShoppingCart />
 		</Button>
 	)

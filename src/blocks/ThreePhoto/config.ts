@@ -1,49 +1,34 @@
 import { Block } from 'payload'
 
 import { MediaSlug } from '@/collections/Media/slug'
-import { Lang } from '@/utilities/lang'
+import { adminLabel } from '@/utilities/adminLabel'
 
 export const ThreePhotoBlockConf: Block = {
 	slug: 'threePhoto',
 	interfaceName: 'ThreePhotoBlockProps',
 	imageURL: '/thumbs/three-photo.avif',
 	labels: {
-		plural: {
-			[Lang.English]: 'Three Photos',
-			[Lang.Vietnamese]: 'Ba hình ảnh',
-		},
-		singular: {
-			[Lang.English]: 'Three Photo',
-			[Lang.Vietnamese]: 'Ba hình ảnh',
-		},
+		plural: adminLabel('admin.blocks.threePhoto.labelPlural'),
+		singular: adminLabel('admin.blocks.threePhoto.label'),
 	},
 	fields: [
 		{
 			name: 'photoLeft',
 			type: 'upload',
 			relationTo: MediaSlug,
-			label: {
-				[Lang.English]: 'Photo Left',
-				[Lang.Vietnamese]: 'Hình ảnh bên trái',
-			},
+			label: adminLabel('admin.blocks.threePhoto.fieldPhotoLeft'),
 		},
 		{
 			name: 'photoCenter',
 			type: 'upload',
 			relationTo: MediaSlug,
-			label: {
-				[Lang.English]: 'Photo Center',
-				[Lang.Vietnamese]: 'Hình ảnh ở giữa',
-			},
+			label: adminLabel('admin.blocks.threePhoto.fieldPhotoCenter'),
 		},
 		{
 			name: 'photoRight',
 			type: 'upload',
 			relationTo: MediaSlug,
-			label: {
-				[Lang.English]: 'Photo Right',
-				[Lang.Vietnamese]: 'Hình ảnh bên phải',
-			},
+			label: adminLabel('admin.blocks.threePhoto.fieldPhotoRight'),
 		},
 	],
 }

@@ -2,7 +2,7 @@ import { nanoid } from 'nanoid'
 import { CollectionConfig } from 'payload'
 
 import { allow, Role } from '@/access/allow'
-import { Lang } from '@/utilities/lang'
+import { Lang } from '@/i18n/routing'
 
 import { sendOrderCreatedEmail } from './hooks/sendOrderCreatedEmail'
 import { OrdersSlug } from './slug'

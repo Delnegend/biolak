@@ -1,5 +1,6 @@
 import config from '@payload-config'
 import { Phudu } from 'next/font/google'
+import { getTranslations } from 'next-intl/server'
 import { getPayload } from 'payload'
 import React from 'react'
 
@@ -7,13 +8,11 @@ import { ProductsSlug } from '@/collections/Products/slug'
 import { CMSLink } from '@/components/CMSLink'
 import { ProductCard } from '@/components/ProductCard'
 import { Carousel, CarouselContent, CarouselItem } from '@/components/ui/carousel'
+import { Lang } from '@/i18n/routing'
 import { BestSellerBlockProps } from '@/payload-types'
 import { cnsoleBuilder } from '@/utilities/cnsole'
 import { arrayDepthHandler } from '@/utilities/depthHandler'
-import { Lang } from '@/utilities/lang'
 import { cn } from '@/utilities/ui'
-
-import { BestSellerBlockDefaults as defaults } from './defaults'
 
 const cnsole = cnsoleBuilder('blocks/BestSeller')
 
@@ -23,12 +22,15 @@ const phudu = Phudu({
 })
 
 export async function BestSellerBlock({
-	__locale,
+	locale,
 	...props
 }: BestSellerBlockProps & {
-	__locale: Lang
+	locale: Lang
 }): Promise<React.JSX.Element> {
-	const payload = await getPayload({ config })
+	const [t, payload] = await Promise.all([
+		getTranslations({ locale, namespace: 'blocks.bestSeller' }),
+		getPayload({ config }),
+	])
 	const {
 		data: products,
 		ok: productsOk,
@@ -57,7 +59,7 @@ export async function BestSellerBlock({
 		<div className="safe-width my-[2.5rem] flex flex-col items-center gap-[2.5rem] lg:my-24 lg:flex-row lg:items-end lg:gap-16">
 			<div className="flex h-full flex-col justify-end lg:max-w-[40rem] lg:gap-9">
 				<div className="font-serif text-[2.5rem] font-semibold italic leading-[3.5rem] text-primary lg:text-7xl">
-					{props.title ?? defaults.title(__locale)}
+					{props.title ?? t('title')}
 				</div>
 				{props.description && (
 					<div className="text-balance text-primary opacity-60 max-lg:hidden">
@@ -67,7 +69,7 @@ export async function BestSellerBlock({
 				<CMSLink
 					{...props.link}
 					type={props.link?.type ?? undefined}
-					label={props.link?.label ?? defaults.viewAllProductsButton(__locale)}
+					label={props.link?.label ?? t('viewAllProductsButton')}
 					className={cn(
 						'text-xl font-medium leading-8 text-[#703D00] max-lg:hidden',
 						phudu.className,

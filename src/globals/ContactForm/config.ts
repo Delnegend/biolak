@@ -2,9 +2,9 @@ import { revalidateTag } from 'next/cache'
 import { GlobalConfig } from 'payload'
 
 import { allow, Role } from '@/access/allow'
-import { Lang } from '@/utilities/lang'
+import { Lang } from '@/i18n/routing'
 
-import { ContactFormGlobalDefaults as defaults } from './defaults'
+import vi from '../../../messages/vi.json'
 
 export const ContactFormGlobalSlug = 'contactFormGlobal'
 export const ContactFormGlobalConf: GlobalConfig<typeof ContactFormGlobalSlug> = {
@@ -24,7 +24,7 @@ export const ContactFormGlobalConf: GlobalConfig<typeof ContactFormGlobalSlug> =
 			localized: true,
 			label: false,
 			admin: {
-				placeholder: defaults.title(Lang.Vietnamese),
+				placeholder: vi.globals.contactForm.title,
 			},
 		},
 		{
@@ -33,7 +33,7 @@ export const ContactFormGlobalConf: GlobalConfig<typeof ContactFormGlobalSlug> =
 			label: false,
 			localized: true,
 			admin: {
-				placeholder: defaults.name(Lang.Vietnamese),
+				placeholder: vi.globals.contactForm.name,
 			},
 		},
 		{
@@ -42,7 +42,7 @@ export const ContactFormGlobalConf: GlobalConfig<typeof ContactFormGlobalSlug> =
 			label: false,
 			localized: true,
 			admin: {
-				placeholder: defaults.phoneNumber(Lang.Vietnamese),
+				placeholder: vi.globals.contactForm.phoneNumber,
 			},
 		},
 		{
@@ -51,7 +51,7 @@ export const ContactFormGlobalConf: GlobalConfig<typeof ContactFormGlobalSlug> =
 			label: false,
 			localized: true,
 			admin: {
-				placeholder: defaults.email(Lang.Vietnamese),
+				placeholder: vi.globals.contactForm.email,
 			},
 		},
 		{
@@ -60,7 +60,7 @@ export const ContactFormGlobalConf: GlobalConfig<typeof ContactFormGlobalSlug> =
 			label: false,
 			localized: true,
 			admin: {
-				placeholder: defaults.question(Lang.Vietnamese),
+				placeholder: vi.globals.contactForm.question,
 			},
 		},
 		{
@@ -69,7 +69,7 @@ export const ContactFormGlobalConf: GlobalConfig<typeof ContactFormGlobalSlug> =
 			label: false,
 			localized: true,
 			admin: {
-				placeholder: defaults.actionSend(Lang.Vietnamese),
+				placeholder: vi.globals.contactForm.actionSend,
 			},
 		},
 		{
@@ -78,7 +78,7 @@ export const ContactFormGlobalConf: GlobalConfig<typeof ContactFormGlobalSlug> =
 			label: false,
 			localized: true,
 			admin: {
-				placeholder: defaults.biolakPhoneNumber(Lang.Vietnamese),
+				placeholder: vi.globals.contactForm.biolakPhoneNumber,
 			},
 		},
 		{
@@ -87,7 +87,7 @@ export const ContactFormGlobalConf: GlobalConfig<typeof ContactFormGlobalSlug> =
 			label: false,
 			localized: true,
 			admin: {
-				placeholder: defaults.actionCall(Lang.Vietnamese),
+				placeholder: vi.globals.contactForm.actionCall,
 			},
 		},
 	],
@@ -97,7 +97,7 @@ export const ContactFormGlobalConf: GlobalConfig<typeof ContactFormGlobalSlug> =
 				if (!context.disableRevalidate) {
 					payload.logger.info(`Revalidating contact form`)
 
-					revalidateTag(ContactFormGlobalSlug)
+					revalidateTag(ContactFormGlobalSlug, 'default')
 				}
 
 				return doc

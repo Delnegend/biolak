@@ -2,6 +2,7 @@
 
 import { CirclePlus, Heart, X } from 'lucide-react'
 import { AnimatePresence, motion } from 'motion/react'
+import { useTranslations } from 'next-intl'
 import { useEffect, useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { toast } from 'sonner'
@@ -10,24 +11,20 @@ import { Button } from '@/components/ui/button'
 import { Dialog, DialogContent, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
 import { TextInput } from '@/components/ui/text-input'
 import { ReviewsGlobal } from '@/payload-types'
-import { Lang } from '@/utilities/lang'
-import { matchLang } from '@/utilities/matchLang'
 import { cn } from '@/utilities/ui'
 
 import { sendReviewAction, SendReviewInputType } from './actions/sendReviewAction'
-import { ReviewsGlobalDefaults as defaults } from './defaults'
 
 export function INTERNAL_ReviewDialogContentClient({
 	global,
 	className,
-	locale,
 }: {
 	global: ReviewsGlobal
 	className?: {
 		triggerButton?: string
 	}
-	locale: Lang
 }): React.JSX.Element {
+	const t = useTranslations('globals.reviews')
 	const [dialogOpen, setDialogOpen] = useState(false)
 	const { register, handleSubmit } = useForm<SendReviewInputType>()
 	const [rating, setRating] = useState<number>(5)
@@ -38,23 +35,12 @@ export function INTERNAL_ReviewDialogContentClient({
 		setRating(5)
 		setDialogOpen(false)
 		if (response.success) {
-			toast.success(
-				matchLang({
-					[Lang.English]: 'Review has been sent successfully',
-					[Lang.Vietnamese]: 'Đánh giá đã được gửi thành công',
-				})(locale),
-			)
+			toast.success(t('toastSuccess'))
 			return
 		}
-		toast.error(
-			matchLang({
-				[Lang.English]: 'Unable to send review',
-				[Lang.Vietnamese]: 'Không thể gửi đánh giá',
-			})(locale),
-			{
-				description: response.error,
-			},
-		)
+		toast.error(t('toastError'), {
+			description: response.error,
+		})
 	}
 
 	useEffect(() => {
@@ -113,28 +99,24 @@ export function INTERNAL_ReviewDialogContentClient({
 						className={cn('w-full max-w-[25.5rem] self-end', className?.triggerButton)}
 						hideArrow={true}
 					>
-						{global.btnLabel ?? defaults.reviewButtonLabel(locale)}
+						{global.btnLabel ?? t('reviewButtonLabel')}
 					</Button>
 				</DialogTrigger>
 				<DialogContent
 					className="w-full max-w-[60rem] overflow-hidden"
-					aria-label={matchLang({
-						[Lang.English]: 'Send a review for your order dialog',
-						[Lang.Vietnamese]: 'Hộp thoại gửi đánh giá cho đơn hàng của bạn',
-					})(locale)}
+					aria-label={t('dialogAriaLabel')}
 				>
 					<form
 						onSubmit={handleSubmit(onSubmit)}
 						className="flex flex-col gap-9 overflow-x-auto"
 					>
 						<DialogTitle>
-							{global.reviewDialogTitle ?? defaults.reviewDialogTitle(locale)}
+							{global.reviewDialogTitle ?? t('reviewDialogTitle')}
 						</DialogTitle>
 
 						<div>
 							<div className="mb-6 text-xl text-muted-foreground">
-								{global.heartsSelectionLabel ??
-									defaults.heartsSelectionLabel(locale)}
+								{global.heartsSelectionLabel ?? t('heartsSelectionLabel')}
 							</div>
 							<div className="flex flex-row gap-x-[0.875rem]">
 								{Array.from({ length: 5 }).map((_, i) => {
@@ -146,10 +128,7 @@ export function INTERNAL_ReviewDialogContentClient({
 												setRating(i + 1)
 											}}
 											className="rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
-											aria-label={matchLang({
-												[Lang.English]: `Set rating to ${i + 1} over 5`,
-												[Lang.Vietnamese]: `Đặt đánh giá tới ${i + 1} trên 5`,
-											})(locale)}
+											aria-label={t('heartButtonLabel', { n: i + 1 })}
 										>
 											<Heart
 												fill={rating >= i + 1 ? '#925E12' : 'transparent'}
@@ -164,12 +143,12 @@ export function INTERNAL_ReviewDialogContentClient({
 
 						<TextInput
 							size="sm"
-							label={global.invoiceIdLabel ?? defaults.invoiceIdLabel(locale)}
+							label={global.invoiceIdLabel ?? t('invoiceIdLabel')}
 							{...register('invoiceId')}
 						></TextInput>
 						<TextInput
 							size="sm"
-							label={global.contentLabel ?? defaults.contentLabel(locale)}
+							label={global.contentLabel ?? t('contentLabel')}
 							{...register('content')}
 						></TextInput>
 
@@ -187,10 +166,7 @@ export function INTERNAL_ReviewDialogContentClient({
 										{/* eslint-disable-next-line @next/next/no-img-element */}
 										<img
 											src={URL.createObjectURL(image)}
-											alt={matchLang({
-												[Lang.English]: `Review image ${index + 1}`,
-												[Lang.Vietnamese]: `Hình ảnh đánh giá ${index + 1}`,
-											})(locale)}
+											alt={t('reviewImageAlt', { n: index + 1 })}
 											className="size-full overflow-hidden object-cover"
 										/>
 										<button
@@ -237,10 +213,7 @@ export function INTERNAL_ReviewDialogContentClient({
 							/>
 							<label
 								className="flex size-[12.5rem] min-w-[12.5rem] cursor-pointer items-center justify-center overflow-clip rounded-xl border-2"
-								aria-label={matchLang({
-									[Lang.English]: 'Add a review image',
-									[Lang.Vietnamese]: 'Thêm hình ảnh đánh giá',
-								})(locale)}
+								aria-label={t('addImageLabel')}
 								htmlFor="ghost-input"
 							>
 								<CirclePlus size={40} />
@@ -248,7 +221,7 @@ export function INTERNAL_ReviewDialogContentClient({
 						</div>
 
 						<Button type="submit" className="w-full">
-							{global.sendReviewBtnLabel ?? defaults.sendReviewButtonLabel(locale)}
+							{global.sendReviewBtnLabel ?? t('sendReviewButtonLabel')}
 						</Button>
 					</form>
 				</DialogContent>

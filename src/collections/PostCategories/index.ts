@@ -5,7 +5,7 @@ import { CallToActionPostBlockConf } from '@/blocks/CallToActionPost/config'
 import { PostsGridBlockConf } from '@/blocks/PostsGrid/config'
 import { FooterSizeField } from '@/fields/footer'
 import { slugField } from '@/fields/slug'
-import { Lang } from '@/utilities/lang'
+import { Lang } from '@/i18n/routing'
 
 import { PostsSlug } from '../Posts/slug'
 import { PostCategoriesSlug } from './slug'

@@ -1,4 +1,5 @@
 import type { CountryField } from '@payloadcms/plugin-form-builder/types'
+import { getTranslations } from 'next-intl/server'
 import React from 'react'
 import type { Control, FieldErrorsImpl } from 'react-hook-form'
 import { Controller } from 'react-hook-form'
@@ -11,9 +12,6 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from '@/components/ui/select'
-import { getClientLang } from '@/utilities/getClientLocale'
-import { Lang } from '@/utilities/lang'
-import { matchLang } from '@/utilities/matchLang'
 
 import { Error } from '../Error'
 import { Width } from '../Width'
@@ -25,7 +23,7 @@ export async function Country(
 		errors: Partial<FieldErrorsImpl>
 	},
 ): Promise<React.JSX.Element> {
-	const locale = await getClientLang()
+	const t = await getTranslations('blocks.form.country')
 
 	return (
 		<Width width={props.width}>
@@ -54,30 +52,14 @@ export async function Country(
 								className="w-full"
 								id={props.name}
 								label={props.label}
-								aria-label={matchLang({
-									[Lang.English]: 'Select a country dropdown trigger',
-									[Lang.Vietnamese]:
-										'Kích hoạt hộp thoại thả xuống chọn quốc gia',
-								})(locale)}
+								aria-label={t('selectTrigger')}
 							>
 								<SelectValue />
 							</SelectTrigger>
-							<SelectContent
-								aria-label={matchLang({
-									[Lang.English]: 'Select a country',
-									[Lang.Vietnamese]: 'Chọn một quốc gia',
-								})(locale)}
-							>
+							<SelectContent aria-label={t('selectContent')}>
 								{countryOptions.map(({ label, value }) => {
 									return (
-										<SelectItem
-											key={value}
-											value={value}
-											aria-label={matchLang({
-												[Lang.English]: label,
-												[Lang.Vietnamese]: label,
-											})(locale)}
-										>
+										<SelectItem key={value} value={value} aria-label={label}>
 											{label}
 										</SelectItem>
 									)

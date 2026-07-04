@@ -32,10 +32,10 @@ import { PaymentGlobalConf } from './globals/Payment/config'
 import { PopupBannerGlobalConf } from './globals/PopupBanner/config'
 import { PromoGlobalConf } from './globals/Promo/config'
 import { ReviewsGlobalConf } from './globals/Reviews/config'
+import { defaultLocale, Lang } from './i18n/routing'
 import { migrations } from './migrations'
 import { plugins } from './plugins'
 import { getServerSideURL } from './utilities/getURL'
-import { defaultLocale, Lang } from './utilities/lang'
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
@@ -94,6 +94,7 @@ export default buildConfig({
 				return process.env.DATABASE_URI
 			})(),
 		},
+		// @ts-expect-error Payload db-sqlite and drizzle Drizzle types diverge at this version
 		prodMigrations: migrations,
 	}),
 	collections: [

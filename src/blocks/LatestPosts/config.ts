@@ -1,57 +1,38 @@
 import { Block } from 'payload'
 
 import { PostsSlug } from '@/collections/Posts/slug'
-import { Lang } from '@/utilities/lang'
-
-import { LatestPostsBlockDefaults as defaults } from './defaults'
+import { adminLabel } from '@/utilities/adminLabel'
 
 export const LatestPostsBlockConf: Block = {
 	slug: 'latestPosts',
 	interfaceName: 'LatestPostsBlockProps',
 	imageURL: '/thumbs/latest-posts.avif',
 	labels: {
-		singular: {
-			[Lang.English]: 'Latest Posts',
-			[Lang.Vietnamese]: 'Bài viết mới nhất',
-		},
-		plural: {
-			[Lang.English]: 'Latest Posts',
-			[Lang.Vietnamese]: 'Bài viết mới nhất',
-		},
+		singular: adminLabel('admin.blocks.latestPosts.label'),
+		plural: adminLabel('admin.blocks.latestPosts.labelPlural'),
 	},
 	fields: [
 		{
 			name: 'title',
 			type: 'text',
-			label: {
-				[Lang.English]: 'Title',
-				[Lang.Vietnamese]: 'Tiêu đề',
-			},
+			label: adminLabel('admin.blocks.latestPosts.fieldTitle'),
 			localized: true,
-			defaultValue: defaults.title,
 			admin: {
-				placeholder: defaults.title(Lang.Vietnamese),
+				placeholder: adminLabel('admin.blocks.latestPosts.placeholderTitle'),
 			},
 		},
 		{
 			name: 'buttonLabel',
 			type: 'text',
-			label: {
-				[Lang.English]: 'Button Label',
-				[Lang.Vietnamese]: 'Nhãn nút',
-			},
+			label: adminLabel('admin.blocks.latestPosts.fieldButtonLabel'),
 			localized: true,
-			defaultValue: defaults.buttonLabel,
 			admin: {
-				placeholder: defaults.buttonLabel(Lang.Vietnamese),
+				placeholder: adminLabel('admin.blocks.latestPosts.placeholderButtonLabel'),
 			},
 		},
 		{
 			name: 'posts',
-			label: {
-				[Lang.English]: 'Posts',
-				[Lang.Vietnamese]: 'Bài viết',
-			},
+			label: adminLabel('admin.blocks.latestPosts.fieldPosts'),
 			type: 'relationship',
 			relationTo: PostsSlug,
 			required: true,

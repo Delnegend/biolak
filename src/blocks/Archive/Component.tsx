@@ -4,9 +4,12 @@ import React from 'react'
 
 import { CollectionArchive } from '@/components/CollectionArchive'
 import RichText from '@/components/RichText'
+import type { Lang } from '@/i18n/routing'
 import type { ArchiveBlockProps, Post } from '@/payload-types'
 
-export async function ArchiveBlock(props: ArchiveBlockProps): Promise<React.JSX.Element> {
+export async function ArchiveBlock(
+	props: ArchiveBlockProps & { __locale: Lang },
+): Promise<React.JSX.Element> {
 	const limit = props.limit || 3
 
 	let posts: Post[] = []
@@ -54,6 +57,7 @@ export async function ArchiveBlock(props: ArchiveBlockProps): Promise<React.JSX.
 						className="ms-0 max-w-[48rem]"
 						data={props.introContent}
 						enableGutter={false}
+						locale={props.__locale}
 					/>
 				</div>
 			)}

@@ -2,71 +2,53 @@ import { Block } from 'payload'
 
 import { ProductsSlug } from '@/collections/Products/slug'
 import { link } from '@/fields/link'
-import { Lang } from '@/utilities/lang'
+import { adminLabel } from '@/utilities/adminLabel'
 
-import { ProductsCarouselBlockDefaults as defaults } from './defaults'
+import vi from '../../../messages/vi.json'
 
 export const ProductsCarouselBlockConf: Block = {
 	slug: 'productsCarousel',
 	interfaceName: 'ProductsCarouselBlockProps',
 	imageURL: '/thumbs/products-carousel.avif',
 	labels: {
-		plural: {
-			[Lang.English]: 'Products Carousel',
-			[Lang.Vietnamese]: 'Sản phẩm trượt',
-		},
-		singular: {
-			[Lang.English]: 'Product Carousel',
-			[Lang.Vietnamese]: 'Sản phẩm trượt',
-		},
+		plural: adminLabel('admin.blocks.productsCarousel.labelPlural'),
+		singular: adminLabel('admin.blocks.productsCarousel.label'),
 	},
 	fields: [
 		{
 			name: 'title',
 			type: 'text',
-			label: {
-				[Lang.English]: 'Title',
-				[Lang.Vietnamese]: 'Tiêu đề',
-			},
+			label: adminLabel('admin.blocks.productsCarousel.fieldTitle'),
 			localized: true,
 			admin: {
-				placeholder: defaults.title(Lang.Vietnamese),
+				placeholder: vi.admin.blocks.productsCarousel.placeholderTitle,
 			},
 		},
 		{
 			name: 'products',
 			type: 'relationship',
-			label: {
-				[Lang.English]: 'Products',
-				[Lang.Vietnamese]: 'Sản phẩm',
-			},
+			label: adminLabel('admin.blocks.productsCarousel.fieldProducts'),
 			relationTo: ProductsSlug,
 			hasMany: true,
 		},
 		{
 			name: 'watchMoreBtnLabel',
 			type: 'text',
-			label: {
-				[Lang.English]: 'Watch More Button Label',
-				[Lang.Vietnamese]: 'Nhãn nút xem thêm',
-			},
+			label: adminLabel('admin.blocks.productsCarousel.fieldWatchMoreBtnLabel'),
 			localized: true,
 			admin: {
-				placeholder: defaults.watchMoreBtnLabel(Lang.Vietnamese),
+				placeholder: vi.admin.blocks.productsCarousel.placeholderWatchMoreBtnLabel,
 			},
 		},
 		link({
 			overrides: {
 				name: 'apb',
-				label: {
-					[Lang.English]: 'All Products Button',
-					[Lang.Vietnamese]: 'Nút xem tất cả sản phẩm',
-				},
+				label: adminLabel('admin.blocks.productsCarousel.fieldApb'),
 				localized: true,
 				required: true,
 			},
 			label: {
-				placeholder: defaults.allProductsBtnLabel(Lang.Vietnamese),
+				placeholder: vi.admin.blocks.productsCarousel.placeholderApbLabel,
 				required: false,
 			},
 		}),

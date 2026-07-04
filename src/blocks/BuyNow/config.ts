@@ -1,45 +1,31 @@
 import { Block } from 'payload'
 
 import { ProductsSlug } from '@/collections/Products/slug'
-import { Lang } from '@/utilities/lang'
-
-import { BuyNowBlockDefaults as defaults } from './defaults'
+import { adminLabel } from '@/utilities/adminLabel'
 
 export const BuyNowBlockConf: Block = {
 	slug: 'buy-now',
 	interfaceName: 'BuyNowBlockProps',
 	imageURL: '/thumbs/buy-now.avif',
 	labels: {
-		singular: {
-			[Lang.English]: 'Buy Now',
-			[Lang.Vietnamese]: 'Mua ngay',
-		},
-		plural: {
-			[Lang.English]: 'Buy Nows',
-			[Lang.Vietnamese]: 'Mua ngay',
-		},
+		singular: adminLabel('admin.blocks.buy-now.label'),
+		plural: adminLabel('admin.blocks.buy-now.labelPlural'),
 	},
 	fields: [
 		{
 			name: 'buttonLabel',
 			type: 'text',
-			label: {
-				[Lang.English]: 'Button Label',
-				[Lang.Vietnamese]: 'Nhãn nút',
-			},
+			label: adminLabel('admin.blocks.buy-now.fieldButtonLabel'),
 			localized: true,
 			admin: {
-				placeholder: defaults.buttonLabel(Lang.Vietnamese),
+				placeholder: adminLabel('admin.blocks.buy-now.placeholderButtonLabel'),
 			},
 		},
 		{
 			name: ProductsSlug,
 			type: 'relationship',
 			relationTo: ProductsSlug,
-			label: {
-				[Lang.English]: 'Product',
-				[Lang.Vietnamese]: 'Sản phẩm',
-			},
+			label: adminLabel('admin.blocks.buy-now.fieldProducts'),
 			admin: {
 				condition: (data) => !data.productLayout,
 			},

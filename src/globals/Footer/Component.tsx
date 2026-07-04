@@ -1,52 +1,44 @@
 import { Phudu } from 'next/font/google'
 import Image from 'next/image'
+import { getTranslations } from 'next-intl/server'
 
 import { HeadlessImage } from '@/components/Media/HeadlessImage'
 import { TextInput } from '@/components/ui/text-input'
+import { Lang } from '@/i18n/routing'
 import { FooterGlobal, Media } from '@/payload-types'
-import { getClientLang } from '@/utilities/getClientLocale'
 import { getCachedGlobal } from '@/utilities/getGlobals'
-import { Lang } from '@/utilities/lang'
-import { matchLang } from '@/utilities/matchLang'
 import { cn } from '@/utilities/ui'
 
 import { FooterGlobalSlug } from './config'
-import { FooterGlobalDefaults as defaults } from './defaults'
 
 const phudu = Phudu({ subsets: ['vietnamese'], weight: ['400', '600', '700'] })
 
-export async function FooterGlobalComponent({
-	size,
-}: {
+export async function FooterGlobalComponent(props: {
 	size?: 'small' | 'large' | 'medium' | null
-}) {
-	const locale = await getClientLang()
-	const global = await getCachedGlobal<FooterGlobal>(FooterGlobalSlug, 1, locale)()
+	locale: Lang
+}): Promise<React.JSX.Element> {
+	const global = await getCachedGlobal<FooterGlobal>(FooterGlobalSlug, 1, props.locale)()
 
-	switch (size) {
+	switch (props.size) {
 		case 'large':
-			return <FooterLarge global={global} locale={locale} />
+			return <FooterLarge global={global} />
 		case 'medium':
-			return <FooterMedium global={global} locale={locale} />
+			return <FooterMedium global={global} />
 		default:
 			return <FooterSmall global={global} />
 	}
 }
 async function FooterLarge({
 	global: { contactUs, legal, image },
-	locale,
 }: {
 	global: FooterGlobal
-	locale: Lang
 }): Promise<React.JSX.Element> {
+	const t = await getTranslations('globals.footer')
 	return (
 		<footer className="relative flex overflow-hidden max-lg:flex-col">
 			<HeadlessImage
 				media={image?.image}
-				alt={matchLang({
-					[Lang.English]: 'Lanscape Image',
-					[Lang.Vietnamese]: 'Ảnh Lanscape',
-				})(locale)}
+				alt={t('imageAlt.large')}
 				placeholder={{ width: 1000, height: 1000 }}
 				className="h-full object-cover max-lg:w-full lg:absolute lg:top-1/2 lg:w-1/2 lg:-translate-y-1/2"
 			/>
@@ -55,26 +47,22 @@ async function FooterLarge({
 				<div className="flex flex-col gap-6 max-lg:px-4 max-lg:py-6 lg:px-28 lg:py-[5.25rem]">
 					{/* contact us */}
 					<div className="font-serif text-7xl font-medium max-lg:text-[2.5rem]">
-						{contactUs?.title ?? defaults.contactUs.title(locale)}
+						{contactUs?.title ?? t('contactUs.title')}
 					</div>
 					<TextInput
 						classNames={{ container: 'lg:hidden' }}
 						size="sm"
-						label={
-							contactUs?.emailInputLabel ?? defaults.contactUs.emailInputLabel(locale)
-						}
+						label={contactUs?.emailInputLabel ?? t('contactUs.emailInputLabel')}
 						required
 					/>
 					<TextInput
 						classNames={{ container: 'max-lg:hidden' }}
 						size="lg"
-						label={
-							contactUs?.emailInputLabel ?? defaults.contactUs.emailInputLabel(locale)
-						}
+						label={contactUs?.emailInputLabel ?? t('contactUs.emailInputLabel')}
 						required
 					/>
 					<div className="text-xl font-normal leading-8 text-primary">
-						{contactUs?.description ?? defaults.contactUs.description(locale)}
+						{contactUs?.description ?? t('contactUs.description')}
 					</div>
 				</div>
 
@@ -86,7 +74,7 @@ async function FooterLarge({
 							phudu.className,
 						)}
 					>
-						{legal?.title ?? defaults.legal.title(locale)}
+						{legal?.title ?? t('legal.title')}
 					</div>
 					<div
 						className={cn(
@@ -94,15 +82,12 @@ async function FooterLarge({
 							phudu.className,
 						)}
 					>
-						{legal?.content ?? defaults.legal.content(locale)}
+						{legal?.content ?? t('legal.content')}
 					</div>
 
 					<Image
 						src="/bo-cong-thuong.webp"
-						alt={matchLang({
-							[Lang.English]: 'Noticed by the Board of Directors',
-							[Lang.Vietnamese]: 'Đã thông báo bộ Công Thương',
-						})(locale)}
+						alt={t('imageAlt.stamp')}
 						className="my-6 h-14 w-auto object-contain"
 						quality={90}
 						width={600}
@@ -118,13 +103,12 @@ async function FooterLarge({
 
 async function FooterMedium({
 	global,
-	locale,
 	stamp,
 }: {
 	global: FooterGlobal
-	locale: Lang
 	stamp?: Media | null
 }): Promise<React.JSX.Element> {
+	const t = await getTranslations('globals.footer')
 	return (
 		<div
 			className={cn(
@@ -133,43 +117,35 @@ async function FooterMedium({
 			)}
 		>
 			<div>
-				<div className="text-2xl font-bold">
-					{global.legal?.title ?? defaults.legal.title(locale)}
-				</div>
+				<div className="text-2xl font-bold">{global.legal?.title ?? t('legal.title')}</div>
 				<div className="whitespace-pre-wrap text-base">
-					{global.legal?.content ?? defaults.legal.content(locale)}
+					{global.legal?.content ?? t('legal.content')}
 				</div>
 				<HeadlessImage
 					media={stamp}
-					alt={matchLang({
-						[Lang.English]: 'Noticed by the Board of Directors',
-						[Lang.Vietnamese]: 'Đã thông báo bộ Công Thương',
-					})(locale)}
+					alt={t('imageAlt.stamp')}
 					placeholder={{ width: 200, height: 100 }}
 					className="my-6 h-14 w-auto object-contain"
 				/>
 			</div>
 
 			<div>
-				<div className="text-2xl font-bold">
-					{global.legal?.title ?? defaults.legal.title(locale)}
-				</div>
+				<div className="text-2xl font-bold">{global.legal?.title ?? t('legal.title')}</div>
 				<div className="whitespace-pre-wrap text-base">
-					{global.legal?.content ?? defaults.legal.content(locale)}
+					{global.legal?.content ?? t('legal.content')}
 				</div>
 			</div>
 
-			<div className="col-span-2">
-				{global.legal?.copyright ?? defaults.legal.copyright(locale)}
-			</div>
+			<div className="col-span-2">{global.legal?.copyright ?? t('legal.copyright')}</div>
 		</div>
 	)
 }
 
 async function FooterSmall({ global }: { global: FooterGlobal }): Promise<React.JSX.Element> {
+	const t = await getTranslations('globals.footer')
 	return (
 		<div className="bg-[#210E0A] py-11 text-center text-xs text-[#F1DAAE]">
-			{global.legal?.copyright ?? defaults.legal.copyright(Lang.Vietnamese)}
+			{global.legal?.copyright ?? t('legal.copyright')}
 		</div>
 	)
 }

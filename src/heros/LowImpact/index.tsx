@@ -3,8 +3,8 @@ import Image from 'next/image'
 import React from 'react'
 
 import RichText from '@/components/RichText'
+import { Lang } from '@/i18n/routing'
 import type { Page } from '@/payload-types'
-import { Lang } from '@/utilities/lang'
 
 interface ValidMedia {
 	url: string

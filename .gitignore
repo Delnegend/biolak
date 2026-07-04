@@ -44,3 +44,4 @@ patches/
 .git/
 .agents/
 .vscode/
+opencode.json

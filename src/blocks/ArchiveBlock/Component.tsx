@@ -4,8 +4,8 @@ import React from 'react'
 
 import { CollectionArchive } from '@/components/CollectionArchive'
 import RichText from '@/components/RichText'
+import { Lang } from '@/i18n/routing'
 import type { ArchiveBlockProps, Post } from '@/payload-types'
-import { Lang } from '@/utilities/lang'
 
 export async function ArchiveBlock(
 	props: ArchiveBlockProps & {

@@ -1,7 +1,7 @@
 import type { ArrayField, Field } from 'payload'
 
+import { Lang } from '@/i18n/routing'
 import deepMerge from '@/utilities/deepMerge'
-import { Lang } from '@/utilities/lang'
 
 import { link } from './link'
 

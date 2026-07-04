@@ -3,11 +3,10 @@
 import { X } from 'lucide-react'
 import { Phudu } from 'next/font/google'
 import Link from 'next/link'
+import { useTranslations } from 'next-intl'
 
 import { ProductInCart, useCartManager } from '@/hooks/useCartManager'
 import { formatPrice } from '@/utilities/formatPrice'
-import { Lang } from '@/utilities/lang'
-import { matchLang } from '@/utilities/matchLang'
 import { cn } from '@/utilities/ui'
 
 import { HeadlessImage } from './Media/HeadlessImage'
@@ -21,17 +20,15 @@ const phudu = Phudu({
 function CartItem({
 	productInCart,
 	showCheckbox,
-	locale,
 	syncWithLocalStorage,
 }: {
 	productInCart: ProductInCart
 	showCheckbox: boolean
-	locale: Lang
 	syncWithLocalStorage?: boolean
 }): React.JSX.Element {
+	const t = useTranslations('components.cartList')
 	const { removeProduct, toggleCheck, loadProduct, unloadProduct } = useCartManager({
 		syncWithLocalStorage,
-		locale,
 	})
 
 	return (
@@ -63,10 +60,7 @@ function CartItem({
 			<Link href={`/product/${productInCart.product.slug}`} style={{ gridArea: 'img' }}>
 				<HeadlessImage
 					media={productInCart.variant.image}
-					alt={matchLang({
-						[Lang.English]: `${productInCart.product.title}'s image`,
-						[Lang.Vietnamese]: `Ảnh ${productInCart.product.title}`,
-					})(locale)}
+					alt={t('imageAlt', { productName: productInCart.product.title ?? '' })}
 					placeholder={{ width: 100, height: 100 }}
 					className="size-[3.75rem] rounded-lg object-cover"
 				/>
@@ -88,10 +82,10 @@ function CartItem({
 						variantSku: productInCart.variant.sku,
 					})
 				}}
-				aria-label={matchLang({
-					[Lang.English]: `Remove ${productInCart.product.title} (${productInCart.variant.title}) from cart`,
-					[Lang.Vietnamese]: `Xoá ${productInCart.product.title} (${productInCart.variant.title}) khỏi giỏ hàng`,
-				})(locale)}
+				aria-label={t('removeButton', {
+					productName: productInCart.product.title ?? '',
+					variantName: productInCart.variant.title ?? '',
+				})}
 			>
 				<X />
 			</button>
@@ -108,10 +102,10 @@ function CartItem({
 							variantSku: productInCart.variant.sku,
 						})
 					}}
-					aria-label={matchLang({
-						[Lang.English]: `Decrease quantity of ${productInCart.product.title} (${productInCart.variant.title})`,
-						[Lang.Vietnamese]: `Giảm số lượng ${productInCart.product.title} (${productInCart.variant.title})`,
-					})(locale)}
+					aria-label={t('decreaseQuantity', {
+						productName: productInCart.product.title ?? '',
+						variantName: productInCart.variant.title ?? '',
+					})}
 				>
 					-
 				</button>
@@ -122,10 +116,10 @@ function CartItem({
 						e.preventDefault()
 						loadProduct(productInCart)
 					}}
-					aria-label={matchLang({
-						[Lang.English]: `Increase quantity of ${productInCart.product.title} (${productInCart.variant.title})`,
-						[Lang.Vietnamese]: `Tăng số lượng ${productInCart.product.title} (${productInCart.variant.title})`,
-					})(locale)}
+					aria-label={t('increaseQuantity', {
+						productName: productInCart.product.title ?? '',
+						variantName: productInCart.variant.title ?? '',
+					})}
 				>
 					+
 				</button>
@@ -146,17 +140,14 @@ function CartItem({
 export function CartListClient({
 	className,
 	showCheckbox,
-	locale,
 	syncWithLocalStorage,
 }: {
 	showCheckbox: boolean
 	className?: string
-	locale: Lang
 	syncWithLocalStorage: boolean
 }): React.JSX.Element {
 	const { cart } = useCartManager({
 		syncWithLocalStorage,
-		locale,
 	})
 
 	return (
@@ -166,7 +157,6 @@ export function CartListClient({
 					key={`${item.product.id}-${item.variant.sku}`}
 					productInCart={item}
 					showCheckbox={showCheckbox}
-					locale={locale}
 					syncWithLocalStorage={syncWithLocalStorage}
 				/>
 			))}

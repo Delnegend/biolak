@@ -1,7 +1,7 @@
 import { GlobalConfig } from 'payload'
 
 import { allow, Role } from '@/access/allow'
-import { Lang } from '@/utilities/lang'
+import { Lang } from '@/i18n/routing'
 
 import { revalidatePayment } from './hooks/revalidatePayment'
 import { validateBankName } from './hooks/validateBankName'

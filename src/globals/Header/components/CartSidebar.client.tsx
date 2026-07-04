@@ -1,6 +1,7 @@
 'use client'
 
 import { ShoppingCart } from 'lucide-react'
+import { useTranslations } from 'next-intl'
 import React, { useState } from 'react'
 
 import { CartListClient } from '@/components/CartList.client'
@@ -15,28 +16,20 @@ import {
 } from '@/components/ui/sheet'
 import { useCartManager } from '@/hooks/useCartManager'
 import { formatPrice } from '@/utilities/formatPrice'
-import { Lang } from '@/utilities/lang'
-import { matchLang } from '@/utilities/matchLang'
 import { cn } from '@/utilities/ui'
-
-import { useHeaderContext } from '../hooks/useHeaderContext'
 
 export function INTERNAL_CartSidebar({
 	label,
-	locale,
 	size = 'lg',
 }: {
 	label?: string
-	locale?: Lang
 	size?: 'lg' | 'sm'
 }): React.JSX.Element {
-	const { locale: ctxLocale } = useHeaderContext()
-	const effectiveLocale = locale ?? ctxLocale
+	const t = useTranslations('globals.header.nav.cart')
 	const syncWithLocalStorage = true
 
 	const { cart, uncheckAll } = useCartManager({
 		syncWithLocalStorage,
-		locale,
 	})
 	const [open, setOpen] = useState(false)
 	const cartProductCount = cart
@@ -55,18 +48,9 @@ export function INTERNAL_CartSidebar({
 					})}
 					hideArrow
 				>
-					<span className={cn(size === 'sm' && 'hidden')}>
-						{label ??
-							matchLang({ [Lang.English]: 'Cart', [Lang.Vietnamese]: 'Giỏ hàng' })(
-								effectiveLocale,
-							)}
-					</span>
+					<span className={cn(size === 'sm' && 'hidden')}>{label ?? t('trigger')}</span>
 					<span className={cn(size === 'lg' && 'hidden')}>
-						<span className="sr-only">
-							{matchLang({ [Lang.English]: 'Cart', [Lang.Vietnamese]: 'Giỏ hàng' })(
-								effectiveLocale,
-							)}
-						</span>
+						<span className="sr-only">{t('trigger')}</span>
 						<ShoppingCart />
 					</span>
 
@@ -80,17 +64,11 @@ export function INTERNAL_CartSidebar({
 
 			<SheetContent className="!max-w-[31.25rem] p-10 max-md:w-full" side="right">
 				<SheetHeader>
-					<SheetTitle className="mb-14 text-left !text-4xl">
-						{matchLang({
-							[Lang.English]: 'Your cart',
-							[Lang.Vietnamese]: 'Giỏ hàng của bạn',
-						})(effectiveLocale)}
-					</SheetTitle>
+					<SheetTitle className="mb-14 text-left !text-4xl">{t('title')}</SheetTitle>
 				</SheetHeader>
 				{cart.length > 0 ? (
 					<div className="flex h-[calc(100%-6rem)] flex-col justify-between gap-10">
 						<CartListClient
-							locale={locale}
 							showCheckbox={true}
 							syncWithLocalStorage={syncWithLocalStorage}
 						/>
@@ -110,19 +88,13 @@ export function INTERNAL_CartSidebar({
 									className="hover-underline-animation ml-auto flex w-fit justify-end font-bold"
 									onClick={uncheckAll}
 								>
-									{matchLang({
-										[Lang.English]: 'Unselect all',
-										[Lang.Vietnamese]: 'Bỏ chọn tất cả',
-									})(effectiveLocale)}
+									{t('unselectAll')}
 								</button>
 
 								<hr style={{ gridArea: 'hr' }} className="my-6 border-border" />
 
 								<div style={{ gridArea: 'sum' }} className="text-base">
-									{matchLang({
-										[Lang.English]: 'Total',
-										[Lang.Vietnamese]: 'Tạm tính',
-									})(effectiveLocale)}
+									{t('total')}
 								</div>
 
 								<div
@@ -144,12 +116,7 @@ export function INTERNAL_CartSidebar({
 									asChild
 								>
 									{/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
-									<a href="/checkout">
-										{matchLang({
-											[Lang.English]: 'Checkout',
-											[Lang.Vietnamese]: 'Thanh toán',
-										})(effectiveLocale)}
-									</a>
+									<a href="/checkout">{t('checkout')}</a>
 								</Button>
 							</div>
 						</SheetFooter>
@@ -157,16 +124,10 @@ export function INTERNAL_CartSidebar({
 				) : (
 					<div className="flex h-[calc(100%-6rem)] flex-col items-center justify-center gap-4">
 						<h2 className="font-serif text-[2.5rem] font-semibold text-muted-foreground">
-							{matchLang({
-								[Lang.English]: 'Peek-a-boo...',
-								[Lang.Vietnamese]: 'Ú òa...',
-							})(effectiveLocale)}
+							{t('empty.title')}
 						</h2>
 						<div className="text-balance text-center text-2xl text-[#271D13]">
-							{matchLang({
-								[Lang.English]: 'Your cart is empty',
-								[Lang.Vietnamese]: 'Hiện không có sản phẩm nào trong giỏ của bạn',
-							})(effectiveLocale)}
+							{t('empty.description')}
 						</div>
 					</div>
 				)}

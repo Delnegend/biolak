@@ -2,7 +2,7 @@ import { Field } from 'payload'
 
 import { allow, Role } from '@/access/allow'
 import { ProductsSlug } from '@/collections/Products/slug'
-import { Lang } from '@/utilities/lang'
+import { Lang } from '@/i18n/routing'
 
 import { validateQuantity } from '../hooks/validateQuantity'
 import { validateSku } from '../hooks/validateSku'

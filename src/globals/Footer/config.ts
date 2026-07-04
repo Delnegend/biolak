@@ -3,9 +3,9 @@ import type { GlobalConfig } from 'payload'
 
 import { allow, Role } from '@/access/allow'
 import { MediaSlug } from '@/collections/Media/slug'
-import { Lang } from '@/utilities/lang'
+import { Lang } from '@/i18n/routing'
 
-import { FooterGlobalDefaults as defaults } from './defaults'
+import vi from '../../../messages/vi.json'
 
 export const FooterGlobalSlug = 'footerGlobal'
 export const FooterGlobalConf: GlobalConfig<typeof FooterGlobalSlug> = {
@@ -50,7 +50,7 @@ export const FooterGlobalConf: GlobalConfig<typeof FooterGlobalSlug> = {
 							label: false,
 							localized: true,
 							admin: {
-								placeholder: defaults.contactUs.title(Lang.Vietnamese),
+								placeholder: vi.globals.footer.contactUs.title,
 							},
 						},
 						{
@@ -59,7 +59,7 @@ export const FooterGlobalConf: GlobalConfig<typeof FooterGlobalSlug> = {
 							label: false,
 							localized: true,
 							admin: {
-								placeholder: defaults.contactUs.emailInputLabel(Lang.Vietnamese),
+								placeholder: vi.globals.footer.contactUs.emailInputLabel,
 							},
 						},
 						{
@@ -68,7 +68,7 @@ export const FooterGlobalConf: GlobalConfig<typeof FooterGlobalSlug> = {
 							label: false,
 							localized: true,
 							admin: {
-								placeholder: defaults.contactUs.description(Lang.Vietnamese),
+								placeholder: vi.globals.footer.contactUs.description,
 							},
 						},
 					],
@@ -83,7 +83,7 @@ export const FooterGlobalConf: GlobalConfig<typeof FooterGlobalSlug> = {
 							label: false,
 							localized: true,
 							admin: {
-								placeholder: defaults.legal.title(Lang.Vietnamese),
+								placeholder: vi.globals.footer.legal.title,
 							},
 						},
 						{
@@ -92,7 +92,7 @@ export const FooterGlobalConf: GlobalConfig<typeof FooterGlobalSlug> = {
 							label: false,
 							localized: true,
 							admin: {
-								placeholder: defaults.legal.content(Lang.Vietnamese),
+								placeholder: vi.globals.footer.legal.content,
 							},
 						},
 						{
@@ -101,7 +101,7 @@ export const FooterGlobalConf: GlobalConfig<typeof FooterGlobalSlug> = {
 							label: false,
 							localized: true,
 							admin: {
-								placeholder: defaults.legal.copyright(Lang.Vietnamese),
+								placeholder: vi.globals.footer.legal.copyright,
 							},
 						},
 					],
@@ -115,7 +115,7 @@ export const FooterGlobalConf: GlobalConfig<typeof FooterGlobalSlug> = {
 				if (!context.disableRevalidate) {
 					payload.logger.info(`Revalidating footer`)
 
-					revalidateTag(FooterGlobalSlug)
+					revalidateTag(FooterGlobalSlug, 'default')
 				}
 
 				return doc

@@ -3,9 +3,9 @@ import { GlobalConfig } from 'payload'
 
 import { allow, Role } from '@/access/allow'
 import { MediaSlug } from '@/collections/Media/slug'
-import { Lang } from '@/utilities/lang'
+import { Lang } from '@/i18n/routing'
 
-import { FloatingGlobalDefaults as defaults } from './defaults'
+import vi from '../../../messages/vi.json'
 
 export const FloatingGlobalSlug = 'floatingGlobal'
 export const FloatingGlobalConf: GlobalConfig<typeof FloatingGlobalSlug> = {
@@ -25,7 +25,7 @@ export const FloatingGlobalConf: GlobalConfig<typeof FloatingGlobalSlug> = {
 			label: false,
 			localized: true,
 			admin: {
-				placeholder: defaults.contact(Lang.Vietnamese),
+				placeholder: vi.globals.floating.contact,
 			},
 		},
 		{
@@ -78,7 +78,7 @@ export const FloatingGlobalConf: GlobalConfig<typeof FloatingGlobalSlug> = {
 				if (!context.disableRevalidate) {
 					payload.logger.info(`Revalidating floating`)
 
-					revalidateTag(FloatingGlobalSlug)
+					revalidateTag(FloatingGlobalSlug, 'default')
 				}
 
 				return doc

@@ -1,19 +1,19 @@
 import { ArrowRight } from 'lucide-react'
+import { getTranslations } from 'next-intl/server'
 import React from 'react'
 
 import { CMSLink } from '@/components/CMSLink'
 import RichText from '@/components/RichText'
 import { Button } from '@/components/ui/button'
+import { Lang } from '@/i18n/routing'
 import type { CallToActionLeftBlockProps } from '@/payload-types'
-import { Lang } from '@/utilities/lang'
 
-import { CallToActionLeftBlockDefaults as defaults } from './defaults'
-
-export function CallToActionLeftBlock(
+export async function CallToActionLeftBlock(
 	props: CallToActionLeftBlockProps & {
-		__locale: Lang
+		locale: Lang
 	},
-): React.JSX.Element {
+): Promise<React.JSX.Element> {
+	const t = await getTranslations({ locale: props.locale, namespace: 'blocks.callToActionLeft' })
 	const bgUrl =
 		props.background && typeof props.background === 'object' && props.background.url
 			? props.background.url
@@ -38,14 +38,14 @@ export function CallToActionLeftBlock(
 							data={props.description}
 							enableGutter={false}
 							className="mx-0 text-balance text-xl leading-8 text-white"
-							locale={props.__locale}
+							locale={props.locale}
 						/>
 					)}
 					<Button className="w-full justify-between" size="lg" asChild>
 						<CMSLink
 							{...props.link}
 							type={props.link.type ?? undefined}
-							label={props.link.label ?? defaults.buttonLabel(props.__locale)}
+							label={props.link.label ?? t('buttonLabel')}
 						>
 							<ArrowRight />
 						</CMSLink>

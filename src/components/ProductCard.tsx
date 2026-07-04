@@ -1,10 +1,8 @@
 import Link from 'next/link'
+import { getTranslations } from 'next-intl/server'
 
 import { Product } from '@/payload-types'
-import { getClientLang } from '@/utilities/getClientLocale'
 import { getPriceRange } from '@/utilities/getPriceRange'
-import { Lang } from '@/utilities/lang'
-import { matchLang } from '@/utilities/matchLang'
 import { cn } from '@/utilities/ui'
 
 import { HeadlessImage } from './Media/HeadlessImage'
@@ -35,7 +33,7 @@ export async function ProductCard({
 	className?: string
 }): Promise<React.JSX.Element> {
 	const Comp = component ?? 'div'
-	const locale = await getClientLang()
+	const t = await getTranslations('components.productCard')
 	const priceRange = getPriceRange(p)
 
 	return (
@@ -56,10 +54,7 @@ export async function ProductCard({
 			<Link href={p.slug ? `/product/${p.slug}` : '#'} style={{ gridArea: 'img' }}>
 				<HeadlessImage
 					media={p.gallery?.[0]}
-					alt={matchLang({
-						[Lang.English]: 'Product image',
-						[Lang.Vietnamese]: 'Hình ảnh sản phẩm',
-					})(locale)}
+					alt={t('imageAlt')}
 					placeholder={{ width: 1000, height: 1000 }}
 					style={{ gridArea: 'img' }}
 					className={cn(
@@ -80,14 +75,7 @@ export async function ProductCard({
 					{p.shortDescription}
 				</div>
 			)}
-			<div style={{ gridArea: 'price' }}>
-				{!!priceRange
-					? priceRange
-					: matchLang({
-							[Lang.English]: 'Out of stock',
-							[Lang.Vietnamese]: 'Hết hàng',
-						})(locale)}
-			</div>
+			<div style={{ gridArea: 'price' }}>{!!priceRange ? priceRange : t('outOfStock')}</div>
 			<div style={{ gridArea: 'add-to-cart' }}>
 				<INTERNAL_ProductCardAddToCart
 					product={{
@@ -96,7 +84,6 @@ export async function ProductCard({
 					}}
 					priceRange={priceRange}
 					variants={p.variants}
-					locale={locale}
 				/>
 			</div>
 		</Comp>

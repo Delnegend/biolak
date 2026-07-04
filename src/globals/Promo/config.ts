@@ -3,7 +3,7 @@ import { type GlobalConfig } from 'payload'
 
 import { allow, Role } from '@/access/allow'
 import { link } from '@/fields/link'
-import { Lang } from '@/utilities/lang'
+import { Lang } from '@/i18n/routing'
 
 export const PromoGlobalSlug = 'promoGlobal'
 export const PromoGlobalConf: GlobalConfig<typeof PromoGlobalSlug> = {
@@ -31,7 +31,7 @@ export const PromoGlobalConf: GlobalConfig<typeof PromoGlobalSlug> = {
 				if (!context.disableRevalidate) {
 					payload.logger.info(`Revalidating promo`)
 
-					revalidateTag(PromoGlobalSlug)
+					revalidateTag(PromoGlobalSlug, 'default')
 				}
 
 				return doc

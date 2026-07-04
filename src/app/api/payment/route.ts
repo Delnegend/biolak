@@ -4,10 +4,10 @@ import { z } from 'zod/v4'
 
 import { OrdersSlug } from '@/collections/Orders/slug'
 import { PaymentGlobalSlug } from '@/globals/Payment/slug'
+import { Lang } from '@/i18n/routing'
 import { PaymentGlobal } from '@/payload-types'
 import { cnsoleBuilder } from '@/utilities/cnsole'
 import { getCachedGlobal } from '@/utilities/getGlobals'
-import { Lang } from '@/utilities/lang'
 import { tryCatch, tryCatchSync } from '@/utilities/tryCatch'
 
 const cnsole = cnsoleBuilder('Payment API')
