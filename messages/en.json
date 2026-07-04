@@ -166,11 +166,12 @@
     },
     "bestSeller": {
       "title": "Best Seller",
-      "viewAllProductsButton": "VIEW ALL PRODUCTS →"
+      "viewAllProductsButton": "VIEW ALL PRODUCTS \u2192"
     },
     "latestPosts": {
       "title": "Latest posts",
-      "buttonLabel": "ALL POSTS"
+      "buttonLabel": "ALL POSTS",
+      "postImageAlt": "Post hero image"
     },
     "certificates": {
       "title": "Certified by international organizations"
@@ -262,12 +263,14 @@
       "mainImageAlt": "Product main image",
       "buyNow": {
         "ariaLabel": "Buy {product} variant {variant} now",
-        "label": "BUY NOW / OUT OF STOCK"
+        "label": "BUY NOW",
+        "outOfStock": "OUT OF STOCK"
       },
       "addToCart": {
         "toast": "Added {product} variant {variant} to cart",
         "ariaLabel": "Add {product} variant {variant} to cart",
-        "label": "ADD TO CART / OUT OF STOCK"
+        "label": "ADD TO CART",
+        "outOfStock": "OUT OF STOCK"
       }
     },
     "postHero": {
