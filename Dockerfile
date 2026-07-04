@@ -7,13 +7,15 @@ FROM node:24-alpine AS dependencies
 # Set working directory
 WORKDIR /app
 
+# Enable pnpm via corepack
+RUN corepack enable pnpm && corepack prepare pnpm@latest --activate
+
 # Copy package-related files first to leverage Docker's caching mechanism
-COPY package.json node.lock* ./
-COPY patches/ ./patches/
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 
 # Install project dependencies with frozen lockfile for reproducible builds
-RUN --mount=type=cache,target=/root/.node/install/cache \
-    npm install --no-save
+RUN --mount=type=cache,target=/root/.pnpm/store \
+    pnpm install
 
 # ============================================
 # Stage 2: Build Next.js application in standalone mode
@@ -24,8 +26,13 @@ FROM node:24-alpine AS builder
 # Set working directory
 WORKDIR /app
 
+# Enable pnpm via corepack (needed for build scripts)
+RUN corepack enable pnpm && corepack prepare pnpm@latest --activate
+
 # Copy project dependencies from dependencies stage
 COPY --from=dependencies /app/node_modules ./node_modules
+COPY --from=dependencies /app/pnpm-lock.yaml ./pnpm-lock.yaml
+COPY --from=dependencies /app/pnpm-workspace.yaml ./pnpm-workspace.yaml
 
 # Copy application source code
 COPY . .
@@ -38,7 +45,7 @@ ENV NODE_ENV=production
 # ENV NEXT_TELEMETRY_DISABLED=1
 
 # Build Next.js application
-RUN npm run build
+RUN pnpm build
 
 # ============================================
 # Stage 3: Run Next.js application
