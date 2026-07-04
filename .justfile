@@ -30,10 +30,11 @@ check:
         public \
         src \
         *.{json,js,mjs,cjs,ts,md}
+    pnpm tsc --noEmit
 
     end_time=$(date +%s%N)
     duration=$(( (end_time - start_time) / 1000000 ))
-    echo "Linting and formatting completed in ${duration} ms."
+    echo "Linting, formatting, and type-checking completed in ${duration} ms."
 
 docker-image-build:
     docker buildx build --load \

@@ -6,7 +6,7 @@
 		"context": ".."
 	},
 	"postCreateCommand": "bash .devcontainer/postinstall.sh",
-	"runArgs": ["-v", ".:/biolak", "--hostname", "biolak-devcontainer"],
+	"runArgs": ["-v", ".:/biolak", "--net=host"],
 	"customizations": {
 		"vscode": {
 			"extensions": [
