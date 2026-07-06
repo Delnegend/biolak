@@ -334,18 +334,6 @@
       "quantityExceedsStock": "Quantity exceeds stock"
     }
   },
-  "fields": {
-    "link": {
-      "linkType": "Link type",
-      "internalLink": "Internal link",
-      "customUrl": "Custom URL",
-      "openInNewTab": "Open in new tab",
-      "link": "Link",
-      "linkToInternal": "Link to internal page",
-      "customUrlLabel": "Custom URL",
-      "label": "Label"
-    }
-  },
   "cartManager": {
     "cartFull": "Cart is full, please remove some items before adding more.",
     "addedToCart": "Added {product} ({variant}) to cart"
@@ -597,6 +585,18 @@
         "label": "Video Embed",
         "labelPlural": "Video Embeds",
         "placeholderVideoUrl": "https://www.youtube.com/watch?v=example"
+      }
+    },
+    "fields": {
+      "link": {
+        "linkType": "Link type",
+        "internalLink": "Internal link",
+        "customUrl": "Custom URL",
+        "openInNewTab": "Open in new tab",
+        "link": "Link",
+        "linkToInternal": "Link to internal page",
+        "customUrlLabel": "Custom URL",
+        "label": "Label"
       }
     }
   }

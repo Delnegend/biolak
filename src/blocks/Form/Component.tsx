@@ -40,6 +40,7 @@ export function FormBlock(props: FormBlockType): React.JSX.Element {
 	const [hasSubmitted, setHasSubmitted] = useState<boolean>()
 	const [error, setError] = useState<{ message: string; status?: string } | undefined>()
 	const router = useRouter()
+	const t = useTranslations('form')
 
 	const onSubmit = useCallback(
 		(data: FormFieldBlock[]) => {
@@ -77,7 +78,7 @@ export function FormBlock(props: FormBlockType): React.JSX.Element {
 						setIsLoading(false)
 
 						setError({
-							message: res.errors?.[0]?.message || 'Internal Server Error',
+							message: res.errors?.[0]?.message || t('internalServerError'),
 							status: res.status,
 						})
 
@@ -96,17 +97,15 @@ export function FormBlock(props: FormBlockType): React.JSX.Element {
 					logger.warn("Can't submit form:", err)
 					setIsLoading(false)
 					setError({
-						message: 'Something went wrong.',
+						message: t('error'),
 					})
 				}
 			}
 
 			void submitForm()
 		},
-		[router, props.form.id, props.form.redirect, props.form.confirmationType],
+		[router, t, props.form.id, props.form.redirect, props.form.confirmationType],
 	)
-
-	const t = useTranslations('blocks.form')
 
 	return (
 		<div className="container lg:max-w-[48rem]">

@@ -334,18 +334,6 @@
       "quantityExceedsStock": "S\u1ed1 l\u01b0\u1ee3ng v\u01b0\u1ee3t qu\u00e1 t\u1ed3n kho"
     }
   },
-  "fields": {
-    "link": {
-      "linkType": "Lo\u1ea1i li\u00ean k\u1ebft",
-      "internalLink": "Li\u00ean k\u1ebft n\u1ed9i b\u1ed9",
-      "customUrl": "Li\u00ean k\u1ebft t\u00f9y ch\u1ec9nh",
-      "openInNewTab": "M\u1edf trong tab m\u1edbi",
-      "link": "Li\u00ean k\u1ebft",
-      "linkToInternal": "Li\u00ean k\u1ebft t\u1edbi trang n\u1ed9i b\u1ed9",
-      "customUrlLabel": "Li\u00ean k\u1ebft t\u00f9y ch\u1ec9nh",
-      "label": "Nh\u00e3n"
-    }
-  },
   "cartManager": {
     "cartFull": "Gi\u1ecf h\u00e0ng \u0111\u00e3 \u0111\u1ea7y, vui l\u00f2ng x\u00f3a m\u1ed9t s\u1ed1 m\u1eb7t h\u00e0ng tr\u01b0\u1edbc khi th\u00eam.",
     "addedToCart": "\u0110\u00e3 th\u00eam {product} ({variant}) v\u00e0o gi\u1ecf h\u00e0ng"
@@ -597,6 +585,18 @@
         "label": "Nh\u00fang Video",
         "labelPlural": "Nh\u00fang Video",
         "placeholderVideoUrl": "https://www.youtube.com/watch?v=example"
+      }
+    },
+    "fields": {
+      "link": {
+        "linkType": "Lo\u1ea1i li\u00ean k\u1ebft",
+        "internalLink": "Li\u00ean k\u1ebft n\u1ed9i b\u1ed9",
+        "customUrl": "Li\u00ean k\u1ebft t\u00f9y ch\u1ec9nh",
+        "openInNewTab": "M\u1edf trong tab m\u1edbi",
+        "link": "Li\u00ean k\u1ebft",
+        "linkToInternal": "Li\u00ean k\u1ebft t\u1edbi trang n\u1ed9i b\u1ed9",
+        "customUrlLabel": "Li\u00ean k\u1ebft t\u00f9y ch\u1ec9nh",
+        "label": "Nh\u00e3n"
       }
     }
   }

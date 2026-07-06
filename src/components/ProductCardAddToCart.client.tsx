@@ -1,6 +1,7 @@
 'use client'
 
 import { CirclePlus } from 'lucide-react'
+import { useTranslations } from 'next-intl'
 
 import { useCartManager } from '@/hooks/useCartManager'
 import { Product } from '@/payload-types'
@@ -20,6 +21,7 @@ export function INTERNAL_ProductCardAddToCart({
 		title: Product['title']
 	}
 }): React.JSX.Element {
+	const t = useTranslations('productCardAddToCart')
 	const validVariant = findValidProductVariant(variants)
 	const { loadProduct } = useCartManager({
 		syncWithLocalStorage: true,
@@ -30,7 +32,7 @@ export function INTERNAL_ProductCardAddToCart({
 		<Button
 			hideArrow={true}
 			className="group flex size-12 items-center justify-center rounded-[0.5rem] border-[#E7B27E] bg-[#E7B27E] p-0 transition-all hover:border hover:bg-transparent"
-			title="Thêm vào giỏ hàng"
+			title={t('title')}
 			disabled={!priceRange}
 			onClick={() => {
 				if (validVariant)

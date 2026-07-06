@@ -6,6 +6,7 @@ import { PostsSlug } from '@/collections/Posts/slug'
 import { ProductCategoriesSlug } from '@/collections/ProductCategories/slug'
 import { ProductsSlug } from '@/collections/Products/slug'
 import { ProductSubCategoriesSlug } from '@/collections/ProductSubCategories/slug'
+import { adminLabel } from '@/utilities/adminLabel'
 import deepMerge from '@/utilities/deepMerge'
 
 export const LinkFieldRelations = [
@@ -50,7 +51,7 @@ export function link({
 					{
 						name: 'type',
 						type: 'radio',
-						label: 'Link type',
+						label: adminLabel('admin.fields.link.linkType'),
 						admin: {
 							layout: 'horizontal',
 							width: '50%',
@@ -59,18 +60,18 @@ export function link({
 						options: [
 							{
 								value: 'reference',
-								label: 'Internal link',
+								label: adminLabel('admin.fields.link.internalLink'),
 							},
 							{
 								value: 'custom',
-								label: 'Custom URL',
+								label: adminLabel('admin.fields.link.customUrl'),
 							},
 						],
 					},
 					{
 						name: 'newTab',
 						type: 'checkbox',
-						label: 'Open in new tab',
+						label: adminLabel('admin.fields.link.openInNewTab'),
 						admin: {
 							style: {
 								alignSelf: 'flex-end',
@@ -81,7 +82,7 @@ export function link({
 				],
 			},
 		],
-		label: 'Link',
+		label: adminLabel('admin.fields.link.link'),
 	}
 
 	const linkTypes: Field[] = [
@@ -91,7 +92,7 @@ export function link({
 			admin: {
 				condition: (_, siblingData) => siblingData?.type === 'reference',
 			},
-			label: 'Link to internal page',
+			label: adminLabel('admin.fields.link.linkToInternal'),
 			relationTo: [...LinkFieldRelations],
 			required: true,
 		},
@@ -101,7 +102,7 @@ export function link({
 			admin: {
 				condition: (_, siblingData) => siblingData?.type === 'custom',
 			},
-			label: 'Custom URL',
+			label: adminLabel('admin.fields.link.customUrlLabel'),
 			required: true,
 		},
 	]
@@ -126,7 +127,7 @@ export function link({
 						width: '50%',
 						placeholder: label?.placeholder,
 					},
-					label: 'Label',
+					label: adminLabel('admin.fields.link.label'),
 					required: label?.required ?? true,
 					localized: true,
 					defaultValue: label?.defaultValue,
