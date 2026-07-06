@@ -2,7 +2,8 @@
 import type { Form as FormType, FormFieldBlock } from '@payloadcms/plugin-form-builder/types'
 import type { SerializedEditorState } from '@payloadcms/richtext-lexical/lexical'
 import { useRouter } from 'next/navigation'
-import React, { useCallback, useState } from 'react'
+import { useTranslations } from 'next-intl'
+import { useCallback, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 
 import RichText from '@/components/RichText'
@@ -105,6 +106,8 @@ export function FormBlock(props: FormBlockType): React.JSX.Element {
 		[router, props.form.id, props.form.redirect, props.form.confirmationType],
 	)
 
+	const t = useTranslations('blocks.form')
+
 	return (
 		<div className="container lg:max-w-[48rem]">
 			{props.enableIntro && props.introContent && !hasSubmitted && (
@@ -120,7 +123,7 @@ export function FormBlock(props: FormBlockType): React.JSX.Element {
 					{!isLoading && hasSubmitted && props.form.confirmationType === 'message' && (
 						<RichText data={props.form.confirmationMessage} locale={props.__locale} />
 					)}
-					{isLoading && !hasSubmitted && <p>Loading, please wait...</p>}
+					{isLoading && !hasSubmitted && <p>{t('loading')}</p>}
 					{error && <div>{`${error.status || '500'}: ${error.message || ''}`}</div>}
 					{!hasSubmitted && (
 						<form id={props.form.id} onSubmit={handleSubmit(onSubmit)}>

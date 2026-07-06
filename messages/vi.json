@@ -234,6 +234,7 @@
       "alt": "H\u00ecnh \u1ea3nh b\u0103ng chuy\u1ec1n v\u00f4 t\u1eadn"
     },
     "form": {
+      "loading": "Đang tải, vui lòng chờ...",
       "country": {
         "selectTrigger": "K\u00edch ho\u1ea1t h\u1ed9p tho\u1ea1i th\u1ea3 xu\u1ed1ng ch\u1ecdn qu\u1ed1c gia",
         "selectContent": "Ch\u1ecdn m\u1ed9t qu\u1ed1c gia"

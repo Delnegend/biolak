@@ -234,6 +234,7 @@
       "alt": "Infinite scroll banner image"
     },
     "form": {
+      "loading": "Loading, please wait...",
       "country": {
         "selectTrigger": "Select a country dropdown trigger",
         "selectContent": "Select a country"

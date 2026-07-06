@@ -1,5 +1,3 @@
-import canUseDOM from './canUseDOM'
-
 export function getServerSideURL(): string {
 	let url = process.env.NEXT_PUBLIC_SERVER_URL
 
@@ -13,6 +11,12 @@ export function getServerSideURL(): string {
 
 	return url
 }
+
+const canUseDOM = !!(
+	typeof window !== 'undefined' &&
+	window.document &&
+	window.document.createElement
+)
 
 export function getClientSideURL(): string {
 	if (canUseDOM) {
