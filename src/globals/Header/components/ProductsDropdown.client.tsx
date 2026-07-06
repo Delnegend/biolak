@@ -1,9 +1,9 @@
 'use client'
 import { X } from 'lucide-react'
 import { AnimatePresence, motion, Variants } from 'motion/react'
-import { useTranslations } from 'next-intl'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
+import { useTranslations } from 'next-intl'
 import { PaginatedDocs, Where } from 'payload'
 import { stringify } from 'qs-esm'
 import { useReducer, useRef, useState } from 'react'
@@ -34,10 +34,10 @@ type DropdownAction =
 	| { type: 'SELECT_SUBCATEGORY'; subCategory: ProductSubCategory }
 	| { type: 'DESELECT_SUBCATEGORY' }
 	| {
-		type: 'PRODUCTS_LOADED'
-		subCategoryId: ProductSubCategory['id']
-		products: PaginatedDocs<Product>
-	}
+			type: 'PRODUCTS_LOADED'
+			subCategoryId: ProductSubCategory['id']
+			products: PaginatedDocs<Product>
+	  }
 
 function dropdownReducer(state: DropdownState, action: DropdownAction): DropdownState {
 	switch (action.type) {
@@ -445,9 +445,7 @@ export function INTERNAL_ProductsDropdownClient({
 									key={dropdown.subCategory?.slug}
 									className="flex items-center justify-between"
 								>
-									<span>
-										{dropdown.subCategory?.title ?? t('categoryLabel')}
-									</span>
+									<span>{dropdown.subCategory?.title ?? t('categoryLabel')}</span>
 									<button
 										aria-label={t('closeProducts')}
 										onClick={() => {
