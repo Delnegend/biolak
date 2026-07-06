@@ -45,3 +45,5 @@ patches/
 .agents/
 .vscode/
 opencode.json
+
+TODO.md
