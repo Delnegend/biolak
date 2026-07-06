@@ -1,5 +1,4 @@
 import type { StaticImageData } from 'next/image'
-import React from 'react'
 
 import RichText from '@/components/RichText'
 import { Lang } from '@/i18n/routing'

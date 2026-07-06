@@ -1,6 +1,5 @@
 import { Phudu } from 'next/font/google'
 import { getTranslations } from 'next-intl/server'
-import React from 'react'
 
 import type { Post } from '@/payload-types'
 import { cn } from '@/utilities/ui'

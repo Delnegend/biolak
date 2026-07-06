@@ -3,10 +3,10 @@ import { TextFieldSingleValidation } from 'payload'
 
 import { ProductsSlug } from '@/collections/Products/slug'
 import { Order } from '@/payload-types'
-import { cnsoleBuilder } from '@/utilities/cnsole'
 import { depthHandler } from '@/utilities/depthHandler'
+import { newLogger } from '@/utilities/logger'
 
-const cnsole = cnsoleBuilder('Orders/validateSku')
+const logger = newLogger('Orders/validateSku')
 
 export const validateSku: TextFieldSingleValidation = async (value, ctx) => {
 	const t = await getTranslations('orders.validation')
@@ -15,7 +15,7 @@ export const validateSku: TextFieldSingleValidation = async (value, ctx) => {
 		?.product
 
 	if (!product_) {
-		cnsole.error('Product not selected')
+		logger.error('Product not selected')
 		return t('productNotSelected')
 	}
 
@@ -32,7 +32,7 @@ export const validateSku: TextFieldSingleValidation = async (value, ctx) => {
 			}),
 	})
 	if (!productOk || !product) {
-		cnsole.error("Can't fetch product:", productError)
+		logger.error("Can't fetch product:", productError)
 		return t('productNotFound')
 	}
 

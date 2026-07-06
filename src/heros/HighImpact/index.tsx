@@ -1,5 +1,4 @@
 'use client'
-import React from 'react'
 
 import { CMSLink } from '@/components/CMSLink'
 import { Media } from '@/components/Media'

@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import { getTranslations } from 'next-intl/server'
-import React from 'react'
+import { Fragment, type JSX } from 'react'
 
 import { Lang } from '@/i18n/routing'
 import type { HeaderGlobal } from '@/payload-types'
@@ -19,7 +19,7 @@ export async function INTERNAL_RenderNavItems({
 	locale: Lang
 	size: 'lg' | 'sm'
 	className?: string
-}): Promise<React.JSX.Element> {
+}): Promise<JSX.Element> {
 	const t = await getTranslations('globals.header.nav')
 	return (
 		<nav className={cn('flex items-center gap-9 text-xl max-md:flex-col', className)}>
@@ -45,9 +45,9 @@ export async function INTERNAL_RenderNavItems({
 						if (!item.prebuilt) return null
 						const Elem = NavItems[item.prebuilt]
 						return Elem ? (
-							<React.Fragment key={key}>
+							<Fragment key={key}>
 								<Elem label={item.label ?? undefined} locale={locale} size={size} />
-							</React.Fragment>
+							</Fragment>
 						) : null
 					}
 					case 'internalUrl': {
@@ -79,18 +79,18 @@ export async function INTERNAL_RenderNavItems({
 						}
 
 						return item.internalUrl?.value ? (
-							<React.Fragment key={key}>
+							<Fragment key={key}>
 								<INTERNAL_CloseSmallNavWrapper asChild>
 									<Link href={url ?? '#'} className="whitespace-nowrap">
 										{item.label ?? doc?.title ?? t('internalLink')}
 									</Link>
 								</INTERNAL_CloseSmallNavWrapper>
-							</React.Fragment>
+							</Fragment>
 						) : null
 					}
 					case 'customUrl': {
 						return (
-							<React.Fragment key={key}>
+							<Fragment key={key}>
 								<INTERNAL_CloseSmallNavWrapper asChild>
 									<Link
 										href={item.customUrl ?? '#'}
@@ -103,7 +103,7 @@ export async function INTERNAL_RenderNavItems({
 											t('externalLink')}
 									</Link>
 								</INTERNAL_CloseSmallNavWrapper>
-							</React.Fragment>
+							</Fragment>
 						)
 					}
 				}

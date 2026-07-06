@@ -1,6 +1,5 @@
 import { ArrowRight } from 'lucide-react'
 import { getTranslations } from 'next-intl/server'
-import React from 'react'
 
 import { CMSLink } from '@/components/CMSLink'
 import RichText from '@/components/RichText'

@@ -1,7 +1,5 @@
 'use client'
 
-import React from 'react'
-
 import { usePathname, useRouter } from '@/i18n/routing'
 import { Lang } from '@/i18n/routing'
 

@@ -10,7 +10,6 @@ import { useState } from 'react'
 
 import { Button } from '@/components/ui/button'
 import { FloatingGlobal } from '@/payload-types'
-import { toFaviconUrl } from '@/utilities/toFaviconUrl'
 import { cn } from '@/utilities/ui'
 
 const inter = Inter({ subsets: ['vietnamese'], weight: ['400'] })
@@ -38,8 +37,7 @@ export function INTERNAL_FloatingClient({ global }: { global: FloatingGlobal }):
 									<Image
 										src={
 											icon?.url ??
-											toFaviconUrl(l.link) ??
-											'https://placehold.co/256x256'
+											`https://www.google.com/s2/favicons?domain=${encodeURIComponent(l.link)}&sz=256`
 										}
 										alt={icon?.alt ?? t('iconAlt')}
 										width={icon?.width ?? 256}

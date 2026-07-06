@@ -2,7 +2,7 @@
 
 import { ShoppingCart } from 'lucide-react'
 import { useTranslations } from 'next-intl'
-import React, { useState } from 'react'
+import { useState } from 'react'
 
 import { CartListClient } from '@/components/CartList.client'
 import { Button } from '@/components/ui/button'

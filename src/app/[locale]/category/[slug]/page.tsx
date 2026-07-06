@@ -2,7 +2,7 @@ import configPromise from '@payload-config'
 import { Metadata } from 'next'
 import { getTranslations } from 'next-intl/server'
 import { getPayload } from 'payload'
-import React, { cache } from 'react'
+import { cache } from 'react'
 
 import { ProductCategoriesSlug } from '@/collections/ProductCategories/slug'
 import { ProductsSlug } from '@/collections/Products/slug'

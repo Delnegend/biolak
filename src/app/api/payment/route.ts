@@ -6,11 +6,11 @@ import { OrdersSlug } from '@/collections/Orders/slug'
 import { PaymentGlobalSlug } from '@/globals/Payment/slug'
 import { Lang } from '@/i18n/routing'
 import { PaymentGlobal } from '@/payload-types'
-import { cnsoleBuilder } from '@/utilities/cnsole'
 import { getCachedGlobal } from '@/utilities/getGlobals'
+import { newLogger } from '@/utilities/logger'
 import { tryCatch, tryCatchSync } from '@/utilities/tryCatch'
 
-const cnsole = cnsoleBuilder('Payment API')
+const logger = newLogger('Payment API')
 
 const IncomingRequestSchema = z.object({
 	id: z.number().int().positive(),
@@ -67,23 +67,23 @@ export async function POST(req: Request): Promise<Response> {
 		tryCatch(() => getPayload({ config })),
 	])
 	if (!payloadOk) {
-		cnsole.error('Error getting Payload instance:', payloadError)
+		logger.error('Error getting Payload instance:', payloadError)
 		return ERROR('Internal server error')
 	}
 	if (!paymentGlobalOk || !paymentGlobal.sepayApiKey) {
-		cnsole.error('Error getting payment global:', paymentGlobalError)
+		logger.error('Error getting payment global:', paymentGlobalError)
 		return ERROR("Can't get internal Sepay API key")
 	}
 
 	const incomingSepayApiKey = req.headers.get('Authorization')?.replace('Apikey ', '')
 	if (!incomingSepayApiKey || incomingSepayApiKey !== paymentGlobal.sepayApiKey) {
-		cnsole.error('Invalid or missing Sepay API key in request headers.')
+		logger.error('Invalid or missing Sepay API key in request headers.')
 		return ERROR('Invalid Sepay API key')
 	}
 
 	const { data: body, ok: bodyOk, error: bodyError } = await tryCatch(() => req.json())
 	if (!bodyOk) {
-		cnsole.error('Error parsing request body:', bodyError)
+		logger.error('Error parsing request body:', bodyError)
 		return ERROR('Invalid request body')
 	}
 
@@ -93,7 +93,7 @@ export async function POST(req: Request): Promise<Response> {
 		error: parsedBodyError,
 	} = tryCatchSync(() => IncomingRequestSchema.parse(body))
 	if (!parsedBodyOk) {
-		cnsole.error(
+		logger.error(
 			'Error parsing request body:',
 			z.prettifyError(parsedBodyError as z.ZodError),
 			body,
@@ -103,27 +103,27 @@ export async function POST(req: Request): Promise<Response> {
 		)
 	}
 
-	cnsole.debug('Parsed request body:', parsedBody)
+	logger.debug('Parsed request body:', parsedBody)
 
 	if (parsedBody.transferType === 'out') {
-		cnsole.log('Transfer type is "out", skipping processing.')
+		logger.log('Transfer type is "out", skipping processing.')
 		return SUCCESS
 	}
 
 	const match = parsedBody.content.match(/blck-([A-Za-z0-9-_]{21})/)
 	if (!match) {
-		cnsole.log('Content does not contain a valid "blck-XXX" order ID, skipping processing.')
+		logger.log('Content does not contain a valid "blck-XXX" order ID, skipping processing.')
 		return SUCCESS
 	}
 
 	const orderId = match[1]
-	cnsole.debug('Extracted order ID from content:', orderId)
+	logger.debug('Extracted order ID from content:', orderId)
 	if (!orderId) {
-		cnsole.error('Order ID not found in content:', parsedBody.content)
+		logger.error('Order ID not found in content:', parsedBody.content)
 		return SUCCESS
 	}
 
-	cnsole.debug('Extracted order ID:', orderId)
+	logger.debug('Extracted order ID:', orderId)
 
 	const {
 		data: order,
@@ -143,11 +143,11 @@ export async function POST(req: Request): Promise<Response> {
 		}),
 	)
 	if (!orderOk) {
-		cnsole.error('Error fetching order:', orderError)
+		logger.error('Error fetching order:', orderError)
 		return ERROR('Order not found')
 	}
 	if (!order.docs[0]) {
-		cnsole.error('Order not found:', orderId)
+		logger.error('Order not found:', orderId)
 		return SUCCESS
 	}
 
@@ -177,7 +177,7 @@ export async function POST(req: Request): Promise<Response> {
 		})
 	})
 	if (!updateOk) {
-		cnsole.error('Error updating order:', updateError)
+		logger.error('Error updating order:', updateError)
 	}
 
 	return SUCCESS

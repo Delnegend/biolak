@@ -1,12 +1,23 @@
-import React from 'react'
-
 import RichText from '@/components/RichText'
-import { Lang } from '@/i18n/routing'
+import type { Lang } from '@/i18n/routing'
 import type { ContentBlockProps } from '@/payload-types'
-import { cssStringToStyle } from '@/utilities/cssStringToStyle'
 import { cn } from '@/utilities/ui'
 
 import { CMSLink } from '../../components/CMSLink'
+
+function parseCss(cssString?: string | null): Record<string, string> {
+	const cleaned = cssString?.trim().replaceAll('\n', '')
+	if (!cleaned) return {}
+
+	const style: Record<string, string> = {}
+	cleaned.split(';').forEach((rule) => {
+		const [key, value] = rule.split(':')
+		if (!key || !value) return
+		style[key.trim().replace(/-([a-z])/g, (g) => (g[1] ? g[1].toUpperCase() : ''))] =
+			value.trim()
+	})
+	return style
+}
 
 export function ContentBlock({
 	columns,
@@ -41,7 +52,7 @@ export function ContentBlock({
 									},
 								)}
 								key={index}
-								style={cssStringToStyle(customCss)}
+								style={parseCss(customCss)}
 							>
 								{richText && (
 									<RichText

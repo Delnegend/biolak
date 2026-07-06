@@ -7,10 +7,10 @@ import { PostsSlug } from '@/collections/Posts/slug'
 import { PostCard } from '@/components/PostCard'
 import { Lang } from '@/i18n/routing'
 import { PostCategory, PostsGridBlockProps } from '@/payload-types'
-import { cnsoleBuilder } from '@/utilities/cnsole'
 import { depthHandler } from '@/utilities/depthHandler'
+import { newLogger } from '@/utilities/logger'
 
-const cnsole = cnsoleBuilder('PostsGridBlock')
+const logger = newLogger('PostsGridBlock')
 
 export async function PostsGridBlock(
 	props: PostsGridBlockProps & {
@@ -56,7 +56,7 @@ export async function PostsGridBlock(
 							})
 
 							if (!ok) {
-								cnsole.error("Can't fetching post category's name:", error)
+								logger.error("Can't fetching post category's name:", error)
 							}
 
 							return data?.title ?? t('category')

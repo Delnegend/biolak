@@ -1,5 +1,4 @@
 import { getTranslations } from 'next-intl/server'
-import React from 'react'
 
 import { HeadlessImage } from '@/components/Media/HeadlessImage'
 import RichText from '@/components/RichText'

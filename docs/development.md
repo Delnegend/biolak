@@ -66,7 +66,7 @@ All public routes are prefixed by locale:
 /vi/san-pham → Vietnamese products page
 ```
 
-- **Middleware** (`middleware.ts` at project root) detects the user's language from the `Accept-Language` header and redirects `/` → `/{locale}`.
+- **Middleware** (`proxy.ts` at project root) detects the user's language from the `Accept-Language` header and redirects `/` → `/{locale}`.
 - The chosen locale is persisted in a cookie for subsequent visits.
 - The admin panel stays at `/admin` (no prefix).
 

@@ -2,7 +2,7 @@
 import { standardSchemaResolver } from '@hookform/resolvers/standard-schema'
 import { ArrowRight } from 'lucide-react'
 import { useTranslations } from 'next-intl'
-import React, { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import { z } from 'zod/v4'
