@@ -1,6 +1,8 @@
 'use client'
+
 import Link from 'next/link'
-import React, { Fragment } from 'react'
+import type { JSX } from 'react'
+import { Fragment, useRef } from 'react'
 
 import { Media } from '@/components/Media'
 import type { Post } from '@/payload-types'
@@ -16,9 +18,9 @@ export function Card(props: {
 	relationTo?: 'posts'
 	showCategories?: boolean
 	title?: string
-}): React.JSX.Element {
-	const cardRef = React.useRef<HTMLElement | null>(null)
-	const linkRef = React.useRef<HTMLAnchorElement | null>(null)
+}): JSX.Element {
+	const cardRef = useRef<HTMLElement | null>(null)
+	const linkRef = useRef<HTMLAnchorElement | null>(null)
 	useClickableCard({ cardRef, linkRef })
 
 	const hasCategories =

@@ -1,5 +1,4 @@
 import Link from 'next/link'
-import React from 'react'
 
 import { PagesSlug } from '@/collections/Pages/slug'
 import { PostCategoriesSlug } from '@/collections/PostCategories/slug'

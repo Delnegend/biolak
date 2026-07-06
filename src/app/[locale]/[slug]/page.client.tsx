@@ -1,6 +1,7 @@
 'use client'
-import React from 'react'
 
-export default function PageClient(): React.JSX.Element {
-	return <React.Fragment />
+import { type JSX } from 'react'
+
+export default function PageClient(): JSX.Element | null {
+	return null
 }

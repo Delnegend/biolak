@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react'
+import { Fragment } from 'react'
 
 import { ImageMedia } from './ImageMedia'
 import type { Props } from './types'

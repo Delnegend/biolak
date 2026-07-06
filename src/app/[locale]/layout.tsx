@@ -5,7 +5,6 @@ import { Crimson_Pro, Manrope } from 'next/font/google'
 import { draftMode, headers as getHeaders } from 'next/headers'
 import { NextIntlClientProvider } from 'next-intl'
 import { getMessages } from 'next-intl/server'
-import React from 'react'
 
 import { AdminBar } from '@/components/AdminBar'
 import { Toaster } from '@/components/ui/sonner'

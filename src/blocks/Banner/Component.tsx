@@ -1,5 +1,3 @@
-import React from 'react'
-
 import RichText from '@/components/RichText'
 import { Lang } from '@/i18n/routing'
 import type { BannerBlockProps } from '@/payload-types'

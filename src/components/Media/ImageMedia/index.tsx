@@ -2,7 +2,6 @@
 
 import type { StaticImageData } from 'next/image'
 import NextImage from 'next/image'
-import React from 'react'
 
 import { cssVariables } from '@/cssVariables'
 import { getClientSideURL } from '@/utilities/getURL'

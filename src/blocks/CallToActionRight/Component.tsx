@@ -1,7 +1,6 @@
 import { ArrowRight } from 'lucide-react'
 import { Phudu } from 'next/font/google'
 import { getTranslations } from 'next-intl/server'
-import React from 'react'
 
 import { CMSLink } from '@/components/CMSLink'
 import { HeadlessImage } from '@/components/Media/HeadlessImage'

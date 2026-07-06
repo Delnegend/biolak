@@ -1,6 +1,5 @@
 import configPromise from '@payload-config'
 import { getPayload } from 'payload'
-import React from 'react'
 
 import { CollectionArchive } from '@/components/CollectionArchive'
 import RichText from '@/components/RichText'

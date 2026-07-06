@@ -6,7 +6,8 @@ import type { PayloadAdminBarProps, PayloadMeUser } from '@payloadcms/admin-bar'
 import { PayloadAdminBar } from '@payloadcms/admin-bar'
 import { useSelectedLayoutSegments } from 'next/navigation'
 import { useRouter } from 'next/navigation'
-import React, { useState } from 'react'
+import type { JSX } from 'react'
+import { useCallback, useState } from 'react'
 
 import { getClientSideURL } from '@/utilities/getURL'
 import { cn } from '@/utilities/ui'
@@ -28,15 +29,11 @@ const collectionLabels = {
 	},
 }
 
-export function Title(): React.JSX.Element {
+export function Title(): JSX.Element {
 	return <span>Dashboard</span>
 }
 
-export function AdminBar({
-	adminBarProps,
-}: {
-	adminBarProps?: PayloadAdminBarProps
-}): React.JSX.Element {
+export function AdminBar({ adminBarProps }: { adminBarProps?: PayloadAdminBarProps }): JSX.Element {
 	const segments = useSelectedLayoutSegments()
 	const [show, setShow] = useState(false)
 	const collection = (
@@ -44,7 +41,7 @@ export function AdminBar({
 	) as keyof typeof collectionLabels
 	const router = useRouter()
 
-	const onAuthChange = React.useCallback((user: PayloadMeUser) => {
+	const onAuthChange = useCallback((user: PayloadMeUser) => {
 		setShow(!!user?.id)
 	}, [])
 

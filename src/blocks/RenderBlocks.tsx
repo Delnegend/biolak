@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { ArchiveBlock } from '@/blocks/ArchiveBlock/Component'
 import { CallToActionCenterBlock } from '@/blocks/CallToActionCenter/Component'
 import { ContentBlock } from '@/blocks/Content/Component'

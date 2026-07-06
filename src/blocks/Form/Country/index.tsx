@@ -1,6 +1,5 @@
 import type { CountryField } from '@payloadcms/plugin-form-builder/types'
 import { getTranslations } from 'next-intl/server'
-import React from 'react'
 import type { Control, FieldErrorsImpl } from 'react-hook-form'
 import { Controller } from 'react-hook-form'
 

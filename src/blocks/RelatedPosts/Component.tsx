@@ -1,6 +1,5 @@
 import { SerializedEditorState } from '@payloadcms/richtext-lexical/lexical'
 import { getTranslations } from 'next-intl/server'
-import React from 'react'
 
 import { Lang } from '@/i18n/routing'
 import type { Post } from '@/payload-types'

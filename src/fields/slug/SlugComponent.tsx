@@ -3,7 +3,7 @@ import './index.scss'
 
 import { Button, FieldLabel, TextInput, useField, useForm, useFormFields } from '@payloadcms/ui'
 import { TextFieldClientProps } from 'payload'
-import React, { useCallback, useEffect } from 'react'
+import { useCallback, useEffect } from 'react'
 
 import { formatSlug } from './formatSlug'
 

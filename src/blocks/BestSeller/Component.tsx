@@ -2,7 +2,6 @@ import config from '@payload-config'
 import { Phudu } from 'next/font/google'
 import { getTranslations } from 'next-intl/server'
 import { getPayload } from 'payload'
-import React from 'react'
 
 import { ProductsSlug } from '@/collections/Products/slug'
 import { CMSLink } from '@/components/CMSLink'
