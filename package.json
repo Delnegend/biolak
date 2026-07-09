@@ -4,10 +4,6 @@
 	"description": "BioLAK",
 	"license": "MIT",
 	"type": "module",
-	"scripts": {
-		"postbuild": "next-sitemap --config next-sitemap.config.cjs",
-		"build": "next build --experimental-build-mode compile"
-	},
 	"dependencies": {
 		"@hookform/resolvers": "^5.2.2",
 		"@payloadcms/admin-bar": "3.84.1",

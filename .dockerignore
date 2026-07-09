@@ -8,7 +8,6 @@ node_modules/
 public/media/
 .editorconfig
 .env
-.justfile
 .prod.justfile
 Dockerfile
 README.md

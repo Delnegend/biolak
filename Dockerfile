@@ -23,10 +23,13 @@ RUN --mount=type=cache,target=/root/.pnpm/store \
 
 FROM node:24-alpine AS builder
 
+# Install just + sqlite3 (needed for CI database setup)
+RUN apk add --no-cache just sqlite
+
 # Set working directory
 WORKDIR /app
 
-# Enable pnpm via corepack (needed for build scripts)
+# Enable pnpm via corepack
 RUN corepack enable pnpm && corepack prepare pnpm@latest --activate
 
 # Copy project dependencies from dependencies stage
@@ -34,18 +37,18 @@ COPY --from=dependencies /app/node_modules ./node_modules
 COPY --from=dependencies /app/pnpm-lock.yaml ./pnpm-lock.yaml
 COPY --from=dependencies /app/pnpm-workspace.yaml ./pnpm-workspace.yaml
 
-# Copy application source code
+# Copy application source code (includes .justfile)
 COPY . .
 
 ENV NODE_ENV=production
+ENV PAYLOAD_SECRET=ci-build-secret
 
-# Next.js collects completely anonymous telemetry data about general usage.
-# Learn more here: https://nextjs.org/telemetry
-# Uncomment the following line in case you want to disable telemetry during the build.
-# ENV NEXT_TELEMETRY_DISABLED=1
-
-# Build Next.js application
-RUN pnpm build
+# Create CI database with schema and build in a single layer to avoid SQLite WAL locking issues
+RUN rm -f data.ci.sqlite3 data.ci.sqlite3-wal data.ci.sqlite3-shm && \
+    touch data.ci.sqlite3 && \
+    sqlite3 data.ci.sqlite3 "PRAGMA journal_mode=WAL;" && \
+    DATABASE_URI="file:${PWD}/data.ci.sqlite3" pnpm exec payload migrate && \
+    DATABASE_URI="file:${PWD}/data.ci.sqlite3" just build-fast
 
 # ============================================
 # Stage 3: Run Next.js application

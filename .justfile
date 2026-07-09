@@ -3,14 +3,25 @@ export NODE_OPTIONS := "--no-deprecation"
 @default:
     just --choose
 
-dev: check
+dev:
     pnpm next dev
 
-build: check
-    pnpm next build --experimental-build-mode compile
+build:
+    DATABASE_URI='file:{{justfile_directory()}}/data.ci.sqlite3' pnpm next build
+    pnpm exec next-sitemap --config next-sitemap.config.cjs
+
+build-fast:
+    pnpm next build
+    pnpm exec next-sitemap --config next-sitemap.config.cjs
+
+ci-db:
+    rm -f data.ci.sqlite3 data.ci.sqlite3-wal data.ci.sqlite3-shm
+    touch data.ci.sqlite3
+    sqlite3 data.ci.sqlite3 "PRAGMA journal_mode=WAL;"
+    DATABASE_URI="file:{{justfile_directory()}}/data.ci.sqlite3" pnpm exec payload migrate
 
 gen-stuffs:
-    #!/usr/bin/env bash
+    #!/bin/sh
     pnpm payload generate:types
     pnpm payload generate:db-schema
     pnpm payload generate:importmap
@@ -19,8 +30,8 @@ db-create-migrate:
     pnpm run payload migrate:create
 
 check:
-    #!/usr/bin/env bash
-    start_time=$(date +%s%N)
+    #!/bin/sh
+    start_time=$(date +%s)
 
     pnpm eslint . --fix
     pnpm prettier --write --list-different \
@@ -32,20 +43,20 @@ check:
         *.{json,js,mjs,cjs,ts,md}
     pnpm tsc --noEmit
 
-    end_time=$(date +%s%N)
-    duration=$(( (end_time - start_time) / 1000000 ))
-    echo "Linting, formatting, and type-checking completed in ${duration} ms."
+    end_time=$(date +%s)
+    duration=$((end_time - start_time))
+    echo "Linting, formatting, and type-checking completed in ${duration}s."
 
-docker-image-build:
-    docker buildx build --load \
+build-image:
+    docker build \
         -t ghcr.io/delnegend/biolak:$(git rev-parse --short HEAD) \
         -t ghcr.io/delnegend/biolak:latest .
 
-docker-image-publish:
-    #!/usr/bin/env bash
+publish-image:
+    #!/bin/sh
     TAG=$(git rev-parse --short HEAD)
     docker push --compression-format zstd --compression-level 9 ghcr.io/delnegend/biolak:latest
     docker push --compression-format zstd --compression-level 9 ghcr.io/delnegend/biolak:$TAG
 
-docker-image-save:
+save-image:
     docker save ghcr.io/delnegend/biolak:latest | zstd -T0 -9 - > biolak-latest.tzst

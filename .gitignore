@@ -35,6 +35,7 @@ docker-compose.yml
 
 # Databases and local data
 *.sqlite*
+!data.ci.sqlite3
 *.db*
 data.bak.sqlite3
 prod_data/
