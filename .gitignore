@@ -23,7 +23,7 @@ coverage/
 *.tsbuildinfo
 
 # Payload default media upload directory (keep committed uploads out)
-public/media/
+data/
 
 # Keep generated site files out but allow specific files
 public/robots.txt
@@ -35,7 +35,6 @@ docker-compose.yml
 
 # Databases and local data
 *.sqlite*
-!data.ci.sqlite3
 *.db*
 data.bak.sqlite3
 prod_data/
