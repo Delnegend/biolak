@@ -1,0 +1,18 @@
+services:
+    biolak:
+        container_name: biolak
+        ports: ['3000:3000']
+        image: ghcr.io/delnegend/biolak:latest
+        pull_policy: never
+        build:
+            context: .
+            dockerfile: Dockerfile
+        volumes: [./data:/app/data:Z]
+        environment:
+            DATABASE_URI: file:/app/data/data.prod.sqlite3
+            MEDIA_STATIC_DIR: /app/data/media
+
+            NEXT_PUBLIC_SERVER_URL: https://biolak.vn
+            PAYLOAD_SECRET: 'CHANGE_ME'
+            CRON_SECRET: 'CHANGE_ME'
+            PREVIEW_SECRET: 'CHANGE_ME'

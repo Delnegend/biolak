@@ -18,13 +18,13 @@ RUN --mount=type=cache,target=/root/.pnpm/store \
     pnpm install
 
 # ============================================
-# Stage 2: Build Next.js application in standalone mode
+# Stage 2: Build Next.js application
 # ============================================
 
 FROM node:24-alpine AS builder
 
-# Install just + sqlite3 (needed for CI database setup)
-RUN apk add --no-cache just sqlite
+# Install just
+RUN apk add --no-cache just
 
 # Set working directory
 WORKDIR /app
@@ -43,12 +43,8 @@ COPY . .
 ENV NODE_ENV=production
 ENV PAYLOAD_SECRET=ci-build-secret
 
-# Create CI database with schema and build in a single layer to avoid SQLite WAL locking issues
-RUN rm -f data.ci.sqlite3 data.ci.sqlite3-wal data.ci.sqlite3-shm && \
-    touch data.ci.sqlite3 && \
-    sqlite3 data.ci.sqlite3 "PRAGMA journal_mode=WAL;" && \
-    DATABASE_URI="file:${PWD}/data.ci.sqlite3" pnpm exec payload migrate && \
-    DATABASE_URI="file:${PWD}/data.ci.sqlite3" just build-fast
+# Build Next.js application via just (creates temp CI DB, migrates, builds, cleans up)
+RUN just build
 
 # ============================================
 # Stage 3: Run Next.js application
