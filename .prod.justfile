@@ -6,9 +6,9 @@ backup:
     docker compose down
     # Save the docker image to avoid redownloading
     docker save ghcr.io/delnegend/biolak:latest | zstd -T0 -9 > biolak-image.zst
-    # Compress the whole /opt/biolak directory, excluding previous backups
+    # Compress the whole ~/biolak directory, excluding previous backups
     # Note: Using absolute path might include /opt in the archive, which is fine
-    tar -c --exclude='*.tzst' -I 'zstd -T0 -9' -f /opt/biolak-$(date +%Y-%m-%d_%H-%M-%S).tzst /opt/biolak
+    tar -c --exclude='*.tar.zst' -I 'zstd -T0 -9' -f ~/biolak-$(date +%Y-%m-%d_%H-%M-%S).tar.zst ~/biolak
     docker compose up -d
     rm -f biolak-image.zst
 
@@ -18,7 +18,7 @@ restore:
     docker compose down
     # Restore the most recent backup file
     # We find the latest one based on name (date)
-    latest=$(ls -1 /opt/biolak-*.tzst | tail -n 1)
+    latest=$(ls -1 ~/biolak-*.tar.zst | tail -n 1)
     if [ -z "$latest" ]; then
         echo "No backup found"
         exit 1
