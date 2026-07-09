@@ -7,18 +7,12 @@ dev:
     pnpm next dev
 
 build:
-    DATABASE_URI='file:{{justfile_directory()}}/data.ci.sqlite3' pnpm next build
-    pnpm exec next-sitemap --config next-sitemap.config.cjs
-
-build-fast:
-    pnpm next build
-    pnpm exec next-sitemap --config next-sitemap.config.cjs
-
-ci-db:
-    rm -f data.ci.sqlite3 data.ci.sqlite3-wal data.ci.sqlite3-shm
-    touch data.ci.sqlite3
-    sqlite3 data.ci.sqlite3 "PRAGMA journal_mode=WAL;"
-    DATABASE_URI="file:{{justfile_directory()}}/data.ci.sqlite3" pnpm exec payload migrate
+    DB=/tmp/biolak-ci.sqlite3 && \
+    rm -f $DB $DB-wal $DB-shm && \
+    DATABASE_URI="file:$DB" pnpm exec payload migrate && \
+    DATABASE_URI="file:$DB" pnpm next build && \
+    pnpm exec next-sitemap --config next-sitemap.config.cjs && \
+    rm -f $DB $DB-wal $DB-shm
 
 gen-stuffs:
     #!/bin/sh
@@ -47,16 +41,4 @@ check:
     duration=$((end_time - start_time))
     echo "Linting, formatting, and type-checking completed in ${duration}s."
 
-build-image:
-    docker build \
-        -t ghcr.io/delnegend/biolak:$(git rev-parse --short HEAD) \
-        -t ghcr.io/delnegend/biolak:latest .
 
-publish-image:
-    #!/bin/sh
-    TAG=$(git rev-parse --short HEAD)
-    docker push --compression-format zstd --compression-level 9 ghcr.io/delnegend/biolak:latest
-    docker push --compression-format zstd --compression-level 9 ghcr.io/delnegend/biolak:$TAG
-
-save-image:
-    docker save ghcr.io/delnegend/biolak:latest | zstd -T0 -9 - > biolak-latest.tzst
