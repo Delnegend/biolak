@@ -33,6 +33,21 @@ const nextConfig = {
 	reactStrictMode: true,
 	redirects,
 	output: 'standalone',
+	outputFileTracingIncludes: {
+		'/**': [
+			'./node_modules/.pnpm/@libsql+*/**',
+			'./node_modules/.pnpm/libsql@*/**',
+			'./node_modules/.pnpm/ws@*/**',
+			'./node_modules/.pnpm/detect-libc@*/**',
+			'./node_modules/.pnpm/js-base64@*/**',
+			'./node_modules/.pnpm/promise-limit@*/**',
+			'./node_modules/.pnpm/semver@*/**',
+			'./node_modules/.pnpm/pino@*/**',
+			'./node_modules/.pnpm/pino-std-serializers@*/**',
+			'./node_modules/.pnpm/pino-pretty@*/**',
+			'./node_modules/.pnpm/@neon-rs+*/**',
+		],
+	},
 }
 
 export default withPayload(withNextIntl(nextConfig), { devBundleServerPackages: false })

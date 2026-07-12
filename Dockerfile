@@ -18,15 +18,18 @@ RUN --mount=type=cache,target=/root/.pnpm/store \
     pnpm install
 
 # ============================================
-# Stage 2: Build Next.js application in standalone mode
+# Stage 2: Build Next.js application
 # ============================================
 
 FROM node:24-alpine AS builder
 
+# Install just
+RUN apk add --no-cache just
+
 # Set working directory
 WORKDIR /app
 
-# Enable pnpm via corepack (needed for build scripts)
+# Enable pnpm via corepack
 RUN corepack enable pnpm && corepack prepare pnpm@latest --activate
 
 # Copy project dependencies from dependencies stage
@@ -34,18 +37,14 @@ COPY --from=dependencies /app/node_modules ./node_modules
 COPY --from=dependencies /app/pnpm-lock.yaml ./pnpm-lock.yaml
 COPY --from=dependencies /app/pnpm-workspace.yaml ./pnpm-workspace.yaml
 
-# Copy application source code
+# Copy application source code (includes .justfile)
 COPY . .
 
 ENV NODE_ENV=production
+ENV PAYLOAD_SECRET=ci-build-secret
 
-# Next.js collects completely anonymous telemetry data about general usage.
-# Learn more here: https://nextjs.org/telemetry
-# Uncomment the following line in case you want to disable telemetry during the build.
-# ENV NEXT_TELEMETRY_DISABLED=1
-
-# Build Next.js application
-RUN pnpm build
+# Build Next.js application via just (creates temp CI DB, migrates, builds, cleans up)
+RUN just build
 
 # ============================================
 # Stage 3: Run Next.js application

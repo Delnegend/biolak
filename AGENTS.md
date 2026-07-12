@@ -8,7 +8,8 @@ Next.js 16 + Payload CMS 3 + React 19 + Tailwind 3 + shadcn/ui + SQLite (drizzle
 
 ```bash
 just dev           # run dev server (runs check first)
-just build         # production build
+just build         # production build (uses data.ci.sqlite3, no compile flag)
+just ci-db         # generate fresh CI database (schema + migrations)
 just check         # eslint --fix → prettier → tsc --noEmit
 just gen-stuffs    # generate payload types, db-schema, importmap
 just db-create-migrate  # create DB migration
@@ -53,7 +54,7 @@ Path aliases: `@/*` → `src/*`, `@payload-config` → `src/payload.config.ts`
 - The repo and Dockerfile both use **pnpm**.
 - Middleware for locale redirect: `proxy.ts` at the repo root (named this way, not `middleware.ts`).
 - The `check` command runs eslint → prettier → tsc **in order**. tsc must pass for a clean run.
-- Do **not** run production just commands (`just backup`, `just restore`, `just update`) outside `/opt/biolak` — they target production paths and may cause data loss.
+- Do **not** run production just commands (`just backup`, `just restore`, `just update`) outside `~/biolak` — they target production paths and may cause data loss.
 - Dev container mounts workspace at `/biolak`; database URI in `.env` is `file:/workspaces/biolak/data.sqlite3`.
 - Payload `db-sqlite` and drizzle types diverge at this version — expect `@ts-expect-error` on `prodMigrations`.
 - `next-sitemap` runs as a `postbuild` script. It pulls URL from `NEXT_PUBLIC_SERVER_URL` env var.
